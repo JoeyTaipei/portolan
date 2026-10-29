@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>Atlas — Documents</title>
+<script src="6afcc49e-53d8-4095-b276-288234744281"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>/* cyrillic-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n1iIq131nj-otFQ.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n1isq131nj-otFQ.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n1iAq131nj-otFQ.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n1iEq131nj-otFQ.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n1i8q131nj-o.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJwl1FgsAXHNlYzg.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJwlRFgsAXHNlYzg.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJwl9FgsAXHNlYzg.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJwl5FgsAXHNlYzg.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJwlBFgsAXHNk.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3vAOwl1FgsAXHNlYzg.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3vAOwlRFgsAXHNlYzg.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3vAOwl9FgsAXHNlYzg.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3vAOwl5FgsAXHNlYzg.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3vAOwlBFgsAXHNk.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("84e47396-10e2-420e-9d78-d46cf08804bc") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("1fabc170-f7d6-4cc8-9e4b-d3d13cb61b0f") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("65e8788a-1618-4835-ab31-2c3b653f53a5") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("36a95843-48de-4aee-b185-f9787209a49d") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("9bb3db9f-9db9-47d8-9248-5cce149d71d7") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("145eb9ee-d515-4df2-a732-33525d0bb806") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("d1c2ff28-34ce-4c4a-a809-3bafe59a52b9") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("84e47396-10e2-420e-9d78-d46cf08804bc") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("1fabc170-f7d6-4cc8-9e4b-d3d13cb61b0f") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("65e8788a-1618-4835-ab31-2c3b653f53a5") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("36a95843-48de-4aee-b185-f9787209a49d") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("9bb3db9f-9db9-47d8-9248-5cce149d71d7") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("145eb9ee-d515-4df2-a732-33525d0bb806") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("d1c2ff28-34ce-4c4a-a809-3bafe59a52b9") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("84e47396-10e2-420e-9d78-d46cf08804bc") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("1fabc170-f7d6-4cc8-9e4b-d3d13cb61b0f") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("65e8788a-1618-4835-ab31-2c3b653f53a5") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("36a95843-48de-4aee-b185-f9787209a49d") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("9bb3db9f-9db9-47d8-9248-5cce149d71d7") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("145eb9ee-d515-4df2-a732-33525d0bb806") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("d1c2ff28-34ce-4c4a-a809-3bafe59a52b9") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/newsreader/v26/cY9XfjOCX1hbuyalUrK439vogqCz_goCYw7oRd6JFYkzbARA_n8IsQ.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/newsreader/v26/cY9XfjOCX1hbuyalUrK439vogqCz_goCYw7oRd6JFYgzbARA_n8IsQ.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("71807ebd-d5f1-4798-b794-d4fea44ff9a5") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/newsreader/v26/cY9AfjOCX1hbuyalUrK439HyjIJFJpeBZQ.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/newsreader/v26/cY9AfjOCX1hbuyalUrK439DyjIJFJpeBZQ.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("b872988d-4880-4f2d-bc45-12ce89e345d9") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/newsreader/v26/cY9AfjOCX1hbuyalUrK439HyjIJFJpeBZQ.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/newsreader/v26/cY9AfjOCX1hbuyalUrK439DyjIJFJpeBZQ.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("b872988d-4880-4f2d-bc45-12ce89e345d9") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
+<style>
+body{margin:0;background:#F3EEE4}
+a{color:#A8441F}a:hover{color:#7E3115}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F3EEE4; color: #1C1B19; font-family: Inter, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="flex: 1 1 auto; overflow-y: auto; padding: 52px 20px 24px; display: flex; flex-direction: column; gap: 16px">
+
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px">
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #A8441F; font-weight: 600">ATLAS // DOCUMENTS</div>
+        <h1 style="margin: 4px 0 0; font-family: Newsreader, Georgia, serif; font-weight: 600; font-size: 26px; line-height: 1.15">Advisory documents</h1>
+        <p style="margin: 4px 0 0; font-family: Newsreader, Georgia, serif; font-style: italic; font-size: 15px; color: #4F4A42">AI-drafted, expert-reviewed · Taiwan UAS</p>
+      </div>
+      <span style="flex: 0 0 auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; background: #1C1B19; color: #FFFFFF; padding: 4px 8px; border-radius: 4px">CONNECT</span>
+    </div>
+
+    <button type="button" sc-camel-on-click="{{toggleReq}}" style="{{reqBtnStyle}}">{{reqBtnLabel}}</button>
+
+    <sc-if value="{{showReq}}" hint-placeholder-val="{{ false }}">
+      <section aria-label="Request a document" style="background: #FBF8F2; border: 1px solid #DDD5C6; border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+        <div>
+          <div style="font-size: 12px; font-weight: 600; margin-bottom: 6px">Document type</div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <sc-for list="{{types}}" as="t" hint-placeholder-count="3">
+              <button type="button" sc-camel-on-click="{{t.pick}}" aria-pressed="{{t.on}}" style="{{t.style}}">
+                <span style="font-weight: 600">{{t.label}}</span>
+                <span style="font-size: 12px; opacity: 0.8">{{t.meta}}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+        <label style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 600">For which meeting or stakeholder?
+          <sc-raw-select style="min-height: 44px; padding: 0 8px; border: 1px solid #CFC6B5; border-radius: 6px; font: 14px Inter, sans-serif; background: #FFFFFF">
+            <option>MND Armaments Bureau · pre-tender briefing</option>
+            <option>State aerospace prime · intro via alliance</option>
+            <option>NCSIST · joint field test proposal</option>
+          </sc-raw-select>
+        </label>
+        <button type="button" sc-camel-on-click="{{toggleReview}}" aria-pressed="{{reviewOn}}" style="display: flex; justify-content: space-between; align-items: center; gap: 10px; min-height: 52px; padding: 8px 12px; border-radius: 6px; border: 1px solid #CFC6B5; background: #FFFFFF; cursor: pointer; text-align: left; font: 14px Inter, sans-serif; color: #1C1B19">
+          <span><strong style="display: block">Expert review</strong><span style="font-size: 12px; color: #4F4A42">Local reviewer checks names, dates and advice</span></span>
+          <span style="{{switchStyle}}"><span style="{{knobStyle}}"></span></span>
+        </button>
+        <button type="button" sc-camel-on-click="{{submit}}" style="min-height: 48px; border: none; border-radius: 6px; background: #A8441F; color: #FFFFFF; font: 600 14px Inter, sans-serif; cursor: pointer">Request {{chosenLabel}}</button>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{requested}}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; gap: 10px; align-items: flex-start; background: #DCE6F1; border: 1px solid #A9C0D8; border-radius: 8px; padding: 12px 14px">
+        <svg width="18" height="18" sc-camel-view-box="0 0 24 24" fill="none" stroke="#1E4468" stroke-width="2.2" style="flex: 0 0 auto; margin-top: 2px" aria-hidden="true"><path d="M5 12l5 5 9-10"></path></svg>
+        <div style="font-size: 13px; line-height: 1.5; color: #1E4468"><strong>Request received: {{chosenLabel}}.</strong> {{eta}}</div>
+      </div>
+    </sc-if>
+
+    <section aria-label="Your documents" style="display: flex; flex-direction: column; gap: 10px">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: #A8441F">YOUR DOCUMENTS</div>
+
+      <article style="background: #FBF8F2; border: 1px solid #DDD5C6; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 8px">
+        <div style="display: flex; justify-content: space-between; gap: 8px; align-items: center">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.06em; color: #6B655B">BRIEFING NOTE · 3 PAGES</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 3px; background: #DCE6F1; color: #1E4468">EXPERT APPROVED</span>
+        </div>
+        <h2 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 600; font-size: 18px; line-height: 1.25">Drone industry alliance — intro meeting</h2>
+        <div style="font-size: 12px; color: #4F4A42">Reviewed by [EXPERT NAME], Taipei · facts checked Oct 28</div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+          <a href="BriefingNote.dc.html" style="display: flex; justify-content: center; align-items: center; min-height: 44px; border-radius: 6px; background: #1C1B19; color: #FFFFFF; text-decoration: none; font-size: 13px; font-weight: 600">Open</a>
+          <a href="Tracker.dc.html" style="display: flex; justify-content: center; align-items: center; min-height: 44px; border-radius: 6px; border: 1px solid #CFC6B5; background: #FFFFFF; color: #1C1B19; text-decoration: none; font-size: 13px; font-weight: 600">Add debrief</a>
+        </div>
+      </article>
+
+      <article style="background: #FBF8F2; border: 1px solid #DDD5C6; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 8px">
+        <div style="display: flex; justify-content: space-between; gap: 8px; align-items: center">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.06em; color: #6B655B">RISK DECK · 4 PAGES</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 3px; background: #F6E2D7; color: #8A3517">IN EXPERT REVIEW</span>
+        </div>
+        <h2 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 600; font-size: 18px; line-height: 1.25">Taiwan market &amp; policy risk</h2>
+        <div style="font-size: 12px; color: #4F4A42">AI draft done · reviewer assigned · ready in about 24 h</div>
+        <div style="height: 4px; background: #E5DED1; border-radius: 2px"><div style="width: 65%; height: 4px; background: #A8441F; border-radius: 2px"></div></div>
+      </article>
+
+      <article style="background: #FBF8F2; border: 1px solid #DDD5C6; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 8px">
+        <div style="display: flex; justify-content: space-between; gap: 8px; align-items: center">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.06em; color: #6B655B">ENTRY REPORT · 1 PAGE A4</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 3px; background: #ECE7DE; color: #4F4A42">READY · FREE</span>
+        </div>
+        <h2 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 600; font-size: 18px; line-height: 1.25">Taiwan UAS — market entry brief</h2>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+          <a href="Report.dc.html" style="display: flex; justify-content: center; align-items: center; min-height: 44px; border-radius: 6px; border: 1px solid #CFC6B5; background: #FFFFFF; color: #1C1B19; text-decoration: none; font-size: 13px; font-weight: 600">Open PDF</a>
+          <a href="Brief.dc.html" style="display: flex; justify-content: center; align-items: center; min-height: 44px; border-radius: 6px; border: 1px solid #CFC6B5; background: #FFFFFF; color: #1C1B19; text-decoration: none; font-size: 13px; font-weight: 600">Strategy brief</a>
+        </div>
+      </article>
+
+      <article style="background: #FBF8F2; border: 1px solid #DDD5C6; border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 6px">
+        <div style="display: flex; justify-content: space-between; gap: 8px; align-items: center">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.06em; color: #6B655B">WATCH LIST · MONTHLY</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 3px; background: #ECE7DE; color: #4F4A42">NEXT: NOV 1</span>
+        </div>
+        <h2 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 600; font-size: 18px; line-height: 1.25">90–180 day watch</h2>
+        <ul style="margin: 0; padding-left: 18px; font-size: 13px; line-height: 1.55; color: #3D3932">
+          <li>Drone special budget: legislative review</li>
+          <li>NCC spectrum approvals backlog</li>
+          <li>Counter-drone upgrade after audit findings</li>
+        </ul>
+      </article>
+    </section>
+  </div>
+
+  <nav aria-label="Main" style="flex: 0 0 auto; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid #DDD5C6; background: #FBF8F2; padding: 6px 4px 22px">
+    <a href="Main.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 44px; justify-content: center; text-decoration: none; color: #4F4A42; font-size: 11px"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 6h7l2 2h9v11H3z"></path></svg>Dossiers</a>
+    <a href="Map.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 44px; justify-content: center; text-decoration: none; color: #4F4A42; font-size: 11px"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="6" cy="7" r="2.5"></circle><circle cx="18" cy="6" r="2"></circle><circle cx="13" cy="17" r="3"></circle><path d="M8 8l3.5 7M16.5 7.5l-2.5 7M8.5 7l7.5-1"></path></svg>Map</a>
+    <a href="Tracker.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 44px; justify-content: center; text-decoration: none; color: #4F4A42; font-size: 11px"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="5" height="16" rx="1"></rect><rect x="10" y="4" width="5" height="11" rx="1"></rect><rect x="17" y="4" width="4" height="7" rx="1"></rect></svg>Tracker</a>
+    <a href="Network.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 44px; justify-content: center; text-decoration: none; color: #4F4A42; font-size: 11px"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="8" r="3"></circle><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"></path><circle cx="17" cy="9" r="2.5"></circle><path d="M16 14.2c2.9.4 5 2.8 5 5.8"></path></svg>Network</a>
+    <a href="Docs.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 44px; justify-content: center; text-decoration: none; color: #A8441F; font-size: 11px; font-weight: 600"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 3h7l4 4v11H9z"></path><path d="M5 7v14h11"></path></svg>Docs</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844}}">
+var ATLAS_DOC_TYPES = [
+  { id: 'note', label: 'Briefing note', meta: '3 pages · for one meeting' },
+  { id: 'deck', label: 'Risk deck', meta: '4 pages · for leadership' },
+  { id: 'watch', label: 'Watch-list update', meta: '1–2 pages · monthly' }
+];
+
+class Component extends DCLogic {
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var type = s.type || 'note';
+    var review = s.review !== false;
+    var chosen = ATLAS_DOC_TYPES.filter(function (t) { return t.id === type; })[0];
+    var typeBase = 'display: flex; justify-content: space-between; align-items: center; gap: 8px; min-height: 48px; padding: 0 12px; border-radius: 6px; cursor: pointer; font: 14px Inter, sans-serif; text-align: left; border: 1px solid ';
+    var types = ATLAS_DOC_TYPES.map(function (t) {
+      var on = t.id === type;
+      return { label: t.label, meta: t.meta, on: on ? 'true' : 'false',
+        style: typeBase + (on ? '#1C1B19; background: #1C1B19; color: #FFFFFF' : '#CFC6B5; background: #FFFFFF; color: #1C1B19'),
+        pick: function () { self.setState({ type: t.id }); } };
+    });
+    return {
+      types: types,
+      showReq: !!s.showReq,
+      requested: !!s.requested,
+      reqBtnLabel: s.showReq ? 'Close' : '+ Request a document',
+      reqBtnStyle: 'min-height: 48px; border-radius: 6px; font: 600 14px Inter, sans-serif; cursor: pointer; border: 1px solid #1C1B19; ' + (s.showReq ? 'background: #FFFFFF; color: #1C1B19' : 'background: #1C1B19; color: #FFFFFF'),
+      toggleReq: function () { self.setState({ showReq: !s.showReq, requested: false }); },
+      reviewOn: review ? 'true' : 'false',
+      toggleReview: function () { self.setState({ review: !review }); },
+      switchStyle: 'flex: 0 0 auto; width: 44px; height: 26px; border-radius: 13px; position: relative; background: ' + (review ? '#2B5A87' : '#CFC6B5'),
+      knobStyle: 'position: absolute; top: 3px; width: 20px; height: 20px; border-radius: 50%; background: #FFFFFF; left: ' + (review ? '21px' : '3px'),
+      chosenLabel: chosen.label.toLowerCase(),
+      eta: review ? 'AI draft in about 10 minutes, then expert review within 24 hours. We will notify you when it is approved.' : 'AI draft ready in about 10 minutes. Not expert-reviewed — check names and dates before sharing.',
+      submit: function () { self.setState({ showReq: false, requested: true }); }
+    };
+  }
+}
+</script>
+
+
+</body></html>

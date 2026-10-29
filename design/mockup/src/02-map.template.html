@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>Atlas — 3D Stakeholder Map</title>
+<script src="cc3bf1e6-17a0-47c6-aa30-9aa28f784f0a"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>/* cyrillic-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n1iIq131nj-otFQ.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n1isq131nj-otFQ.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n1iAq131nj-otFQ.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n1iEq131nj-otFQ.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n1i8q131nj-o.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJwl1FgsAXHNlYzg.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJwlRFgsAXHNlYzg.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJwl9FgsAXHNlYzg.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJwl5FgsAXHNlYzg.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJwlBFgsAXHNk.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3vAOwl1FgsAXHNlYzg.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3vAOwlRFgsAXHNlYzg.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3vAOwl9FgsAXHNlYzg.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3vAOwl5FgsAXHNlYzg.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3vAOwlBFgsAXHNk.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("40f2b38c-dd14-47d8-9917-75a5200eca46") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("e399a40c-d5c9-4bc6-aa7e-e09e2d3ca4fc") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("3be0d71a-d4d8-4043-a5ed-aaa40c3a941c") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("a5d6dba6-d1f7-490b-a94c-d444369ed720") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("3fdf3774-9e02-48ba-a29a-fa0c97bcc1ae") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("04524e96-0033-4fec-93fb-2b80e84b4d0b") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("b1fa54c8-a14e-408f-aab6-365467f018c8") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("40f2b38c-dd14-47d8-9917-75a5200eca46") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("e399a40c-d5c9-4bc6-aa7e-e09e2d3ca4fc") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("3be0d71a-d4d8-4043-a5ed-aaa40c3a941c") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("a5d6dba6-d1f7-490b-a94c-d444369ed720") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("3fdf3774-9e02-48ba-a29a-fa0c97bcc1ae") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("04524e96-0033-4fec-93fb-2b80e84b4d0b") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("b1fa54c8-a14e-408f-aab6-365467f018c8") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("40f2b38c-dd14-47d8-9917-75a5200eca46") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("e399a40c-d5c9-4bc6-aa7e-e09e2d3ca4fc") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("3be0d71a-d4d8-4043-a5ed-aaa40c3a941c") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("a5d6dba6-d1f7-490b-a94c-d444369ed720") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("3fdf3774-9e02-48ba-a29a-fa0c97bcc1ae") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("04524e96-0033-4fec-93fb-2b80e84b4d0b") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("b1fa54c8-a14e-408f-aab6-365467f018c8") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/newsreader/v26/cY9XfjOCX1hbuyalUrK439vogqCz_goCYw7oRd6JFYkzbARA_n8IsQ.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/newsreader/v26/cY9XfjOCX1hbuyalUrK439vogqCz_goCYw7oRd6JFYgzbARA_n8IsQ.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("a3266b4a-d4df-49ce-9361-7dd8c54f7167") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/newsreader/v26/cY9AfjOCX1hbuyalUrK439HyjIJFJpeBZQ.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/newsreader/v26/cY9AfjOCX1hbuyalUrK439DyjIJFJpeBZQ.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("8c7d6d1b-16d1-435f-8ed5-b61c29e79709") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/newsreader/v26/cY9AfjOCX1hbuyalUrK439HyjIJFJpeBZQ.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/newsreader/v26/cY9AfjOCX1hbuyalUrK439DyjIJFJpeBZQ.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("8c7d6d1b-16d1-435f-8ed5-b61c29e79709") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
+<style>
+body{margin:0;background:#F3EEE4}
+a{color:#A8441F}a:hover{color:#7E3115}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F3EEE4; color: #1C1B19; font-family: Inter, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="flex: 1 1 auto; overflow-y: auto; padding: 52px 20px 20px; display: flex; flex-direction: column; gap: 12px">
+
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px">
+      <div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #A8441F; font-weight: 600">ATLAS // WORKSPACE MAP</div>
+        <h1 style="margin: 4px 0 0; font-family: Newsreader, Georgia, serif; font-weight: 600; font-size: 24px; line-height: 1.15">Taiwan UAS Defense Grid</h1>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B655B; margin-top: 2px">20 OF 48 STAKEHOLDERS SHOWN · SAMPLE DATA</div>
+      </div>
+      <a href="Docs.dc.html" aria-label="Documents" style="flex: 0 0 auto; width: 44px; height: 44px; border-radius: 8px; border: 1px solid #CFC6B5; background: #FFFFFF; display: grid; place-items: center; color: #1C1B19">
+        <svg width="18" height="18" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 3h7l4 4v11H9z"></path><path d="M5 7v14h11"></path></svg>
+      </a>
+    </div>
+
+    <div role="group" aria-label="View" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; background: #EAE3D6; border: 1px solid #DDD5C6; border-radius: 8px; padding: 4px">
+      <button type="button" sc-camel-on-click="{{show3d}}" style="{{seg3dStyle}}">3D Influence Map</button>
+      <button type="button" sc-camel-on-click="{{showMatrix}}" style="{{segMxStyle}}">Power Matrix</button>
+    </div>
+
+    <button type="button" sc-camel-on-click="{{toggleTeam}}" aria-pressed="{{teamPressed}}" style="{{teamBtnStyle}}">
+      <span style="display: flex; align-items: center; gap: 8px">
+        <svg width="18" height="18" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><circle cx="4" cy="6" r="2"></circle><circle cx="20" cy="6" r="2"></circle><circle cx="12" cy="21" r="1.6"></circle><path d="M6 7l4 3.5M18 7l-4 3.5M12 15v4.4"></path></svg>
+        <span><strong style="display: block; font-size: 13px">Your team's connections</strong><span style="font-size: 11px; opacity: 0.8">{{teamSub}}</span></span>
+      </span>
+      <span style="{{switchStyle}}"><span style="{{knobStyle}}"></span></span>
+    </button>
+
+    <div sc-camel-on-pointer-down="{{down}}" sc-camel-on-pointer-move="{{move}}" sc-camel-on-pointer-up="{{up}}" sc-camel-on-pointer-leave="{{up}}" style="position: relative; width: 350px; height: 320px; background: #FBF8F2; border: 1px solid #DDD5C6; border-radius: 10px; overflow: hidden; touch-action: none; cursor: grab">
+      <sc-if value="{{isMatrix}}" hint-placeholder-val="{{ false }}">
+        <div style="position: absolute; left: 175px; top: 10px; bottom: 24px; width: 1px; background: #DDD5C6"></div>
+        <div style="position: absolute; left: 14px; right: 14px; top: 152px; height: 1px; background: #DDD5C6"></div>
+        <div style="position: absolute; left: 18px; top: 12px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #A8441F; font-weight: 600">BLOCKERS</div>
+        <div style="position: absolute; right: 18px; top: 12px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #2B5A87; font-weight: 600">CHAMPIONS</div>
+        <div style="position: absolute; left: 18px; bottom: 30px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #6B655B; font-weight: 600">MONITOR</div>
+        <div style="position: absolute; right: 18px; bottom: 30px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #6B655B; font-weight: 600">ALLIES TO GROW</div>
+        <div style="position: absolute; left: 0; right: 0; bottom: 6px; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #6B655B">← RESISTANT · SUPPORT −100 … +100 · SUPPORTIVE →</div>
+      </sc-if>
+      <sc-if value="{{is3d}}" hint-placeholder-val="{{ true }}">
+        <div style="position: absolute; left: 10px; bottom: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: #6B655B">{{stageHint}}</div>
+      </sc-if>
+      <sc-for list="{{edges}}" as="e" hint-placeholder-count="0">
+        <div style="{{e.style}}"></div>
+      </sc-for>
+      <sc-for list="{{nodes}}" as="n" hint-placeholder-count="0">
+        <button type="button" aria-label="{{n.name}}" sc-camel-on-click="{{n.pick}}" sc-camel-on-pointer-down="{{n.stop}}" style="{{n.style}}"></button>
+        <sc-if value="{{n.showLabel}}" hint-placeholder-val="{{ false }}">
+          <span style="{{n.labelStyle}}">{{n.short}}</span>
+        </sc-if>
+      </sc-for>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
+      <div style="display: flex; gap: 6px">
+        <button type="button" sc-camel-on-click="{{rotL}}" aria-label="Rotate left" style="width: 44px; height: 44px; border-radius: 8px; border: 1px solid #CFC6B5; background: #FFFFFF; display: grid; place-items: center; cursor: pointer"><svg width="18" height="18" sc-camel-view-box="0 0 24 24" fill="none" stroke="#1C1B19" stroke-width="1.8" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.6"></path><path d="M4 4v5h5"></path></svg></button>
+        <button type="button" sc-camel-on-click="{{togglePause}}" aria-label="{{pauseLabel}}" style="width: 44px; height: 44px; border-radius: 8px; border: 1px solid #CFC6B5; background: #FFFFFF; display: grid; place-items: center; cursor: pointer">
+          <sc-if value="{{paused}}" hint-placeholder-val="{{ false }}"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="#1C1B19" aria-hidden="true"><path d="M7 4l13 8-13 8z"></path></svg></sc-if>
+          <sc-if value="{{playing}}" hint-placeholder-val="{{ true }}"><svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="#1C1B19" aria-hidden="true"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg></sc-if>
+        </button>
+        <button type="button" sc-camel-on-click="{{rotR}}" aria-label="Rotate right" style="width: 44px; height: 44px; border-radius: 8px; border: 1px solid #CFC6B5; background: #FFFFFF; display: grid; place-items: center; cursor: pointer"><svg width="18" height="18" sc-camel-view-box="0 0 24 24" fill="none" stroke="#1C1B19" stroke-width="1.8" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6"></path><path d="M20 4v5h-5"></path></svg></button>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 3px; font-size: 11px; color: #4F4A42">
+        <div style="display: flex; gap: 10px">
+          <span style="display: flex; align-items: center; gap: 4px"><span style="width: 9px; height: 9px; border-radius: 50%; background: #2B5A87"></span>Supportive</span>
+          <span style="display: flex; align-items: center; gap: 4px"><span style="width: 9px; height: 9px; border-radius: 50%; background: #A39B8E"></span>Neutral</span>
+          <span style="display: flex; align-items: center; gap: 4px"><span style="width: 9px; height: 9px; border-radius: 50%; background: #D9783F"></span>Resistant</span>
+        </div>
+        <div style="display: flex; gap: 10px; color: #6B655B">
+          <span style="display: flex; align-items: center; gap: 4px"><span style="width: 8px; height: 8px; background: #1C1B19; transform: rotate(45deg)"></span>Event</span>
+          <span style="display: flex; align-items: center; gap: 4px"><span style="width: 9px; height: 9px; border-radius: 50%; background: #FFFFFF; border: 2px solid #A8441F; box-sizing: border-box"></span>Your team</span>
+          <span style="display: flex; align-items: center; gap: 4px"><span style="width: 14px; border-top: 2px dashed #A8441F"></span>Warm tie</span>
+        </div>
+      </div>
+    </div>
+
+    <div role="group" aria-label="Filter stakeholders" style="display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px">
+      <sc-for list="{{chips}}" as="c" hint-placeholder-count="6">
+        <button type="button" sc-camel-on-click="{{c.pick}}" style="{{c.style}}">{{c.label}}</button>
+      </sc-for>
+    </div>
+
+    <section aria-label="Inspector" style="background: #FBF8F2; border: 1px solid #DDD5C6; border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 10px">
+
+      <sc-if value="{{showIdle}}" hint-placeholder-val="{{ true }}">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: #6B655B">INSIDER DOSSIER INSPECTOR</div>
+        <p style="margin: 0; font-family: Newsreader, Georgia, serif; font-style: italic; font-size: 16px; color: #4F4A42">Tap any node to see who they are, where they stand, and the evidence behind it.</p>
+      </sc-if>
+
+      <sc-if value="{{showTeamIdle}}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; justify-content: space-between; align-items: center">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: #6B655B">YOUR TEAM'S NETWORK</span>
+          <span style="font-size: 12px; color: #4F4A42">3 of 4 connected</span>
+        </div>
+        <sc-for list="{{teamList}}" as="m" hint-placeholder-count="4">
+          <button type="button" sc-camel-on-click="{{m.pick}}" style="display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 10px; align-items: center; min-height: 48px; padding: 4px 0; border: none; border-bottom: 1px solid #E5DED1; background: transparent; text-align: left; cursor: pointer; font: 14px Inter, sans-serif; color: #1C1B19">
+            <span style="width: 32px; height: 32px; border-radius: 50%; border: 2px solid #A8441F; display: grid; place-items: center; font-size: 12px; font-weight: 600; color: #A8441F; background: #FFFFFF">{{m.initials}}</span>
+            <span><strong style="display: block; font-size: 14px">{{m.name}}</strong><span style="font-size: 12px; color: #4F4A42">{{m.role}}</span></span>
+            <span style="{{m.chip}}">{{m.status}}</span>
+          </button>
+        </sc-for>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+          <button type="button" style="min-height: 44px; border-radius: 6px; border: 1px solid #1C1B19; background: #1C1B19; color: #FFFFFF; font: 600 12px Inter, sans-serif; cursor: pointer">Upload LinkedIn export</button>
+          <button type="button" style="min-height: 44px; border-radius: 6px; border: 1px solid #CFC6B5; background: #FFFFFF; color: #1C1B19; font: 600 12px Inter, sans-serif; cursor: pointer">Connect contacts</button>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: flex-start; font-size: 11px; line-height: 1.5; color: #4F4A42">
+          <svg width="14" height="14" sc-camel-view-box="0 0 24 24" fill="none" stroke="#4F4A42" stroke-width="2" style="flex: 0 0 auto; margin-top: 2px" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>
+          Each teammate opts in. Only your team sees these connections — never other Atlas clients.
+        </div>
+      </sc-if>
+
+      <sc-if value="{{showMember}}" hint-placeholder-val="{{ false }}">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: #A8441F">YOUR TEAM</div>
+        <h2 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 600; font-size: 21px">{{mem.name}}</h2>
+        <p style="margin: 0; font-size: 13px; color: #4F4A42">{{mem.role}} · {{mem.source}}</p>
+        <sc-for list="{{mem.ties}}" as="t" hint-placeholder-count="2">
+          <div style="display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: center; border-top: 1px solid #E5DED1; padding-top: 8px">
+            <div><strong style="font-size: 13px">{{t.org}}</strong><div style="font-size: 12px; color: #4F4A42">{{t.contact}} · {{t.how}}</div></div>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #A8441F; letter-spacing: 0.1em">{{t.dots}}</span>
+          </div>
+        </sc-for>
+      </sc-if>
+
+      <sc-if value="{{hasSel}}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: #6B655B">{{s.catLabel}}</span>
+          <span style="{{s.chipStyle}}">{{s.stanceLabel}}</span>
+        </div>
+        <h2 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 600; font-size: 21px; line-height: 1.2">{{s.name}}</h2>
+        <p style="margin: 0; font-size: 13px; line-height: 1.5; color: #4F4A42">{{s.role}}</p>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; border-top: 1px solid #E5DED1; padding-top: 10px">
+          <div><div style="font-family: Newsreader, Georgia, serif; font-size: 20px; font-weight: 600">{{s.infl}}</div><div style="font-size: 11px; color: #6B655B">Influence /100</div></div>
+          <div><div style="font-family: Newsreader, Georgia, serif; font-size: 20px; font-weight: 600">{{s.sup}}</div><div style="font-size: 11px; color: #6B655B">Support ±100</div></div>
+          <div><div style="font-family: Newsreader, Georgia, serif; font-size: 20px; font-weight: 600">{{s.src}}</div><div style="font-size: 11px; color: #6B655B">Cited sources</div></div>
+        </div>
+
+        <sc-if value="{{teamOn}}" hint-placeholder-val="{{ false }}">
+          <div style="border: 1px solid #E7BFA9; background: #FFF8F3; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 8px">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; color: #A8441F">WHO KNOWS SOMEONE HERE</div>
+            <sc-if value="{{s.hasDirect}}" hint-placeholder-val="{{ false }}">
+              <sc-for list="{{s.direct}}" as="d" hint-placeholder-count="1">
+                <div style="display: flex; flex-direction: column; gap: 6px">
+                  <div style="font-size: 13px; line-height: 1.45"><strong>{{d.member}}</strong> knows <strong>{{d.contact}}</strong><br><span style="color: #4F4A42">{{d.how}} · tie strength <span style="color: #A8441F; letter-spacing: 0.1em">{{d.dots}}</span></span></div>
+                  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px">
+                    <a href="https://www.linkedin.com/" style="display: flex; justify-content: center; align-items: center; gap: 6px; min-height: 40px; border-radius: 6px; border: 1px solid #CFC6B5; background: #FFFFFF; color: #1C1B19; text-decoration: none; font-size: 12px; font-weight: 600">LinkedIn ↗</a>
+                    <button type="button" sc-camel-on-click="{{d.ask}}" style="min-height: 40px; border-radius: 6px; border: none; background: #A8441F; color: #FFFFFF; font: 600 12px Inter, sans-serif; cursor: pointer">Ask {{d.first}} for intro</button>
+                  </div>
+                </div>
+              </sc-for>
+            </sc-if>
+            <sc-if value="{{s.hasPath}}" hint-placeholder-val="{{ false }}">
+              <div style="font-size: 13px; line-height: 1.45">No direct tie. <strong>Best warm path</strong> (highlighted on the map):</div>
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; line-height: 1.6; background: #FFFFFF; border: 1px solid #E5DED1; border-radius: 6px; padding: 8px">{{s.pathText}}</div>
+              <button type="button" sc-camel-on-click="{{s.askPath}}" style="min-height: 40px; border-radius: 6px; border: none; background: #A8441F; color: #FFFFFF; font: 600 12px Inter, sans-serif; cursor: pointer">Ask {{s.pathFirst}} to start the intro</button>
+            </sc-if>
+            <sc-if value="{{s.noPath}}" hint-placeholder-val="{{ false }}">
+              <div style="font-size: 13px; line-height: 1.45">No warm path from your team yet.</div>
+              <a href="Network.dc.html" style="display: flex; justify-content: center; align-items: center; min-height: 40px; border-radius: 6px; background: #1C1B19; color: #FFFFFF; text-decoration: none; font-size: 12px; font-weight: 600">Request an Atlas expert intro</a>
+            </sc-if>
+            <sc-if value="{{hasDraft}}" hint-placeholder-val="{{ false }}">
+              <div style="background: #FFFFFF; border: 1px solid #CFC6B5; border-radius: 6px; padding: 10px; display: flex; flex-direction: column; gap: 8px">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; color: #6B655B">DRAFT · YOUR TEAMMATE SENDS IT</div>
+                <p style="margin: 0; font-size: 13px; line-height: 1.5; white-space: pre-line">{{draft}}</p>
+                <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px">
+                  <button type="button" style="min-height: 40px; border-radius: 6px; border: 1px solid #1C1B19; background: #1C1B19; color: #FFFFFF; font: 600 12px Inter, sans-serif; cursor: pointer">Copy draft</button>
+                  <button type="button" sc-camel-on-click="{{closeDraft}}" style="min-height: 40px; border-radius: 6px; border: 1px solid #CFC6B5; background: #FFFFFF; color: #1C1B19; font: 600 12px Inter, sans-serif; cursor: pointer">Close</button>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </sc-if>
+
+        <div style="background: #F3EEE4; border-radius: 6px; padding: 10px 12px">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; color: #A8441F">RECOMMENDED ACTION</div>
+          <div style="font-size: 13px; line-height: 1.5; margin-top: 2px">{{s.action}}</div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+          <a href="Brief.dc.html" style="display: flex; justify-content: center; align-items: center; min-height: 44px; border-radius: 6px; background: #1C1B19; color: #FFFFFF; text-decoration: none; font-size: 13px; font-weight: 600">View evidence</a>
+          <a href="Tracker.dc.html" style="display: flex; justify-content: center; align-items: center; min-height: 44px; border-radius: 6px; border: 1px solid #CFC6B5; background: #FFFFFF; color: #1C1B19; text-decoration: none; font-size: 13px; font-weight: 600">Add to tracker</a>
+        </div>
+      </sc-if>
+    </section>
+  </div>
+
+  <nav aria-label="Main" style="flex: 0 0 auto; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid #DDD5C6; background: #FBF8F2; padding: 6px 4px 22px">
+    <a href="Main.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 44px; justify-content: center; text-decoration: none; color: #4F4A42; font-size: 11px"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 6h7l2 2h9v11H3z"></path></svg>Dossiers</a>
+    <a href="Map.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 44px; justify-content: center; text-decoration: none; color: #A8441F; font-size: 11px; font-weight: 600"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="6" cy="7" r="2.5"></circle><circle cx="18" cy="6" r="2"></circle><circle cx="13" cy="17" r="3"></circle><path d="M8 8l3.5 7M16.5 7.5l-2.5 7M8.5 7l7.5-1"></path></svg>Map</a>
+    <a href="Tracker.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 44px; justify-content: center; text-decoration: none; color: #4F4A42; font-size: 11px"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="5" height="16" rx="1"></rect><rect x="10" y="4" width="5" height="11" rx="1"></rect><rect x="17" y="4" width="4" height="7" rx="1"></rect></svg>Tracker</a>
+    <a href="Network.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 44px; justify-content: center; text-decoration: none; color: #4F4A42; font-size: 11px"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="8" r="3"></circle><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"></path><circle cx="17" cy="9" r="2.5"></circle><path d="M16 14.2c2.9.4 5 2.8 5 5.8"></path></svg>Network</a>
+    <a href="Docs.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 44px; justify-content: center; text-decoration: none; color: #4F4A42; font-size: 11px"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 3h7l4 4v11H9z"></path><path d="M5 7v14h11"></path></svg>Docs</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;autoRotate&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true},&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844}}">
+var ATLAS_NODES = [
+  { id: 'g1', short: 'MND Armaments Bureau', name: 'Ministry of National Defense — Armaments Bureau', role: 'Runs defense procurement tenders; sets qualification rules for drone suppliers.', cat: 'gov', st: 'sup', infl: 92, sup: 62, src: 14, action: 'Request a pre-tender capability briefing; lead with supply-chain provenance.', x: -0.55, y: -0.35, z: 0.25 },
+  { id: 'g2', short: 'NCSIST', name: 'National Chung-Shan Institute of Science & Technology', role: 'Defense R&D institute; runs testing and certification for UAS payloads.', cat: 'gov', st: 'neu', infl: 85, sup: 8, src: 11, action: 'Propose a joint field test on the 5.1 GHz detection gap.', x: -0.75, y: -0.05, z: -0.15 },
+  { id: 'g3', short: 'MOEA Industrial Dev.', name: 'MOEA — Industrial Development Administration', role: 'Funds local manufacturing and supply-chain subsidies.', cat: 'gov', st: 'sup', infl: 74, sup: 48, src: 9, action: 'Apply for co-financing once a local assembly partner is signed.', x: -0.3, y: -0.7, z: -0.1 },
+  { id: 'g4', short: 'Civil Aeronautics Admin.', name: 'Civil Aeronautics Administration', role: 'Registers drones and sets operating rules for civilian airspace.', cat: 'gov', st: 'neu', infl: 58, sup: 0, src: 6, action: 'Confirm dual-use registration path before any public demo.', x: -0.9, y: -0.45, z: 0.4 },
+  { id: 'g5', short: 'NCC', name: 'National Communications Commission', role: 'Approves radio-frequency use for sensors and datalinks.', cat: 'gov', st: 'res', infl: 61, sup: -34, src: 5, action: 'File spectrum pre-consultation early; approvals are backlogged.', x: -0.6, y: 0.2, z: 0.6 },
+  { id: 'g6', short: 'Defense Committee', name: 'Legislative Yuan — Foreign Affairs & National Defense Committee', role: 'Reviews defense budgets and procurement amendments.', cat: 'gov', st: 'sup', infl: 80, sup: 40, src: 8, action: 'Brief two co-sponsors before the committee review.', x: -0.2, y: -0.25, z: 0.75 },
+  { id: 'i1', short: 'Drone Industry Alliance', name: 'Drone industry alliance (TEDIBOA)', role: '260+ member companies; coordinates the "non-red" supply chain.', cat: 'ind', st: 'sup', infl: 70, sup: 55, src: 7, action: 'Join as associate member; fastest route to local partners.', x: 0.45, y: -0.35, z: -0.35 },
+  { id: 'i2', short: 'State aerospace prime', name: 'State-linked aerospace prime contractor', role: 'Likely system integrator for large government drone contracts.', cat: 'ind', st: 'neu', infl: 78, sup: 12, src: 6, action: 'Position as a subsystem supplier, not a competitor.', x: 0.15, y: -0.6, z: 0.3 },
+  { id: 'i3', short: 'Listed drone OEM', name: 'Listed drone OEM · Taichung', role: 'Incumbent local manufacturer; competes for the same tenders.', cat: 'ind', st: 'res', infl: 66, sup: -52, src: 5, action: 'Avoid head-on bids; explore a component licensing deal.', x: 0.8, y: -0.1, z: 0.15 },
+  { id: 'i4', short: 'Tier-1 telecom', name: 'Tier-1 telecom operator', role: 'Owns secure network infrastructure; potential datalink partner.', cat: 'ind', st: 'neu', infl: 63, sup: 5, src: 4, action: 'Test datalink compatibility before proposing partnership.', x: 0.6, y: 0.15, z: 0.6 },
+  { id: 'i5', short: 'Taoyuan suppliers', name: 'Component supplier cluster · Taoyuan', role: 'Motors, batteries and frames; needed for local-content rules.', cat: 'ind', st: 'sup', infl: 45, sup: 38, src: 3, action: 'Shortlist two suppliers to meet local-content thresholds.', x: 0.7, y: -0.5, z: -0.6 },
+  { id: 'c1', short: 'Kestrel Dual-Use Fund', name: 'Kestrel Dual-Use Fund (fictional)', role: 'Venture fund focused on dual-use hardware in Asia.', cat: 'cap', st: 'sup', infl: 52, sup: 60, src: 3, action: 'Share the dossier summary; ask for intros to portfolio integrators.', x: 0.2, y: 0.6, z: 0.35 },
+  { id: 'c2', short: 'Harbor Lane FO', name: 'Harbor Lane Family Office (fictional)', role: 'Family office; invests $250k–$2M in industrial tech.', cat: 'cap', st: 'sup', infl: 40, sup: 45, src: 2, action: 'Approach after the first government pilot is confirmed.', x: 0.45, y: 0.75, z: 0.0 },
+  { id: 'c3', short: 'Angel syndicate', name: 'Angel syndicate · 14 members', role: 'Individual investors; tickets of $2k–$50k.', cat: 'cap', st: 'neu', infl: 30, sup: 10, src: 2, action: 'Low priority until a local entity is set up.', x: -0.05, y: 0.85, z: -0.2 },
+  { id: 'c4', short: 'National Dev. Fund', name: 'National Development Fund', role: 'Government co-investment vehicle for strategic industries.', cat: 'cap', st: 'neu', infl: 68, sup: 15, src: 5, action: 'Co-investment requires a Taiwan entity; plan for month 6.', x: -0.25, y: 0.5, z: 0.15 },
+  { id: 'l1', short: 'Cross-border counsel', name: 'Independent counsel · cross-border VC', role: 'Matches foreign startups with local investors; handles entity setup.', cat: 'leg', st: 'sup', infl: 35, sup: 50, src: 2, action: 'Book a scoping call on entity structure and investor intros.', x: -0.55, y: 0.65, z: -0.45 },
+  { id: 'l2', short: 'Export-control firm', name: 'Taipei law firm · export controls', role: 'Advises on defense export licences and end-user checks.', cat: 'leg', st: 'neu', infl: 48, sup: 20, src: 4, action: 'Confirm export-licence needs before shipping demo units.', x: -0.85, y: 0.35, z: -0.6 },
+  { id: 'e1', short: 'TADTE 2027', name: 'Taipei Aerospace & Defense Technology Exhibition', role: 'Sep 23–25, 2027 · Taipei Nangang, Hall 1. 9 mapped stakeholders expected.', cat: 'evt', st: 'evt', infl: 70, sup: 30, src: 3, action: 'Reserve a partner-booth slot; schedule 5 meetings in advance.', x: 0.15, y: -0.1, z: -0.8 },
+  { id: 'e2', short: 'Drone ecosystem summit', name: 'Drone ecosystem summit [DATE]', role: 'Industry-alliance event; investors and integrators attend.', cat: 'evt', st: 'evt', infl: 50, sup: 25, src: 2, action: 'Apply for the startup pitch track.', x: 0.5, y: 0.45, z: -0.55 },
+  { id: 'e3', short: 'Procurement briefing', name: 'Defense procurement briefing day [DATE]', role: 'Annual supplier briefing by the procurement authority.', cat: 'evt', st: 'evt', infl: 55, sup: 20, src: 2, action: 'Register as a prospective supplier to receive the invitation.', x: -0.35, y: -0.55, z: 0.7 }
+];
+var ATLAS_EDGES = [['g1','g2'],['g1','g6'],['g1','i2'],['g2','i2'],['g2','i1'],['g3','i1'],['g3','i5'],['g3','c4'],['g4','i3'],['g5','i4'],['g6','g3'],['i1','i3'],['i1','i5'],['i2','i4'],['c1','c2'],['c1','l1'],['c4','c1'],['l2','i2'],['l1','c3'],['e1','g1'],['e1','i1'],['e1','i2'],['e2','i1'],['e2','c1'],['e3','g1'],['e3','g6'],['g4','g5'],['l2','g1']];
+var ATLAS_TEAM = [
+  { id: 'tm_you', short: 'You', name: 'You', role: 'CEO', initials: 'YO', source: 'Manual entries', status: 'CONNECTED', x: 0.0, y: 0.05, z: 0.0 },
+  { id: 'tm_mei', short: 'Mei Chen', name: 'Mei Chen', role: 'BD lead', initials: 'MC', source: 'LinkedIn export', status: 'CONNECTED', x: 0.12, y: 0.12, z: 0.1 },
+  { id: 'tm_priya', short: 'Priya Nair', name: 'Priya Nair', role: 'Advisor, ex-defense', initials: 'PN', source: 'LinkedIn + contacts', status: 'CONNECTED', x: -0.12, y: 0.14, z: 0.08 },
+  { id: 'tm_dan', short: 'Daniel Ruiz', name: 'Daniel Ruiz', role: 'CTO', initials: 'DR', source: 'Not connected yet', status: 'INVITED', x: 0.02, y: 0.2, z: -0.12 }
+];
+var ATLAS_TIES = [
+  { m: 'tm_mei', org: 'i1', s: 3, contact: '[Name], Secretariat', how: 'Former colleague, 2019–21' },
+  { m: 'tm_mei', org: 'i2', s: 2, contact: '[Name], BD Manager', how: '1st-degree LinkedIn' },
+  { m: 'tm_priya', org: 'g2', s: 2, contact: '[Name], Researcher', how: 'Co-panelist, 2024 conference' },
+  { m: 'tm_priya', org: 'c1', s: 3, contact: '[Name], Partner', how: 'Invested in her last company' },
+  { m: 'tm_you', org: 'l1', s: 3, contact: '[Name], Counsel', how: 'Current advisor' }
+];
+var ATLAS_CATS = { all: 'All', gov: 'Government', ind: 'Industry', cap: 'Capital', leg: 'Legal', evt: 'Events' };
+var ATLAS_STANCE = {
+  sup: { label: 'SUPPORTIVE', color: '#2B5A87', chip: 'background: #DCE6F1; color: #1E4468' },
+  neu: { label: 'NEUTRAL', color: '#A39B8E', chip: 'background: #ECE7DE; color: #4F4A42' },
+  res: { label: 'RESISTANT', color: '#D9783F', chip: 'background: #F6E2D7; color: #8A3517' },
+  evt: { label: 'EVENT', color: '#1C1B19', chip: 'background: #1C1B19; color: #FFFFFF' }
+};
+function atlasDots(n) { return n >= 3 ? '●●●' : n === 2 ? '●●○' : '●○○'; }
+
+class Component extends DCLogic {
+  componentDidMount() {
+    var self = this;
+    this._timer = setInterval(function () {
+      var st = self.state || {};
+      var auto = self.props.autoRotate !== false;
+      if (auto && !st.paused && !st.sel && st.view !== 'mx' && !st.drag) {
+        self.setState({ angle: (st.angle == null ? 0.6 : st.angle) + 0.012 });
+      }
+    }, 50);
+  }
+  componentWillUnmount() { clearInterval(this._timer); }
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var ang = s.angle == null ? 0.6 : s.angle;
+    var view = s.view || '3d';
+    var filter = s.filter || 'all';
+    var sel = s.sel || null;
+    var teamOn = !!s.team && view !== 'mx';
+    var W = 350, H = 320, cx = 175, cy = 155, R = 115, tilt = 0.38;
+    var ca = Math.cos(ang), sa = Math.sin(ang), ct = Math.cos(tilt), stt = Math.sin(tilt);
+    var byId = {}, teamById = {};
+    ATLAS_NODES.forEach(function (n) { byId[n.id] = n; });
+    ATLAS_TEAM.forEach(function (t) { teamById[t.id] = t; });
+    var selIsTeam = !!(sel && teamById[sel]);
+    var selOrg = sel && byId[sel] ? byId[sel] : null;
+
+    var project = function (o) {
+      var x1 = o.x * ca + o.z * sa;
+      var z1 = -o.x * sa + o.z * ca;
+      var y2 = o.y * ct - z1 * stt;
+      var z2 = o.y * stt + z1 * ct;
+      var f = 2.8 / (2.8 + z2);
+      return { x: cx + x1 * R * f, y: cy + y2 * R * f, z: z2, f: f };
+    };
+    var pts = {};
+    ATLAS_NODES.forEach(function (n) {
+      if (view === 'mx') {
+        pts[n.id] = { x: 24 + (n.sup + 100) / 200 * (W - 48), y: 26 + (1 - n.infl / 100) * (H - 64), z: 0, size: 10 + n.infl * 0.12 };
+      } else {
+        var p = project(n); p.size = (9 + n.infl * 0.2) * p.f; pts[n.id] = p;
+      }
+    });
+    if (teamOn) ATLAS_TEAM.forEach(function (t) { var p = project(t); p.size = 13 * p.f; pts[t.id] = p; });
+
+    // direct ties and best warm path for the selected organisation
+    var direct = [], path = null;
+    if (selOrg && teamOn) {
+      direct = ATLAS_TIES.filter(function (t) { return t.org === selOrg.id; });
+      if (!direct.length) {
+        ATLAS_TIES.forEach(function (t) {
+          ATLAS_EDGES.forEach(function (e) {
+            var other = e[0] === selOrg.id ? e[1] : (e[1] === selOrg.id ? e[0] : null);
+            if (other && other === t.org && (!path || t.s > path.tie.s)) path = { tie: t, via: other };
+          });
+        });
+      }
+    }
+    var hotTeamEdge = {}, hotOrgEdge = {};
+    direct.forEach(function (t) { hotTeamEdge[t.m + '|' + t.org] = true; });
+    if (path) { hotTeamEdge[path.tie.m + '|' + path.via] = true; hotOrgEdge[[path.via, selOrg.id].sort().join('|')] = true; }
+    if (selIsTeam) ATLAS_TIES.forEach(function (t) { if (t.m === sel) hotTeamEdge[t.m + '|' + t.org] = true; });
+
+    var linked = {};
+    ATLAS_EDGES.forEach(function (e) {
+      if (e[0] === sel) linked[e[1]] = true;
+      if (e[1] === sel) linked[e[0]] = true;
+    });
+    if (teamOn) ATLAS_TIES.forEach(function (t) {
+      if (t.org === sel) linked[t.m] = true;
+      if (t.m === sel) linked[t.org] = true;
+    });
+    if (path) { linked[path.tie.m] = true; linked[path.via] = true; }
+
+    var inF = function (n) { return filter === 'all' || n.cat === filter; };
+    var labelFor = function (p, sz, zi) {
+      var leftSide = p.x > W - 120;
+      return 'position: absolute; pointer-events: none; white-space: nowrap; font-family: \'IBM Plex Mono\', monospace; font-size: 10px; font-weight: 600; color: #1C1B19; background: rgba(251,248,242,0.9); padding: 1px 4px; border-radius: 3px; top: ' + (p.y - 8).toFixed(1) + 'px; left: ' + (leftSide ? (p.x - sz / 2 - 4) : (p.x + sz / 2 + 4)).toFixed(1) + 'px; transform: ' + (leftSide ? 'translateX(-100%)' : 'none') + '; z-index: ' + (zi + 400) + ';';
+    };
+
+    var nodes = ATLAS_NODES.map(function (n) {
+      var p = pts[n.id];
+      var on = inF(n);
+      var isSel = sel === n.id;
+      var dim = !on || (sel && !isSel && !linked[n.id]);
+      var zi = view === 'mx' ? 10 : Math.round(300 - p.z * 100);
+      var evt = n.cat === 'evt';
+      var sz = Math.max(8, p.size);
+      var style = 'position: absolute; padding: 0; cursor: pointer; left: ' + (p.x - sz / 2).toFixed(1) + 'px; top: ' + (p.y - sz / 2).toFixed(1) + 'px; width: ' + sz.toFixed(1) + 'px; height: ' + sz.toFixed(1) + 'px; border-radius: ' + (evt ? '2px' : '50%') + '; transform: ' + (evt ? 'rotate(45deg)' : 'none') + '; background: ' + ATLAS_STANCE[n.st].color + '; border: 2px solid ' + (isSel ? '#A8441F' : '#FBF8F2') + '; box-shadow: ' + (isSel ? '0 0 0 3px rgba(168,68,31,0.25)' : '0 1px 2px rgba(0,0,0,0.15)') + '; opacity: ' + (dim ? 0.18 : 1) + '; z-index: ' + zi + ';';
+      var showLabel = on && (isSel || (sel ? linked[n.id] : n.infl >= 78));
+      return { name: n.name, short: n.short, style: style, showLabel: showLabel, labelStyle: labelFor(p, sz, zi),
+        pick: function () { self.setState({ sel: isSel ? null : n.id, draft: null }); },
+        stop: function (ev) { if (ev && ev.stopPropagation) ev.stopPropagation(); } };
+    });
+    if (teamOn) ATLAS_TEAM.forEach(function (t) {
+      var p = pts[t.id];
+      var isSel = sel === t.id;
+      var dim = sel && !isSel && !linked[t.id];
+      var zi = Math.round(300 - p.z * 100) + 50;
+      var sz = Math.max(10, p.size);
+      var pending = t.status !== 'CONNECTED';
+      nodes.push({ name: t.name + ' (your team)', short: t.short, showLabel: !dim, labelStyle: labelFor(p, sz, zi),
+        style: 'position: absolute; padding: 0; cursor: pointer; left: ' + (p.x - sz / 2).toFixed(1) + 'px; top: ' + (p.y - sz / 2).toFixed(1) + 'px; width: ' + sz.toFixed(1) + 'px; height: ' + sz.toFixed(1) + 'px; border-radius: 50%; background: #FFFFFF; border: 2.5px ' + (pending ? 'dashed' : 'solid') + ' #A8441F; box-shadow: ' + (isSel ? '0 0 0 3px rgba(168,68,31,0.3)' : 'none') + '; opacity: ' + (dim ? 0.25 : 1) + '; z-index: ' + zi + ';',
+        pick: function () { self.setState({ sel: isSel ? null : t.id, draft: null }); },
+        stop: function (ev) { if (ev && ev.stopPropagation) ev.stopPropagation(); } });
+    });
+
+    var line = function (a, b, color, h, op, dashed) {
+      var dx = b.x - a.x, dy = b.y - a.y;
+      var len = Math.sqrt(dx * dx + dy * dy);
+      var deg = Math.atan2(dy, dx) * 180 / Math.PI;
+      return { style: 'position: absolute; transform-origin: 0 0; left: ' + a.x.toFixed(1) + 'px; top: ' + a.y.toFixed(1) + 'px; width: ' + len.toFixed(1) + 'px; height: 0; border-top: ' + h + 'px ' + (dashed ? 'dashed' : 'solid') + ' ' + color + '; opacity: ' + op + '; transform: rotate(' + deg.toFixed(2) + 'deg); z-index: ' + (dashed ? 2 : 1) + ';' };
+    };
+    var edges = [];
+    if (view !== 'mx') {
+      ATLAS_EDGES.forEach(function (e) {
+        var na = byId[e[0]], nb = byId[e[1]];
+        var key = [e[0], e[1]].sort().join('|');
+        var hot = (selOrg && !path && (e[0] === sel || e[1] === sel)) || hotOrgEdge[key];
+        var vis = inF(na) && inF(nb) && (!sel || hot);
+        edges.push(line(pts[e[0]], pts[e[1]], hot ? '#A8441F' : '#1C1B19', hot ? 2 : 1, vis ? (hot ? 0.8 : 0.16) : 0.04, false));
+      });
+      if (teamOn) ATLAS_TIES.forEach(function (t) {
+        var hot = hotTeamEdge[t.m + '|' + t.org];
+        var op = sel ? (hot ? 0.95 : 0.06) : 0.55;
+        edges.push(line(pts[t.m], pts[t.org], '#A8441F', hot ? 2.5 : t.s, op, true));
+      });
+    }
+
+    var chipBase = 'flex: 0 0 auto; min-height: 36px; padding: 0 12px; border-radius: 18px; font: 500 12px Inter, sans-serif; cursor: pointer; border: 1px solid ';
+    var chips = Object.keys(ATLAS_CATS).map(function (k) {
+      var on = filter === k;
+      return { label: ATLAS_CATS[k],
+        style: chipBase + (on ? '#1C1B19; background: #1C1B19; color: #FFFFFF' : '#CFC6B5; background: #FFFFFF; color: #1C1B19'),
+        pick: function () { self.setState({ filter: k, sel: null, draft: null }); } };
+    });
+
+    var segBase = 'min-height: 40px; border: none; border-radius: 6px; font-family: \'IBM Plex Mono\', monospace; font-size: 12px; font-weight: 600; cursor: pointer; ';
+    var segOn = segBase + 'background: #1C1B19; color: #FFFFFF';
+    var segOff = segBase + 'background: transparent; color: #1C1B19';
+
+    var first = function (id) { return teamById[id].name.split(' ')[0]; };
+    var makeDraft = function (memberId, contact, orgName, viaName) {
+      return 'Hi ' + first(memberId) + ' — could you introduce me to ' + contact + (viaName ? ' at ' + viaName + ', and ask whether they can connect us with ' + orgName : ' at ' + orgName) + '?\n\nContext: we are entering Taiwan with counter-drone sensors that cover the 5.1 GHz gap. A 20-minute intro call is all I am asking for. Happy to send a short brief they can forward.';
+    };
+
+    var sv = { name: '', role: '', catLabel: '', stanceLabel: '', chipStyle: '', infl: '', sup: '', src: '', action: '', direct: [], hasDirect: false, hasPath: false, noPath: false, pathText: '', pathFirst: '', askPath: null };
+    if (selOrg) {
+      sv = {
+        name: selOrg.name, role: selOrg.role, catLabel: ATLAS_CATS[selOrg.cat].toUpperCase(),
+        stanceLabel: ATLAS_STANCE[selOrg.st].label,
+        chipStyle: 'font-family: \'IBM Plex Mono\', monospace; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 3px; ' + ATLAS_STANCE[selOrg.st].chip,
+        infl: selOrg.infl, sup: (selOrg.sup > 0 ? '+' : '') + selOrg.sup, src: selOrg.src, action: selOrg.action,
+        direct: direct.map(function (t) {
+          return { member: teamById[t.m].name, first: first(t.m), contact: t.contact, how: t.how, dots: atlasDots(t.s),
+            ask: function () { self.setState({ draft: makeDraft(t.m, t.contact, selOrg.short, null) }); } };
+        }),
+        hasDirect: direct.length > 0,
+        hasPath: !direct.length && !!path,
+        noPath: !direct.length && !path,
+        pathText: path ? 'You → ' + teamById[path.tie.m].name + ' → ' + path.tie.contact + ' (' + byId[path.via].short + ') → ' + selOrg.short : '',
+        pathFirst: path ? first(path.tie.m) : '',
+        askPath: function () { if (path) self.setState({ draft: makeDraft(path.tie.m, path.tie.contact, selOrg.short, byId[path.via].short) }); }
+      };
+    }
+
+    var mem = { name: '', role: '', source: '', ties: [] };
+    if (selIsTeam) {
+      var tm = teamById[sel];
+      var ties = ATLAS_TIES.filter(function (t) { return t.m === sel; });
+      mem = { name: tm.name, role: tm.role, source: tm.source,
+        ties: ties.length ? ties.map(function (t) { return { org: byId[t.org].short, contact: t.contact, how: t.how, dots: atlasDots(t.s) }; })
+                          : [{ org: 'No connections yet', contact: 'Invite sent', how: 'waiting for opt-in', dots: '' }] };
+    }
+
+    var teamList = ATLAS_TEAM.map(function (t) {
+      var ok = t.status === 'CONNECTED';
+      return { name: t.name, role: t.role, initials: t.initials, status: ok ? ATLAS_TIES.filter(function (x) { return x.m === t.id; }).length + ' TIES' : 'INVITED',
+        chip: 'font-family: \'IBM Plex Mono\', monospace; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 3px; ' + (ok ? 'background: #F6E2D7; color: #8A3517' : 'background: #ECE7DE; color: #4F4A42'),
+        pick: function () { self.setState({ sel: t.id, draft: null }); } };
+    });
+
+    var bump = function (d) { return function () { var st = self.state || {}; self.setState({ angle: (st.angle == null ? 0.6 : st.angle) + d }); }; };
+
+    return {
+      nodes: nodes, edges: edges, chips: chips, s: sv, mem: mem, teamList: teamList,
+      teamOn: teamOn,
+      hasSel: !!selOrg,
+      showMember: selIsTeam && teamOn,
+      showIdle: !sel && !teamOn,
+      showTeamIdle: !sel && teamOn,
+      hasDraft: !!s.draft, draft: s.draft || '',
+      closeDraft: function () { self.setState({ draft: null }); },
+      is3d: view !== 'mx', isMatrix: view === 'mx',
+      stageHint: teamOn ? 'DASHED = YOUR TEAM\'S WARM TIES' : 'DRAG TO ROTATE · TAP A NODE',
+      seg3dStyle: view !== 'mx' ? segOn : segOff,
+      segMxStyle: view === 'mx' ? segOn : segOff,
+      show3d: function () { self.setState({ view: '3d' }); },
+      showMatrix: function () { self.setState({ view: 'mx', sel: null, draft: null }); },
+      teamPressed: teamOn ? 'true' : 'false',
+      teamSub: view === 'mx' ? 'Available in 3D view' : (teamOn ? '5 warm ties · 3 of 4 teammates' : 'Show who already knows someone'),
+      toggleTeam: function () { var st = self.state || {}; self.setState({ team: !st.team, view: '3d', sel: null, draft: null }); },
+      teamBtnStyle: 'display: flex; justify-content: space-between; align-items: center; gap: 10px; min-height: 52px; padding: 8px 12px; border-radius: 8px; cursor: pointer; text-align: left; font-family: Inter, sans-serif; border: 1px solid ' + (teamOn ? '#A8441F; background: #FFF8F3; color: #8A3517' : '#CFC6B5; background: #FFFFFF; color: #1C1B19'),
+      switchStyle: 'flex: 0 0 auto; width: 44px; height: 26px; border-radius: 13px; position: relative; background: ' + (teamOn ? '#A8441F' : '#CFC6B5'),
+      knobStyle: 'position: absolute; top: 3px; width: 20px; height: 20px; border-radius: 50%; background: #FFFFFF; left: ' + (teamOn ? '21px' : '3px'),
+      paused: !!s.paused, playing: !s.paused,
+      pauseLabel: s.paused ? 'Resume rotation' : 'Pause rotation',
+      togglePause: function () { self.setState({ paused: !(self.state || {}).paused }); },
+      rotL: bump(-0.35), rotR: bump(0.35),
+      down: function (ev) { self.setState({ drag: true, lx: ev.clientX }); },
+      move: function (ev) {
+        var st = self.state || {};
+        if (!st.drag || st.view === 'mx') return;
+        var a = st.angle == null ? 0.6 : st.angle;
+        self.setState({ angle: a + (ev.clientX - st.lx) * 0.012, lx: ev.clientX });
+      },
+      up: function () { if ((self.state || {}).drag) self.setState({ drag: false }); }
+    };
+  }
+}
+</script>
+
+
+</body></html>

@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>Atlas — Dossiers</title>
+<script src="ad6c4b74-7dd2-454d-8699-eb4c177dde40"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>/* cyrillic-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n1iIq131nj-otFQ.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n1isq131nj-otFQ.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n1iAq131nj-otFQ.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n1iEq131nj-otFQ.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F63fjptAgt5VM-kVkqdyU8n1i8q131nj-o.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJwl1FgsAXHNlYzg.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJwlRFgsAXHNlYzg.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJwl9FgsAXHNlYzg.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJwl5FgsAXHNlYzg.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3twJwlBFgsAXHNk.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3vAOwl1FgsAXHNlYzg.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3vAOwlRFgsAXHNlYzg.woff2) format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3vAOwl9FgsAXHNlYzg.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3vAOwl5FgsAXHNlYzg.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/ibmplexmono/v20/-F6qfjptAgt5VM-kVkqdyU8n3vAOwlBFgsAXHNk.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("b9c3283a-b510-4ea7-b9d5-82d822be926c") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("006be591-d015-4b09-aaf8-322f5d61d2f2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("7fb918fe-ce49-44ac-9719-0743881ec8ab") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("73e6c76e-e0a6-4bc5-a055-da5895bafeb4") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("6023d55e-557e-4c4d-ad28-a78dcfa5048f") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("662ce9c2-64e7-4b82-a51a-d9c55636b09c") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("553e3bce-65e5-456b-93bd-c02b08658c4b") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("b9c3283a-b510-4ea7-b9d5-82d822be926c") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("006be591-d015-4b09-aaf8-322f5d61d2f2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("7fb918fe-ce49-44ac-9719-0743881ec8ab") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("73e6c76e-e0a6-4bc5-a055-da5895bafeb4") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("6023d55e-557e-4c4d-ad28-a78dcfa5048f") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("662ce9c2-64e7-4b82-a51a-d9c55636b09c") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("553e3bce-65e5-456b-93bd-c02b08658c4b") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("b9c3283a-b510-4ea7-b9d5-82d822be926c") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("006be591-d015-4b09-aaf8-322f5d61d2f2") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("7fb918fe-ce49-44ac-9719-0743881ec8ab") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("73e6c76e-e0a6-4bc5-a055-da5895bafeb4") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("6023d55e-557e-4c4d-ad28-a78dcfa5048f") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("662ce9c2-64e7-4b82-a51a-d9c55636b09c") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("553e3bce-65e5-456b-93bd-c02b08658c4b") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/newsreader/v26/cY9XfjOCX1hbuyalUrK439vogqCz_goCYw7oRd6JFYkzbARA_n8IsQ.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/newsreader/v26/cY9XfjOCX1hbuyalUrK439vogqCz_goCYw7oRd6JFYgzbARA_n8IsQ.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("25c6b82a-2aff-4695-82f4-e8972cc52afa") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/newsreader/v26/cY9AfjOCX1hbuyalUrK439HyjIJFJpeBZQ.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/newsreader/v26/cY9AfjOCX1hbuyalUrK439DyjIJFJpeBZQ.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("9b36403b-8a0b-4613-90d7-4ad0521b259a") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/newsreader/v26/cY9AfjOCX1hbuyalUrK439HyjIJFJpeBZQ.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/newsreader/v26/cY9AfjOCX1hbuyalUrK439DyjIJFJpeBZQ.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Newsreader';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("9b36403b-8a0b-4613-90d7-4ad0521b259a") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
+<style>
+body{margin:0;background:#F3EEE4}
+a{color:#A8441F}a:hover{color:#7E3115}
+input::placeholder{color:#8A8378}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F3EEE4; color: #1C1B19; font-family: Inter, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+
+  <div style="flex: 1 1 auto; overflow-y: auto; padding: 56px 20px 24px; display: flex; flex-direction: column; gap: 20px">
+
+    <div style="display: flex; justify-content: space-between; align-items: center">
+      <div style="display: flex; align-items: center; gap: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: #A8441F; font-weight: 600">
+        <svg width="16" height="16" sc-camel-view-box="0 0 24 24" fill="none" stroke="#A8441F" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M15.5 8.5l-2 5-5 2 2-5z"></path></svg>
+        MARKET ENTRY INTELLIGENCE
+      </div>
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; background: #A8441F; color: #FFFFFF; padding: 4px 8px; border-radius: 4px">ATLAS PRO</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 8px">
+      <h1 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 600; font-size: 40px; line-height: 1.05; letter-spacing: -0.01em">ATLAS <span style="font-weight: 400; font-style: italic; color: #A8441F">// Cognitive Brief</span></h1>
+      <p style="margin: 0; font-family: Newsreader, Georgia, serif; font-style: italic; font-size: 17px; line-height: 1.45; color: #4F4A42">Turning unverified public data into evidence-backed, fully traceable stakeholder influence maps.</p>
+    </div>
+
+    <nav aria-label="Workspace" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; background: #EAE3D6; border: 1px solid #DDD5C6; border-radius: 8px; padding: 8px">
+      <a href="Main.dc.html" style="display: flex; gap: 8px; align-items: center; min-height: 44px; padding: 0 12px; border-radius: 6px; background: #1C1B19; color: #FFFFFF; text-decoration: none; font-family: 'IBM Plex Mono', monospace; font-size: 12px"><span style="opacity: 0.7">01</span> Dossiers</a>
+      <a href="Map.dc.html" style="display: flex; gap: 8px; align-items: center; min-height: 44px; padding: 0 12px; border-radius: 6px; color: #1C1B19; text-decoration: none; font-family: 'IBM Plex Mono', monospace; font-size: 12px"><span style="color: #6B655B">02</span> 3D Map</a>
+      <a href="Tracker.dc.html" style="display: flex; gap: 8px; align-items: center; min-height: 44px; padding: 0 12px; border-radius: 6px; color: #1C1B19; text-decoration: none; font-family: 'IBM Plex Mono', monospace; font-size: 12px"><span style="color: #6B655B">03</span> Tracker</a>
+      <a href="Network.dc.html" style="display: flex; gap: 8px; align-items: center; min-height: 44px; padding: 0 12px; border-radius: 6px; color: #1C1B19; text-decoration: none; font-family: 'IBM Plex Mono', monospace; font-size: 12px"><span style="color: #6B655B">04</span> Network</a>
+      <a href="Docs.dc.html" style="display: flex; gap: 8px; align-items: center; min-height: 44px; padding: 0 12px; border-radius: 6px; color: #1C1B19; text-decoration: none; font-family: 'IBM Plex Mono', monospace; font-size: 12px"><span style="color: #6B655B">05</span> Documents</a>
+      <a href="Brief.dc.html" style="display: flex; gap: 8px; align-items: center; min-height: 44px; padding: 0 12px; border-radius: 6px; color: #1C1B19; text-decoration: none; font-family: 'IBM Plex Mono', monospace; font-size: 12px"><span style="color: #6B655B">06</span> Strategy Brief</a>
+    </nav>
+
+    <section aria-label="Active dossier" style="background: #FBF8F2; border: 1px solid #DDD5C6; border-radius: 8px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; background: #A8441F; color: #FFFFFF; padding: 3px 8px; border-radius: 3px">VERIFIED DOSSIER</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B655B">SAMPLE DATA</span>
+      </div>
+      <div>
+        <h2 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 600; font-size: 24px; letter-spacing: 0.02em">TAIWAN UAS DEFENSE GRID</h2>
+        <p style="margin: 4px 0 0; font-family: Newsreader, Georgia, serif; font-style: italic; font-size: 15px; color: #4F4A42">Republic of China (Taiwan) · refreshed {{refreshed}}</p>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: flex-end">
+        <div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B655B; letter-spacing: 0.06em">VERACITY METRIC</div>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 600; color: #A8441F">● 94% CONFIDENCE</div>
+        </div>
+        <button type="button" sc-camel-on-click="{{refresh}}" aria-label="Refresh dossier" style="width: 44px; height: 44px; border-radius: 8px; border: 1px solid #CFC6B5; background: #FFFFFF; display: grid; place-items: center; cursor: pointer">
+          <svg width="18" height="18" sc-camel-view-box="0 0 24 24" fill="none" stroke="#1C1B19" stroke-width="1.8" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6"></path><path d="M20 4v5h-5"></path></svg>
+        </button>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; border-top: 1px solid #E5DED1; padding-top: 12px">
+        <div><div style="font-family: Newsreader, Georgia, serif; font-size: 24px; font-weight: 600">48</div><div style="font-size: 12px; color: #6B655B">Stakeholders</div></div>
+        <div><div style="font-family: Newsreader, Georgia, serif; font-size: 24px; font-weight: 600">126</div><div style="font-size: 12px; color: #6B655B">Cited sources</div></div>
+        <div><div style="font-family: Newsreader, Georgia, serif; font-size: 24px; font-weight: 600; color: #A8441F">3</div><div style="font-size: 12px; color: #6B655B">New alerts</div></div>
+      </div>
+      <a href="Map.dc.html" style="display: flex; justify-content: center; align-items: center; min-height: 44px; border-radius: 6px; background: #1C1B19; color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 600">Open 3D stakeholder map</a>
+    </section>
+
+    <div style="display: flex; gap: 10px; align-items: flex-start; background: #F6E2D7; border: 1px solid #E7BFA9; border-radius: 8px; padding: 12px 14px">
+      <svg width="18" height="18" sc-camel-view-box="0 0 24 24" fill="none" stroke="#A8441F" stroke-width="1.8" style="flex: 0 0 auto; margin-top: 2px" aria-hidden="true"><path d="M12 3l9 16H3z"></path><path d="M12 10v4"></path><path d="M12 17h.01"></path></svg>
+      <div style="font-size: 13px; line-height: 1.5; color: #3B2A20"><strong>Alert · 14 days.</strong> Drone procurement amendment scheduled for committee review. 2 supportive stakeholders are co-sponsors.</div>
+    </div>
+
+    <section aria-label="Select dossier" style="background: #FBF8F2; border: 1px solid #DDD5C6; border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 6px">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 4px 6px">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; letter-spacing: 0.08em">SELECT DOSSIER</span>
+        <button type="button" sc-camel-on-click="{{toggleForm}}" style="min-height: 36px; padding: 0 12px; border-radius: 6px; border: 1px solid #CFC6B5; background: #FFFFFF; font: 600 12px Inter, sans-serif; color: #1C1B19; cursor: pointer">{{formLabel}}</button>
+      </div>
+      <sc-if value="{{showForm}}" hint-placeholder-val="{{ false }}">
+        <form style="display: flex; flex-direction: column; gap: 10px; padding: 12px; margin-bottom: 6px; background: #FFFFFF; border: 1px solid #E5DED1; border-radius: 6px">
+          <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: #4F4A42">Your company<input type="text" placeholder="e.g. Skyward Robotics" style="min-height: 40px; padding: 0 10px; border: 1px solid #CFC6B5; border-radius: 6px; font: 14px Inter, sans-serif; background: #FBF8F2"></label>
+          <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: #4F4A42">Product or service<input type="text" placeholder="e.g. Counter-UAS sensor kit" style="min-height: 40px; padding: 0 10px; border: 1px solid #CFC6B5; border-radius: 6px; font: 14px Inter, sans-serif; background: #FBF8F2"></label>
+          <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: #4F4A42">Target market<sc-raw-select style="min-height: 40px; padding: 0 8px; border: 1px solid #CFC6B5; border-radius: 6px; font: 14px Inter, sans-serif; background: #FBF8F2"><option>Taiwan</option><option>United States</option><option>Japan</option><option>Singapore</option><option>China (limited coverage)</option></sc-raw-select></label>
+          <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: #4F4A42">Goal<input type="text" placeholder="e.g. Win a first government pilot in 12 months" style="min-height: 40px; padding: 0 10px; border: 1px solid #CFC6B5; border-radius: 6px; font: 14px Inter, sans-serif; background: #FBF8F2"></label>
+          <button type="button" sc-camel-on-click="{{toggleForm}}" style="min-height: 44px; border: none; border-radius: 6px; background: #A8441F; color: #FFFFFF; font: 600 14px Inter, sans-serif; cursor: pointer">Start research</button>
+        </form>
+      </sc-if>
+      <sc-for list="{{dossiers}}" as="d" hint-placeholder-count="4">
+        <button type="button" sc-camel-on-click="{{d.pick}}" style="{{d.style}}">
+          <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{d.name}}</span>
+          <span style="flex: 0 0 auto; opacity: 0.8">{{d.conf}}</span>
+        </button>
+      </sc-for>
+    </section>
+  </div>
+
+  <nav aria-label="Main" style="flex: 0 0 auto; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid #DDD5C6; background: #FBF8F2; padding: 6px 4px 22px">
+    <a href="Main.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 44px; justify-content: center; text-decoration: none; color: #A8441F; font-size: 11px; font-weight: 600"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 6h7l2 2h9v11H3z"></path></svg>Dossiers</a>
+    <a href="Map.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 44px; justify-content: center; text-decoration: none; color: #4F4A42; font-size: 11px"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="6" cy="7" r="2.5"></circle><circle cx="18" cy="6" r="2"></circle><circle cx="13" cy="17" r="3"></circle><path d="M8 8l3.5 7M16.5 7.5l-2.5 7M8.5 7l7.5-1"></path></svg>Map</a>
+    <a href="Tracker.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 44px; justify-content: center; text-decoration: none; color: #4F4A42; font-size: 11px"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="4" width="5" height="16" rx="1"></rect><rect x="10" y="4" width="5" height="11" rx="1"></rect><rect x="17" y="4" width="4" height="7" rx="1"></rect></svg>Tracker</a>
+    <a href="Network.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 44px; justify-content: center; text-decoration: none; color: #4F4A42; font-size: 11px"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="8" r="3"></circle><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"></path><circle cx="17" cy="9" r="2.5"></circle><path d="M16 14.2c2.9.4 5 2.8 5 5.8"></path></svg>Network</a>
+    <a href="Docs.dc.html" style="display: flex; flex-direction: column; align-items: center; gap: 3px; min-height: 44px; justify-content: center; text-decoration: none; color: #4F4A42; font-size: 11px"><svg width="22" height="22" sc-camel-view-box="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M9 3h7l4 4v11H9z"></path><path d="M5 7v14h11"></path></svg>Docs</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844}}">
+class Component extends DCLogic {
+  renderVals() {
+    var s = this.state || {};
+    var picked = s.picked == null ? 0 : s.picked;
+    var list = [
+      { name: 'Taiwan UAS Defense Grid', conf: '94%' },
+      { name: 'Japan Dual-Use Robotics Entry', conf: '88%' },
+      { name: 'U.S. Generative AI Safety Mandate', conf: '89%' },
+      { name: 'Singapore MedTech Sandbox', conf: '81%' }
+    ];
+    var self = this;
+    var base = 'display: flex; justify-content: space-between; align-items: center; gap: 10px; min-height: 44px; padding: 0 12px; border-radius: 6px; font-family: \'IBM Plex Mono\', monospace; font-size: 12px; text-align: left; cursor: pointer; border: 1px solid ';
+    var dossiers = list.map(function (d, i) {
+      var on = i === picked;
+      return {
+        name: d.name,
+        conf: d.conf,
+        style: base + (on ? '#1C1B19; background: #1C1B19; color: #FFFFFF' : 'transparent; background: transparent; color: #1C1B19'),
+        pick: function () { self.setState({ picked: i }); }
+      };
+    });
+    return {
+      dossiers: dossiers,
+      showForm: !!s.showForm,
+      formLabel: s.showForm ? 'Close' : '+ New dossier',
+      toggleForm: function () { self.setState({ showForm: !s.showForm }); },
+      refreshed: s.refreshedNow ? 'just now' : '2h ago',
+      refresh: function () { self.setState({ refreshedNow: true }); }
+    };
+  }
+}
+</script>
+
+
+</body></html>

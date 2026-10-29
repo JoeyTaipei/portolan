@@ -1,0 +1,404 @@
+<title>Atlas MVP 建置流程</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one narrow blueprint column (same family as「MVP 建置流程」v1); phases as numbered bands, steps as checkable rows */
+:root{
+  --bg:#F2F4F6; --surface:#FFFFFF; --ink:#18202B; --muted:#5B6675; --line:#D6DCE4;
+  --accent:#2452C8; --accent-soft:#E4EBFA; --ok:#1F7A4D; --ok-soft:#DFF1E7; --warn:#8A5A00; --warn-soft:#F7EDD3;
+  --code-bg:#EEF1F5;
+  --f-body:"Noto Sans TC",system-ui,-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#11161D; --surface:#19202A; --ink:#E6EAF0; --muted:#97A3B4; --line:#2B3542;
+  --accent:#7FA2FF; --accent-soft:#1F2C4D; --ok:#5FCB94; --ok-soft:#17302A; --warn:#E2B44A; --warn-soft:#352B12;
+  --code-bg:#0D1117; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11161D; --surface:#19202A; --ink:#E6EAF0; --muted:#97A3B4; --line:#2B3542;
+  --accent:#7FA2FF; --accent-soft:#1F2C4D; --ok:#5FCB94; --ok-soft:#17302A; --warn:#E2B44A; --warn-soft:#352B12;
+  --code-bg:#0D1117; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 64px}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+header{display:flex;flex-direction:column;gap:8px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--accent);text-transform:uppercase}
+h1{font-size:30px;font-weight:900;line-height:1.25;margin:0;text-wrap:balance}
+.sub{color:var(--muted);margin:0}
+.progress{display:flex;align-items:center;gap:12px;font-family:var(--f-mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.bar{flex:1;height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+.loop{font-family:var(--f-mono);font-size:13px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;overflow-x:auto;white-space:nowrap;color:var(--muted)}
+.loop b{color:var(--accent);font-weight:500}
+.part{font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.06em;margin:8px 0 -14px}
+section.phase{display:flex;flex-direction:column;gap:10px}
+.ph-head{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:6px}
+.ph-num{font-family:var(--f-mono);font-size:13px;color:var(--accent);min-width:2.2em}
+.ph-head h2{font-size:19px;margin:0;font-weight:700;text-wrap:balance}
+.where{margin-left:auto;font-size:12px;color:var(--muted);font-family:var(--f-mono);white-space:nowrap}
+.lead{margin:0;color:var(--muted);font-size:14px}
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+ol.steps li{display:grid;grid-template-columns:22px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+ol.steps li > div{min-width:0}
+ol.steps input{width:18px;height:18px;margin-top:3px;accent-color:var(--accent);cursor:pointer}
+ol.steps input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+ol.steps li.done .t{color:var(--muted);text-decoration:line-through}
+.t{font-weight:500}
+.note{color:var(--muted);font-size:13.5px;margin-top:2px}
+.you,.cc{display:inline-block;font-size:11px;font-weight:700;border-radius:4px;padding:0 6px;margin-right:6px;vertical-align:1px}
+.you{color:var(--accent);background:var(--accent-soft)}
+.cc{color:var(--ok);background:var(--ok-soft)}
+pre{position:relative;margin:8px 0 0;background:var(--code-bg);border:1px solid var(--line);border-radius:6px;padding:10px 64px 10px 12px;overflow-x:auto;font-family:var(--f-mono);font-size:13px;line-height:1.55;white-space:pre}
+code{font-family:var(--f-mono);font-size:.92em;background:var(--code-bg);padding:1px 5px;border-radius:4px}
+pre code{background:none;padding:0}
+.copy{position:absolute;top:6px;right:6px;font:500 11px var(--f-mono);color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:3px 8px;cursor:pointer}
+.copy:hover,.copy:focus-visible{color:var(--accent);border-color:var(--accent);outline:none}
+.tbl{overflow-x:auto;margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--muted);font-weight:500;letter-spacing:.04em;white-space:nowrap}
+td:first-child{white-space:nowrap;font-weight:500}
+td code{white-space:nowrap}
+.yes{color:var(--ok);font-weight:700}
+.no{color:var(--muted);font-weight:700}
+.scope{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.scope > div{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;min-width:0}
+.scope h3{margin:0 0 6px;font-size:14px}
+.scope ul{margin:0;padding-left:18px;font-size:13.5px;display:flex;flex-direction:column;gap:4px}
+.scope .real{border-color:var(--accent)}
+.scope .real h3{color:var(--accent)}
+.callout{background:var(--warn-soft);border-radius:8px;padding:10px 14px;font-size:14px}
+.callout b{color:var(--warn)}
+.reset{align-self:flex-start;font:500 13px var(--f-body);color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:6px 12px;cursor:pointer}
+.reset:hover,.reset:focus-visible{color:var(--accent);border-color:var(--accent);outline:none}
+@media (max-width:640px){.scope{grid-template-columns:1fr}}
+@media (max-width:520px){h1{font-size:24px}.where{display:none}}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+
+<div class="wrap">
+<header>
+  <span class="eyebrow">Atlas MVP v2 · Next.js 網頁 App · Parallel + Claude API · Mac mini + cmux · Vercel</span>
+  <h1>Atlas MVP 建置流程</h1>
+  <p class="sub">目標：11/2 前上線網頁版 Atlas（手機優先，可加到主畫面）。任何人輸入公司和目標市場，就拿到有來源的利害關係人地圖、策略簡報和一頁 A4 報告。伯斯時間 11/3 中午 12 點前，用當時的進度送出 YC Winter 2027 申請。標 <span class="cc">Claude</span> 的步驟由 Claude 自己跑，標 <span class="you">你</span> 的才需要你動手。勾選會記在這個瀏覽器。</p>
+  <div class="progress"><div class="bar"><i id="bar"></i></div><span id="count">0 / 0</span></div>
+</header>
+
+<!-- WHAT CHANGED -->
+<section class="phase">
+  <div class="ph-head"><span class="ph-num">v2</span><h2>這版改了什麼</h2></div>
+  <div class="tbl"><table>
+    <tbody>
+      <tr><td>兩份合成一份</td><td>以「MVP 建置流程」為骨架。「Atlas 建 App 流程指南」只留產品方向、來源規則和 cmux；Expo、Agent Teams、文件 worker、evals、專家審稿、團隊人脈都移到送出之後。</td></tr>
+      <tr><td>網頁，不做手機 App</td><td>YC 看的是使用者和進度。網址點開就能用，不用等 App Store 審核；每次合併一分鐘內上線。版面照設計稿手機優先，可加到主畫面。</td></tr>
+      <tr><td>設計稿</td><td>直接用 Atlas App Mockup.html：8 個畫面、真的 CSS 和範例資料。不再用 Lovable 截圖。</td></tr>
+      <tr><td>研究引擎</td><td>Parallel 做研究，每個結論附來源；Claude API 只根據這些來源評分、寫策略。</td></tr>
+      <tr><td>Spec 和 Plan</td><td>整個 MVP 只寫一次，不是每個功能各寫一次。</td></tr>
+      <tr><td>誰下指令</td><td>Claude 自己跑指令。你只負責登入、貼金鑰、做決定、找使用者、按合併。</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- TOOLS -->
+<section class="phase">
+  <div class="ph-head"><span class="ph-num">⚙</span><h2>工具：要 / 不要</h2></div>
+  <div class="tbl"><table>
+    <thead><tr><th>工具</th><th>要不要</th><th>為什麼</th></tr></thead>
+    <tbody>
+      <tr><td>Mac mini</td><td class="yes">要</td><td>主要開發機。cmux 只能在 Mac 上跑；一直插著電開著，Claude 可以整晚跑 <code>/build auto</code>。</td></tr>
+      <tr><td>cmux</td><td class="yes">要</td><td>兩個 Claude 並排跑（畫面、研究引擎），需要你時會通知。</td></tr>
+      <tr><td>Parallel</td><td class="yes">要</td><td>研究結果附來源（Basis），符合「每個結論都要有來源」；非同步執行，不受 Vercel 函式時間限制。</td></tr>
+      <tr><td>Claude API</td><td class="yes">要</td><td>評分、策略簡報、7 天計畫。</td></tr>
+      <tr><td>Playwright MCP</td><td class="yes">要</td><td>cmux 裡的 Claude 靠它開瀏覽器檢查畫面。桌面版有內建瀏覽器，不用它。</td></tr>
+      <tr><td>Ghostty</td><td class="no">不用另裝</td><td>cmux 就是用 Ghostty 的引擎做的。</td></tr>
+      <tr><td>MacBook</td><td class="no">不需要</td><td>一直開著的 Mac mini 更適合長時間跑；外出時用遠端控制。</td></tr>
+      <tr><td>Agent Teams</td><td class="no">先不用</td><td>4 天衝刺裡 token 多、隊友容易改到同一個檔案；兩個 cmux 工作區就夠。</td></tr>
+      <tr><td>Xcode、Expo、EAS</td><td class="no">不用</td><td>網頁 App 用不到。之後要做原生 App 再看「Atlas 建 App 流程指南」。</td></tr>
+      <tr><td>gstack、Context7、Lovable</td><td class="no">不用</td><td>原本只用到一小部分，現在有更直接的做法。</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- SCOPE -->
+<section class="phase">
+  <div class="ph-head"><span class="ph-num">◎</span><h2>MVP 範圍</h2><span class="where">畫面編號對應設計稿</span></div>
+  <div class="scope">
+    <div class="real"><h3>真的做</h3><ul>
+      <li>建立 dossier：公司、產品、目標市場、目標、Email</li>
+      <li>Parallel 研究 15–20 個利害關係人：角色、類別、立場證據、來源網址和摘錄</li>
+      <li>Claude 評分（影響力 0–100、支持度 −100～+100、可信度），寫策略簡報和 7 天計畫</li>
+      <li>01 Dossier 首頁、02 地圖 + Power Matrix + 詳情、03 策略簡報、05 一頁 A4 報告和分享連結、06 追蹤器 + 會後回報</li>
+    </ul></div>
+    <div><h3>人工代辦</h3><ul>
+      <li>按鈕只記下需求，你用「模板 + AI」親手做</li>
+      <li>07 文件：會前簡報、風險簡報（08 當範例）</li>
+      <li>04 網絡：投資人、律師、活動的引薦；AI 建議標「未驗證」</li>
+      <li>每份記下花幾小時、客戶最看重哪段，寫進 <code>docs/pilots/</code></li>
+    </ul></div>
+    <div><h3>送出之後</h3><ul>
+      <li>登入（MVP 用猜不到的 dossier 連結 + Email）</li>
+      <li>團隊人脈（LinkedIn）</li>
+      <li>專家審稿佇列</li>
+      <li>觀察清單監控</li>
+      <li>付費方案、evals、原生 App</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="phase">
+  <div class="ph-head"><span class="ph-num">YC</span><h2>時程</h2><span class="where">伯斯時間</span></div>
+  <div class="tbl"><table>
+    <thead><tr><th>日期</th><th>做什麼</th><th>步驟</th></tr></thead>
+    <tbody>
+      <tr><td>10/29（四）</td><td>Claude 在 PC 建好 repo；你裝好 Mac mini、申請金鑰</td><td>0–2</td></tr>
+      <tr><td>10/30（五）</td><td>Spec、Plan、Parallel 試做；接著畫面和研究引擎兩條平行做</td><td>3–5</td></tr>
+      <tr><td>10/31（六）</td><td>真的 dossier 和追蹤器上線，網址發給使用者</td><td>5–6</td></tr>
+      <tr><td>11/1（日）</td><td>人工代辦按鈕、修細節、帶使用者上手、錄 demo 和創辦人影片</td><td>6</td></tr>
+      <tr><td>11/2（一）</td><td>填申請書、送出（留半天緩衝）</td><td>6</td></tr>
+      <tr><td>11/3 12:00</td><td>截止（太平洋時間 11/2 晚上 8 點）</td><td></td></tr>
+      <tr><td>11/3 起</td><td>做完剩下的，再加送出之後的功能</td><td>7</td></tr>
+    </tbody>
+  </table></div>
+  <ol class="steps">
+    <li><input type="checkbox" id="yc-1"><div><div class="t"><span class="you">創辦人</span>每天和 2 個目標使用者聊，原話寫進 <code>docs/users.md</code></div>
+<div class="note">問：你現在怎麼進一個新市場？最花時間的是哪一步？上次是什麼時候？關心的人留 Email，網址上線就發給他們。</div></div></li>
+  </ol>
+</section>
+
+<div class="loop"><b>每個切片：</b> 開分支 → /agent-skills:build auto → /verify-ui → /code-review → PR → 手機看 Vercel preview → 你合併（自動上線）</div>
+
+<div class="part">設定（只做一次）</div>
+
+<!-- PHASE 0 -->
+<section class="phase">
+  <div class="ph-head"><span class="ph-num">0</span><h2>Mac mini 基本工具</h2><span class="where">你 · Mac 的「終端機」· 約 20 分鐘</span></div>
+  <p class="lead">Claude 還沒裝好之前只能你來。這一段做完，之後的指令都交給 Claude。</p>
+  <ol class="steps">
+    <li><input type="checkbox" id="m0-1"><div><div class="t"><span class="you">你</span>裝 Homebrew（完成後依畫面提示貼上那兩行，再開新視窗）</div>
+<pre><code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></pre></div></li>
+    <li><input type="checkbox" id="m0-2"><div><div class="t"><span class="you">你</span>裝 Git、Node.js、GitHub CLI，登入 GitHub</div>
+<pre><code>brew install git node gh
+node --version     # 要 v20 以上
+gh auth login</code></pre></div></li>
+    <li><input type="checkbox" id="m0-3"><div><div class="t"><span class="you">你</span>裝 Claude Code CLI 並登入；再下載 Claude 桌面版，登入同一帳號</div>
+<pre><code>curl -fsSL https://claude.ai/install.sh | bash
+claude          # 瀏覽器登入後 /exit</code></pre></div></li>
+    <li><input type="checkbox" id="m0-4"><div><div class="t"><span class="you">你</span>裝 cmux，讓它認得 Claude Code</div>
+<pre><code>brew tap manaflow-ai/cmux
+brew install --cask cmux
+cmux hooks setup</code></pre>
+<div class="note">之後都在 cmux 裡開終端機。快捷鍵：⌘N 新工作區、⌘D 分割窗格、⌘⇧U 跳到需要你的窗格。</div></div></li>
+    <li><input type="checkbox" id="m0-5"><div><div class="t"><span class="you">你</span>裝 Playwright MCP 和 Addy 的 agent-skills</div>
+<pre><code>claude mcp add --scope user playwright -- npx @playwright/mcp@latest</code></pre>
+<div class="note">接著輸入 <code>claude</code>，在 claude 裡貼下面兩行，範圍選 User：</div>
+<pre><code>/plugin marketplace add addyosmani/agent-skills
+/plugin install agent-skills@addy-agent-skills</code></pre></div></li>
+    <li><input type="checkbox" id="m0-6"><div><div class="t"><span class="you">你</span>系統設定 → 能源：接電源時防止自動睡眠</div>
+<div class="note">Claude 才能在你離開時繼續跑。</div></div></li>
+    <li><input type="checkbox" id="m0-7"><div><div class="t"><span class="you">你</span>（選配）從 PC 遠端用 Mac mini</div>
+<div class="note">Mac：系統設定 → 一般 → 共享 → 打開「遠端登入」。PC 的 Claude 桌面版新增一個 SSH 連線指到 Mac mini，之後在 PC 上就能開跑在 Mac mini 的 session。</div></div></li>
+  </ol>
+</section>
+
+<!-- PHASE 1 -->
+<section class="phase">
+  <div class="ph-head"><span class="ph-num">1</span><h2>帳號與金鑰</h2><span class="where">你 · 瀏覽器</span></div>
+  <p class="lead">金鑰只貼進 Mac mini 上的 <code>.env.local</code> 或 Vercel，不要貼在對話裡。Claude 不會替你輸入金鑰。</p>
+  <ol class="steps">
+    <li><input type="checkbox" id="m1-1"><div><div class="t"><span class="you">你</span>註冊 vercel.com（用 GitHub 登入）</div></div></li>
+    <li><input type="checkbox" id="m1-2"><div><div class="t"><span class="you">你</span>在 supabase.com 建一個專案，區域選離使用者近的（例如 Singapore）</div>
+<div class="note">記下 Project URL 和 secret key。MVP 只從伺服器連資料庫，不開放給瀏覽器。</div></div></li>
+    <li><input type="checkbox" id="m1-3"><div><div class="t"><span class="you">你</span>在 parallel.ai 註冊、建 API key，設用量上限</div></div></li>
+    <li><input type="checkbox" id="m1-4"><div><div class="t"><span class="you">你</span>在 console.anthropic.com 建 API key，在 Limits 設每月上限</div></div></li>
+    <li><input type="checkbox" id="m1-5"><div><div class="t"><span class="you">你</span>在 posthog.com 建專案，記下 Project API key 和 Host</div>
+<div class="note">用來量 YC 會問的數字：幾個人建了 dossier、幾個人匯出報告、幾個人回來填會後回報。</div></div></li>
+  </ol>
+</section>
+
+<!-- PHASE 2 -->
+<section class="phase">
+  <div class="ph-head"><span class="ph-num">2</span><h2>專案設定</h2><span class="where">Claude · PC 先做，Mac mini 接手</span></div>
+  <ol class="steps">
+    <li><input type="checkbox" id="m2-1"><div><div class="t"><span class="cc">Claude</span>在 PC 上建好私人 GitHub repo <code>atlas</code>（10/29）</div>
+<div class="note">內容：Next.js 骨架和 PWA 設定、<code>design/</code>（原始設計稿 + 8 個畫面的 390px 截圖）、<code>src/fixtures/taiwan-uas.ts</code>（設計稿的範例資料）、<code>design/intent.md</code> 草稿、<code>CLAUDE.md</code>、<code>/verify-ui</code> skill、<code>.env.example</code>。</div></div></li>
+    <li><input type="checkbox" id="m2-2"><div><div class="t"><span class="you">創辦人</span>讀 <code>design/intent.md</code>，補完標「待補」的地方</div>
+<div class="note">先走哪條走廊、目標使用者是誰、評分你怎麼想。用說的也可以，直接講給 Claude 改。</div></div></li>
+    <li><input type="checkbox" id="m2-3"><div><div class="t"><span class="cc">Claude</span>在 Mac mini 接手：cmux 開一個工作區，輸入 <code>claude</code>，貼上</div>
+<pre><code>把 GitHub 上我的 atlas repo clone 到 ~/code/atlas，npm install，npm run build 確認能過。
+從 .env.example 建一個 .env.local，然後停下來讓我自己貼金鑰。
+我貼好後：npm install -g vercel、vercel link、vercel git connect，
+把 .env.local 的變數同步到 Vercel 的 Preview 和 Production，再 vercel --prod，
+最後給我正式網址。需要我登入時告訴我。</code></pre></div></li>
+    <li><input type="checkbox" id="m2-4"><div><div class="t"><span class="you">你</span>打開 <code>~/code/atlas/.env.local</code> 貼上第 1 步的金鑰；Vercel 要你登入時，在瀏覽器完成</div></div></li>
+  </ol>
+</section>
+
+<!-- PHASE 3 -->
+<section class="phase">
+  <div class="ph-head"><span class="ph-num">3</span><h2>Spec、Plan、Parallel 試做</h2><span class="where">cmux 或桌面版 · 只做一次</span></div>
+  <ol class="steps">
+    <li><input type="checkbox" id="m3-1"><div><div class="t"><span class="cc">Claude</span>寫整個 MVP 的 spec</div>
+<pre><code>/agent-skills:spec 讀 CLAUDE.md、design/intent.md、design/screens/ 的截圖、
+design/atlas-mockup.html 和 src/fixtures/，寫整個 MVP 的 docs/spec.md：
+路由、每頁的載入中／空資料／錯誤狀態、資料表、Parallel 和 Claude 的分工、
+研究流程（非同步、顯示進度）、費用上限、分享連結。範圍照 intent.md 的 MVP 段落。
+有取捨時給我 2–3 個選項和優缺點，一次問一個問題。</code></pre></div></li>
+    <li><input type="checkbox" id="m3-2"><div><div class="t"><span class="you">你</span>回答問題，讀完 <code>docs/spec.md</code>，尤其是評分和來源規則</div>
+<div class="note">這是客戶能不能信任 Atlas 的核心，Claude 不能替你決定。</div></div></li>
+    <li><input type="checkbox" id="m3-3"><div><div class="t"><span class="cc">Claude</span>Parallel 試做：同一個題目跑兩個等級，量時間和費用</div>
+<pre><code>用 Parallel Task API 跑一次 Taiwan UAS（公司、產品、市場和設計稿一樣），
+先查 Parallel 官方文件確定用法，用兩個 processor 等級各跑一次。比較：
+找到幾個利害關係人、每個有沒有來源網址和摘錄、和 src/fixtures 的範例比少了誰、
+各花多久、各花多少錢。結果寫進 docs/decisions/0001-research-engine.md，給我建議。
+程式放 scripts/spike/，不要進正式程式碼。</code></pre></div></li>
+    <li><input type="checkbox" id="m3-4"><div><div class="t"><span class="you">你</span>選一個等級（品質夠、每份 dossier 的成本你能接受）</div></div></li>
+    <li><input type="checkbox" id="m3-5"><div><div class="t"><span class="cc">Claude</span>拆成切片</div>
+<pre><code>/agent-skills:plan 依 docs/spec.md 和 docs/decisions/ 拆成垂直切片，寫進 docs/plan.md：
+S0 骨架（型別 src/lib/types.ts、主題和字體、底部分頁、Supabase、PostHog、Vitest + Playwright）
+S1 Dossier 首頁 + 地圖 + 詳情（用 fixtures）
+S2 策略簡報 + A4 報告 + 分享連結（用 fixtures）
+S3 研究引擎（Parallel + Claude，寫進資料庫）
+S4 接上真的 dossier + 研究進度畫面
+S5 追蹤器 + 會後回報
+S6 人工代辦按鈕（文件、網絡）
+S7 上線前檢查
+標出可以平行的切片。每個任務寫：要改的檔案、驗收條件（390px 和桌面都對）、依賴。
+有取捨就停下來問我。最後 commit docs/。</code></pre></div></li>
+  </ol>
+</section>
+
+<div class="part">每個切片一輪</div>
+
+<!-- PHASE 4 -->
+<section class="phase">
+  <div class="ph-head"><span class="ph-num">4</span><h2>cmux 平行開發</h2><span class="where">Mac mini · cmux</span></div>
+  <ol class="steps">
+    <li><input type="checkbox" id="m4-1"><div><div class="t"><span class="you">你</span>⌘N 開工作區「ui」（⌘⇧R 改名），做 S0、S1、S2</div>
+<pre><code>cd ~/code/atlas
+claude</code></pre></div></li>
+    <li><input type="checkbox" id="m4-2"><div><div class="t"><span class="you">你</span>S0 合併後，⌘N 開工作區「engine」，做 S3</div>
+<pre><code>cd ~/code/atlas
+git switch main && git pull
+git worktree add ../atlas-engine -b feature/engine
+cd ../atlas-engine && npm install
+claude</code></pre>
+<div class="note">engine 的開發伺服器用 <code>PORT=3001 npm run dev</code>，避免和 ui 搶 3000。<code>.env.local</code> 也複製一份過去。</div></div></li>
+    <li><input type="checkbox" id="m4-3"><div><div class="t">平行規則</div>
+<div class="note">最多同時 2 條。同一個檔案只能一條改；<code>src/lib/types.ts</code> 只在 ui 改，engine 要改先講。窗格響了按 ⌘⇧U 跳過去處理。spec、看 diff、<code>/verify-ui</code> 也可以在桌面版做，但同一個資料夾同時只讓一邊動手。</div></div></li>
+  </ol>
+</section>
+
+<!-- PHASE 5 -->
+<section class="phase">
+  <div class="ph-head"><span class="ph-num">5</span><h2>每個切片</h2><span class="where">在該切片的工作區</span></div>
+  <ol class="steps">
+    <li><input type="checkbox" id="m5-1"><div><div class="t"><span class="cc">Claude</span>開分支</div>
+<pre><code>切到 main 拉最新，開一條 feature/&lt;切片名稱&gt;</code></pre>
+<div class="note">engine 工作區已經在 feature/engine，跳過。</div></div></li>
+    <li><input type="checkbox" id="m5-2"><div><div class="t"><span class="cc">Claude</span>照計畫做完這個切片</div>
+<pre><code>/agent-skills:build auto 照 docs/plan.md 做 S&lt;n&gt;</code></pre>
+<div class="note">核准一次後它會用 TDD 逐個任務做完。它停下來問你時回答，其他時間讓它跑。</div></div></li>
+    <li><input type="checkbox" id="m5-3"><div><div class="t"><span class="cc">Claude</span>開瀏覽器走一遍，和設計稿比對並修好</div>
+<pre><code>/verify-ui</code></pre></div></li>
+    <li><input type="checkbox" id="m5-4"><div><div class="t"><span class="cc">Claude</span>審查並開 PR</div>
+<pre><code>/code-review
+修好 Critical 的問題，跑 npm test 和 npm run build，commit、push，用 gh pr create 開 PR。
+說明寫：做了什麼、測試結果、要我在手機上看的頁面、已知限制。不要合併。</code></pre></div></li>
+    <li><input type="checkbox" id="m5-5"><div><div class="t"><span class="you">你</span>用手機打開 PR 上的 Vercel preview 網址，實際點一遍，不對的直接講給 Claude 修</div></div></li>
+    <li><input type="checkbox" id="m5-6"><div><div class="t"><span class="you">你</span>在 GitHub 按合併，Vercel 自動上線，接著做下一個切片</div></div></li>
+    <li><input type="checkbox" id="m5-7"><div><div class="t">同一個錯犯第二次時</div>
+<pre><code>把這次的教訓用一句話加進 CLAUDE.md。</code></pre></div></li>
+  </ol>
+</section>
+
+<div class="part">真的 dossier 上線起 → 11/2：YC 送件</div>
+
+<!-- PHASE 6 -->
+<section class="phase">
+  <div class="ph-head"><span class="ph-num">6</span><h2>上線、帶使用者、送出申請</h2><span class="where">cmux 或桌面版</span></div>
+  <ol class="steps">
+    <li><input type="checkbox" id="m6-1"><div><div class="t"><span class="cc">Claude</span>上線前檢查</div>
+<pre><code>/agent-skills:ship
+特別確認：Parallel 和 Anthropic 金鑰只在伺服器、每個 Email 和全站每天的研究次數上限有效、
+分享連結猜不到、抓來的網頁內容不會被當成指令。
+完成後在手機和桌面寬度各走一遍正式網址的核心流程。</code></pre></div></li>
+    <li><input type="checkbox" id="m6-2"><div><div class="t"><span class="you">創辦人</span>把正式網址發給 <code>docs/users.md</code> 裡的人，用視訊一個一個帶上手，看他們卡在哪，當天修</div>
+<div class="note">隔天在 PostHog 看：幾個人建了 dossier、幾個人匯出報告。</div></div></li>
+    <li><input type="checkbox" id="m6-3"><div><div class="t"><span class="you">你</span>錄 1 分鐘 demo：桌面和手機寬度各走一遍核心流程</div>
+<div class="note">QuickTime Player →「檔案」→「新增螢幕錄影」；手機寬度用 Chrome 開發者工具的裝置模式。用正式網址錄。</div></div></li>
+    <li><input type="checkbox" id="m6-4"><div><div class="t"><span class="you">創辦人</span>錄 1 分鐘創辦人影片：所有創辦人入鏡、不念稿、不剪接</div></div></li>
+    <li><input type="checkbox" id="m6-5"><div><div class="t"><span class="cc">Claude</span>整理申請書草稿，<span class="you">創辦人</span>改成自己的話</div>
+<pre><code>讀 docs/spec.md、docs/users.md、docs/pilots/、docs/decisions/ 和 PostHog 的數字，整理 YC 申請書草稿：
+我們做了什麼、為什麼是這個問題、進度（聊過幾個人、幾個人在用、引用使用者原話）。
+只用文件裡的事實和數字，不要編造。「為什麼是你們」留空給我寫。</code></pre></div></li>
+    <li><input type="checkbox" id="m6-6"><div><div class="t"><span class="you">創辦人</span>填入正式網址、demo、影片，伯斯時間 11/3 中午 12 點前送出</div></div></li>
+  </ol>
+</section>
+
+<div class="part">送出之後</div>
+
+<!-- PHASE 7 -->
+<section class="phase">
+  <div class="ph-head"><span class="ph-num">7</span><h2>每週循環和下一批功能</h2><span class="where">每週一次</span></div>
+  <ol class="steps">
+    <li><input type="checkbox" id="m7-1"><div><div class="t">在 PostHog 看數字，記進 <code>docs/metrics.md</code></div>
+<pre><code>| 週 | 新 dossier | 每週活躍 | 上週留下來的 % | 收入 | 週成長 % |
+|----|-----------|----------|----------------|------|---------|</code></pre></div></li>
+    <li><input type="checkbox" id="m7-2"><div><div class="t"><span class="you">創辦人</span>和 5 個使用者聊，原話寫進 <code>docs/users.md</code>；選最卡住大家的問題當下一個切片</div></div></li>
+    <li><input type="checkbox" id="m7-3"><div><div class="t">下一批功能，依使用者回饋排順序</div>
+<div class="note">登入和團隊帳號 → 團隊人脈（LinkedIn 匯出檔，上線前請律師看）→ 專家審稿佇列 → 觀察清單（Parallel Monitor）→ 原生 App（照「Atlas 建 App 流程指南」的 Expo 做法）。</div></div></li>
+  </ol>
+  <p class="callout"><b>原則：</b>人工代辦的需求同一種出現 3 次以上，才把它做成功能。</p>
+</section>
+
+<!-- REFERENCE -->
+<section class="phase">
+  <div class="ph-head"><span class="ph-num">⌘</span><h2>指令速查</h2></div>
+  <div class="tbl"><table>
+    <thead><tr><th>指令</th><th>在哪裡</th><th>做什麼</th></tr></thead>
+    <tbody>
+      <tr><td><code>/agent-skills:spec</code></td><td>claude</td><td>訪問你，寫 docs/spec.md（只做一次）</td></tr>
+      <tr><td><code>/agent-skills:plan</code></td><td>claude</td><td>拆切片到 docs/plan.md</td></tr>
+      <tr><td><code>/agent-skills:build auto</code></td><td>claude</td><td>照計畫用 TDD 做完一個切片</td></tr>
+      <tr><td><code>/verify-ui</code></td><td>claude</td><td>開瀏覽器走流程、和設計稿比對、修正</td></tr>
+      <tr><td><code>/code-review</code></td><td>claude</td><td>合併前找錯</td></tr>
+      <tr><td><code>/agent-skills:ship</code></td><td>claude</td><td>上線前檢查</td></tr>
+      <tr><td><code>/context</code></td><td>claude</td><td>Claude 變笨時看 context 用量</td></tr>
+      <tr><td>⌘N / ⌘D / ⌘⇧U</td><td>cmux</td><td>新工作區 / 分割窗格 / 跳到需要你的窗格</td></tr>
+      <tr><td><code>npm run dev</code></td><td>終端機</td><td>本機開發伺服器（localhost:3000）</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<button class="reset" id="reset" type="button">清除所有勾選</button>
+</div>
+
+<script>
+(function(){
+  var KEY='atlas-mvp-workflow-v2', state={};
+  try{state=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){state={}}
+  var boxes=[].slice.call(document.querySelectorAll('ol.steps input[type=checkbox]'));
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+  function render(){
+    var n=0;
+    boxes.forEach(function(b){b.checked=!!state[b.id];b.closest('li').classList.toggle('done',b.checked);if(b.checked)n++;});
+    document.getElementById('count').textContent=n+' / '+boxes.length;
+    document.getElementById('bar').style.width=(boxes.length?n/boxes.length*100:0)+'%';
+  }
+  boxes.forEach(function(b){b.addEventListener('change',function(){state[b.id]=b.checked;save();render();});});
+  document.getElementById('reset').addEventListener('click',function(){state={};save();render();});
+  function sel(p){var r=document.createRange();r.selectNodeContents(p.querySelector('code'));var s=getSelection();s.removeAllRanges();s.addRange(r);}
+  document.querySelectorAll('pre').forEach(function(p){
+    var btn=document.createElement('button');btn.className='copy';btn.type='button';btn.textContent='複製';
+    btn.addEventListener('click',function(){
+      var txt=p.querySelector('code').innerText.replace(/[ \t]+# .*$/gm,'');
+      function done(){btn.textContent='已複製';setTimeout(function(){btn.textContent='複製'},1200);}
+      try{navigator.clipboard.writeText(txt).then(done,function(){sel(p)});}catch(e){sel(p)}
+    });
+    p.appendChild(btn);
+  });
+  render();
+})();
+</script>
