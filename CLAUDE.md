@@ -11,7 +11,7 @@
 
 ## 技術棧
 - Next.js 16 App Router + TypeScript + Tailwind v4 + shadcn（base-nova）+ lucide-react。這版 Next.js 和你記得的不同，寫之前先讀 node_modules/next/dist/docs/
-- 字體已在 src/app/layout.tsx 設好：Inter（內文）、Newsreader（標題、大數字）、IBM Plex Mono（標籤）
+- 字體暫時照設計稿設在 src/app/layout.tsx（Inter、Newsreader、IBM Plex Mono）；選定 design/direction.md 後照它換掉
 - 研究：Parallel Task API（非同步：建立 → 輪詢或 webhook）。分析與寫作：Claude API。兩個都只在伺服器呼叫
 - 資料：Supabase Postgres，只從伺服器用 secret key 連；每張表開 RLS、不給 anon 任何 policy；資料表變更寫成 migration
 - 追蹤：posthog-js，事件 dossier_created、report_exported、debrief_saved，名稱記在 docs/metrics.md
@@ -26,7 +26,10 @@
 - 範例資料一律標 Sample data
 
 ## UI
-- 手機優先：390px 要和 design/screens/ 一致；桌面 1280px 版面合理即可
+- 視覺照 design/direction.md（第 3 步選定後才有；在那之前只有 design/screens/ 的版面可以參考，配色和字體不算定案）
+- 做畫面時用 frontend-design skill；避開 docs/research/generic-risks.md 列的 AI 預設風：米色 + 赤陶、紫色漸層、shadcn 預設灰卡片、置中 hero + 三張卡片
+- 手機優先：390px 版面和資訊要和 design/screens/ 一致；桌面 1280px 版面合理即可
+- 每個分數都能點開看算法和來源；每個利害關係人都有具體的下一步；不准有 [CLIENT]、[DATE] 這類佔位字
 - 底部分頁：Dossiers、Map、Tracker、Network、Docs
 - 地圖用 SVG 偽 3D，照 design/mockup/src/02-map.template.html 的 project() 和拖曳做法，不用 three.js
 - 每頁都處理載入中、空資料、錯誤三種狀態；按鈕有回饋

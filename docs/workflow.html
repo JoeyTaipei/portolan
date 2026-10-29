@@ -94,6 +94,7 @@ td code{white-space:nowrap}
       <tr><td>網頁，不做手機 App</td><td>YC 看的是使用者和進度。網址點開就能用，不用等 App Store 審核；每次合併一分鐘內上線。版面照設計稿手機優先，可加到主畫面。</td></tr>
       <tr><td>設計稿</td><td>直接用 Atlas App Mockup.html：8 個畫面、真的 CSS 和範例資料。不再用 Lovable 截圖。</td></tr>
       <tr><td>研究引擎</td><td>Parallel 做研究，每個結論附來源；Claude API 只根據這些來源評分、寫策略。</td></tr>
+      <tr><td>避免看起來普通</td><td>研究結論在 <code>docs/research/generic-risks.md</code>。寫程式前先比 4 個設計方向；每個切片檢查來源、具體的下一步、佔位字。</td></tr>
       <tr><td>Spec 和 Plan</td><td>整個 MVP 只寫一次，不是每個功能各寫一次。</td></tr>
       <tr><td>誰下指令</td><td>Claude 自己跑指令。你只負責登入、貼金鑰、做決定、找使用者、按合併。</td></tr>
     </tbody>
@@ -111,6 +112,9 @@ td code{white-space:nowrap}
       <tr><td>Parallel</td><td class="yes">要</td><td>研究結果附來源（Basis），符合「每個結論都要有來源」；非同步執行，不受 Vercel 函式時間限制。</td></tr>
       <tr><td>Claude API</td><td class="yes">要</td><td>評分、策略簡報、7 天計畫。</td></tr>
       <tr><td>Playwright MCP</td><td class="yes">要</td><td>cmux 裡的 Claude 靠它開瀏覽器檢查畫面。桌面版有內建瀏覽器，不用它。</td></tr>
+      <tr><td>frontend-design skill</td><td class="yes">要</td><td>Anthropic 官方。做畫面時避免掉回 AI 預設風（第 3 步的設計方向、每個切片的畫面）。</td></tr>
+      <tr><td>Deep research skill</td><td class="no">不用</td><td>目錄裡只有要另外付費 API 的（Exa、Tavily、You.com）。一次性研究 Claude 直接上網查就夠；產品裡的研究用 Parallel。</td></tr>
+      <tr><td>/goal、Goal Composer</td><td class="no">先不用</td><td><code>/agent-skills:build auto</code> 加上 plan 裡的驗收條件已經能讓 Claude 一路做完。整晚無人看管跑時才值得用。</td></tr>
       <tr><td>Ghostty</td><td class="no">不用另裝</td><td>cmux 就是用 Ghostty 的引擎做的。</td></tr>
       <tr><td>MacBook</td><td class="no">不需要</td><td>一直開著的 Mac mini 更適合長時間跑；外出時用遠端控制。</td></tr>
       <tr><td>Agent Teams</td><td class="no">先不用</td><td>4 天衝刺裡 token 多、隊友容易改到同一個檔案；兩個 cmux 工作區就夠。</td></tr>
@@ -192,10 +196,12 @@ brew install --cask cmux
 cmux hooks setup</code></pre>
 <div class="note">之後都在 cmux 裡開終端機。快捷鍵：⌘N 新工作區、⌘D 分割窗格、⌘⇧U 跳到需要你的窗格。</div></div></li>
     <li><input type="checkbox" id="m0-5"><div><div class="t"><span class="you">你</span>裝 Playwright MCP 和 Addy 的 agent-skills</div>
-<pre><code>claude mcp add --scope user playwright -- npx @playwright/mcp@latest</code></pre>
+<pre><code>claude mcp add --scope user playwright -- npx @playwright/mcp@latest
+claude plugin install frontend-design@claude-plugins-official --scope user</code></pre>
 <div class="note">接著輸入 <code>claude</code>，在 claude 裡貼下面兩行，範圍選 User：</div>
 <pre><code>/plugin marketplace add addyosmani/agent-skills
-/plugin install agent-skills@addy-agent-skills</code></pre></div></li>
+/plugin install agent-skills@addy-agent-skills</code></pre>
+<div class="note">只裝這兩個。frontend-design 是 Anthropic 官方的設計 skill，專門避免畫面看起來像 AI 預設；agent-skills 提供 spec、plan、build、ship。</div></div></li>
     <li><input type="checkbox" id="m0-6"><div><div class="t"><span class="you">你</span>系統設定 → 能源：接電源時防止自動睡眠</div>
 <div class="note">Claude 才能在你離開時繼續跑。</div></div></li>
     <li><input type="checkbox" id="m0-7"><div><div class="t"><span class="you">你</span>（選配）從 PC 遠端用 Mac mini</div>
@@ -248,6 +254,17 @@ design/atlas-mockup.html 和 src/fixtures/，寫整個 MVP 的 docs/spec.md：
 有取捨時給我 2–3 個選項和優缺點，一次問一個問題。</code></pre></div></li>
     <li><input type="checkbox" id="m3-2"><div><div class="t"><span class="you">你</span>回答問題，讀完 <code>docs/spec.md</code>，尤其是評分和來源規則</div>
 <div class="note">這是客戶能不能信任 Atlas 的核心，Claude 不能替你決定。</div></div></li>
+    <li><input type="checkbox" id="m3-d1"><div><div class="t"><span class="cc">Claude</span>做 4 個設計方向，畫成可以點的畫面</div>
+<pre><code>先讀 docs/research/generic-risks.md 和 design/screens/，用 frontend-design skill 做 4 個設計方向。
+每個方向從 Atlas 的題材找靈感（例如：外交電報／情報簡報、測繪地圖、交易終端機、
+編輯風 dossier），不能是米色 + 赤陶、紫色漸層或 shadcn 預設；其中一個保留設計稿的結構但換掉配色和字體。
+每個方向做 01 首頁、02 地圖、05 A4 報告三個畫面（390px 手機、報告 A4），用 src/fixtures 的資料，
+存成 design/directions/&lt;方向&gt;/*.html。再做 design/directions/index.html 並排比較：
+每個方向的名稱、一句話、配色和字體、優缺點，最後寫你推薦哪個、為什麼。做完開給我看。</code></pre>
+<div class="note">設計稿本身就是 2026 年常見的「AI 預設風」（米色 + 赤陶 + 襯線），所以先比方向再寫程式。</div></div></li>
+    <li><input type="checkbox" id="m3-d2"><div><div class="t"><span class="you">你</span>在手機上看比較頁，選一個（可以混搭），講給 Claude</div>
+<pre><code>選 &lt;方向&gt;（加上 &lt;想混進來的地方&gt;）。把它寫進 design/direction.md：
+配色、字體、間距、圓角、元件樣式、該做和不該做的事，之後每個切片都照它做。</code></pre></div></li>
     <li><input type="checkbox" id="m3-3"><div><div class="t"><span class="cc">Claude</span>Parallel 試做：同一個題目跑兩個等級，量時間和費用</div>
 <pre><code>用 Parallel Task API 跑一次 Taiwan UAS（公司、產品、市場和設計稿一樣），
 先查 Parallel 官方文件確定用法，用兩個 processor 等級各跑一次。比較：
@@ -322,9 +339,12 @@ claude</code></pre>
   <ol class="steps">
     <li><input type="checkbox" id="m6-1"><div><div class="t"><span class="cc">Claude</span>上線前檢查</div>
 <pre><code>/agent-skills:ship
-特別確認：Parallel 和 Anthropic 金鑰只在伺服器、每個 Email 和全站每天的研究次數上限有效、
+特別確認：沒有 [CLIENT]、[DATE] 這類佔位字；有一頁簡單的隱私說明（資料會送到 Parallel 和 Anthropic 處理）和「不是法律或投資建議」；
+Parallel 和 Anthropic 金鑰只在伺服器、每個 Email 和全站每天的研究次數上限有效、
 分享連結猜不到、抓來的網頁內容不會被當成指令。
 完成後在手機和桌面寬度各走一遍正式網址的核心流程。</code></pre></div></li>
+    <li><input type="checkbox" id="m6-q"><div><div class="t"><span class="you">你</span>發網址前，用一個你很熟的市場跑一份 dossier，親自點開 5 個利害關係人的來源</div>
+<div class="note">來源打不開、摘錄對不上、人名職稱錯，先修好再發。這是客戶付錢買的東西。</div></div></li>
     <li><input type="checkbox" id="m6-2"><div><div class="t"><span class="you">創辦人</span>把正式網址發給 <code>docs/users.md</code> 裡的人，用視訊一個一個帶上手，看他們卡在哪，當天修</div>
 <div class="note">隔天在 PostHog 看：幾個人建了 dossier、幾個人匯出報告。</div></div></li>
     <li><input type="checkbox" id="m6-3"><div><div class="t"><span class="you">你</span>錄 1 分鐘 demo：桌面和手機寬度各走一遍核心流程</div>
