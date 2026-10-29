@@ -178,8 +178,13 @@ td code{white-space:nowrap}
 <!-- PHASE 0 -->
 <section class="phase">
   <div class="ph-head"><span class="ph-num">0</span><h2>Mac mini 基本工具</h2><span class="where">你 · Mac 的「終端機」· 約 20 分鐘</span></div>
-  <p class="lead">Claude 還沒裝好之前只能你來。這一段做完，之後的指令都交給 Claude。</p>
+  <p class="lead">Mac mini 已經有 Claude Code，所以這段大部分交給 Claude：在 Mac 的終端機輸入 <code>claude</code>，貼上第一步。下面其他步驟是清單，讓你核對它做了什麼；要密碼、登入或按允許的時候你來。</p>
   <ol class="steps">
+    <li><input type="checkbox" id="m0-0"><div><div class="t"><span class="cc">Claude</span>檢查並補齊 Mac mini 的工具</div>
+<pre><code>先執行 claude update 確認 Claude Code 是最新版。然後檢查這台 Mac 有沒有：Homebrew、git、node（v20 以上）、gh、cmux、
+Playwright MCP、frontend-design 和 agent-skills 兩個 plugin。缺的照 Atlas 流程第 0 步裝，
+已經有的跳過。gh 要登入 JoeyTaipei 帳號。需要我輸入密碼、登入或按允許時告訴我。最後列出每一項的狀態。</code></pre>
+<div class="note">Homebrew 安裝會要 Mac 的登入密碼，那一步你自己在終端機輸入。</div></div></li>
     <li><input type="checkbox" id="m0-1"><div><div class="t"><span class="you">你</span>裝 Homebrew（完成後依畫面提示貼上那兩行，再開新視窗）</div>
 <pre><code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></pre></div></li>
     <li><input type="checkbox" id="m0-2"><div><div class="t"><span class="you">你</span>裝 Git、Node.js、GitHub CLI，登入 GitHub</div>
@@ -187,7 +192,7 @@ td code{white-space:nowrap}
 node --version     # 要 v20 以上
 gh auth login</code></pre>
 <div class="note">用 <strong>JoeyTaipei</strong> 帳號登入，atlas repo 在這個帳號下。</div></div></li>
-    <li><input type="checkbox" id="m0-3"><div><div class="t"><span class="you">你</span>裝 Claude Code CLI 並登入；再下載 Claude 桌面版，登入同一帳號</div>
+    <li><input type="checkbox" id="m0-3"><div><div class="t"><span class="you">你</span>Claude Code CLI 已裝好可跳過；確認桌面版也登入同一帳號</div>
 <pre><code>curl -fsSL https://claude.ai/install.sh | bash
 claude          # 瀏覽器登入後 /exit</code></pre></div></li>
     <li><input type="checkbox" id="m0-4"><div><div class="t"><span class="you">你</span>裝 cmux，讓它認得 Claude Code</div>
