@@ -182,8 +182,14 @@ td code{white-space:nowrap}
   <ol class="steps">
     <li><input type="checkbox" id="m0-0"><div><div class="t"><span class="cc">Claude</span>檢查並補齊 Mac mini 的工具</div>
 <pre><code>先執行 claude update 確認 Claude Code 是最新版。然後檢查這台 Mac 有沒有：Homebrew、git、node（v20 以上）、gh、cmux、
-Playwright MCP、frontend-design 和 agent-skills 兩個 plugin。缺的照 Atlas 流程第 0 步裝，
-已經有的跳過。gh 要登入 JoeyTaipei 帳號。需要我輸入密碼、登入或按允許時告訴我。最後列出每一項的狀態。</code></pre>
+Playwright MCP、frontend-design 和 agent-skills 兩個 plugin。缺的用這些指令裝，已經有的跳過：
+  Homebrew：官方 install.sh；工具：brew install git node gh
+  cmux：brew tap manaflow-ai/cmux && brew install --cask cmux，再 cmux hooks setup
+  claude mcp add --scope user playwright -- npx @playwright/mcp@latest
+  claude plugin install frontend-design@claude-plugins-official --scope user
+  claude plugin marketplace add addyosmani/agent-skills
+  claude plugin install agent-skills@addy-agent-skills --scope user
+gh 要登入 JoeyTaipei 帳號。需要我輸入密碼、登入或按允許時告訴我。最後列出每一項的狀態。</code></pre>
 <div class="note">Homebrew 安裝會要 Mac 的登入密碼，那一步你自己在終端機輸入。</div></div></li>
     <li><input type="checkbox" id="m0-1"><div><div class="t"><span class="you">你</span>裝 Homebrew（完成後依畫面提示貼上那兩行，再開新視窗）</div>
 <pre><code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></pre></div></li>
