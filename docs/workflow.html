@@ -251,13 +251,15 @@ claude plugin install frontend-design@claude-plugins-official --scope user</code
 design/atlas-mockup.html 和 src/fixtures/，寫整個 MVP 的 docs/spec.md：
 路由、每頁的載入中／空資料／錯誤狀態、資料表、Parallel 和 Claude 的分工、
 研究流程（非同步、顯示進度）、費用上限、分享連結。範圍照 intent.md 的 MVP 段落。
+可信度照 docs/research/generic-risks.md 第 6 段：判斷用 ICD 203 用語 + 數字區間、
+來源用 Admiralty A–F／1–6 分級、分數用區間 + 公開評分表（寫進 docs/scoring.md）。
 有取捨時給我 2–3 個選項和優缺點，一次問一個問題。</code></pre></div></li>
     <li><input type="checkbox" id="m3-2"><div><div class="t"><span class="you">你</span>回答問題，讀完 <code>docs/spec.md</code>，尤其是評分和來源規則</div>
 <div class="note">這是客戶能不能信任 Atlas 的核心，Claude 不能替你決定。</div></div></li>
     <li><input type="checkbox" id="m3-d1"><div><div class="t"><span class="cc">Claude</span>做 4 個設計方向，畫成可以點的畫面</div>
 <pre><code>先讀 docs/research/generic-risks.md 和 design/screens/，用 frontend-design skill 做 4 個設計方向。
-每個方向從 Atlas 的題材找靈感（例如：外交電報／情報簡報、測繪地圖、交易終端機、
-編輯風 dossier），不能是米色 + 赤陶、紫色漸層或 shadcn 預設；其中一個保留設計稿的結構但換掉配色和字體。
+每個方向從 Atlas 的題材找靈感，參考 generic-risks.md 第 6 段（Palantir Blueprint 情報工作台、
+Bloomberg 終端機、FT 簡報頁、瑞士地圖），不能是米色 + 赤陶、紫色漸層或 shadcn 預設；其中一個保留設計稿的結構但換掉配色和字體。
 每個方向做 01 首頁、02 地圖、05 A4 報告三個畫面（390px 手機、報告 A4），用 src/fixtures 的資料，
 存成 design/directions/&lt;方向&gt;/*.html。再做 design/directions/index.html 並排比較：
 每個方向的名稱、一句話、配色和字體、優缺點，最後寫你推薦哪個、為什麼。做完開給我看。</code></pre>
