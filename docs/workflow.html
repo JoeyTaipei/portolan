@@ -181,7 +181,8 @@ td code{white-space:nowrap}
     <li><input type="checkbox" id="m0-2"><div><div class="t"><span class="you">你</span>裝 Git、Node.js、GitHub CLI，登入 GitHub</div>
 <pre><code>brew install git node gh
 node --version     # 要 v20 以上
-gh auth login</code></pre></div></li>
+gh auth login</code></pre>
+<div class="note">用 <strong>JoeyTaipei</strong> 帳號登入，atlas repo 在這個帳號下。</div></div></li>
     <li><input type="checkbox" id="m0-3"><div><div class="t"><span class="you">你</span>裝 Claude Code CLI 並登入；再下載 Claude 桌面版，登入同一帳號</div>
 <pre><code>curl -fsSL https://claude.ai/install.sh | bash
 claude          # 瀏覽器登入後 /exit</code></pre></div></li>
@@ -221,12 +222,12 @@ cmux hooks setup</code></pre>
 <section class="phase">
   <div class="ph-head"><span class="ph-num">2</span><h2>專案設定</h2><span class="where">Claude · PC 先做，Mac mini 接手</span></div>
   <ol class="steps">
-    <li><input type="checkbox" id="m2-1"><div><div class="t"><span class="cc">Claude</span>在 PC 上建好私人 GitHub repo <code>atlas</code>（10/29）</div>
+    <li><input type="checkbox" id="m2-1"><div><div class="t"><span class="cc">Claude</span>已在 PC 上建好私人 repo <code>JoeyTaipei/atlas</code>（10/29 完成）</div>
 <div class="note">內容：Next.js 骨架和 PWA 設定、<code>design/</code>（原始設計稿 + 8 個畫面的 390px 截圖）、<code>src/fixtures/taiwan-uas.ts</code>（設計稿的範例資料）、<code>design/intent.md</code> 草稿、<code>CLAUDE.md</code>、<code>/verify-ui</code> skill、<code>.env.example</code>。</div></div></li>
     <li><input type="checkbox" id="m2-2"><div><div class="t"><span class="you">創辦人</span>讀 <code>design/intent.md</code>，補完標「待補」的地方</div>
 <div class="note">先走哪條走廊、目標使用者是誰、評分你怎麼想。用說的也可以，直接講給 Claude 改。</div></div></li>
     <li><input type="checkbox" id="m2-3"><div><div class="t"><span class="cc">Claude</span>在 Mac mini 接手：cmux 開一個工作區，輸入 <code>claude</code>，貼上</div>
-<pre><code>把 GitHub 上我的 atlas repo clone 到 ~/code/atlas，npm install，npm run build 確認能過。
+<pre><code>把 GitHub 上的 JoeyTaipei/atlas clone 到 ~/code/atlas，npm install，npm run build 確認能過。
 從 .env.example 建一個 .env.local，然後停下來讓我自己貼金鑰。
 我貼好後：npm install -g vercel、vercel link、vercel git connect，
 把 .env.local 的變數同步到 Vercel 的 Preview 和 Production，再 vercel --prod，
