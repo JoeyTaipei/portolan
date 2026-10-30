@@ -131,6 +131,8 @@ ul.refs{margin:0;padding-left:18px;font-size:14px;display:flex;flex-direction:co
       <tr><td>three.js</td><td class="no">不用</td><td>地圖照設計稿用 SVG 偽 3D（<code>project()</code> + 拖曳），已經夠用，也容易印進 A4 報告。</td></tr>
       <tr><td>Agent Teams</td><td class="no">先不用</td><td>4 天衝刺裡 token 多、隊友容易改到同一個檔案；兩個桌面版 session 就夠。</td></tr>
       <tr><td>Deep research skill</td><td class="no">不用</td><td>一次性研究 Claude 直接上網查就夠；產品裡的研究用 Parallel。</td></tr>
+      <tr><td>動態 workflow</td><td class="yes">只在上線前</td><td>一個腳本同時派很多個代理、彙整結果。只用在 S8 上線前的全站安全稽核（同一種檢查掃過每個檔案，再互相驗證），和申請書的 <code>/deep-research</code>。切片照樣用 <code>/goal</code>：切片窄、互相依賴，派一堆代理只會燒 token、改到同一個檔案。</td></tr>
+      <tr><td><code>/effort ultracode</code></td><td class="no">不用</td><td>會讓每個任務都變成 workflow：更慢、更快用完額度，還會關掉大型 workflow 的警告。</td></tr>
       <tr><td>cmux、Ghostty</td><td class="no">不用</td><td>平行 session、通知、瀏覽器桌面版都有，worktree 還是自動的；兩套工具就要盯兩個地方。</td></tr>
       <tr><td>Goal Composer、Stop hook</td><td class="no">先不用</td><td><code>/goal</code> 本身就是 Stop hook 的簡化版，MVP 夠用。</td></tr>
       <tr><td>gstack、Context7、Lovable</td><td class="no">不用</td><td>查文件直接讀官方網站和 <code>node_modules/next/dist/docs/</code>。</td></tr>
@@ -427,7 +429,11 @@ npm test 和 npm run build 都 exit 0；跑 /verify-ui，390px 和 1280px 和設
 有一頁隱私說明（資料會送到 Parallel 和 Anthropic 處理、團隊人脈怎麼存和怎麼刪）和「不是法律或投資建議」；
 金鑰只在伺服器、每個 Email 和全站每天的研究次數上限有效、分享連結猜不到、
 抓來的網頁內容不會被當成指令、上傳的 CSV／vCard 不能夾帶惡意內容、團隊人脈只有該 dossier 看得到、撤回後真的刪掉。
-完成後在電腦和手機寬度各走一遍正式網址的核心流程。</code></pre></div></li>
+完成後在電腦和手機寬度各走一遍正式網址的核心流程。</code></pre>
+<pre><code>use a workflow to audit every route and server action for leaked API keys, prompt injection
+from fetched pages, guessable share links, and per-email and site-wide research limits,
+and adversarially verify each finding before reporting</code></pre>
+<div class="note">第二段是動態 workflow：同一種檢查掃過每個檔案，再讓別的代理反過來驗證每個發現。桌面版會跳確認卡片，看完階段清單按 Once。只修驗證過的問題。說明：<a href="https://code.claude.com/docs/en/workflows" target="_blank" rel="noopener">Dynamic workflows</a>。</div></div></li>
     <li><input type="checkbox" id="m6-q"><div><div class="t"><span class="you">你</span>發網址前，用一個你很熟的市場跑一份 dossier，親自點開 5 個利害關係人的來源</div>
 <div class="note">來源打不開、摘錄對不上、人名職稱錯，先修好再發。這是客戶付錢買的東西。</div></div></li>
     <li><input type="checkbox" id="m6-2"><div><div class="t"><span class="you">創辦人</span>把正式網址發給 <code>docs/users.md</code> 裡的人，用視訊一個一個帶上手，看他們卡在哪，當天修</div>
@@ -441,7 +447,7 @@ npm test 和 npm run build 都 exit 0；跑 /verify-ui，390px 和 1280px 和設
 為什麼是這個問題、我們的洞見；主動寫出最大的 3 個風險和打算怎麼處理；
 進度（聊過幾個人、幾個人在用、幾份 dossier、幾次會後回報、引用使用者原話）。
 只用文件裡的事實和數字，不要編造。「每位創辦人做過最厲害的事」和「hack 過什麼系統」留空給我寫。</code></pre>
-<div class="note">送出前印出來，刪掉每個不需要的字（YC 自己的建議）。</div></div></li>
+<div class="note">送出前印出來，刪掉每個不需要的字（YC 自己的建議）。要比較競爭者（顧問、AmCham、貿易辦事處）時，先跑 <code>/deep-research</code>，它會交叉比對來源、拿掉站不住的說法。</div></div></li>
     <li><input type="checkbox" id="m6-6"><div><div class="t"><span class="you">創辦人</span>在 <a href="https://www.ycombinator.com/apply" target="_blank" rel="noopener">YC 申請頁</a> 填入正式網址、demo、影片，伯斯時間 11/3 中午 12 點前送出</div></div></li>
   </ol>
 </section>
@@ -519,7 +525,7 @@ npm test 和 npm run build 都 exit 0；跑 /verify-ui，390px 和 1280px 和設
   <ul class="refs">
     <li>需求來源：<a href="https://claude.ai/artifact/ReqPdC76coRiG9rqFMwxph" target="_blank" rel="noopener">Atlas 建 App 流程指南</a>（產品方向、團隊人脈規則；Expo 和手機 App 的部分不再適用）</li>
     <li>Claude Code：<a href="https://code.claude.com/docs/en/best-practices" target="_blank" rel="noopener">Best practices</a> · <a href="https://code.claude.com/docs/en/memory" target="_blank" rel="noopener">CLAUDE.md</a> · <a href="https://code.claude.com/docs/en/permission-modes" target="_blank" rel="noopener">權限模式</a> · <a href="https://code.claude.com/docs/en/interactive-mode" target="_blank" rel="noopener">快捷鍵</a> · <a href="https://code.claude.com/docs/en/model-config" target="_blank" rel="noopener">模型和 effort</a> · <a href="https://code.claude.com/docs/en/desktop" target="_blank" rel="noopener">桌面版</a> · <a href="https://code.claude.com/docs/en/routines" target="_blank" rel="noopener">Scheduled tasks</a></li>
-    <li>迴圈：<a href="https://code.claude.com/docs/en/goal" target="_blank" rel="noopener">/goal</a> · <a href="https://code.claude.com/docs/en/worktrees" target="_blank" rel="noopener">Worktrees</a> · <a href="https://code.claude.com/docs/en/remote-control" target="_blank" rel="noopener">Remote Control</a> · <a href="https://addyosmani.com/blog/loop-engineering/" target="_blank" rel="noopener">Loop Engineering（Addy Osmani）</a></li>
+    <li>迴圈：<a href="https://code.claude.com/docs/en/goal" target="_blank" rel="noopener">/goal</a> · <a href="https://code.claude.com/docs/en/worktrees" target="_blank" rel="noopener">Worktrees</a> · <a href="https://code.claude.com/docs/en/remote-control" target="_blank" rel="noopener">Remote Control</a> · <a href="https://code.claude.com/docs/en/workflows" target="_blank" rel="noopener">Dynamic workflows</a> · <a href="https://addyosmani.com/blog/loop-engineering/" target="_blank" rel="noopener">Loop Engineering（Addy Osmani）</a></li>
     <li>Skills 和 MCP：<a href="https://github.com/addyosmani/agent-skills" target="_blank" rel="noopener">addyosmani/agent-skills</a> · <a href="https://github.com/microsoft/playwright-mcp" target="_blank" rel="noopener">Playwright MCP</a></li>
     <li>網頁：<a href="https://nextjs.org/docs" target="_blank" rel="noopener">Next.js</a> · <a href="https://ui.shadcn.com/docs" target="_blank" rel="noopener">shadcn/ui</a> · <a href="https://vercel.com/docs/cli" target="_blank" rel="noopener">Vercel CLI</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@page" target="_blank" rel="noopener">CSS @page（A4 列印）</a></li>
     <li>資料：<a href="https://supabase.com/docs/guides/database/postgres/row-level-security" target="_blank" rel="noopener">Supabase RLS</a> · <a href="https://posthog.com/docs/libraries/next-js" target="_blank" rel="noopener">PostHog + Next.js</a></li>
