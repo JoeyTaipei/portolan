@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Portolan · Signal flags · Dossiers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anybody:ital,wdth,wght@0,50..150,300..900;1,50..150,300..900&display=swap" rel="stylesheet">
+<style>
+/* Sounding structure shared by the three colour variants. Every colour, radius and width is a
+   token from tokens.css; nothing below names a hex value. */
+*{box-sizing:border-box}
+figure{margin:0}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.45;overflow-x:hidden}
+a{color:var(--link)}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+li::marker{font-variant-numeric:normal}
+.num{font-variant-numeric:tabular-nums}
+
+/* frame and navigation */
+.frame{min-height:100vh;border-top:var(--grad-w) solid transparent;border-image:repeating-linear-gradient(90deg,var(--grad-a) 0 22px,var(--grad-b) 22px 44px) var(--grad-w)}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;background:var(--bar);color:var(--bar-ink);border-bottom:1px solid var(--rule-strong)}
+.wordmark{font-weight:800;font-stretch:var(--w-wide);font-size:17px;letter-spacing:var(--wm-track);color:inherit;text-decoration:none;text-transform:var(--wm-case)}
+.sample{font-size:12px;font-weight:700;color:var(--sample-ink);background:var(--sample-bg);border:1px solid var(--sample-line);padding:2px 7px;border-radius:var(--r-s);white-space:nowrap}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:50;display:grid;grid-template-columns:repeat(5,1fr);background:var(--bar);border-top:1px solid var(--rule-strong);padding:4px 2px calc(10px + env(safe-area-inset-bottom))}
+.tabs a{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:48px;justify-content:center;color:var(--bar-ink2);text-decoration:none;font-size:11.5px;font-weight:500;position:relative}
+.tabs svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6}
+.tabs a[aria-current=page]{color:var(--bar-ink);font-weight:700}
+.tabs a[aria-current=page]::before{content:"";position:absolute;top:-4px;left:22%;right:22%;height:3px;background:var(--tab-on)}
+.page-home .topbar .wordmark{visibility:hidden}
+
+/* type */
+.kicker{margin:0;font-size:13px;font-weight:600;font-stretch:var(--w-label);color:var(--ink2)}
+.plan{font-size:12px;font-weight:700;color:var(--plan-ink);background:var(--plan-bg);padding:3px 8px;border-radius:var(--r-s)}
+.hero{margin:0;font-size:var(--hero-size);line-height:.95;font-weight:var(--hero-weight);font-stretch:var(--w-wide);letter-spacing:var(--hero-track);text-transform:var(--wm-case)}
+.tagline{margin:0;color:var(--ink2);font-size:15.5px;line-height:1.45;max-width:34ch}
+.h2{margin:0;font-size:16px;font-weight:700;padding-bottom:8px;border-bottom:1px solid var(--rule-strong)}
+
+/* controls */
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 16px;border:1px solid var(--btn-line);border-radius:var(--r-m);font:600 15px var(--font);text-decoration:none;cursor:pointer;transition:background .15s,color .15s}
+.btn-main{background:var(--btn-bg);color:var(--btn-ink);border-color:var(--btn-bg)}
+.btn-main:hover{background:var(--btn-hover)}
+.btn-main:disabled{opacity:.6;cursor:progress}
+.btn-act{background:var(--act);color:var(--act-ink);border-color:var(--act)}
+.btn-ghost{background:var(--panel);color:var(--ink)}
+.btn-ghost:hover{background:var(--panel2)}
+.btn-s{min-height:38px;font-size:13.5px;padding:0 12px;white-space:nowrap}
+.hoist{display:none}
+.hoist svg{display:block;width:100%;max-width:300px;height:auto}
+.icon-btn{flex:0 0 auto;width:48px;min-height:48px;display:grid;place-items:center;border:1px solid var(--btn-line);border-radius:var(--r-m);background:var(--panel);cursor:pointer;color:var(--ink)}
+.icon-btn:hover{background:var(--panel2)}
+.icon-btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8}
+.icon-btn[aria-busy=true] svg{animation:spin .9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* trust elements borrowed from Estimate */
+.stamp{display:inline-block;font-weight:800;font-size:11.5px;line-height:1.2;letter-spacing:.04em;color:var(--stamp);border:1.5px solid currentColor;outline:1px solid currentColor;outline-offset:1.5px;padding:0 4px;margin:0 3px;border-radius:var(--r-s);transform:rotate(-3deg);vertical-align:1px}
+.redact,.ins-redact{display:inline-block;width:4.4em;height:.95em;background:var(--redact);vertical-align:-1px;border-radius:1px}
+.icd{display:grid;grid-template-columns:5fr 15fr 25fr 10fr 25fr 15fr 4fr;height:12px;margin:6px 0 3px;border:1px solid var(--icd-line);border-radius:var(--r-s);overflow:hidden}
+.icd span{border-right:1px solid var(--icd-line);background:var(--icd-off)}
+.icd span:last-child{border-right:0}
+.icd span.on{background:var(--icd-on)}
+.icd-k{display:flex;justify-content:space-between;gap:8px;font-size:11.5px;color:var(--ink2)}
+.icd-k b{color:var(--ink);font-weight:700}
+
+/* chartlet (home, Taiwan) */
+.chartlet{position:relative;border:1px solid var(--rule-strong);background:var(--water0);border-radius:var(--r-l);overflow:hidden}
+.chartlet svg{display:block;width:100%;height:auto}
+.chartlet figcaption{display:flex;justify-content:space-between;gap:8px;padding:7px 10px;border-top:1px solid var(--rule);font-size:12px;color:var(--ink2);background:var(--panel)}
+.rhumb{stroke:var(--rhumb);stroke-width:.5;opacity:.35}.rhumb.main{opacity:.7}
+.shoal1{fill:none;stroke:var(--water1);stroke-width:30;stroke-linejoin:round}
+.shoal2{fill:none;stroke:var(--water2);stroke-width:12;stroke-linejoin:round}
+.land{fill:var(--land);stroke:var(--coast);stroke-width:1.1;stroke-linejoin:round}
+.port{fill:var(--ink)}
+.portname{font-size:10.5px;font-weight:500;font-stretch:var(--w-label);font-style:italic;fill:var(--ink2)}
+.rose-ring{fill:none;stroke:var(--rhumb);stroke-width:1}.rose-ring.thin{stroke-width:.5;stroke-dasharray:1.5 2}
+.rose .pt{fill:var(--rhumb)}.rose .pt-l{fill:var(--water0);stroke:var(--rhumb);stroke-width:.7}
+.rose-n{font-size:11px;font-weight:800;fill:var(--rhumb)}
+.mark-l{font-size:11px;font-weight:700;font-stretch:var(--w-label);fill:var(--ink);paint-order:stroke;stroke:var(--halo);stroke-width:3px}
+
+/* map marks: stance shapes come from theme.js, colours from here */
+.m-sup{fill:var(--sup);stroke:var(--mark-edge);stroke-width:1.3}
+.m-res{fill:var(--res);stroke:var(--mark-edge);stroke-width:1.3}
+.m-neu{fill:var(--neu-fill);stroke:var(--neu);stroke-width:1.7}
+.m-evt{fill:var(--evt);stroke:var(--mark-edge);stroke-width:1.3}
+.pm-svg{display:block;width:100%;height:100%}
+.pm-label{font-size:11.5px;font-weight:700;font-stretch:var(--w-label);fill:var(--ink);paint-order:stroke;stroke:var(--halo);stroke-width:3.5px;stroke-linejoin:round;pointer-events:none}
+.pm-node{cursor:pointer;transition:opacity .2s}
+.pm-node.is-dim{opacity:.14}.pm-node.is-hidden{display:none}
+.pm-node.is-sel .pm-shape>.mk{stroke:var(--hot);stroke-width:2.8}
+.pm-edge{stroke:var(--edge);stroke-width:1}.pm-edge.hot{stroke:var(--hot);stroke-width:2}
+.pm-tie{stroke:var(--tie);stroke-dasharray:5 3}
+.rec-a{display:none}.pm-node.is-rec .rec-a{display:inline}
+.rec-ring{fill:none;stroke:var(--act);stroke-width:1.6;stroke-dasharray:2.5 2}
+.rec-n{font-size:10.5px;font-weight:800;fill:var(--act-text)}
+.tm-c{fill:var(--panel);stroke:var(--tie);stroke-width:2}
+.pm-pending .tm-c{stroke-dasharray:3 2;stroke:var(--ink2)}
+.tm-i{font-size:7px;font-weight:800;fill:var(--tie);text-anchor:middle}
+.g-ring{fill:none;stroke:var(--rhumb);stroke-width:.9}
+.g-rhumb{stroke:var(--rhumb);stroke-width:.6}
+.g-f1{fill:var(--floor1)}.g-f2{fill:var(--floor2)}
+.g-dot{stroke:var(--stem);stroke-width:.5}
+.g-d1{fill:var(--depth1)}.g-d2{fill:var(--depth2)}.g-d3{fill:var(--depth3)}
+.g-snd{display:var(--sounding-show)}
+.g-stem{stroke:var(--stem);stroke-width:.7}
+.g-route{fill:none;stroke:var(--route);stroke-width:var(--route-w,1.8);stroke-dasharray:7 4}
+.q-band1{fill:var(--qband1)}.q-band2{fill:var(--qband2)}.q-band3{fill:var(--qband3)}
+.q-line{stroke:var(--rule-strong);stroke-width:1}
+.q-lab{font-size:12px;font-weight:700;fill:var(--ink2)}
+.q-lab.res{fill:var(--res-text)}.q-lab.sup{fill:var(--sup-text)}
+.q-ax{font-size:11px;fill:var(--ink2)}
+
+@media (min-width:1024px){
+  .frame{border:var(--grad-w) solid transparent;border-image:repeating-linear-gradient(90deg,var(--grad-a) 0 22px,var(--grad-b) 22px 44px) var(--grad-w)}
+  .topbar{padding:0 24px;height:58px}
+  .page-home .topbar .wordmark{visibility:visible}
+  .tabs{position:static;display:flex;gap:2px;border:0;padding:0;background:none}
+  .tabs a{flex-direction:row;gap:7px;min-height:58px;padding:0 14px;font-size:14px}
+  .tabs a[aria-current=page]::before{top:auto;bottom:0;left:10px;right:10px}
+  .tabs svg{width:18px;height:18px}
+  .hero{font-size:var(--hero-size-desk)}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<style>
+/* Signal flags: the International Code of Signals as a visual system. Navy, signal red, flag
+   yellow and white in flat, square blocks. Stance is a flag pattern, so it still reads in
+   greyscale. One palette for screen and print. */
+:root{
+  --font:'Anybody',system-ui,sans-serif;
+  --w-wide:150%; --w-label:82%; --w-title:72%; --w-num:100%; --num-style:normal;
+  --wm-track:.08em; --wm-case:uppercase; --hero-size:34px; --hero-size-desk:26px; --hero-weight:900; --hero-track:.02em;
+  --r-s:0; --r-m:0; --r-l:0; --r-pill:0; --r-chip:0; --tile-gap:2px;
+
+  --navy:#101A3A; --red:#D7262E; --yellow:#F6C90E; --blue:#1747C9;
+  --bg:#FFFFFF; --panel:#F3F5F9; --panel2:#E6EAF3; --stage:#FFFFFF; --field:#FFFFFF; --field-line:#101A3A;
+  --ink:#101A3A; --ink2:#4E5777; --ink3:#8A90A8; --rule:#D5DAE6; --rule-strong:#101A3A; --halo:#FFFFFF;
+  --link:#1747C9; --focus:#1747C9;
+  --grad-w:8px; --grad-a:#101A3A; --grad-b:#F6C90E;
+  --bar:#101A3A; --bar-ink:#FFFFFF; --bar-ink2:#AEB6D0; --tab-on:#F6C90E;
+  --sample-ink:#101A3A; --sample-bg:#F6C90E; --sample-line:#F6C90E; --plan-ink:#FFFFFF; --plan-bg:#D7262E;
+  --btn-line:#101A3A; --btn-bg:#101A3A; --btn-ink:#FFFFFF; --btn-hover:#1747C9;
+  --hot:#1747C9; --act:#F6C90E; --act-ink:#101A3A; --act-text:#101A3A; --route:#101A3A; --route-w:2.6; --w-report:86%;
+  --stamp:#1747C9; --redact:#101A3A; --icd-line:#101A3A; --icd-off:#FFFFFF; --icd-on:#F6C90E;
+  --water0:#FFFFFF; --water1:#E8EDF7; --water2:#C8D3EC; --land:#E1E6F1; --coast:#101A3A; --rhumb:#1747C9;
+  --sup:#1747C9; --res:#D7262E; --neu:#101A3A; --neu-fill:#FFFFFF; --evt:#F6C90E; --mark-edge:#101A3A;
+  --sup-text:#1747C9; --res-text:#C21F27; --edge:#101A3A; --tie:#D7262E;
+  --floor1:transparent; --floor2:transparent; --depth1:transparent; --depth2:transparent; --depth3:transparent; --sounding-show:none; --stem:transparent;
+  --qband1:transparent; --qband2:transparent; --qband3:transparent;
+  --tile-gap-bg:#101A3A; --tile-on:#101A3A; --tile-on-ink:#FFFFFF; --tile-on-ink2:#F6C90E;
+  --tag-bg:#1747C9; --tag-ink:#FFFFFF; --good:#1747C9; --notice-text:#101A3A; --notice-bg:#F6C90E; --notice:#F6C90E; --done:#1747C9; --done-ink:#FFFFFF; --desk:#101A3A;
+}
+.print{ --desk:#101A3A }
+/* flag fills */
+.f-navy{fill:var(--navy)}.f-red{fill:var(--red)}.f-yellow{fill:var(--yellow)}.f-blue{fill:var(--blue)}.f-white{fill:#FFFFFF}
+.mk{fill:none;stroke:var(--navy);stroke-width:1.2}
+.pm-tie{stroke-width:2}
+.notice{border-left-width:6px}
+.kj{border-left-width:6px}
+.hoist{display:block}
+</style>
+<style>
+.home{display:flex;flex-direction:column;gap:22px;padding:22px 18px 110px}
+.title-block{display:flex;flex-direction:column;gap:8px}
+.title-row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.index{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--tile-gap);background:var(--tile-gap-bg);border:1px solid var(--rule-strong);border-radius:var(--r-l);overflow:hidden}
+.index a{display:flex;flex-direction:column;justify-content:space-between;gap:10px;min-height:64px;padding:9px 10px;background:var(--panel);color:var(--ink);text-decoration:none;font-size:13.5px;font-weight:600;font-stretch:var(--w-label)}
+.index a span{font-weight:500;color:var(--ink2);font-size:12px}
+.index a[aria-current=page]{background:var(--tile-on);color:var(--tile-on-ink)}
+.index a[aria-current=page] span{color:var(--tile-on-ink2)}
+.index a:hover:not([aria-current]){background:var(--panel2)}
+.dossier{display:flex;flex-direction:column;gap:14px}
+.d-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.tag-ok{font-size:12px;font-weight:700;padding:3px 8px;background:var(--tag-bg);color:var(--tag-ink);border-radius:var(--r-s)}
+.d-name{margin:2px 0;font-size:31px;line-height:1;font-weight:800;font-stretch:var(--w-title);letter-spacing:-.01em}
+.d-meta{margin:0;color:var(--ink2);font-size:14px}
+.confrow{display:flex;gap:10px;align-items:stretch}
+.conf{flex:1;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border:1px solid var(--rule-strong);border-radius:var(--r-m);background:var(--panel);color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.conf:hover{background:var(--panel2)}
+.conf b{font-size:16px;font-weight:800;color:var(--good)}
+.conf small{display:block;color:var(--ink2);font-size:12.5px;margin-top:2px}
+.conf svg{flex:0 0 auto;width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8}
+.conf-panel{border:1px solid var(--rule-strong);border-radius:var(--r-m);padding:12px;font-size:13.5px;line-height:1.5;background:var(--panel);margin-top:-6px}
+.conf-panel p{margin:0 0 8px}.conf-panel ul{margin:0;padding-left:18px}
+.sound{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--rule-strong);border-bottom:1px solid var(--rule-strong)}
+.sound div{padding:10px 0 8px}.sound div+div{border-left:1px solid var(--rule);padding-left:12px}
+.sound .n{display:block;font-style:var(--num-style);font-weight:600;font-size:34px;line-height:1;font-stretch:var(--w-num);font-variant-numeric:tabular-nums}
+.sound .l{font-size:12.5px;color:var(--ink2)}
+.sound .al .n{color:var(--notice-text);background:var(--notice-bg);display:inline-block;padding:0 4px;margin-left:-4px}
+.kj{border:1px solid var(--rule-strong);border-left:4px solid var(--act);border-radius:var(--r-m);background:var(--panel);padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.kj h3{margin:0;font-size:13px;font-weight:700;color:var(--ink2)}
+.kj p{margin:0;font-size:15px;line-height:1.45}
+.kj .src{font-size:12.5px;color:var(--ink2)}
+.notices{display:flex;flex-direction:column;gap:14px}
+.notice{border-left:4px solid var(--notice);padding:2px 0 2px 12px;display:flex;flex-direction:column;gap:4px}
+.notice h3{margin:0;font-size:15px;font-weight:700}
+.notice p{margin:0;font-size:14px;line-height:1.5}
+.notice .cite{font-size:12.5px;color:var(--ink2)}
+.sel{display:flex;flex-direction:column;gap:2px}
+.sel-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-bottom:8px;border-bottom:1px solid var(--rule-strong);margin-bottom:4px}
+.sel-head h2{margin:0;font-size:16px;font-weight:700}
+.dos{display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center;width:100%;min-height:52px;padding:8px 10px;border:0;border-bottom:1px solid var(--rule);border-radius:var(--r-s);background:none;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.dos:hover{background:var(--panel2)}
+.dos[aria-pressed=true]{background:var(--tile-on);color:var(--tile-on-ink)}
+.dos[aria-pressed=true] .dos-m{color:var(--tile-on-ink2)}
+.dos-n{font-weight:600;font-size:14.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dos-c{font-size:13px;font-weight:600}
+.dos-m{grid-column:1/-1;font-size:12px;color:var(--ink2)}
+form.new{display:flex;flex-direction:column;gap:10px;padding:14px;margin:8px 0;border:1px dashed var(--rule-strong);border-radius:var(--r-m);background:var(--panel)}
+form.new label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink2);font-weight:500}
+form.new input,form.new select{min-height:44px;padding:0 10px;border:1px solid var(--field-line);border-radius:var(--r-s);background:var(--field);font:15px var(--font);color:var(--ink)}
+form.new input::placeholder{color:var(--ink3)}
+form.new input:focus,form.new select:focus{outline:2px solid var(--focus);outline-offset:0}
+form.new input[aria-invalid=true]{border-color:var(--res);box-shadow:inset 3px 0 0 var(--res)}
+.form-error{margin:0;color:var(--res-text);font-size:13px;font-weight:700}
+.progress{margin:0;padding:10px 12px 10px 28px;border:1px solid var(--rule);border-radius:var(--r-s);background:var(--field);font-size:13px;line-height:1.6}
+.progress li::marker{color:var(--act-text)}
+.chartlet.small{margin-top:-2px}
+@media (min-width:1024px){
+  .home{display:grid;grid-template-columns:300px minmax(0,1fr) 340px;gap:0;padding:0;min-height:calc(100vh - 72px)}
+  .col{padding:24px 24px 40px;display:flex;flex-direction:column;gap:22px}
+  .col-l{border-right:1px solid var(--rule-strong)}
+  .col-r{border-left:1px solid var(--rule-strong)}
+  .col-c{padding:24px}
+  .chartlet.big{height:100%;display:flex;flex-direction:column}
+  .chartlet.big svg{flex:1;height:100%}
+  .chartlet.small{display:none}
+  .index{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:1023px){.chartlet.big{display:none}.col{display:contents}.title-block{order:1}.index{order:2}.dossier{order:3}.kj{order:4}.notices{order:5}.sel{order:6}}
+</style>
+</head>
+<body class="page-home">
+<div class="frame">
+<header class="topbar">
+  <a class="wordmark" href="01-home.html">Portolan</a>
+  <nav class="tabs" aria-label="Main">
+    <a href="01-home.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h7l2 2h9v11H3z"/></svg>Dossiers</a>
+    <a href="02-map.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17M3.5 12h17M6 6l12 12M18 6L6 18"/></svg>Map</a>
+    <a href="#tracker"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V5M10 20V9M16 20v-6M22 20H2"/></svg>Tracker</a>
+    <a href="#network"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.2c2.9.4 5 2.8 5 5.8"/></svg>Network</a>
+    <a href="05-report.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/></svg>Docs</a>
+  </nav>
+  <span class="sample">Sample data</span>
+</header>
+
+<main class="home">
+  <div class="col col-l">
+    <div class="title-block">
+      <div class="title-row"><p class="kicker">Market entry intelligence</p><span class="plan">Pro plan</span></div>
+      <h1 class="hero">Portolan</h1>
+      <div class="hoist" id="hoist"></div>
+      <p class="tagline">Charts of who decides in a new market. Every mark traces back to a source you can open.</p>
+    </div>
+    <nav class="index" aria-label="Workspace">
+      <a href="01-home.html" aria-current="page">Dossiers<span>4 open</span></a>
+      <a href="02-map.html">Stakeholder map<span>20 of 48</span></a>
+      <a href="#tracker">Tracker<span>8 next steps</span></a>
+      <a href="#network">Network<span>8 leads</span></a>
+      <a href="05-report.html">Documents<span>A4 brief</span></a>
+      <a href="#brief">Strategy brief<span>version 3</span></a>
+    </nav>
+    <section class="sel" aria-labelledby="sel-h">
+      <div class="sel-head"><h2 id="sel-h">Your dossiers</h2><button type="button" class="btn btn-ghost btn-s" data-form-toggle aria-expanded="false">+ New dossier</button></div>
+      <form class="new" data-form hidden novalidate>
+        <label>Your company<input name="company" required data-name="your company" placeholder="e.g. Skyward Robotics"></label>
+        <label>Product or service<input name="product" required data-name="the product" placeholder="e.g. Counter-UAS sensor kit"></label>
+        <label>Target market<select name="market"><option>Taiwan</option><option>United States (coverage limited)</option><option>Japan (coverage limited)</option><option>Singapore (coverage limited)</option><option>China (institutions only)</option></select></label>
+        <label>Goal<input name="goal" required data-name="a goal" placeholder="e.g. First government pilot within 12 months"></label>
+        <label>Email for the dossier link<input name="email" type="email" required data-name="an email" placeholder="you@company.com"></label>
+        <p class="form-error" data-form-error hidden></p>
+        <button type="submit" class="btn btn-main">Start research</button>
+        <ol class="progress" data-progress hidden aria-live="polite"></ol>
+      </form>
+      <button type="button" class="dos" data-dossier aria-pressed="true"><span class="dos-n">Taiwan UAS Defense Grid</span><span class="dos-c">High</span><span class="dos-m">126 sources, refreshed 2h ago</span></button>
+      <button type="button" class="dos" data-dossier aria-pressed="false"><span class="dos-n">Japan Dual-Use Robotics Entry</span><span class="dos-c">High</span><span class="dos-m">97 sources</span></button>
+      <button type="button" class="dos" data-dossier aria-pressed="false"><span class="dos-n">U.S. Generative AI Safety Mandate</span><span class="dos-c">High</span><span class="dos-m">112 sources</span></button>
+      <button type="button" class="dos" data-dossier aria-pressed="false"><span class="dos-n">Singapore MedTech Sandbox</span><span class="dos-c">Moderate</span><span class="dos-m">58 sources</span></button>
+    </section>
+  </div>
+
+  <div class="col col-c">
+    <figure class="chartlet big"><svg id="chart-big" role="img" aria-label="Sketch chart of Taiwan with port names and the four sample stakeholders that have a known address"></svg>
+      <figcaption><span>4 of 20 stakeholders have an address in the sources and are placed here.</span><span>Coastline simplified</span></figcaption></figure>
+  </div>
+
+  <div class="col col-r">
+    <section class="dossier" aria-labelledby="d-h">
+      <div class="d-head"><span class="tag-ok">Verified dossier</span><span class="sample">Sample data</span></div>
+      <div><h2 class="d-name" id="d-h">Taiwan UAS Defense Grid</h2><p class="d-meta">Republic of China (Taiwan), refreshed <span data-refreshed>2h ago</span></p></div>
+      <figure class="chartlet small"><svg id="chart-small" role="img" aria-label="Sketch chart of northern Taiwan with the sample stakeholders that have a known address"></svg>
+        <figcaption><span>4 of 20 stakeholders placed by address</span><span>Simplified</span></figcaption></figure>
+      <div class="confrow">
+        <button type="button" class="conf" data-conf-toggle aria-expanded="false"><span><b>Confidence: high</b><small>126 sources. 7 of 20 shown stakeholders rest on 6 or more.</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/></svg></button>
+        <button type="button" class="icon-btn" data-refresh aria-label="Refresh dossier"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg></button>
+      </div>
+      <div class="conf-panel" data-conf-panel hidden>
+        <p><b>How it is scored.</b> Confidence counts independent sources per stakeholder, weighted by Admiralty grade <span class="stamp">A1</span> best to <span class="stamp">F6</span> worst. Draft rules: docs/scoring.md.</p>
+        <ul><li>7 of the 20 shown stakeholders rest on 6 or more sources</li><li>8 rest on 3–5 sources</li><li>5 rest on only 2 sources and are marked thin</li></ul>
+      </div>
+      <div class="sound">
+        <div><span class="n">48</span><span class="l">Stakeholders</span></div>
+        <div><span class="n">126</span><span class="l">Cited sources</span></div>
+        <div class="al"><span class="n">3</span><span class="l">New alerts</span></div>
+      </div>
+      <a class="btn btn-main" href="02-map.html">Open stakeholder map</a>
+    </section>
+    <section class="kj" aria-labelledby="kj-h">
+      <h3 id="kj-h">Key judgment</h3>
+      <p>A foreign subsystem supplier that partners locally for assembly is <b>likely (55–80%)</b> to qualify for Taiwan's drone procurement.</p>
+      <div class="icd" aria-hidden="true"><span></span><span></span><span></span><span></span><span class="on"></span><span></span><span></span></div>
+      <div class="icd-k" aria-hidden="true"><span>remote</span><span>even</span><b>likely</b><span>certain</span></div>
+      <span class="src">Moderate confidence. Sources [1] <span class="stamp">A2</span> [2] <span class="stamp">A1</span> [5] <span class="stamp">B2</span></span>
+    </section>
+    <section class="notices" aria-labelledby="n-h">
+      <h2 class="h2" id="n-h">Alerts</h2>
+      <div class="notice"><h3>Committee review in 14 days</h3><p>The drone procurement amendment goes to the Defense Committee. Two supportive stakeholders are co-sponsors.</p><span class="cite">[4] Committee meeting agenda <span class="stamp">A1</span> checked 29 Oct</span></div>
+      <div class="notice"><h3>Spectrum approvals backlogged</h3><p>NCC pre-consultation is the slowest approval on the route. File before the tender opens.</p><span class="cite">[6] NCC frequency-use rules <span class="stamp">A1</span> checked 22 Oct</span></div>
+      <div class="notice"><h3>TADTE 2027 booth slots</h3><p>9 mapped stakeholders expected in Taipei Nangang, 23–25 Sep 2027.</p><span class="cite">3 sources, thin</span></div>
+    </section>
+  </div>
+</main>
+</div>
+<script>
+/* Sample data from src/fixtures/taiwan-uas.ts (Taiwan UAS). Placeholders in the fixture
+   ([Name], [DATE]) are shown as the contact's role and "date unverified", never as brackets. */
+var P = window.P || {};
+P.NODES = [
+  { id:'g1', short:'MND Armaments Bureau', name:'Ministry of National Defense — Armaments Bureau', role:'Runs defense procurement tenders; sets qualification rules for drone suppliers.', cat:'gov', st:'sup', infl:92, sup:62, src:14, action:'Request a pre-tender capability briefing; lead with supply-chain provenance.', x:-0.55, y:-0.35, z:0.25, cites:[1,2] },
+  { id:'g2', short:'NCSIST', name:'National Chung-Shan Institute of Science & Technology', role:'Defense R&D institute; runs testing and certification for UAS payloads.', cat:'gov', st:'neu', infl:85, sup:8, src:11, action:'Propose a joint field test on the 5.1 GHz detection gap.', x:-0.75, y:-0.05, z:-0.15, cites:[3] },
+  { id:'g3', short:'MOEA Industrial Dev.', name:'MOEA — Industrial Development Administration', role:'Funds local manufacturing and supply-chain subsidies.', cat:'gov', st:'sup', infl:74, sup:48, src:9, action:'Apply for co-financing once a local assembly partner is signed.', x:-0.3, y:-0.7, z:-0.1 },
+  { id:'g4', short:'Civil Aeronautics Admin.', name:'Civil Aeronautics Administration', role:'Registers drones and sets operating rules for civilian airspace.', cat:'gov', st:'neu', infl:58, sup:0, src:6, action:'Confirm dual-use registration path before any public demo.', x:-0.9, y:-0.45, z:0.4 },
+  { id:'g5', short:'NCC', name:'National Communications Commission', role:'Approves radio-frequency use for sensors and datalinks.', cat:'gov', st:'res', infl:61, sup:-34, src:5, action:'File spectrum pre-consultation early; approvals are backlogged.', x:-0.6, y:0.2, z:0.6, cites:[6] },
+  { id:'g6', short:'Defense Committee', name:'Legislative Yuan — Foreign Affairs & National Defense Committee', role:'Reviews defense budgets and procurement amendments.', cat:'gov', st:'sup', infl:80, sup:40, src:8, action:'Brief two co-sponsors before the committee review.', x:-0.2, y:-0.25, z:0.75, cites:[4] },
+  { id:'i1', short:'Drone Industry Alliance', name:'Drone industry alliance (TEDIBOA)', role:'260+ member companies; coordinates the "non-red" supply chain.', cat:'ind', st:'sup', infl:70, sup:55, src:7, action:'Join as associate member; fastest route to local partners.', x:0.45, y:-0.35, z:-0.35 },
+  { id:'i2', short:'State aerospace prime', name:'State-linked aerospace prime contractor', role:'Likely system integrator for large government drone contracts.', cat:'ind', st:'neu', infl:78, sup:12, src:6, action:'Position as a subsystem supplier, not a competitor.', x:0.15, y:-0.6, z:0.3, cites:[5] },
+  { id:'i3', short:'Listed drone OEM', name:'Listed drone OEM, Taichung', role:'Incumbent local manufacturer; competes for the same tenders.', cat:'ind', st:'res', infl:66, sup:-52, src:5, action:'Avoid head-on bids; explore a component licensing deal.', x:0.8, y:-0.1, z:0.15 },
+  { id:'i4', short:'Tier-1 telecom', name:'Tier-1 telecom operator', role:'Owns secure network infrastructure; potential datalink partner.', cat:'ind', st:'neu', infl:63, sup:5, src:4, action:'Test datalink compatibility before proposing partnership.', x:0.6, y:0.15, z:0.6 },
+  { id:'i5', short:'Taoyuan suppliers', name:'Component supplier cluster, Taoyuan', role:'Motors, batteries and frames; needed for local-content rules.', cat:'ind', st:'sup', infl:45, sup:38, src:3, action:'Shortlist two suppliers to meet local-content thresholds.', x:0.7, y:-0.5, z:-0.6 },
+  { id:'c1', short:'Kestrel Dual-Use Fund', name:'Kestrel Dual-Use Fund (fictional)', role:'Venture fund focused on dual-use hardware in Asia.', cat:'cap', st:'sup', infl:52, sup:60, src:3, action:'Share the dossier summary; ask for intros to portfolio integrators.', x:0.2, y:0.6, z:0.35 },
+  { id:'c2', short:'Harbor Lane FO', name:'Harbor Lane Family Office (fictional)', role:'Family office; invests $250k–$2M in industrial tech.', cat:'cap', st:'sup', infl:40, sup:45, src:2, action:'Approach after the first government pilot is confirmed.', x:0.45, y:0.75, z:0 },
+  { id:'c3', short:'Angel syndicate', name:'Angel syndicate, 14 members', role:'Individual investors; tickets of $2k–$50k.', cat:'cap', st:'neu', infl:30, sup:10, src:2, action:'Low priority until a local entity is set up.', x:-0.05, y:0.85, z:-0.2 },
+  { id:'c4', short:'National Dev. Fund', name:'National Development Fund', role:'Government co-investment vehicle for strategic industries.', cat:'cap', st:'neu', infl:68, sup:15, src:5, action:'Co-investment requires a Taiwan entity; plan for month 6.', x:-0.25, y:0.5, z:0.15 },
+  { id:'l1', short:'Cross-border counsel', name:'Independent counsel, cross-border VC', role:'Matches foreign startups with local investors; handles entity setup.', cat:'leg', st:'sup', infl:35, sup:50, src:2, action:'Book a scoping call on entity structure and investor intros.', x:-0.55, y:0.65, z:-0.45 },
+  { id:'l2', short:'Export-control firm', name:'Taipei law firm, export controls', role:'Advises on defense export licences and end-user checks.', cat:'leg', st:'neu', infl:48, sup:20, src:4, action:'Confirm export-licence needs before shipping demo units.', x:-0.85, y:0.35, z:-0.6 },
+  { id:'e1', short:'TADTE 2027', name:'Taipei Aerospace & Defense Technology Exhibition', role:'Sep 23–25, 2027, Taipei Nangang Hall 1. 9 mapped stakeholders expected.', cat:'evt', st:'evt', infl:70, sup:30, src:3, action:'Reserve a partner-booth slot; schedule 5 meetings in advance.', x:0.15, y:-0.1, z:-0.8 },
+  { id:'e2', short:'Drone ecosystem summit', name:'Drone ecosystem summit (date unverified)', role:'Industry-alliance event; investors and integrators attend.', cat:'evt', st:'evt', infl:50, sup:25, src:2, action:'Apply for the startup pitch track.', x:0.5, y:0.45, z:-0.55 },
+  { id:'e3', short:'Procurement briefing', name:'Defense procurement briefing day (date unverified)', role:'Annual supplier briefing by the procurement authority.', cat:'evt', st:'evt', infl:55, sup:20, src:2, action:'Register as a prospective supplier to receive the invitation.', x:-0.35, y:-0.55, z:0.7 }
+];
+P.EDGES = [['g1','g2'],['g1','g6'],['g1','i2'],['g2','i2'],['g2','i1'],['g3','i1'],['g3','i5'],['g3','c4'],['g4','i3'],['g5','i4'],['g6','g3'],['i1','i3'],['i1','i5'],['i2','i4'],['c1','c2'],['c1','l1'],['c4','c1'],['l2','i2'],['l1','c3'],['e1','g1'],['e1','i1'],['e1','i2'],['e2','i1'],['e2','c1'],['e3','g1'],['e3','g6'],['g4','g5'],['l2','g1']];
+P.TEAM = [
+  { id:'tm_you', short:'You', name:'You', role:'CEO', initials:'YO', source:'Manual entries', status:'CONNECTED', x:0, y:0.05, z:0 },
+  { id:'tm_mei', short:'Mei Chen', name:'Mei Chen', role:'BD lead', initials:'MC', source:'LinkedIn export', status:'CONNECTED', x:0.12, y:0.12, z:0.1 },
+  { id:'tm_priya', short:'Priya Nair', name:'Priya Nair', role:'Advisor, ex-defense', initials:'PN', source:'LinkedIn + contacts', status:'CONNECTED', x:-0.12, y:0.14, z:0.08 },
+  { id:'tm_dan', short:'Daniel Ruiz', name:'Daniel Ruiz', role:'CTO', initials:'DR', source:'Not connected yet', status:'INVITED', x:0.02, y:0.2, z:-0.12 }
+];
+/* contact = role at the organisation; the person's name stays in the teammate's own export */
+P.TIES = [
+  { m:'tm_mei', org:'i1', s:3, contact:'Secretariat contact', how:'Former colleague, 2019–21' },
+  { m:'tm_mei', org:'i2', s:2, contact:'BD manager', how:'1st-degree LinkedIn' },
+  { m:'tm_priya', org:'g2', s:2, contact:'Researcher', how:'Co-panelist, 2024 conference' },
+  { m:'tm_priya', org:'c1', s:3, contact:'Partner', how:'Invested in her last company' },
+  { m:'tm_you', org:'l1', s:3, contact:'Counsel', how:'Current advisor' }
+];
+P.CATS = { all:'All', gov:'Government', ind:'Industry', cap:'Capital', leg:'Legal', evt:'Events' };
+P.STANCE = { sup:'Supportive', neu:'Neutral', res:'Resistant', evt:'Event' };
+/* Sample source list (report sources [1]–[6]); Admiralty grade = reliability A–F + credibility 1–6 */
+P.SOURCES = [
+  { n:1, title:'Drone procurement policy notice', type:'Government gazette', grade:'A2', checked:'27 Oct 2026' },
+  { n:2, title:'Procurement authority tender archive', type:'Official record', grade:'A1', checked:'27 Oct 2026' },
+  { n:3, title:'NCSIST testing guidelines', type:'Official document', grade:'A2', checked:'24 Oct 2026' },
+  { n:4, title:'Committee meeting agenda', type:'Legislative record', grade:'A1', checked:'29 Oct 2026' },
+  { n:5, title:'Prime contractor annual report', type:'Company filing', grade:'B2', checked:'21 Oct 2026' },
+  { n:6, title:'NCC frequency-use rules', type:'Regulation', grade:'A1', checked:'22 Oct 2026' }
+];
+P.DOSSIER = { name:'Taiwan UAS Defense Grid', country:'Republic of China (Taiwan)', stakeholders:48, sources:126, alerts:3, shown:20,
+  client:'Skyward Robotics (fictional)', product:'Counter-UAS sensor kit', date:'30 Oct 2026', share:'portolan.app/s/q7Hk2mV9xR4tLp8wZc3NbF' };
+P.DOSSIERS = [
+  { name:'Taiwan UAS Defense Grid', conf:'High', pct:94, srcs:126 },
+  { name:'Japan Dual-Use Robotics Entry', conf:'High', pct:88, srcs:97 },
+  { name:'U.S. Generative AI Safety Mandate', conf:'High', pct:89, srcs:112 },
+  { name:'Singapore MedTech Sandbox', conf:'Moderate', pct:81, srcs:58 }
+];
+P.REC = ['g6','i1','g1']; /* recommended first contacts, in order */
+P.TRACK = [
+  { name:'Drone industry alliance', stage:'Contacted', next:'Intro meeting held, debrief due', due:'Yesterday', st:'sup' },
+  { name:'MND Armaments Bureau', stage:'Contacted', next:'Pre-tender briefing requested', due:'Nov 4', st:'sup' },
+  { name:'Kestrel Dual-Use Fund', stage:'Met', next:'Send dossier summary', due:'Nov 2', st:'sup' },
+  { name:'NCC (spectrum)', stage:'Found', next:'File spectrum pre-consultation', due:'Nov 8', st:'res' }
+];
+P.byId = {}; P.NODES.forEach(function(n){ P.byId[n.id]=n; });
+P.teamById = {}; P.TEAM.forEach(function(t){ P.teamById[t.id]=t; });
+P.band = function(v){ return v>=75?'High':v>=50?'Medium':'Low'; };
+P.conf = function(src){ return src>=6?'High':src>=3?'Moderate':'Thin'; };
+P.signed = function(v){ return (v>0?'+':v<0?'−':'±')+Math.abs(v); };
+P.dots = function(s){ return s>=3?'●●●':s===2?'●●○':'●○○'; };
+P.tiesFor = function(org){ return P.TIES.filter(function(t){return t.org===org;}); };
+P.memberTies = function(m){ return P.TIES.filter(function(t){return t.m===m;}); };
+P.warmPath = function(org){
+  var path=null;
+  P.TIES.forEach(function(t){ P.EDGES.forEach(function(e){
+    var other = e[0]===org?e[1]:(e[1]===org?e[0]:null);
+    if(other && other===t.org && (!path || t.s>path.tie.s)) path={tie:t, via:other};
+  });});
+  return path;
+};
+P.first = function(m){ return P.teamById[m].name.split(' ')[0]; };
+P.draft = function(m, contact, orgName, viaName){
+  return 'Hi '+P.first(m)+', could you introduce me to your '+contact.toLowerCase()+(viaName?' at '+viaName+', and ask whether they can connect us with '+orgName:' at '+orgName)+'?\n\nContext: we are entering Taiwan with counter-drone sensors that cover the 5.1 GHz detection gap. A 20-minute intro call is all I am asking for. I can send a short brief they can forward.';
+};
+P.esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+window.P = P;
+</script>
+<script>
+/* Simplified Taiwan coastline (lon, lat) for chartlets. Hand-traced, about 5 km accuracy;
+   good enough for a sketch map, not for navigation. */
+P.COAST = [[121.51,25.30],[121.60,25.26],[121.74,25.15],[121.85,25.10],[122.00,25.01],[121.92,24.90],[121.83,24.80],[121.80,24.70],[121.86,24.60],[121.83,24.45],[121.75,24.30],[121.66,24.10],[121.60,23.95],[121.53,23.70],[121.47,23.45],[121.40,23.20],[121.30,23.00],[121.17,22.78],[121.00,22.60],[120.90,22.35],[120.87,22.10],[120.84,21.92],[120.75,21.95],[120.70,22.05],[120.62,22.30],[120.45,22.48],[120.30,22.60],[120.22,22.80],[120.14,23.00],[120.10,23.20],[120.13,23.45],[120.20,23.70],[120.32,23.95],[120.42,24.15],[120.55,24.35],[120.70,24.60],[120.88,24.80],[121.00,24.95],[121.12,25.05],[121.30,25.12],[121.42,25.18]];
+/* Places named in the sample data only; stakeholders without an address are not placed. */
+P.PORTS = [
+  { name:'Keelung', lon:121.74, lat:25.13, rot:90 },
+  { name:'Taoyuan', lon:121.12, lat:25.05, rot:38 },
+  { name:'Hsinchu', lon:120.92, lat:24.82, rot:30 },
+  { name:'Taichung', lon:120.52, lat:24.27, rot:22 },
+  { name:'Kaohsiung', lon:120.28, lat:22.62, rot:-8 },
+  { name:'Hualien', lon:121.61, lat:23.98, rot:-170 }
+];
+P.PLACED = [
+  { id:'e1', lon:121.62, lat:25.055, where:'Taipei Nangang', dx:8, dy:-10, a:'start' },
+  { id:'l2', lon:121.50, lat:25.03, where:'Taipei', dx:-8, dy:-9, a:'end' },
+  { id:'i5', lon:121.25, lat:24.95, where:'Taoyuan', dx:-9, dy:12, a:'end' },
+  { id:'i3', lon:120.68, lat:24.15, where:'Taichung', dx:9, dy:4, a:'start' }
+];
+P.chartProj = function (b, w, h) {
+  var c = 0.914; /* cos 24°: keeps the island's proportions */
+  var k = Math.min(w / ((b.lon1 - b.lon0) * c), h / (b.lat1 - b.lat0));
+  var ox = (w - (b.lon1 - b.lon0) * c * k) / 2, oy = (h - (b.lat1 - b.lat0) * k) / 2;
+  return function (lon, lat) { return [ox + (lon - b.lon0) * c * k, oy + (b.lat1 - lat) * k]; };
+};
+P.coastPath = function (pr) {
+  return 'M' + P.COAST.map(function (c) { var p = pr(c[0], c[1]); return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join('L') + 'Z';
+};
+</script>
+<script>
+/* Signal-flag stance marks, after the International Code of Signals:
+   supportive = blue with a white centre (flag P), resistant = red with a white saltire,
+   neutral = navy and white chequer, event = yellow diamond (flag Q, turned).
+   Contact first = flag O (red and yellow halves), flown beside the stakeholder. */
+var T = {
+  mark: function (st, r) {
+    var s = r * 0.95, x = -s, w = 2 * s, ve = ' vector-effect="non-scaling-stroke"', out = '';
+    if (st === 'evt') {
+      var d = r * 0.78;
+      return '<rect class="f-yellow" x="' + (-d).toFixed(1) + '" y="' + (-d).toFixed(1) + '" width="' + (2 * d).toFixed(1) + '" height="' + (2 * d).toFixed(1) + '" transform="rotate(45)"/><rect class="mk" x="' + (-d).toFixed(1) + '" y="' + (-d).toFixed(1) + '" width="' + (2 * d).toFixed(1) + '" height="' + (2 * d).toFixed(1) + '" transform="rotate(45)"' + ve + '/>';
+    }
+    if (st === 'sup') out = '<rect class="f-blue" x="' + x.toFixed(1) + '" y="' + x.toFixed(1) + '" width="' + w.toFixed(1) + '" height="' + w.toFixed(1) + '"/><rect class="f-white" x="' + (-s * 0.42).toFixed(1) + '" y="' + (-s * 0.42).toFixed(1) + '" width="' + (s * 0.84).toFixed(1) + '" height="' + (s * 0.84).toFixed(1) + '"/>';
+    else if (st === 'res') out = '<rect class="f-red" x="' + x.toFixed(1) + '" y="' + x.toFixed(1) + '" width="' + w.toFixed(1) + '" height="' + w.toFixed(1) + '"/><path d="M' + x.toFixed(1) + ',' + x.toFixed(1) + 'L' + s.toFixed(1) + ',' + s.toFixed(1) + 'M' + s.toFixed(1) + ',' + x.toFixed(1) + 'L' + x.toFixed(1) + ',' + s.toFixed(1) + '" stroke="#FFFFFF" stroke-width="' + (s * 0.38).toFixed(1) + '"/>';
+    else out = '<rect class="f-white" x="' + x.toFixed(1) + '" y="' + x.toFixed(1) + '" width="' + w.toFixed(1) + '" height="' + w.toFixed(1) + '"/><rect class="f-navy" x="' + x.toFixed(1) + '" y="' + x.toFixed(1) + '" width="' + s.toFixed(1) + '" height="' + s.toFixed(1) + '"/><rect class="f-navy" x="0" y="0" width="' + s.toFixed(1) + '" height="' + s.toFixed(1) + '"/>';
+    return out + '<rect class="mk" x="' + x.toFixed(1) + '" y="' + x.toFixed(1) + '" width="' + w.toFixed(1) + '" height="' + w.toFixed(1) + '"' + ve + '/>';
+  },
+  rec: function (k, r) {
+    var x = r + 3, y = -r - 12, a = 9;
+    return '<line x1="' + x + '" y1="' + y + '" x2="' + x + '" y2="' + (-r + 2) + '" stroke="#101A3A" stroke-width="1.2"/><path class="f-red" d="M' + x + ',' + y + 'h' + a + 'v' + a + 'z"/><path class="f-yellow" d="M' + x + ',' + y + 'v' + a + 'h' + a + 'z"/><rect x="' + x + '" y="' + y + '" width="' + a + '" height="' + a + '" fill="none" stroke="#101A3A" stroke-width=".8"/>';
+  },
+  edgeOpacity: 0.18, nodeBase: 4.6, nodeScale: 0.075,
+  /* PORTOLAN spelled in International Code of Signals flags */
+  hoist: function () {
+    var B = '#1747C9', R = '#D7262E', Y = '#F6C90E', N = '#101A3A', W = '#FFFFFF', w = 30, h = 22, g = 6, out = '';
+    var F = {
+      P: '<rect width="30" height="22" fill="' + B + '"/><rect x="10" y="7" width="10" height="8" fill="' + W + '"/>',
+      O: '<path d="M0,0H30V22Z" fill="' + R + '"/><path d="M0,0V22H30Z" fill="' + Y + '"/>',
+      R: '<rect width="30" height="22" fill="' + R + '"/><rect x="12" width="6" height="22" fill="' + Y + '"/><rect y="8" width="30" height="6" fill="' + Y + '"/>',
+      T: '<rect width="10" height="22" fill="' + R + '"/><rect x="10" width="10" height="22" fill="' + W + '"/><rect x="20" width="10" height="22" fill="' + B + '"/>',
+      L: '<rect width="15" height="11" fill="' + Y + '"/><rect x="15" width="15" height="11" fill="' + N + '"/><rect y="11" width="15" height="11" fill="' + N + '"/><rect x="15" y="11" width="15" height="11" fill="' + Y + '"/>',
+      A: '<path d="M0,0H15V22H0Z" fill="' + W + '"/><path d="M15,0H30L22,11L30,22H15Z" fill="' + B + '"/>',
+      N: (function () { var c = ''; for (var i = 0; i < 4; i++) for (var j = 0; j < 4; j++) c += '<rect x="' + i * 7.5 + '" y="' + j * 5.5 + '" width="7.5" height="5.5" fill="' + ((i + j) % 2 ? W : B) + '"/>'; return c; })()
+    };
+    'PORTOLAN'.split('').forEach(function (ch, i) {
+      var x = i * (w + g);
+      out += '<g transform="translate(' + x + ',4)"><title>' + ch + '</title>' + F[ch] + '<path d="' + (ch === 'A' ? 'M0,0H30L22,11L30,22H0Z' : 'M0,0H30V22H0Z') + '" fill="none" stroke="' + N + '" stroke-width="1"/></g>';
+    });
+    var tot = 8 * (w + g) - g;
+    return '<svg viewBox="-2 0 ' + (tot + 4) + ' 30" role="img" aria-label="Portolan spelled in signal flags"><line x1="-2" y1="2" x2="' + (tot + 2) + '" y2="2" stroke="' + N + '" stroke-width="1.5"/>' + out + '</svg>';
+  },
+  legendExtra: '<li><svg viewBox="-1 -1 12 12" aria-hidden="true"><path class="f-red" d="M0,0h10v10z"/><path class="f-yellow" d="M0,0v10h10z"/><rect width="10" height="10" fill="none" stroke="#101A3A" stroke-width=".8"/></svg>Flag beside = contact first</li>'
+};
+</script>
+<script>
+/* Home screen behaviour shared by every direction. Markup hooks:
+   [data-refresh] [data-refreshed] [data-form-toggle] [data-form] [data-progress]
+   [data-dossier] [data-conf-toggle] [data-conf-panel] */
+(function () {
+  function all(s) { return Array.prototype.slice.call(document.querySelectorAll(s)); }
+  all('[data-refresh]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (b.getAttribute('aria-busy') === 'true') return;
+      b.setAttribute('aria-busy', 'true');
+      all('[data-refreshed]').forEach(function (el) { el.textContent = 'refreshing…'; });
+      setTimeout(function () {
+        b.setAttribute('aria-busy', 'false');
+        all('[data-refreshed]').forEach(function (el) { el.textContent = 'just now'; });
+      }, 1400);
+    });
+  });
+  all('[data-form-toggle]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var f = document.querySelector('[data-form]');
+      var open = f.hasAttribute('hidden');
+      if (open) f.removeAttribute('hidden'); else f.setAttribute('hidden', '');
+      all('[data-form-toggle]').forEach(function (x) { x.textContent = open ? 'Close' : '+ New dossier'; x.setAttribute('aria-expanded', open); });
+      if (open) { var i = f.querySelector('input'); if (i) i.focus(); }
+    });
+  });
+  all('[data-dossier]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      all('[data-dossier]').forEach(function (x) { x.setAttribute('aria-pressed', x === b); });
+    });
+  });
+  all('[data-conf-toggle]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var p = document.querySelector('[data-conf-panel]');
+      var open = p.hasAttribute('hidden');
+      if (open) p.removeAttribute('hidden'); else p.setAttribute('hidden', '');
+      b.setAttribute('aria-expanded', open);
+    });
+  });
+  var form = document.querySelector('[data-form]');
+  if (form) form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var bad = null;
+    Array.prototype.forEach.call(form.querySelectorAll('[required]'), function (i) {
+      var ok = i.value.trim() && (i.type !== 'email' || /.+@.+\..+/.test(i.value));
+      i.setAttribute('aria-invalid', ok ? 'false' : 'true');
+      if (!ok && !bad) bad = i;
+    });
+    var err = form.querySelector('[data-form-error]');
+    if (bad) { if (err) { err.hidden = false; err.textContent = 'Fill in ' + bad.getAttribute('data-name') + ' to start research.'; } bad.focus(); return; }
+    if (err) err.hidden = true;
+    var btn = form.querySelector('[type=submit]');
+    btn.disabled = true; btn.textContent = 'Research running';
+    var list = document.querySelector('[data-progress]');
+    if (!list) return;
+    list.hidden = false; list.innerHTML = '';
+    var company = form.querySelector('[name=company]').value.trim();
+    var steps = [
+      'Queued research for ' + company + ' (preview only; no request is sent)',
+      'Reading procurement gazette notices',
+      'Source found: Drone procurement policy notice (A2)',
+      'Stakeholder found: MND Armaments Bureau, 2 sources',
+      'Source found: Committee meeting agenda (A1)',
+      'Stakeholder found: Defense Committee, 1 source',
+      'We will email the dossier link when all sources are checked'
+    ];
+    steps.forEach(function (s, i) {
+      setTimeout(function () { var li = document.createElement('li'); li.textContent = s; list.appendChild(li); }, 500 + i * 700);
+    });
+  });
+})();
+</script>
+<script>
+/* Taiwan chartlet on the home screen: rhumb lines from a compass rose, coastline with shoal
+   bands, port names written perpendicular to the coast, and the stakeholders that have an address. */
+(function () {
+  function roseSvg(x, y, r) {
+    var s = '<g class="rose" transform="translate(' + x.toFixed(1) + ',' + y.toFixed(1) + ')"><circle r="' + r + '" class="rose-ring"/><circle r="' + (r * 0.82) + '" class="rose-ring thin"/>';
+    for (var i = 0; i < 16; i++) {
+      var a = i * Math.PI / 8 - Math.PI / 2, len = i % 4 === 0 ? r : i % 2 === 0 ? r * 0.7 : r * 0.48, w = i % 4 === 0 ? r * 0.12 : r * 0.07;
+      var tx = Math.cos(a) * len, ty = Math.sin(a) * len, px = Math.cos(a + Math.PI / 2) * w, py = Math.sin(a + Math.PI / 2) * w;
+      s += '<path class="' + (i % 2 ? 'pt-l' : 'pt') + '" d="M' + px.toFixed(1) + ',' + py.toFixed(1) + 'L' + tx.toFixed(1) + ',' + ty.toFixed(1) + 'L' + (-px).toFixed(1) + ',' + (-py).toFixed(1) + 'Z"/>';
+    }
+    return s + '<text class="rose-n" y="' + (-r - 5) + '" text-anchor="middle">N</text></g>';
+  }
+  function chartlet(svg, b, w, h, opts) {
+    if (!svg) return;
+    var pr = P.chartProj(b, w, h), e = P.esc, rose = pr(opts.rose[0], opts.rose[1]), out = '';
+    svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+    out += (T.defs || '') + '<defs><clipPath id="clip-' + svg.id + '"><rect width="' + w + '" height="' + h + '"/></clipPath></defs><g clip-path="url(#clip-' + svg.id + ')">';
+    for (var i = 0; i < 32; i++) {
+      var a = i * Math.PI / 16, L = Math.max(w, h) * 1.6;
+      out += '<line class="rhumb' + (i % 4 === 0 ? ' main' : '') + '" x1="' + rose[0].toFixed(1) + '" y1="' + rose[1].toFixed(1) + '" x2="' + (rose[0] + Math.cos(a) * L).toFixed(1) + '" y2="' + (rose[1] + Math.sin(a) * L).toFixed(1) + '"/>';
+    }
+    var d = P.coastPath(pr);
+    out += '<path class="shoal1" d="' + d + '"/><path class="shoal2" d="' + d + '"/><path class="land" d="' + d + '"/>';
+    P.PORTS.forEach(function (p) {
+      if (p.lat < b.lat0 || p.lat > b.lat1) return;
+      var q = pr(p.lon, p.lat);
+      out += '<circle class="port" cx="' + q[0].toFixed(1) + '" cy="' + q[1].toFixed(1) + '" r="1.8"/><text class="portname" transform="translate(' + q[0].toFixed(1) + ',' + q[1].toFixed(1) + ') rotate(' + p.rot + ')" x="5" dy="0.35em">' + p.name + '</text>';
+    });
+    out += roseSvg(rose[0], rose[1], opts.roseR);
+    P.PLACED.forEach(function (s) {
+      var n = P.byId[s.id], q = pr(s.lon, s.lat);
+      out += '<g transform="translate(' + q[0].toFixed(1) + ',' + q[1].toFixed(1) + ')">' + T.mark(n.st, 6.5) + '<text class="mark-l" x="' + s.dx + '" y="' + s.dy + '" text-anchor="' + s.a + '">' + e(n.short) + '</text></g>';
+    });
+    svg.innerHTML = out + '</g>';
+  }
+  chartlet(document.getElementById('chart-small'), { lon0: 119.7, lon1: 122.2, lat0: 24.0, lat1: 25.45 }, 354, 226, { rose: [120.2, 24.72], roseR: 30 });
+  chartlet(document.getElementById('chart-big'), { lon0: 119.0, lon1: 122.4, lat0: 21.75, lat1: 25.5 }, 600, 760, { rose: [119.75, 24.6], roseR: 46 });
+})();
+</script>
+<script>if (T.hoist) document.getElementById('hoist').innerHTML = T.hoist();</script>
+</body>
+</html>
