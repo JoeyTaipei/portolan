@@ -53,3 +53,8 @@
 - 一次一個垂直切片，做完就 commit；每個切片一條分支和一個 PR，不要自己合併
 - 指令：開發 npm run dev（第二個 worktree 用 PORT=3001 npm run dev）；單元測試 npm test（Vitest）；端到端 npx playwright test；建置 npm run build
 - 查函式庫用法先讀官方文件，不要憑記憶
+- 只做這個切片在 docs/plan.md 列的事：只改列出的檔案；不加計畫外的功能、工具函式或套件；不改 migration 和 src/lib/types.ts，除非計畫寫了；要越界先停下來問
+- 完成的定義：npm test、npm run build 通過，/verify-ui 走過、瀏覽器 console 沒有錯誤
+- 修 bug：先寫一個會失敗的測試重現它，再修到通過
+- 回報最多 3 行：改了哪些檔案、測試結果、要我看的頁面
+- 我糾正你一次，就把那條規則用一句話加進這個檔案；這個檔案保持在 80 行以內
