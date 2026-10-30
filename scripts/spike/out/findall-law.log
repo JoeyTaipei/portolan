@@ -1,0 +1,13 @@
+[budget] findall:law:base:8: est $0.490 (running total $2.940)
+created findall_2f937a48caa1421083f0f8908df53b9e
+1s queued generated=0 matched=0
+22s running generated=0 matched=0
+42s running generated=5 matched=0
+63s running generated=5 matched=0
+83s running generated=5 matched=2
+104s running generated=5 matched=2
+125s running generated=8 matched=3
+145s running generated=9 matched=6
+166s running generated=9 matched=6
+187s completed generated=10 matched=8
+[saved] scripts/spike/out/findall-law-base.json

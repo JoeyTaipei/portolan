@@ -1,0 +1,787 @@
+{
+  "processor": "pro",
+  "wall_s": 203,
+  "run": {
+    "run_id": "trun_a92392881b3e40ddbc4e6f2ba8ad5794",
+    "interaction_id": "trun_a92392881b3e40ddbc4e6f2ba8ad5794",
+    "status": "completed",
+    "is_active": false,
+    "warnings": [
+      {
+        "type": "spec_validation_warning",
+        "message": "This task may be too complex for pro processor. Consider using https://platform.parallel.ai/play to optimize your task schema.",
+        "detail": {
+          "documentation_url": "https://docs.parallel.ai/task-api/guides/specify-a-task",
+          "recommended_max_properties": 20,
+          "total_properties": 27
+        }
+      },
+      {
+        "type": "warning",
+        "message": "enable_events unset for pro. Setting to true by default. Consider setting to false explicitly if you do not want to track events for streaming."
+      }
+    ],
+    "processor": "pro",
+    "metadata": {
+      "spike": "0001-taiwan-uas"
+    },
+    "created_at": "2026-10-30T04:09:29.075889Z",
+    "modified_at": "2026-10-30T04:12:43.041628Z"
+  },
+  "result": {
+    "run": {
+      "run_id": "trun_a92392881b3e40ddbc4e6f2ba8ad5794",
+      "interaction_id": "trun_a92392881b3e40ddbc4e6f2ba8ad5794",
+      "status": "completed",
+      "is_active": false,
+      "warnings": [
+        {
+          "type": "spec_validation_warning",
+          "message": "This task may be too complex for pro processor. Consider using https://platform.parallel.ai/play to optimize your task schema.",
+          "detail": {
+            "documentation_url": "https://docs.parallel.ai/task-api/guides/specify-a-task",
+            "recommended_max_properties": 20,
+            "total_properties": 27
+          }
+        },
+        {
+          "type": "warning",
+          "message": "enable_events unset for pro. Setting to true by default. Consider setting to false explicitly if you do not want to track events for streaming."
+        }
+      ],
+      "processor": "pro",
+      "metadata": {
+        "spike": "0001-taiwan-uas"
+      },
+      "created_at": "2026-10-30T04:09:29.075889Z",
+      "modified_at": "2026-10-30T04:12:43.041628Z"
+    },
+    "output": {
+      "basis": [
+        {
+          "field": "events",
+          "citations": [
+            {
+              "title": "Taipei Aerospace & Defense Technology Exhibition",
+              "url": "https://www.tadte.com.tw/en/index.html",
+              "excerpts": [
+                "Open date: September 23 - 25, 2027",
+                "Taipei Nangang Exhibition Center, Hall 1 (TaiNEX 1) (No.1, Jingmao 2nd Rd., Nangang District, Taipei, Taiwan)"
+              ]
+            }
+          ],
+          "reasoning": "The official exhibition page establishes the 2027 dates and venue. The networking recommendation is an assessment; individual stakeholder attendance has not been confirmed. Only one sufficiently verified event is included.",
+          "confidence": "medium"
+        },
+        {
+          "field": "investors",
+          "citations": [],
+          "reasoning": "The portfolio company's financing announcement identifies all five investors in a Taiwanese counter-UAS company. Evidence is historical, from May 2024, and does not establish current mandates or individual cheque sizes.",
+          "confidence": "medium"
+        },
+        {
+          "field": "law_firms",
+          "citations": [
+            {
+              "title": "International Trade - Lee and Li, Attorneys-at-Law",
+              "url": "https://www.leeandli.com/EN/Specialty/219",
+              "excerpts": [
+                "Advise on export control/restriction laws and regulations"
+              ]
+            },
+            {
+              "title": "Foreign Investment|Expertise|Tsar & Tsai Law Firm",
+              "url": "https://www.tsartsai.com.tw/service@444ffb30-fe70-43db-a64f-f8a2c5015c1a?lang=en",
+              "excerpts": [
+                "The Firm also prepares all pertinent documentation, and provides explanations and guidance on the government’s approval process."
+              ]
+            }
+          ],
+          "reasoning": "The firms' own practice pages expressly describe export-control work and foreign-investment approval assistance, respectively.",
+          "confidence": "high"
+        },
+        {
+          "field": "stakeholders",
+          "citations": [
+            {
+              "title": "\n\tLegislature passes drone procurement bill with US$7.56 billion spending cap (update) - Focus Taiwan\n",
+              "url": "https://focustaiwan.tw/politics/202608270021",
+              "excerpts": [
+                "27 (CNA) The Legislative Yuan on Thursday passed a key budget bill that prioritizes the procurement of indigenous unmanned vehicles, setting a spending cap of NT$240 billion (US$7.56 billion) in"
+              ]
+            },
+            {
+              "title": "Tron Future Tech secures order for anti-drone systems and becomes Taiwan’s largest supplier of C-UAS solutions  | Tron Future 創未來科技",
+              "url": "https://www.tronfuture.com/news/tron-future-tech-secures-military-antidrone-order",
+              "excerpts": [
+                "The advanced anti-drone systems feature a 4D hybrid beamforming Active Electronically Scanned Array (AESA) radar, a passive RF detector, and a jammer, offering a customizable detection range of up to 6 kilometers."
+              ]
+            }
+          ],
+          "reasoning": "The map combines buyers, oversight bodies, regulators, research organizations, industry participants and investment-network contacts. The reported domestic-only police procurement is a material market-access constraint. Stances and recommended actions are explicitly analytical. The NCC entry lacks a verified 2025–2026 action, and several secondary contacts are supported only by delegation participation or an investment record.",
+          "confidence": "medium"
+        },
+        {
+          "field": "events.0",
+          "citations": [
+            {
+              "title": "Taipei Aerospace & Defense Technology Exhibition",
+              "url": "https://www.tadte.com.tw/en/index.html",
+              "excerpts": [
+                "Open date: September 23 - 25, 2027",
+                "Taipei Nangang Exhibition Center, Hall 1 (TaiNEX 1) (No.1, Jingmao 2nd Rd., Nangang District, Taipei, Taiwan)"
+              ]
+            }
+          ],
+          "reasoning": "Official dates and venue are explicit; networking value is assessed rather than confirmed attendance.",
+          "confidence": "medium"
+        },
+        {
+          "field": "investors.0",
+          "citations": [
+            {
+              "title": "Tron Future completes Series A round, targets rapidly growing global counter-drone demand  | Tron Future 創未來科技",
+              "url": "https://www.tronfuture.com/news/taiwanese-c-uas-startup-completes-series-a-funding-round",
+              "excerpts": [
+                "US$32.4 million) in a Series A funding round led by the government-backed Taiwania Capital and the CID Group, and joined by Industrial Technology Investment Corp."
+              ]
+            }
+          ],
+          "reasoning": "Identifies government-backed Taiwania as a Series A co-lead; current appetite is not established.",
+          "confidence": "medium"
+        },
+        {
+          "field": "investors.1",
+          "citations": [
+            {
+              "title": "Tron Future completes Series A round, targets rapidly growing global counter-drone demand  | Tron Future 創未來科技",
+              "url": "https://www.tronfuture.com/news/taiwanese-c-uas-startup-completes-series-a-funding-round",
+              "excerpts": [
+                "US$32.4 million) in a Series A funding round led by the government-backed Taiwania Capital and the CID Group, and joined by Industrial Technology Investment Corp."
+              ]
+            }
+          ],
+          "reasoning": "Identifies CID Group as a co-lead of the counter-UAS company's financing.",
+          "confidence": "medium"
+        },
+        {
+          "field": "investors.2",
+          "citations": [],
+          "reasoning": "Names ITIC and identifies its ITRI affiliation; no individual investment amount is established.",
+          "confidence": "medium"
+        },
+        {
+          "field": "investors.3",
+          "citations": [
+            {
+              "title": "Tron Future completes Series A round, targets rapidly growing global counter-drone demand  | Tron Future 創未來科技",
+              "url": "https://www.tronfuture.com/news/taiwanese-c-uas-startup-completes-series-a-funding-round",
+              "excerpts": [
+                "(ITRI’s venture capital), Taya Venture, and Taiwan Cooperative Venture Capital."
+              ]
+            }
+          ],
+          "reasoning": "Names Taya Venture among participants; broader mandate and current activity are not established.",
+          "confidence": "medium"
+        },
+        {
+          "field": "investors.4",
+          "citations": [
+            {
+              "title": "Tron Future completes Series A round, targets rapidly growing global counter-drone demand  | Tron Future 創未來科技",
+              "url": "https://www.tronfuture.com/news/taiwanese-c-uas-startup-completes-series-a-funding-round",
+              "excerpts": [
+                "(ITRI’s venture capital), Taya Venture, and Taiwan Cooperative Venture Capital."
+              ]
+            }
+          ],
+          "reasoning": "Names Taiwan Cooperative Venture Capital among participants in the financing.",
+          "confidence": "medium"
+        },
+        {
+          "field": "law_firms.0",
+          "citations": [
+            {
+              "title": "International Trade - Lee and Li, Attorneys-at-Law",
+              "url": "https://www.leeandli.com/EN/Specialty/219",
+              "excerpts": [
+                "Advise on export control/restriction laws and regulations",
+                "Assist implementation and applications for ICP (Internal Compliance Programs)",
+                "Advise on import/export procedures and requirements"
+              ]
+            }
+          ],
+          "reasoning": "The firm's official page directly lists these services.",
+          "confidence": "high"
+        },
+        {
+          "field": "law_firms.1",
+          "citations": [
+            {
+              "title": "Foreign Investment|Expertise|Tsar & Tsai Law Firm",
+              "url": "https://www.tsartsai.com.tw/service@444ffb30-fe70-43db-a64f-f8a2c5015c1a?lang=en",
+              "excerpts": [
+                "With the client’s business objectives in sight, the Firm provides advice on joint ventures and on the formation of branches, subsidiaries, and other ways of establishing an ROC presence, such as liaison and representative offices, as well as on franchising, trademark licensing, and technology transfers.",
+                "The Firm also prepares all pertinent documentation, and provides explanations and guidance on the government’s approval process.",
+                "The Firm actively represents clients before administrative agencies and also has considerable experience in advising on matters relating to procurement by the ROC government from foreign contractors."
+              ]
+            }
+          ],
+          "reasoning": "The official practice page documents formation, approval and administrative-representation services.",
+          "confidence": "high"
+        },
+        {
+          "field": "stakeholders.0",
+          "citations": [],
+          "reasoning": "The dated ministerial statement supports conditional openness to foreign technology; the proposed approach is an assessment.",
+          "confidence": "medium"
+        },
+        {
+          "field": "stakeholders.1",
+          "citations": [],
+          "reasoning": "The report supplies the procurement date context, quantity, domestic-bidder restriction and system scope. It is a news report, not the tender itself.",
+          "confidence": "medium"
+        },
+        {
+          "field": "stakeholders.2",
+          "citations": [],
+          "reasoning": "The report distinguishes NCSIST's project/evaluation responsibilities from prohibited bidder participation.",
+          "confidence": "medium"
+        },
+        {
+          "field": "stakeholders.3",
+          "citations": [
+            {
+              "title": "\n\tLegislature passes drone procurement bill with US$7.56 billion spending cap (update) - Focus Taiwan\n",
+              "url": "https://focustaiwan.tw/politics/202608270021",
+              "excerpts": [
+                "08/27/2026 09:31 PM",
+                "27 (CNA) The Legislative Yuan on Thursday passed a key budget bill that prioritizes the procurement of indigenous unmanned vehicles, setting a spending cap of NT$240 billion (US$7.56 billion) in",
+                "Cabinet spokesperson Michelle Lee (李慧芝) said although the Cabinet's proposal failed to pass, it would \"do its utmost\" to plan unmanned systems"
+              ]
+            }
+          ],
+          "reasoning": "The report documents the indigenous-procurement legislation and Cabinet response; implications for a foreign supplier are analytical.",
+          "confidence": "medium"
+        },
+        {
+          "field": "stakeholders.4",
+          "citations": [],
+          "reasoning": "The report identifies the committee's joint legislative review; it does not establish a position on this supplier.",
+          "confidence": "medium"
+        },
+        {
+          "field": "stakeholders.5",
+          "citations": [],
+          "reasoning": "The same report establishes Finance Committee involvement in the dated joint review.",
+          "confidence": "medium"
+        },
+        {
+          "field": "stakeholders.6",
+          "citations": [],
+          "reasoning": "The ministry's announcement establishes the date and expansion of experimental spectrum locations; applicability to this radar requires separate confirmation.",
+          "confidence": "medium"
+        },
+        {
+          "field": "stakeholders.7",
+          "citations": [
+            {
+              "title": "\n\t遙控無人機管理規則 - 交通部民用航空局\n",
+              "url": "https://www.caa.gov.tw/article.aspx?a=4187&lang=1",
+              "excerpts": [
+                "\"[雜湊值驗證] (另開新視窗)\") |[遙控無人機管理規則第13條第3項.pdf 檔案大小： **650 KB** 下載次數： **913** 最後更新日期： **2024/06/25**](https://www.caa.gov.tw/FileAtt.ashx?lang=1&id=35274 \"遙控無人機管理規則第13條第3項.pdf\") |\n\n最後更新日期： 2025/07/22 15:03\n\n開啟網站導覽 關閉網站導覽\n\n* [焦點訊息](https://www.caa.gov.tw/article.aspx?a=158&lang=1 \"焦點訊息\")\n  \n    + [即時新聞](https://www.caa.gov.tw/article.aspx?a=165&lang=1 \"即時新聞\")"
+              ]
+            }
+          ],
+          "reasoning": "The official page identifies the regulations and update date; the answer carefully avoids calling the update a substantive amendment.",
+          "confidence": "medium"
+        },
+        {
+          "field": "stakeholders.8",
+          "citations": [
+            {
+              "title": "法規命令公告-NCC",
+              "url": "https://www.ncc.gov.tw/chncc/app/data/view?id=59&module=commonMessage11&serno=51115_538_news",
+              "excerpts": [
+                "( 四 ) 限制行動通訊或限制遙控無人機之無線發射或收發設備。\n\n( 五 ) 其他應經核准使用頻率之無線發射或收發設備。\n\n二、第二級電信管制射頻器材：\n\n( 一 ) 無線電信終端設備。\n\n( 二 ) 有線電話無線主副機。\n\n( 三 ) 天線直徑三公尺以下之固定衛星地球電臺。\n\n( 四 ) 行動衛星地球電臺。",
+                "* [\\- 專用電信業務](https://www.ncc.gov.tw/chncc/app/folder/23 \"專用電信業務\")\n* [\\- 災害防救業務](https://www.ncc.gov.tw/chncc/app/customize/dataEgov/list?id=982 \"災害防救業務\")\n* [\\- 人民申請案件處理期間表](https://www.ncc.gov.tw/chncc/menuDoc/925 \"下載(pdf)\")\n* [\\- 申請案件進度查詢](https://docqry.ncc.gov.tw/ \"業務申請案件進度查詢(開啟新視窗)\")\n* [\\- 申請文件總覽](https://www.ncc.gov.tw/chncc/app/folder/897 \"申請文件總覽\")\n* [\\- 常見問答](https://www.ncc.gov.tw/chncc/app/data/list?id=896 \"常見問答\")\n\n澄清＆施政公告\n\n* [\\- 公告訊息](https://www.ncc.gov.tw/chncc/app/folder/13 \"公告訊息\")"
+              ]
+            }
+          ],
+          "reasoning": "The official notice supports RF-control relevance, but a qualifying recent date was not established and is explicitly marked unavailable.",
+          "confidence": "low"
+        },
+        {
+          "field": "stakeholders.9",
+          "citations": [],
+          "reasoning": "AIDC's dated release documents ministry involvement in the Japan Drone delegation; support for this particular pilot is inferred, not stated.",
+          "confidence": "medium"
+        },
+        {
+          "field": "stakeholders.10",
+          "citations": [],
+          "reasoning": "The dated release identifies foreign-affairs participation and the drone diplomacy team.",
+          "confidence": "medium"
+        },
+        {
+          "field": "stakeholders.11",
+          "citations": [],
+          "reasoning": "The release establishes participation, not a specific funding mechanism or procurement commitment.",
+          "confidence": "medium"
+        },
+        {
+          "field": "stakeholders.12",
+          "citations": [],
+          "reasoning": "AIDC's release places the company in the delegation; its proposed integration role is a prospecting assessment.",
+          "confidence": "medium"
+        },
+        {
+          "field": "stakeholders.13",
+          "citations": [],
+          "reasoning": "The alliance's own activity listing documents the July 2026 UK cooperation memorandum.",
+          "confidence": "medium"
+        },
+        {
+          "field": "stakeholders.14",
+          "citations": [],
+          "reasoning": "The dated release identifies Thunder Tiger's participation and alliance role; willingness to support a sensor pilot is unconfirmed.",
+          "confidence": "medium"
+        },
+        {
+          "field": "stakeholders.15",
+          "citations": [],
+          "reasoning": "The release supports company participation; technical-partner suitability remains an assessment.",
+          "confidence": "medium"
+        },
+        {
+          "field": "stakeholders.16",
+          "citations": [],
+          "reasoning": "The dated participation supports relevance to the drone ecosystem, not an established counter-UAS testing offer.",
+          "confidence": "medium"
+        },
+        {
+          "field": "stakeholders.17",
+          "citations": [],
+          "reasoning": "Participation is sourced; software integration suitability is a proposed avenue requiring confirmation.",
+          "confidence": "medium"
+        },
+        {
+          "field": "stakeholders.18",
+          "citations": [],
+          "reasoning": "The release identifies the aerospace association in the delegation; the full local formal name was not established and is left null.",
+          "confidence": "medium"
+        },
+        {
+          "field": "stakeholders.19",
+          "citations": [],
+          "reasoning": "The association's participation is documented; the full local formal name and a foreign-supplier stance were not established.",
+          "confidence": "medium"
+        },
+        {
+          "field": "stakeholders.20",
+          "citations": [
+            {
+              "title": "Tron Future Tech secures order for anti-drone systems and becomes Taiwan’s largest supplier of C-UAS solutions  | Tron Future 創未來科技",
+              "url": "https://www.tronfuture.com/news/tron-future-tech-secures-military-antidrone-order",
+              "excerpts": [
+                "Jan 16, 2025",
+                "Tron Future Tech secures order for anti-drone systems and becomes Taiwan’s largest supplier of C-UAS solutions",
+                "The advanced anti-drone systems feature a 4D hybrid beamforming Active Electronically Scanned Array (AESA) radar, a passive RF detector, and a jammer, offering a customizable detection range of up to 6 kilometers."
+              ]
+            }
+          ],
+          "reasoning": "The company's announcement directly establishes a recent order and overlapping RF/radar products, supporting the competitive assessment.",
+          "confidence": "medium"
+        },
+        {
+          "field": "stakeholders.21",
+          "citations": [],
+          "reasoning": "The retrieved public announcement's title and dated URL support the MIRDC–Anduril MOU, but no sufficiently detailed passage was registered. Specific testing capabilities and pilot funding remain unconfirmed.",
+          "confidence": "low"
+        },
+        {
+          "field": "stakeholders.22",
+          "citations": [
+            {
+              "title": "Tracxn Private Data",
+              "url": "https://tracxn.com",
+              "excerpts": [
+                "name: Aiseed technology; website_url: https://www.aiseedtech.com/; all_funding_rounds[0].round_name: Seed; all_funding_rounds[0].amount_usd: 6000000.0; all_funding_rounds[0].round_valuation_usd: null; all_funding_rounds[0].round_date: 2025-05-06; all_funding_rounds[0].round_investor_names: Pegatron, SparkLabs Taiwan; investor_names: [Pegatron, SparkLabs Taiwan]"
+              ]
+            }
+          ],
+          "reasoning": "The funding record supplies the 6 May 2025 date, amount and investors; the public article title corroborates the financing and GPS-free drone focus. Proposed test use is analytical.",
+          "confidence": "medium"
+        },
+        {
+          "field": "stakeholders.23",
+          "citations": [
+            {
+              "title": "Tracxn Private Data",
+              "url": "https://tracxn.com",
+              "excerpts": [
+                "name: Aiseed technology; website_url: https://www.aiseedtech.com/; all_funding_rounds[0].round_name: Seed; all_funding_rounds[0].amount_usd: 6000000.0; all_funding_rounds[0].round_valuation_usd: null; all_funding_rounds[0].round_date: 2025-05-06; all_funding_rounds[0].round_investor_names: Pegatron, SparkLabs Taiwan; investor_names: [Pegatron, SparkLabs Taiwan]"
+              ]
+            }
+          ],
+          "reasoning": "The AiSeed funding record names Pegatron. A manufacturing or counter-UAS partnership with this client is not established.",
+          "confidence": "medium"
+        },
+        {
+          "field": "stakeholders.24",
+          "citations": [
+            {
+              "title": "Tracxn Private Data",
+              "url": "https://tracxn.com",
+              "excerpts": [
+                "name: Aiseed technology; website_url: https://www.aiseedtech.com/; all_funding_rounds[0].round_name: Seed; all_funding_rounds[0].amount_usd: 6000000.0; all_funding_rounds[0].round_valuation_usd: null; all_funding_rounds[0].round_date: 2025-05-06; all_funding_rounds[0].round_investor_names: Pegatron, SparkLabs Taiwan; investor_names: [Pegatron, SparkLabs Taiwan]"
+              ]
+            }
+          ],
+          "reasoning": "The funding record names SparkLabs Taiwan as an AiSeed investor, supporting an ecosystem-introduction role but not a defense-specific mandate.",
+          "confidence": "medium"
+        }
+      ],
+      "type": "json",
+      "content": {
+        "events": [
+          {
+            "why_relevant": "The most directly relevant confirmed exhibition for approaching Taiwanese defense-technology suppliers and potential system integrators. Arrange meetings around RF/radar integration and a government demonstration proposal; attendance by individual agencies has not been verified.",
+            "venue": "Taipei Nangang Exhibition Center, Hall 1 (TaiNEX 1), No. 1, Jingmao 2nd Road, Nangang District, Taipei, Taiwan",
+            "source_url": "https://www.tadte.com.tw/en/index.html",
+            "dates": "September 23–25, 2027",
+            "name": "Taipei Aerospace & Defense Technology Exhibition (TADTE) 2027"
+          }
+        ],
+        "investors": [
+          {
+            "why_relevant": "Tron Future's 21 May 2024 announcement identifies Taiwania as a co-lead of its NT$900 million Series A. Tron Future develops AESA radar and counter-UAS systems. This establishes sector investment, not a confirmed current mandate to invest in a US entrant.",
+            "type": "Government-backed venture capital",
+            "focus": "Documented Series A investment in counter-UAS, AESA radar and satellite technology; individual investment amount and current entry criteria were not established.",
+            "source_url": "https://www.tronfuture.com/news/taiwanese-c-uas-startup-completes-series-a-funding-round",
+            "name": "Taiwania Capital"
+          },
+          {
+            "why_relevant": "Named alongside Taiwania as a co-lead of Tron Future's NT$900 million Series A in the 21 May 2024 announcement. The investment provides concrete exposure to Taiwan's counter-UAS hardware sector; current investment appetite remains unconfirmed.",
+            "type": "Venture capital",
+            "focus": "Documented Series A participation in counter-UAS and AESA radar technology; individual investment amount was not disclosed in the cited announcement.",
+            "source_url": "https://www.tronfuture.com/news/taiwanese-c-uas-startup-completes-series-a-funding-round",
+            "name": "The CID Group"
+          },
+          {
+            "why_relevant": "Tron Future's 21 May 2024 announcement lists ITIC among its Series A investors and identifies it as ITRI's venture capital organization, establishing a direct counter-UAS investment.",
+            "type": "Research-institute-affiliated venture capital",
+            "focus": "Documented Series A participation in a Taiwanese counter-UAS, radar and satellite technology company; individual investment amount was not established.",
+            "source_url": "https://www.tronfuture.com/news/taiwanese-c-uas-startup-completes-series-a-funding-round",
+            "name": "Industrial Technology Investment Corporation (ITIC)"
+          },
+          {
+            "why_relevant": "Named as an investor in Tron Future's Series A in the 21 May 2024 announcement, providing concrete evidence of investment in Taiwanese counter-UAS hardware. More recent sector investments were not established.",
+            "type": "Venture capital investor",
+            "focus": "Documented Series A participation in counter-UAS and radar technology; broader sector mandate and individual investment amount were not established.",
+            "source_url": "https://www.tronfuture.com/news/taiwanese-c-uas-startup-completes-series-a-funding-round",
+            "name": "Taya Venture"
+          },
+          {
+            "why_relevant": "Listed in Tron Future's 21 May 2024 Series A announcement as an investor, establishing exposure to Taiwan's counter-UAS and AESA radar sector. Current appetite for a foreign startup was not established.",
+            "type": "Venture capital investor",
+            "focus": "Documented Series A participation in counter-UAS hardware; individual investment amount and current investment criteria were not established.",
+            "source_url": "https://www.tronfuture.com/news/taiwanese-c-uas-startup-completes-series-a-funding-round",
+            "name": "Taiwan Cooperative Venture Capital"
+          }
+        ],
+        "law_firms": [
+          {
+            "why_relevant": "Its published international-trade practice expressly covers export-control restrictions, import/export procedures and Internal Compliance Programs. Suitable for assessing Taiwan-side equipment import and trade-compliance requirements; US export-control advice should be separately scoped.",
+            "practice": "Export controls, import/export compliance and Internal Compliance Programs",
+            "source_url": "https://www.leeandli.com/EN/Specialty/219",
+            "name": "Lee and Li, Attorneys-at-Law"
+          },
+          {
+            "why_relevant": "Its published foreign-investment practice covers branches, subsidiaries, joint ventures, approval documentation and representation before administrative agencies. Relevant to choosing between a local distributor, subsidiary or other Taiwan presence before a pilot.",
+            "practice": "Foreign investment approval, entity establishment and administrative representation",
+            "source_url": "https://www.tsartsai.com.tw/service@444ffb30-fe70-43db-a64f-f8a2c5015c1a?lang=en",
+            "name": "Tsar & Tsai Law Firm"
+          }
+        ],
+        "stakeholders": [
+          {
+            "recent_fact": "On 26 March 2026, CNA reported Defense Minister 顧立雄's statement that Taiwan needs to introduce foreign technology quickly, collaborate on R&D and undertake technology transfer while developing its drone industry.",
+            "stance_signal": "Assessment: conditionally supportive of foreign technology, particularly when paired with Taiwanese industrial capability; this is not evidence of acceptance of this particular sensor kit.",
+            "key_person": null,
+            "name_local": "國防部",
+            "source_url": "https://www.cna.com.tw/news/aipl/202603260162.aspx",
+            "role": "Sets military counter-UAS requirements and is the principal defense-side sponsor to approach for a sensor evaluation.",
+            "category": "government",
+            "recommended_next_step": "Submit a detection-only pilot concept through a Taiwanese integrator, specifying test metrics, non-PRC component provenance and the proposed local support arrangement.",
+            "name": "Ministry of National Defense"
+          },
+          {
+            "recent_fact": "An 11 July 2026 report described its planned 24 July qualification stage for a 50-system regional counter-UAS procurement covering radar, passive detection and other equipment; the report states that foreign firms could not bid directly.",
+            "stance_signal": "Assessment: resistant to direct foreign bidding on this reported procurement, but potentially accessible through a compliant domestic integrator; component eligibility must be checked rather than assumed.",
+            "key_person": null,
+            "name_local": "內政部警政署",
+            "source_url": "https://www.upmedia.mg/tw/investigation/military/263412",
+            "role": "Procures counter-UAS capability for protection of critical infrastructure and associated public-security missions.",
+            "category": "government",
+            "recommended_next_step": "Obtain the current tender and qualification documents and ask whether a Taiwanese prime may incorporate the US sensor kit in a separate pilot or subsequent procurement.",
+            "name": "National Police Agency"
+          },
+          {
+            "recent_fact": "The 11 July 2026 procurement report assigns NCSIST planning, project-management and performance-related functions for the police counter-UAS program, while stating that it cannot bid, subcontract or assist bidders on that procurement.",
+            "stance_signal": "Assessment: neutral technical gatekeeper for this procurement, not an available bid partner; its evaluation role creates a clear separation-of-roles constraint.",
+            "key_person": null,
+            "name_local": "國家中山科學研究院",
+            "source_url": "https://www.upmedia.mg/tw/investigation/military/263412",
+            "role": "Provides defense R&D and technical evaluation expertise relevant to counter-UAS acceptance.",
+            "category": "research_institute",
+            "recommended_next_step": "Seek published evaluation criteria through the procuring agency; do not request bidder assistance from NCSIST on the reported police tender.",
+            "name": "National Chung-Shan Institute of Science and Technology"
+          },
+          {
+            "recent_fact": "On 27 August 2026, CNA reported that the legislature passed an indigenous-unmanned-vehicle procurement bill with a NT$240 billion spending cap; the Cabinet said it would continue planning unmanned systems despite its own proposal not passing.",
+            "stance_signal": "Assessment: supportive of capability development, but domestic-industrial priorities mean a foreign sensor proposal should demonstrate Taiwanese integration and sustainment benefits.",
+            "key_person": null,
+            "name_local": "行政院",
+            "source_url": "https://focustaiwan.tw/politics/202608270021",
+            "role": "Coordinates government policy and budget proposals affecting defense autonomy and unmanned-system development.",
+            "category": "government",
+            "recommended_next_step": "Frame the pilot for the sponsoring ministry as an indigenous-system enabling component rather than a foreign replacement for a domestic prime.",
+            "name": "Executive Yuan"
+          },
+          {
+            "recent_fact": "CNA reported that the committee held joint meetings with the Finance Committee on 23, 25 and 26 March 2026 to review competing defense-special-budget legislation.",
+            "stance_signal": "Assessment: oversight gatekeeper rather than a buyer; competing legislative proposals indicate that funding and procurement scope cannot be treated as settled.",
+            "key_person": null,
+            "name_local": "立法院外交及國防委員會",
+            "source_url": "https://www.cna.com.tw/news/aipl/202603260162.aspx",
+            "role": "Scrutinizes defense policy and expenditure that can enable or constrain a military pilot.",
+            "category": "legislature",
+            "recommended_next_step": "Monitor committee proceedings for counter-UAS funding and testing requirements before tying the pilot schedule to a particular budget.",
+            "name": "Foreign Affairs and National Defense Committee, Legislative Yuan"
+          },
+          {
+            "recent_fact": "On 23, 25 and 26 March 2026, the Finance Committee participated in joint review of defense-special-budget legislation, according to CNA's 26 March report.",
+            "stance_signal": "Assessment: neutral fiscal gatekeeper; the evidence establishes budget scrutiny, not support for a particular foreign supplier.",
+            "key_person": null,
+            "name_local": "立法院財政委員會",
+            "source_url": "https://www.cna.com.tw/news/aipl/202603260162.aspx",
+            "role": "Reviews fiscal provisions and funding mechanisms that may affect government counter-UAS procurement.",
+            "category": "legislature",
+            "recommended_next_step": "Have the proposed government sponsor identify the actual appropriation and spending authority for a limited pilot.",
+            "name": "Finance Committee, Legislative Yuan"
+          },
+          {
+            "recent_fact": "On 27 February 2025, the ministry expanded authorized unmanned-vehicle experimental locations from 115 to 158, including an increase in aircraft locations from nine to 18, and set a two-year experimental-frequency term for unmanned aircraft.",
+            "stance_signal": "Assessment: supportive of controlled experimentation, subject to frequency and geographic conditions; these provisions do not automatically authorize a counter-UAS radar.",
+            "key_person": null,
+            "name_local": "數位發展部",
+            "source_url": "https://moda.gov.tw/press/press-releases/15420",
+            "role": "Handles spectrum policy relevant to the sensor kit's radar and datalink and to experimental operations.",
+            "category": "regulator",
+            "recommended_next_step": "Send a frequency, bandwidth, power and location matrix and request the applicable experimental-spectrum route for the proposed demonstration.",
+            "name": "Ministry of Digital Affairs"
+          },
+          {
+            "recent_fact": "Its official Remote Drone Management Regulations page records an update on 22 July 2025; the reviewed page did not establish that this was a substantive regulatory amendment.",
+            "stance_signal": "Assessment: neutral safety regulator; demonstration flights require an applicable airspace and operating-permission assessment, independent of whether the kit is detection-only.",
+            "key_person": null,
+            "name_local": "交通部民用航空局",
+            "source_url": "https://www.caa.gov.tw/article.aspx?a=4187&lang=1",
+            "role": "Regulates civil drone operations and airspace permissions relevant to flying target drones during a pilot.",
+            "category": "regulator",
+            "recommended_next_step": "Have a local flight operator submit the proposed target-drone profiles and test location for a written permissions assessment.",
+            "name": "Civil Aviation Administration"
+          },
+          {
+            "recent_fact": "A dated 2025–2026 action was not established in the reviewed material. Its published RF-control notice expressly covers equipment that restricts remotely controlled drones and equipment requiring approved frequencies.",
+            "stance_signal": "Assessment: neutral compliance gatekeeper; do not assume that a detection-only RF receiver, radar and datalink share the same equipment-control treatment as a jammer.",
+            "key_person": null,
+            "name_local": "國家通訊傳播委員會",
+            "source_url": "https://www.ncc.gov.tw/chncc/app/data/view?id=59&module=commonMessage11&serno=51115_538_news",
+            "role": "Administers RF-equipment controls relevant to importing and operating elements of the sensor kit.",
+            "category": "regulator",
+            "recommended_next_step": "Request a component-by-component classification and import/approval assessment, explicitly excluding jamming functionality from the proposed pilot.",
+            "name": "National Communications Commission"
+          },
+          {
+            "recent_fact": "AIDC's 4 June 2026 release states that the ministry helped lead the Taiwanese drone delegation to Japan Drone 2026, held on 3–5 June.",
+            "stance_signal": "Assessment: supportive of international drone-industry cooperation, with a strong Taiwanese supply-chain orientation.",
+            "key_person": null,
+            "name_local": "經濟部",
+            "source_url": "https://www.aidc.com.tw/tw/News/13639",
+            "role": "Shapes industrial-development policy and international partnerships relevant to localization of a US sensor kit.",
+            "category": "government",
+            "recommended_next_step": "Request an introduction to a Taiwanese counter-UAS integrator able to provide installation, maintenance and government-contract delivery.",
+            "name": "Ministry of Economic Affairs"
+          },
+          {
+            "recent_fact": "AIDC's 4 June 2026 release identifies the ministry and its drone diplomacy team as participants in the Japan Drone 2026 Taiwan delegation.",
+            "stance_signal": "Assessment: supportive of international drone-industry engagement; it is a convening channel, not evidence of a procurement commitment.",
+            "key_person": null,
+            "name_local": "外交部",
+            "source_url": "https://www.aidc.com.tw/tw/News/13639",
+            "role": "Facilitates international drone-industry relationships that can help a US entrant reach appropriate Taiwanese counterparts.",
+            "category": "government",
+            "recommended_next_step": "Ask the drone diplomacy team for an introduction to Taiwan-side industry coordinators, using a non-sensitive capability brief.",
+            "name": "Ministry of Foreign Affairs"
+          },
+          {
+            "recent_fact": "The Industrial Development Administration was listed among the participating organizations in AIDC's 4 June 2026 report on the Taiwan delegation to Japan Drone 2026.",
+            "stance_signal": "Assessment: likely supportive where the pilot develops local integration capability; participation does not establish an available grant or procurement program.",
+            "key_person": null,
+            "name_local": "經濟部產業發展署",
+            "source_url": "https://www.aidc.com.tw/tw/News/13639",
+            "role": "Supports industrial partnerships and supply-chain development relevant to a localized sensor offering.",
+            "category": "government",
+            "recommended_next_step": "Ask which existing industrial-development mechanism, if any, can support a Taiwanese integrator's counter-UAS demonstration.",
+            "name": "Industrial Development Administration"
+          },
+          {
+            "recent_fact": "AIDC participated in the Taiwanese pavilion at Japan Drone 2026 on 3–5 June, as documented in its 4 June 2026 release.",
+            "stance_signal": "Assessment: a plausible integration and market-access partner because it participates in organized international drone cooperation; interest in this sensor kit is unconfirmed.",
+            "key_person": null,
+            "name_local": "漢翔航空工業股份有限公司",
+            "source_url": "https://www.aidc.com.tw/tw/News/13639",
+            "role": "A Taiwanese aerospace prime and industry convener that could help structure local delivery and integration.",
+            "category": "company",
+            "recommended_next_step": "Request a technical fit meeting focused on whether AIDC would sponsor or introduce a domestic integrator for a detection-only government pilot.",
+            "name": "Aerospace Industrial Development Corporation"
+          },
+          {
+            "recent_fact": "The alliance's website reports that it signed a cooperation memorandum with the UK's ADS Group on 23 July 2026 during the Farnborough Airshow.",
+            "stance_signal": "Assessment: supportive of international industry partnerships; its export-oriented mission makes introductions more likely than direct procurement sponsorship.",
+            "key_person": null,
+            "name_local": "台灣卓越無人機海外商機聯盟",
+            "source_url": "https://www.tediboa.com.tw/",
+            "role": "Connects Taiwanese drone companies with overseas partners and can identify prospective local primes and component partners.",
+            "category": "industry_association",
+            "recommended_next_step": "Request introductions to two member companies with counter-UAS integration and government-delivery experience.",
+            "name": "TEDIBOA"
+          },
+          {
+            "recent_fact": "AIDC's 4 June 2026 release identifies Thunder Tiger as an alliance co-chair and a participant in the Taiwan pavilion at Japan Drone 2026.",
+            "stance_signal": "Assessment: potentially supportive of international collaboration, but its own product interests mean a partnership should be tested rather than assumed.",
+            "key_person": null,
+            "name_local": "雷虎科技股份有限公司",
+            "source_url": "https://www.aidc.com.tw/tw/News/13639",
+            "role": "A local unmanned-systems manufacturer that could supply target aircraft, integration support or industry introductions.",
+            "category": "company",
+            "recommended_next_step": "Propose a controlled detection demonstration using locally operated target drones and ask whether it would support a government-facing trial.",
+            "name": "Thunder Tiger Corporation"
+          },
+          {
+            "recent_fact": "AIDC's 4 June 2026 release lists Coretronic Intelligent Robotics among companies participating in the Taiwan delegation to Japan Drone 2026.",
+            "stance_signal": "Assessment: a potential technical partner or adjacent competitor; international exhibition participation is a cooperation signal, not evidence of willingness to distribute foreign sensors.",
+            "key_person": null,
+            "name_local": "中光電智能機器人股份有限公司",
+            "source_url": "https://www.aidc.com.tw/tw/News/13639",
+            "role": "A Taiwanese drone and robotics supplier relevant to target-platform integration and local unmanned-system partnerships.",
+            "category": "company",
+            "recommended_next_step": "Ask for a technical discussion on target-drone telemetry and interfaces needed to validate RF/radar detection performance.",
+            "name": "Coretronic Intelligent Robotics Corporation"
+          },
+          {
+            "recent_fact": "ITRI was listed among the organizations joining the Taiwan delegation to Japan Drone 2026 in AIDC's 4 June 2026 release.",
+            "stance_signal": "Assessment: potentially supportive of technically credible collaboration; the cited participation does not establish a counter-UAS test service or an available pilot budget.",
+            "key_person": null,
+            "name_local": "工業技術研究院",
+            "source_url": "https://www.aidc.com.tw/tw/News/13639",
+            "role": "An applied-research organization that can help identify Taiwanese technology partners and an appropriate validation pathway.",
+            "category": "research_institute",
+            "recommended_next_step": "Ask its drone-related team to review a draft detection-test protocol and identify the appropriate local laboratory or field-test partner.",
+            "name": "Industrial Technology Research Institute"
+          },
+          {
+            "recent_fact": "The Institute for Information Industry was listed as participating in the Japan Drone 2026 Taiwan delegation in AIDC's 4 June 2026 release.",
+            "stance_signal": "Assessment: potentially supportive as a software and systems counterpart; specific counter-UAS integration capability was not established by the cited source.",
+            "key_person": null,
+            "name_local": "財團法人資訊工業策進會",
+            "source_url": "https://www.aidc.com.tw/tw/News/13639",
+            "role": "A potential source of systems-integration and data-interface expertise for connecting sensor outputs to a Taiwanese user's software.",
+            "category": "research_institute",
+            "recommended_next_step": "Request referral to a team able to assess track-data APIs, cybersecurity requirements and local command-system interoperability.",
+            "name": "Institute for Information Industry"
+          },
+          {
+            "recent_fact": "AIDC's 4 June 2026 release lists the aerospace industry association among organizations participating in the Taiwan delegation to Japan Drone 2026.",
+            "stance_signal": "Assessment: likely useful as an industry-introduction channel; no position on foreign counter-UAS suppliers was established.",
+            "key_person": null,
+            "name_local": null,
+            "source_url": "https://www.aidc.com.tw/tw/News/13639",
+            "role": "An aerospace-industry network that can help identify qualified local engineering and manufacturing partners.",
+            "category": "industry_association",
+            "recommended_next_step": "Request a shortlist of members with RF, radar or government systems-integration experience.",
+            "name": "Taiwan Aerospace Industry Association"
+          },
+          {
+            "recent_fact": "AIDC's 4 June 2026 release lists the defense industry development association among organizations participating in the Taiwan delegation to Japan Drone 2026.",
+            "stance_signal": "Assessment: a potentially useful domestic-defense network; support for this foreign supplier and procurement eligibility were not established.",
+            "key_person": null,
+            "name_local": null,
+            "source_url": "https://www.aidc.com.tw/tw/News/13639",
+            "role": "Connects defense-industry organizations that may provide local prime-contracting and integration capability.",
+            "category": "industry_association",
+            "recommended_next_step": "Ask for an introduction to members that have delivered government counter-UAS or perimeter-surveillance systems.",
+            "name": "Taiwan Defense Industry Development Association"
+          },
+          {
+            "recent_fact": "On 16 January 2025, Tron Future announced an anti-drone-system order and described its integrated AESA radar, passive RF detector and jammer offering.",
+            "stance_signal": "Assessment: a direct competitor in the client's RF/radar detection segment; potentially receptive only if the kit supplies a demonstrable complementary capability.",
+            "key_person": null,
+            "name_local": "創未來科技",
+            "source_url": "https://www.tronfuture.com/news/tron-future-tech-secures-military-antidrone-order",
+            "role": "A domestic counter-UAS supplier against which the startup must differentiate or find a complementary integration opportunity.",
+            "category": "company",
+            "recommended_next_step": "Prepare a non-confidential capability comparison covering detection gaps, false alarms and data interfaces before proposing any partnership.",
+            "name": "Tron Future Tech"
+          },
+          {
+            "recent_fact": "A 3 June 2026 announcement records an MOU with Anduril to deepen US–Taiwan cooperation on key drone technologies.",
+            "stance_signal": "Assessment: a positive signal for collaboration with US technology suppliers, though the MOU does not establish acceptance of another vendor or a funded sensor pilot.",
+            "key_person": null,
+            "name_local": "財團法人金屬工業研究發展中心",
+            "source_url": "https://newswire.com.tw/news/20260603-mirdc-anduril-mou-drone-key-technology-cooperation",
+            "role": "An industrial research and development counterpart relevant to local engineering cooperation and validation planning.",
+            "category": "research_institute",
+            "recommended_next_step": "Ask whether a detection-only sensor demonstration fits an existing test or industrial-cooperation workstream and request written scope and eligibility requirements.",
+            "name": "Metal Industries Research & Development Centre"
+          },
+          {
+            "recent_fact": "A funding record dated 6 May 2025 identifies a US$6 million seed round with Pegatron and SparkLabs Taiwan; public reporting describes AiSeed's GPS-free autonomous-drone expansion.",
+            "stance_signal": "Assessment: potentially complementary as a drone platform or test-target partner, not an established counter-UAS buyer.",
+            "key_person": null,
+            "name_local": null,
+            "source_url": "https://startuprise.org/aiseed-raises-6m-to-drive-global-expansion-of-gps-free-autonomous-drones/",
+            "role": "A Taiwanese autonomous-drone developer relevant to testing detection against drones operating without conventional GPS dependence.",
+            "category": "company",
+            "recommended_next_step": "Explore a paid, controlled target-drone demonstration with agreed telemetry ground truth and RF-emission profiles.",
+            "name": "AiSeed"
+          },
+          {
+            "recent_fact": "The funding record for AiSeed's 6 May 2025 US$6 million seed round names Pegatron as an investor.",
+            "stance_signal": "Assessment: a potential strategic-manufacturing or ecosystem contact because of its drone investment; interest in counter-UAS sensors is not established.",
+            "key_person": null,
+            "name_local": "和碩聯合科技股份有限公司",
+            "source_url": "https://startuprise.org/aiseed-raises-6m-to-drive-global-expansion-of-gps-free-autonomous-drones/",
+            "role": "A Taiwanese electronics manufacturer with documented drone investment, potentially relevant to later localization and production.",
+            "category": "company",
+            "recommended_next_step": "Seek an introduction through its drone-investment network only after identifying a government sponsor and a credible local integration requirement.",
+            "name": "Pegatron Corporation"
+          },
+          {
+            "recent_fact": "The funding record for AiSeed's 6 May 2025 US$6 million seed round names SparkLabs Taiwan as an investor.",
+            "stance_signal": "Assessment: potentially supportive as an introduction and early-stage investment channel; a defense-specific mandate or willingness to invest in a US entrant was not established.",
+            "key_person": null,
+            "name_local": null,
+            "source_url": "https://startuprise.org/aiseed-raises-6m-to-drive-global-expansion-of-gps-free-autonomous-drones/",
+            "role": "An early-stage investor and ecosystem connector with documented exposure to Taiwanese autonomous-drone hardware.",
+            "category": "capital",
+            "recommended_next_step": "Request introductions to drone founders and local technical partners rather than treating fundraising as a prerequisite for the first government pilot.",
+            "name": "SparkLabs Taiwan"
+          }
+        ]
+      }
+    }
+  }
+}

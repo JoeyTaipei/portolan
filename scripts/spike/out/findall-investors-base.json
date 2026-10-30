@@ -1,0 +1,721 @@
+{
+  "wall_s": 331,
+  "run": {
+    "findall_id": "findall_2f937a48caa14210ab2c8a23659fbe47",
+    "status": {
+      "status": "completed",
+      "is_active": false,
+      "metrics": {
+        "generated_candidates_count": 17,
+        "matched_candidates_count": 10
+      },
+      "termination_reason": "match_limit_met"
+    },
+    "generator": "base",
+    "metadata": {
+      "query": "investors",
+      "spike": "0001"
+    },
+    "created_at": "2026-10-30T04:16:05.505393Z",
+    "modified_at": "2026-10-30T04:21:15.374201Z"
+  },
+  "result": {
+    "run": {
+      "findall_id": "findall_2f937a48caa14210ab2c8a23659fbe47",
+      "status": {
+        "status": "completed",
+        "is_active": false,
+        "metrics": {
+          "generated_candidates_count": 17,
+          "matched_candidates_count": 10
+        },
+        "termination_reason": "match_limit_met"
+      },
+      "generator": "base",
+      "metadata": {
+        "query": "investors",
+        "spike": "0001"
+      },
+      "created_at": "2026-10-30T04:16:05.505393Z",
+      "modified_at": "2026-10-30T04:21:15.374201Z"
+    },
+    "candidates": [
+      {
+        "candidate_id": "candidate_08b45821-6a5f-4ff0-907a-5f033f26c463",
+        "name": "Taiwania Capital",
+        "url": "https://www.taiwaniacapital.com/en/about",
+        "description": "Taiwania Capital is a Taiwan-based venture capital firm founded in 2017 with public- and private-sector backing. In May 2024, it led the Series A investment in Hsinchu-based Tron Future Tech, a Taiwanese counter-drone and defense startup.",
+        "match_status": "matched",
+        "output": {
+          "investor": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          },
+          "taiwan_drone_deal": {
+            "type": "match_condition",
+            "value": "investment; 2024-05-23; Tron Future Tech; Hsinchu, TW; counter-drone (C-UAS) and defense",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "investor",
+            "citations": [
+              {
+                "title": "About-Taiwania Capital",
+                "url": "https://www.taiwaniacapital.com/en/about",
+                "excerpts": [
+                  "Established in 2017, Taiwania Capital is a leading venture capital firm in Taiwan, supported by Taiwan's public and private sectors."
+                ]
+              }
+            ],
+            "reasoning": "The official page explicitly identifies Taiwania Capital as a venture capital firm, so it matches the investor definition.",
+            "confidence": "high"
+          },
+          {
+            "field": "taiwan_drone_deal",
+            "citations": [
+              {
+                "title": "News-Tron Future completes Series A round, targets rapidly growing global counter-drone demand",
+                "url": "https://www.taiwaniacapital.com/en/news/category/news/2024/news240523",
+                "excerpts": [
+                  "May 23, 2024 Share： **[Tron Future Tech](https://taiwania.soez.com.tw/en/portfolios/category/tron_future_tech) ,** a Taiwanese startup founded in 2018, has emerged to be a prominent leader in Taiwan’s low Earth orbit (LEO) satellite and Counter-Unmanned Aircraft Systems (C-UAS) markets. At the core of the success is the company’s independently developed Active Phased Array (AESA) radar technology. Recently, Tron Future announced that it has secured NT$900 million (approx. US$32.4 million) in a Series A funding round led by the government-backed **Taiwania Capital** and the CID Group, and joined by Industrial Technology Investment Corp. (ITRI’s venture capital), Taya Venture, and Taiwan Cooperative Venture Capital. With the completion of Series A financing, Tron Future plans to increase its production capacity in support of its expansion into the US, European, and Japanese markets, aiming to address the rapidly growing military and civilian needs to protect critical facilities and infrastructure from drone incursions."
+                ]
+              },
+              {
+                "title": "Taiwanese Defense Startup Tron Future Tech Targets Global Market  | Tron Future 創未來科技",
+                "url": "https://www.tronfuture.com/news/taiwanese-defense-startup-tron-future-tech-targets-global-market",
+                "excerpts": [
+                  "Tron Future Tech, one of the first Taiwanese defense technology startups, sees burgeoning demand for its counter-unmanned aircraft systems (C-UAS) products in the global market.  The company has a growing base of customers and partners in East Asia, Europe and the Middle East, CEO Yu-Jiu Wang said during an interview with Aviation Week at Tron Future’s headquarters in Hsinchu, Taiwan.\n\nWhile Taiwan is home to many technology startups, few focus on defense. A key reason for that is an historic reluctance to involve private-sector firms in the state-dominated defense industry.\n\n“President Tsai [Taiwan’s president from 2016-2024] tried to liberalize the defense sector but faced a lot of internal opposition from vested interests,” Wang says."
+                ]
+              }
+            ],
+            "reasoning": "Taiwania Capital’s announcement is dated May 23, 2024, identifies Tron Future Tech as the Series A target, and describes its counter-UAS and defense offerings. Tron Future’s official page identifies its headquarters as Hsinchu, Taiwan; the country code is TW.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_27baf6cf-6a59-4344-884a-e788a4765d6b",
+        "name": "Pegatron Corporation",
+        "url": "https://www.pegatroncorp.com/",
+        "description": "Pegatron Corporation is a design-and-manufacturing-services company. Its corporate venture arm, Pegatron Venture Capital, was reported to have led AiSeed’s May 2, 2025, US$6 million funding round. AiSeed develops small drones for military and public-safety applications, making Pegatron a relevant investor in Taiwanese drone and dual-use hardware.",
+        "match_status": "matched",
+        "output": {
+          "investor": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          },
+          "taiwan_drone_deal": {
+            "type": "match_condition",
+            "value": "investment; 2025-05-02; Aiseed; Taipei City, TW; AI-powered sUAV drones for military and public-safety use (dual-use)",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "investor",
+            "citations": [
+              {
+                "title": "Pegatron Venture Capital - aVenture Asset Manager Research",
+                "url": "https://aventure.vc/investors/firms/pegatron-venture-capital-taipei-tw",
+                "excerpts": [
+                  "Pegatron Venture Capital Corporate venture arm of Pegatron Corporation. <dl> <dt>Status</dt> <dd>Operating</dd> <dt>Location</dt> <dd>Taipei, Taipei City, TW</dd></dl> [website](https://www.pegatroncorp.com) Pegatron Venture Capital is the corporate venture arm of Pegatron Corporation, a leading electronics manufacturing services provider based in Taiwan."
+                ]
+              },
+              {
+                "title": "Aiseed Asset Profile | Preqin | BlackRock",
+                "url": "https://www.preqin.com/data/profile/asset/aiseed/740446",
+                "excerpts": [
+                  "The company has completed 1 deal to date, with the most recent funding round occurring on May 2, 2025, raising USD 6. 00 mn led by Pegatron Venture Capital and SparkLabs Taiwan."
+                ]
+              }
+            ],
+            "reasoning": "Pegatron Venture Capital is identified as Pegatron Corporation’s corporate venture arm, and the source describes it as investing in early-stage companies. The Aiseed funding record also names Pegatron Venture Capital as a round leader, supporting its classification as an investor.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_drone_deal",
+            "citations": [
+              {
+                "title": "Aiseed Asset Profile | Preqin | BlackRock",
+                "url": "https://www.preqin.com/data/profile/asset/aiseed/740446",
+                "excerpts": [
+                  "Aiseed is a technology company specializing in advanced small Unmanned Aerial Vehicles (sUAV) that leverage artificial intelligence for various applications, including military and public safety missions. Founded in 2019 in Taipei City, Taiwan, Aiseed develops high-performance drones designed for military-grade surveillance and inspection. The company has completed 1 deal to date, with the most recent funding round occurring on May 2, 2025, raising USD 6. 00 mn led by Pegatron Venture Capital and SparkLabs Taiwan."
+                ]
+              }
+            ],
+            "reasoning": "The source describes Aiseed’s military and public-safety sUAV drones, identifies Taipei City, Taiwan, and reports a May 2, 2025 funding round led by Pegatron Venture Capital. This supports a Taiwan drone-sector investment match.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_2aef4c9f-4a7f-43f6-a793-e4ec1351f0d1",
+        "name": "GIGA-BYTE Technology Co., Ltd.",
+        "url": "https://www.gigabyte.com/us/About",
+        "description": "GIGA-BYTE Technology Co., Ltd. is a Taiwanese technology company and an investor in GIGA-IMAGE Technology Co., Ltd. In March 2025, the GIGABYTE group invested in GIGA-IMAGE and held a 29.41% shareholding; a Taiwanese startup investment report describes GIGA-IMAGE as a military-grade drone developer. This makes GIGABYTE a relevant investor for the stated focus.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_3bfe8c40-fe62-45f9-af51-10a432a80557",
+        "name": "Taishan Invest AG",
+        "url": "https://www.cbinsights.com/investor/taishan-invest-ag",
+        "description": "The closest match is Taishan Invest AG, listed as an investor in Taiwanese counter-drone company Tron Future Tech’s May 2024 Series A. The funding records differ on which investors led the round, and this entity should not be confused with Taian Taishan Investment Co., Ltd., based in Shandong, China.",
+        "match_status": "matched",
+        "output": {
+          "investor": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          },
+          "taiwan_drone_deal": {
+            "type": "match_condition",
+            "value": "investment; 2024-05-21; Tron Future Tech; Zhubei City, TW; counter-drone/C-UAS technology",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "investor",
+            "citations": [
+              {
+                "title": "Taishan Invest AG Portfolio Investments, Taishan Invest AG Funds, Taishan Invest AG Exits",
+                "url": "https://www.cbinsights.com/investor/taishan-invest-ag",
+                "excerpts": [
+                  "Taishan Invest AG has made **3 investments** .",
+                  "|5/21/2024 |Series A |Tron Future Tech |$27.91M |Yes |[CID Group](https://www.cbinsights.com/investor/cid-group) , Cooperative Bank Venture Capital , [ITIC](https://www.cbinsights.com/investor/vision-venture-capital) , [Taiwania Capital](https://www.cbinsights.com/investor/taiwania-capital) , [TaYa Venture Capital](https://www.cbinsights.com/investor/ta-ya-venture-capital-co) , and Warwick Venture Capital |2 |"
+                ]
+              }
+            ],
+            "reasoning": "The investment profile reports that Taishan Invest AG has made investments and lists its participation in Tron Future Tech’s Series A, supporting its classification as an investor. The value is blank as required for this field.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_drone_deal",
+            "citations": [
+              {
+                "title": "Taishan Invest AG Portfolio Investments, Taishan Invest AG Funds, Taishan Invest AG Exits",
+                "url": "https://www.cbinsights.com/investor/taishan-invest-ag",
+                "excerpts": [
+                  "|5/21/2024 |Series A |Tron Future Tech |$27.91M |Yes |[CID Group](https://www.cbinsights.com/investor/cid-group) , Cooperative Bank Venture Capital , [ITIC](https://www.cbinsights.com/investor/vision-venture-capital) , [Taiwania Capital](https://www.cbinsights.com/investor/taiwania-capital) , [TaYa Venture Capital](https://www.cbinsights.com/investor/ta-ya-venture-capital-co) , and Warwick Venture Capital |2 |"
+                ]
+              },
+              {
+                "title": "Tron Future completes Series A financing to expand product line | Tron Future 創未來科技",
+                "url": "https://www.tronfuture.com/news/tron-future-completes-series-a-financing-to-expand-product-line",
+                "excerpts": [
+                  "The company specialises in counter-uncrewed aerial systems (C-UAS) technology, low-orbit satellite communication systems and synthetic aperture radars."
+                ]
+              },
+              {
+                "title": "Tron Future Tech — venture-backed company profile | Dealroom",
+                "url": "https://dealroom.co/companies/tron-future-tech",
+                "excerpts": [
+                  "Headquarters Zhubei City, Taiwan"
+                ]
+              }
+            ],
+            "reasoning": "The investment activity record names Tron Future Tech’s Series A and gives the date as May 21, 2024. The company describes its technology as counter-uncrewed aerial systems (C-UAS), and its headquarters are listed as Zhubei City, Taiwan. These details support a qualifying Taiwan counter-drone investment.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_672710ca-97a9-440d-ad3c-d76f879376e4",
+        "name": "Merry Electronics Co., Ltd.",
+        "url": "https://www.merry.com.tw/en/investor/investor_home",
+        "description": "Merry Electronics Co., Ltd. specializes in audiovisual and perception technologies and has a wholly owned subsidiary whose stated activity is equity investment. The cited records do not establish a post-2023 investment by Merry Electronics in a Taiwanese drone, counter-drone, defense, or dual-use hardware startup.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_6cd2f7ba-111a-4276-91f6-a0a0f372d7a3",
+        "name": "Wise Cap Limited Company (鼎創有限公司)",
+        "url": "https://www.wistron.com/en/Newsroom/2024-04-03",
+        "description": "Wise Cap Limited Company is a wholly owned subsidiary of Wistron Corporation. In April 2024, it invested NT$1.0 billion in a private placement of GEOSAT Aerospace & Technology shares. The evidence identifies GEOSAT as an aerospace and technology company, but does not establish that it is specifically a drone, counter-drone, defense, or dual-use hardware startup, so the match to the exact intent is partial.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_7a84cf4d-c661-40d4-bc45-246542a1955f",
+        "name": "SparkLabs Taiwan",
+        "url": "https://www.sparklabstaiwan.com/",
+        "description": "SparkLabs Taiwan is a Taiwan-based early-stage venture capital fund and startup accelerator. It is documented as an investor in AiSeed’s 2025 financing; AiSeed develops AI-enabled surveillance drones for military and defense operations, so SparkLabs Taiwan is a strong match for the investor category sought.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_7e6665ec-ff54-49c8-963c-52fd5ad930b3",
+        "name": "Wistron Corporation",
+        "url": "https://www.wistron.com/en/AboutWistron/CompanyProfile",
+        "description": "Wistron Corporation is a Taiwan-headquartered ICT original design manufacturer and a relevant corporate investor: in 2024, its wholly owned subsidiary invested NT$1 billion in GEOSAT Aerospace & Technology, bringing Wistron subsidiaries’ combined stake to 45.18%. GEOSAT operates in unmanned aerial vehicle products and engineering services, so this investment matches the Taiwanese drone portion of the stated intent.",
+        "match_status": "matched",
+        "output": {
+          "investor": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          },
+          "taiwan_drone_deal": {
+            "type": "match_condition",
+            "value": "investment; 2024-04-03; GEOSAT Aerospace & Technology Inc.; Taiwan; unmanned aerial vehicle (drone) products and engineering services",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "investor",
+            "citations": [
+              {
+                "title": "Wistron",
+                "url": "https://www.wistron.com/en/Newsroom/2024-04-03",
+                "excerpts": [
+                  "(TAIPEI, TAIWAN) 3 April 2024 — Wistron Corporation announced today that its wholly-owned subsidiary, Wise Cap Limited Company (鼎創有限公司), has participated in a private placement of common shares for GEOSAT Aerospace & Technology Inc.(經緯航太科技股份有限公司), investing a total of NT$1.0 billion. Each share was subscribed at NT$20, resulting in a total subscription of 50 million shares. Following this transaction, Wistron's subsidiaries now jointly hold a 45.18% stake in GEOSAT's common shares."
+                ]
+              }
+            ],
+            "reasoning": "Wistron’s announcement states that its wholly owned subsidiary invested NT$1.0 billion in GEOSAT’s private placement, establishing Wistron as a corporate investor.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_drone_deal",
+            "citations": [
+              {
+                "title": "Wistron",
+                "url": "https://www.wistron.com/en/Newsroom/2024-04-03",
+                "excerpts": [
+                  "(TAIPEI, TAIWAN) 3 April 2024 — Wistron Corporation announced today that its wholly-owned subsidiary, Wise Cap Limited Company (鼎創有限公司), has participated in a private placement of common shares for GEOSAT Aerospace & Technology Inc.(經緯航太科技股份有限公司), investing a total of NT$1.0 billion. Each share was subscribed at NT$20, resulting in a total subscription of 50 million shares. Following this transaction, Wistron's subsidiaries now jointly hold a 45.18% stake in GEOSAT's common shares."
+                ]
+              },
+              {
+                "title": "wistron.com",
+                "url": "https://www.wistron.com/file/6323547c-b08e-4ceb-abd4-e2fe90511ef7/2025Q1En.pdf.pdf",
+                "excerpts": [
+                  "(GEOSAT), who mainly operates unmanned aerial vehicle products and engineering services, through private placement in the second quarter of 2024, at $20 per share, with a total transaction price of"
+                ]
+              }
+            ],
+            "reasoning": "Wistron’s announcement reports its subsidiary’s investment in GEOSAT and gives the date as 3 April 2024. Wistron’s filing describes GEOSAT’s unmanned aerial vehicle products and engineering services. The available record supports Taiwan as the location but does not specify a headquarters city.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_91636242-2d36-40b7-8b49-06a469acc13b",
+        "name": "SunPlus Capital Limited",
+        "url": "https://sunpluscap.com/",
+        "description": "SunPlus Capital Limited is a Hong Kong-based investment and asset-management firm. Its website describes investment research and company investments, but the available evidence does not establish that it invested in Taiwanese drone, counter-drone, defense, or dual-use hardware startups since 2023. A 2024 announcement of a Taiwanese counter-drone startup’s Series A names other participating investors, not SunPlus Capital.",
+        "match_status": "unmatched",
+        "output": {
+          "investor": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          },
+          "taiwan_drone_deal": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          }
+        },
+        "basis": [
+          {
+            "field": "investor",
+            "citations": [
+              {
+                "title": "Sunplus Capital",
+                "url": "https://altss.com/profile/sunplus-capital",
+                "excerpts": [
+                  "**Organization type:** Venture Capital"
+                ]
+              },
+              {
+                "title": "Sunplus Capital",
+                "url": "https://sunpluscap.com/",
+                "excerpts": [
+                  "Research and scouting for the best investment ideas via our extensive business network. We dedicate ourselves to creating value for the companies we invest in and providing predictable returns to our investors."
+                ]
+              }
+            ],
+            "reasoning": "A company directory classifies SunPlus Capital as a venture capital firm. Its own website describes investment research and scouting, investing in companies, and providing returns to investors, supporting its classification as an investor.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_drone_deal",
+            "citations": [
+              {
+                "title": "Sunplus Capital",
+                "url": "https://sunpluscap.com/",
+                "excerpts": [
+                  "At Sunplus Capital, we offer asset management services across  Mainland China and Hong Kong. What we do Research and scouting for the best investment ideas via our extensive business network. We dedicate ourselves to creating value for the companies we invest in and providing predictable returns to our investors."
+                ]
+              },
+              {
+                "title": "News-Tron Future completes Series A round, targets rapidly growing global counter-drone demand",
+                "url": "https://www.taiwaniacapital.com/en/news/category/news/2024/news240523",
+                "excerpts": [
+                  "US$32.4 million) in a Series A funding round led by the government-backed **Taiwania Capital** and the CID Group, and joined by Industrial Technology Investment Corp. (ITRI's venture capital), Taya Venture, and Taiwan Cooperative Venture Capital."
+                ]
+              }
+            ],
+            "reasoning": "SunPlus Capital's website describes investment activity and a geographic focus on Mainland China and Hong Kong, but does not identify a qualifying Taiwan-based drone, counter-drone, defense, or dual-use hardware investment or fund launch. The cited 2024 counter-drone financing announcement names the participating investors, and SunPlus Capital is not among them. These sources do not establish a matching public record.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_9808c1a9-8cee-41c1-a961-dbd42f06c341",
+        "name": "Taya Venture",
+        "url": "https://www.tayaventure.com/about",
+        "description": "Taya Venture is a U.S.-dollar-denominated investment fund managed by Taiwan-based Daya Venture Capital Co., Ltd., part of the Daya Wire & Cable Group. It matches the stated investor scope: in May 2024, Taya Venture participated in the Series A round of Taiwanese startup Tron Future Tech, whose work includes counter-drone systems and drone-detection radar.",
+        "match_status": "matched",
+        "output": {
+          "investor": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          },
+          "taiwan_drone_deal": {
+            "type": "match_condition",
+            "value": "investment; 2024-05-21; Tron Future Tech (HQ: Zhubei City, TW); counter-drone/C-UAS, defense and dual-use hardware",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "investor",
+            "citations": [
+              {
+                "title": "Tron Future completes Series A round, targets rapidly growing global counter-drone demand | Tron Future 創未來科技",
+                "url": "https://www.tronfuture.com/news/taiwanese-c-uas-startup-completes-series-a-funding-round",
+                "excerpts": [
+                  "(last verified: 2026-10-30) (ITRI's venture capital), Taya Venture, and Taiwan Cooperative Venture Capital.",
+                  "(last verified: 2026-10-30) US$32.4 million) in a Series A funding round led by the government-backed Taiwania Capital and the CID Group, and joined by Industrial Technology Investment Corp."
+                ]
+              }
+            ],
+            "reasoning": "The Tron Future Tech Series A investor roster names Taya Venture, establishing that it participated as an investor. The funding-round record confirms the financing context.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_drone_deal",
+            "citations": [
+              {
+                "title": "Tron Future completes Series A round, targets rapidly growing global counter-drone demand | Tron Future 創未來科技",
+                "url": "https://www.tronfuture.com/news/taiwanese-c-uas-startup-completes-series-a-funding-round",
+                "excerpts": [
+                  "(last verified: 2026-10-30) May 21, 2024",
+                  "(last verified: 2026-10-30) (ITRI's venture capital), Taya Venture, and Taiwan Cooperative Venture Capital.",
+                  "(last verified: 2026-10-30) US$32.4 million) in a Series A funding round led by the government-backed Taiwania Capital and the CID Group, and joined by Industrial Technology Investment Corp.",
+                  "(last verified: 2026-10-30) Tron Future Tech, a Taiwanese startup founded in 2018, has emerged to be a prominent leader in Taiwan's low Earth orbit (LEO) satellite and Counter-Unmanned Aircraft Systems (C-UAS) markets."
+                ]
+              },
+              {
+                "title": "Tron Future Tech — venture-backed company profile | Dealroom",
+                "url": "https://dealroom.co/companies/tron-future-tech",
+                "excerpts": [
+                  "Headquarters Zhubei City, Taiwan"
+                ]
+              }
+            ],
+            "reasoning": "The Tron Future Tech announcement is dated May 21, 2024 (doc 2). Its funding announcement identifies a Series A round (doc 3), and the investor roster includes Taya Venture (doc 0). Tron Future Tech is described as operating in the C-UAS market (doc 6); its headquarters are listed as Zhubei City, Taiwan (doc 14).",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_9d29d543-49e8-4db7-85fd-19cf3a09b8b2",
+        "name": "Warwick Venture Capital",
+        "url": "https://www.tronfuture.com/news/tron-future-completes-series-a-financing-to-expand-product-line/",
+        "description": "Warwick Venture Capital was named as a co-lead investor in Taiwanese counter-drone and aerospace company Tron Future Tech’s TWD 900 million Series A in May 2024. This is a direct match for the investment criteria. The available evidence identifies Warwick as an investor in that deal but does not establish a separate official company profile for it.",
+        "match_status": "matched",
+        "output": {
+          "investor": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          },
+          "taiwan_drone_deal": {
+            "type": "match_condition",
+            "value": "investment; 2024-05-22; Tron Future Tech; Taiwan; counter-drone (C-UAS), satellite and defense technology",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "investor",
+            "citations": [
+              {
+                "title": "Tron Future completes Series A financing to expand product line | Tron Future 創未來科技",
+                "url": "https://www.tronfuture.com/news/tron-future-completes-series-a-financing-to-expand-product-line",
+                "excerpts": [
+                  "This round of funding was jointly led by Taishan Investment and Warwick Venture Capital."
+                ]
+              }
+            ],
+            "reasoning": "The source states that Warwick Venture Capital jointly led the funding round, directly establishing its participation as an investor and identifying it as a venture capital firm.",
+            "confidence": "high"
+          },
+          {
+            "field": "taiwan_drone_deal",
+            "citations": [
+              {
+                "title": "Tron Future completes Series A financing to expand product line | Tron Future 創未來科技",
+                "url": "https://www.tronfuture.com/news/tron-future-completes-series-a-financing-to-expand-product-line",
+                "excerpts": [
+                  "May 22, 2024",
+                  "Taiwanese startup founded in 2018, Tron Future Tech, has announced the completion of Series A financing of TWD900 million."
+                ]
+              },
+              {
+                "title": "Tron Future completes Series A round, targets rapidly growing global counter-drone demand | Tron Future 創未來科技",
+                "url": "https://www.tronfuture.com/news/taiwanese-c-uas-startup-completes-series-a-funding-round",
+                "excerpts": [
+                  "Tron Future Tech, a Taiwanese startup founded in 2018, has emerged to be a prominent leader in Taiwan's low Earth orbit (LEO) satellite and Counter-Unmanned Aircraft Systems (C-UAS) markets."
+                ]
+              }
+            ],
+            "reasoning": "The source dates the announcement to May 22, 2024, and identifies Tron Future Tech as the Taiwanese startup completing a Series A financing. The company is described as active in Counter-Unmanned Aircraft Systems (C-UAS) and satellite markets. The cited material identifies Taiwan at country level but does not name a headquarters city.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_b3650990-fa44-4cf4-b887-5319579ce01d",
+        "name": "Taiwan Cooperative Venture Capital",
+        "url": "https://eng.tcvc.com.tw/",
+        "description": "Taiwan Cooperative Venture Capital is a Taiwanese venture capital firm and a wholly owned subsidiary of Taiwan Cooperative Financial Holding. In 2024, it joined the NT$900 million Series A round for Tron Future Tech, a Taiwanese startup developing AESA radar technology for counter-drone systems and satellite applications. This is a direct match for the requested investor and counter-drone investment criteria.",
+        "match_status": "matched",
+        "output": {
+          "investor": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          },
+          "taiwan_drone_deal": {
+            "type": "match_condition",
+            "value": "investment; 2024-05-23; Tron Future Tech; Taiwan; counter-drone/C-UAS and satellite technology (AESA radar)",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "investor",
+            "citations": [
+              {
+                "title": "FINDIT",
+                "url": "https://findit.sme.gov.tw/en/Investor/R2d1MGx5ejIrRmJUNjAxRVJIU1padz09",
+                "excerpts": [
+                  "Founded in 2015, Taiwan Cooperative Venture Capital"
+                ]
+              }
+            ],
+            "reasoning": "The profile identifies Taiwan Cooperative Venture Capital and classifies its investor type as Venture Capital, satisfying the investor criterion.",
+            "confidence": "high"
+          },
+          {
+            "field": "taiwan_drone_deal",
+            "citations": [
+              {
+                "title": "News-Tron Future completes Series A round, targets rapidly growing global counter-drone demand",
+                "url": "https://www.taiwaniacapital.com/en/news/category/news/2024/news240523",
+                "excerpts": [
+                  "May 23, 2024 Share: **[Tron Future Tech](https://taiwania.soez.com.tw/en/portfolios/category/tron_future_tech) ,** a Taiwanese startup founded in 2018, has emerged to be a prominent leader in Taiwan's low Earth orbit (LEO) satellite and Counter-Unmanned Aircraft Systems (C-UAS) markets. At the core of the success is the company's independently developed Active Phased Array (AESA) radar technology. Recently, Tron Future announced that it has secured NT$900 million (approx. US$32.4 million) in a Series A funding round led by the government-backed **Taiwania Capital** and the CID Group, and joined by Industrial Technology Investment Corp. (ITRI's venture capital"
+                ]
+              }
+            ],
+            "reasoning": "The source dates the announcement May 23, 2024, identifies Tron Future Tech as a Taiwanese startup, and reports its Series A funding round, with Taiwan Cooperative Venture Capital among the participants. It describes Tron Future Tech as active in Counter-Unmanned Aircraft Systems (C-UAS), supporting the counter-drone classification. The source provides country-level location information but does not name a city.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_b37ae99d-3c0f-4ff4-9c21-aa20e5954868",
+        "name": "ENE Technology Inc.",
+        "url": "https://www.ene.com.tw/en/about/",
+        "description": "ENE Technology Inc. is an IC design and development company that has expanded into UAV products. Egis Technology’s 2025 annual report states that ENE invested in UAV-related companies Hsuan Yuan Technology Co., Ltd. and Aeroprobing Inc., making ENE a strong match as a strategic/corporate investor in Taiwanese drone hardware.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_c554eebf-8365-47b4-8d85-8532dcfff2b7",
+        "name": "CID Group",
+        "url": "https://www.cidgroup.com/en",
+        "description": "CID Group is an investment firm and venture-capital manager with private-equity, evergreen-holding, and family-office strategies.",
+        "match_status": "matched",
+        "output": {
+          "investor": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          },
+          "taiwan_drone_deal": {
+            "type": "match_condition",
+            "value": "investment; 2024-05-21; Tron Future Tech; Hsinchu, TW; counter-drone/C-UAS defense systems and AESA radar technology.",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "investor",
+            "citations": [
+              {
+                "title": "CID",
+                "url": "https://www.cidgroup.com/en",
+                "excerpts": [
+                  "CID Group is dedicated to integrating resources to create synergies and empower visionary leaders. Leveraging decades of experience, we identify forward-looking investment opportunities with a top-down, long-term perspective and systematic approach.\n\nFostering Partnerships",
+                  "Supported by sovereign funds, pension funds, university endowments, and international institutional investors in the United States, Singapore, Japan, and others, CID successively established Fund I, II, and III. With total assets under management exceeding USD 1.3 billion, it has become one of Taiwan's most influential venture capital firms."
+                ]
+              }
+            ],
+            "reasoning": "CID Group's official site explicitly describes it as a venture-capital firm, satisfying the investor criterion.",
+            "confidence": "high"
+          },
+          {
+            "field": "taiwan_drone_deal",
+            "citations": [
+              {
+                "title": "Tron Future completes Series A round, targets rapidly growing global counter-drone demand  | Tron Future 創未來科技",
+                "url": "https://www.tronfuture.com/news/taiwanese-c-uas-startup-completes-series-a-funding-round",
+                "excerpts": [
+                  "[Digitimes Anti-Drone](https://www.digitimes.com/news/a20240516VL202/defense-drone-satellite-tron-future.html)\n\nMay 21, 2024",
+                  "Tron Future Tech, a Taiwanese startup founded in 2018, has emerged to be a prominent leader in Taiwan’s low Earth orbit (LEO) satellite and Counter-Unmanned Aircraft Systems (C-UAS) markets. At the core of the success is the company’s independently developed Active Phased Array (AESA) radar technology. Recently, Tron Future announced that it has secured NT$900 million (approx. US$32.4 million) in a Series A funding round led by the government-backed Taiwania Capital and the CID Group, and joined by Industrial Technology Investment Corp. (ITRI’s venture capital), Taya Venture, and Taiwan Cooperative Venture Capital.\n\nWith the completion of Series A financing, Tron Future plans to increase its production capacity in support of its"
+                ]
+              },
+              {
+                "title": "Taiwanese Defense Startup Tron Future Tech Targets Global Market  | Tron Future 創未來科技",
+                "url": "https://www.tronfuture.com/news/taiwanese-defense-startup-tron-future-tech-targets-global-market",
+                "excerpts": [
+                  "Tron Future Tech, one of the first Taiwanese defense technology startups, sees burgeoning demand for its counter-unmanned aircraft systems (C-UAS) products in the global market.  The company has a growing base of customers and partners in East Asia, Europe and the Middle East, CEO Yu-Jiu Wang said during an interview with Aviation Week at Tron Future’s headquarters in Hsinchu, Taiwan.\n\nWhile Taiwan is home to many technology startups, few focus on defense. A key reason for that is an historic reluctance to involve private-sector firms in the state-dominated defense industry."
+                ]
+              }
+            ],
+            "reasoning": "Tron Future Tech's May 21, 2024 announcement says its Series A round was led by Taiwania Capital and CID Group and describes the company as active in counter-UAS markets. The company's published article identifies its headquarters as Hsinchu, Taiwan. These establish a qualifying counter-drone/defense investment in a Taiwan-headquartered company.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_e6f3c6a6-1dbf-4b7e-a2ec-0fa7b12c3c49",
+        "name": "Innovative Industrial Technology Transfer Co., Ltd.",
+        "url": "https://itic.com.tw/",
+        "description": "Innovative Industrial Technology Transfer Co., Ltd. is a Taiwanese investor affiliated with the Industrial Technology Research Institute (ITRI). It participated in Tron Future Tech’s 2024 Series A; Tron Future is a Taiwanese company working on counter-drone systems and satellite communications, making this investor a strong match for the stated scope.",
+        "match_status": "matched",
+        "output": {
+          "investor": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          },
+          "taiwan_drone_deal": {
+            "type": "match_condition",
+            "value": "investment; 2024-05-22; Tron Future Tech; Taiwan; counter-drone/C-UAS, defense, and dual-use technology",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "investor",
+            "citations": [
+              {
+                "title": "ITIC",
+                "url": "https://itic.com.tw/",
+                "excerpts": [
+                  "We are the venture capital arm of the renowned R&D consortium – the Industrial Technology Research Institute (ITRI). Since our creation in 1979, we have invested over US$400 million across virtually all stages, sectors, and timezones."
+                ]
+              }
+            ],
+            "reasoning": "ITIC describes itself as the venture capital arm of the Industrial Technology Research Institute and states that it has invested across sectors, supporting its classification as an investor.",
+            "confidence": "high"
+          },
+          {
+            "field": "taiwan_drone_deal",
+            "citations": [
+              {
+                "title": "Tron Future completes Series A financing to expand product line | Tron Future 創未來科技",
+                "url": "https://www.tronfuture.com/news/tron-future-completes-series-a-financing-to-expand-product-line",
+                "excerpts": [
+                  "May 22, 2024 [](https://www.unmannedairspace.info/counter-uas-systems-and-policies/tron-future-completes-series-a-financing-to-expand-product-line/) Taiwanese startup founded in 2018, Tron Future Tech, has announced the completion of Series A financing of TWD900 million.",
+                  "Taiwanese startup founded in 2018, Tron Future Tech, has announced the completion of Series A financing of TWD900 million. The company specialises in counter-uncrewed aerial systems (C-UAS) technology, low-orbit satellite communication systems and synthetic aperture radars. This round of funding was jointly led by Taishan Investment and Warwick Venture Capital. Innovative Industrial Technology Transfer Co., Ltd. (Industrial Research Institute Yard Company), Daya Venture Capital and Heku Venture Capital also participated in the investment."
+                ]
+              }
+            ],
+            "reasoning": "The Tron Future Tech announcement is dated May 22, 2024, and reports completion of its Series A financing. The company’s release identifies it as a Taiwanese startup specializing in counter-UAS technology and says Innovative Industrial Technology Transfer Co., Ltd. participated in the investment. This supports the investment match and the Taiwan and counter-drone/defense sector details.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_e7b51d05-e6f8-446c-af84-ad8534258c77",
+        "name": "Heku Venture Capital (和基投资; 苏州和基投资有限公司)",
+        "url": "https://pitchhub.36kr.com/organization/1679659373204231",
+        "description": "Heku Venture Capital (和基投资; 苏州和基投资有限公司) is an investment firm. Tron Future Tech’s announcement lists Heku Venture Capital as a participant in its Series A; Tron Future works on counter-drone systems, satellite communications, and synthetic-aperture radar, making Heku a direct match for the investment focus.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_ed99e5cd-fea0-43e5-8669-91a3d6c8c82a",
+        "name": "NTU Ventures",
+        "url": "https://ntu.vc/",
+        "description": "NTU Ventures (台大校友創投) is a venture capital fund jointly established by National Taiwan University and alumni-led enterprises. It is relevant to the stated investor scope: its official portfolio lists Tron Future, whose anti-drone defense systems are described on that portfolio page; reporting also identifies Tron Future as NTU Ventures’ first investment.",
+        "match_status": "matched",
+        "output": {
+          "investor": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          },
+          "taiwan_drone_deal": {
+            "type": "match_condition",
+            "value": "investment; 2025; Tron Future Tech; Taiwan; counter-drone/defense technology",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "investor",
+            "citations": [
+              {
+                "title": "NTU Ventures investment portfolio | PitchBook",
+                "url": "https://pitchbook.com/profiles/investor/1421036-20",
+                "excerpts": [
+                  "##### Investor Status\n\nActively Seeking New Investments\n\n##### Primary Investor Type\n\nVenture Capital\n\n##### Corporate Office\n\n* 13 Floor 176 Section 1, Keelung Road\n* Xinyi District\n* Taipei City\n* Taiwan\n\n[](https://www.linkedin.com/company/ntu-vc)\n\n## NTU Ventures\nInvestments (4)\n\n|Company Name |Deal Date |Deal Type |Deal Size |Industry |Company Stage |Lead Partner |\n| --- | --- | --- | --- | --- | --- | --- |\n|[Qinvicta](https://pitchbook.com/profiles/company/1242043-75) |28-May-2026 |Seed Round | |Application Specific Semiconductors |Generating Revenue | |"
+                ]
+              },
+              {
+                "title": "關於我們 | NTU Ventures 台大校友創投",
+                "url": "https://ntu.vc/about",
+                "excerpts": [
+                  "Founded in late 2024, NTU Ventures is jointly established by National Taiwan University and alumni-led enterprises. Our mission is to support innovative startups founded by NTU students, alumni, and faculty, with the aim of fostering a vibrant entrepreneurial spirit on campus and energizing the global NTU alumni startup ecosystem. We focus on investments in the digital economy, deep technology, electronic engineering, and biotech/healthcare sectors. Our target stages range from seed to Series B, with ticket sizes between USD 150K and 2M."
+                ]
+              }
+            ],
+            "reasoning": "The investor profile lists NTU Ventures’ primary investor type as venture capital. NTU Ventures’ official site describes its establishment and investment focus, supporting its classification as an investor.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_drone_deal",
+            "citations": [
+              {
+                "title": "National Taiwan University launches $30m fund to kickstart local innovation - Global Venturing",
+                "url": "https://globalventuring.com/corporate/asia/national-taiwan-university-launches-30m-fund-to-kickstart-local-innovation",
+                "excerpts": [
+                  "# National Taiwan University launches $30m fund to kickstart local innovation\n\n#### Nov 25, 2025 • Kim Moore",
+                  "NTU Ventures’ first investment is in Tron Future Tech, a Taiwanese anti-drone defence tech startup whose chief technology officer, Borching Su, is an associate professor at National Taiwan University. The company raised a $29m series A round in May 2024.\n\nDefence tech investment is ramping up in Taiwan as the government seeks to strengthen its defences against potential attack from neighbouring"
+                ]
+              },
+              {
+                "title": "投資組合 | NTU Ventures 台大校友創投",
+                "url": "https://ntu.vc/portfolio",
+                "excerpts": [
+                  "Contact\n\n# Portfolio\n\n投資組合\n\nOur Investment Portfolio\n\nTron Future logo\n\n[## 創未來科技 Tron Future](https://www.tronfuture.com/tw/)\n\n創未來科技是相控陣列 (AESA) 雷達技術的領導廠商，提供先進的無人機防禦系統及低軌衛星通訊酬載解決方案。其自主研發的晶片與系統具備超輕量與高效能特性，為國防安全與太空科技提供關鍵基礎設施。\n\nTron Future is a leader in Active Electronically Scanned Array (AESA) radar technology, providing advanced anti-drone defense systems and LEO satellite communication payloads. Their proprietary chips and systems feature ultra-lightweight and high-performance capabilities, delivering critical infrastructure for defense and space technologies.\n\nTaudia logo\n\n[## Taudia Taudia](https://taudia.com/)\n\nTaudia 致力於以簡便的血液檢測加速神經退化性疾病的診斷與治療。其平台兼具極高靈敏度與靈活的工作流程，讓研究與臨床團隊能輕鬆精準定量關鍵生物標記，支持從早期研發到疾病監測的每一階段。"
+                ]
+              }
+            ],
+            "reasoning": "The 2025-11-25 article reports that NTU Ventures’ first investment is in Tron Future Tech and identifies it as a Taiwanese anti-drone defense startup. The article supports 2025 as the year associated with the public report of the investment; it does not give the exact investment date. The official portfolio describes Tron Future’s anti-drone defense systems. The cited sources identify the target as Taiwanese but do not establish its headquarters city, so the country-level location is used.",
+            "confidence": "medium"
+          }
+        ]
+      }
+    ],
+    "last_event_id": "65f072076987f"
+  }
+}

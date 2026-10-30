@@ -1,0 +1,77 @@
+[
+  {
+    "label": "task:pro",
+    "estimate_usd": 0.1,
+    "at": "2026-10-30T04:09:28.616Z"
+  },
+  {
+    "label": "task:ultra",
+    "estimate_usd": 0.3,
+    "at": "2026-10-30T04:09:36.494Z"
+  },
+  {
+    "label": "findall:broad:preview:10",
+    "estimate_usd": 0.1,
+    "at": "2026-10-30T04:10:35.100Z"
+  },
+  {
+    "label": "findall:gov:base:15",
+    "estimate_usd": 0.7,
+    "at": "2026-10-30T04:15:59.001Z"
+  },
+  {
+    "label": "findall:industry:base:15",
+    "estimate_usd": 0.7,
+    "at": "2026-10-30T04:16:02.025Z"
+  },
+  {
+    "label": "findall:investors:base:10",
+    "estimate_usd": 0.55,
+    "at": "2026-10-30T04:16:05.032Z"
+  },
+  {
+    "label": "findall:law:base:8",
+    "estimate_usd": 0.49,
+    "at": "2026-10-30T04:16:08.011Z"
+  },
+  {
+    "label": "findall:events:base:8",
+    "estimate_usd": 0.49,
+    "at": "2026-10-30T04:16:11.049Z"
+  },
+  {
+    "label": "findall-enrich:gov:core:x15",
+    "estimate_usd": 0.375,
+    "at": "2026-10-30T04:22:17.438Z"
+  },
+  {
+    "label": "findall-enrich:industry:core:x15",
+    "estimate_usd": 0.375,
+    "at": "2026-10-30T04:22:20.529Z"
+  },
+  {
+    "label": "findall-enrich:investors:core:x10",
+    "estimate_usd": 0.25,
+    "at": "2026-10-30T04:22:23.615Z"
+  },
+  {
+    "label": "findall-enrich:law:core:x8",
+    "estimate_usd": 0.2,
+    "at": "2026-10-30T04:22:26.700Z"
+  },
+  {
+    "label": "findall-enrich:events:core:x8",
+    "estimate_usd": 0.2,
+    "at": "2026-10-30T04:23:20.110Z"
+  },
+  {
+    "label": "findall:overflow-matches-after-enrich:x17 (possible charge, conservative)",
+    "estimate_usd": 0.51,
+    "at": "2026-10-30T04:27:16.529Z"
+  },
+  {
+    "label": "task-enrich:task-ultra:core:x38",
+    "estimate_usd": 0.9500000000000001,
+    "at": "2026-10-30T04:30:17.603Z"
+  }
+]

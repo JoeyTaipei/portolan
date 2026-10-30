@@ -1,0 +1,10 @@
+[budget] findall-enrich:events:core:x8: est $0.200 (running total $4.830)
+3s running generated=14 matched=8
+23s running generated=14 matched=8
+44s running generated=14 matched=8
+64s running generated=14 matched=8
+85s running generated=14 matched=8
+106s running generated=14 matched=8
+126s running generated=14 matched=8
+147s completed generated=14 matched=8
+[saved] scripts/spike/out/findall-events-enriched-core.json
