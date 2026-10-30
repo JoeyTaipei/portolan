@@ -28,7 +28,7 @@
 ## UI
 - 視覺照 design/direction.md（第 3 步選定後才有；在那之前只有 design/screens/ 的版面可以參考，配色和字體不算定案）
 - 做畫面時用 frontend-design skill；避開 docs/research/generic-risks.md 列的 AI 預設風：米色 + 赤陶、紫色漸層、shadcn 預設灰卡片、置中 hero + 三張卡片
-- 只做網頁 App，不做 iOS/Android App。電腦 1280px 和手機 390px 都要好用：手機的版面和資訊和 design/screens/ 一致；電腦用多欄版面，照 design/direction.md
+- 只做網頁 App，不做 iOS/Android App。以電腦螢幕為主：1440px 和 1920px 是主要設計和測試寬度，1280px 是最小筆電寬度，用多欄版面（照 design/direction.md）；手機 390px 只要能讀（單欄，能看 dossier 和 A4 分享連結）。design/screens/ 是手機稿，只當資訊和功能的參考
 - 每個分數都能點開看算法和來源；每個利害關係人都有具體的下一步；不准有 [CLIENT]、[DATE] 這類佔位字
 - 底部分頁：Dossiers、Map、Tracker、Network、Docs
 - 地圖用 SVG 偽 3D，照 design/mockup/src/02-map.template.html 的 project() 和拖曳做法，不用 three.js

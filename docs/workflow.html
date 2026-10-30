@@ -98,12 +98,12 @@ ul.refs{margin:0;padding-left:18px;font-size:14px;display:flex;flex-direction:co
   <div class="tbl"><table>
     <tbody>
       <tr><td>改名</td><td>Atlas 改叫 Portolan。程式、文件、App 裡的文字都改；設計稿上寫 ATLAS 的地方在 App 裡顯示 Portolan。GitHub repo 和本機資料夾在第 2 步改名。</td></tr>
-      <tr><td>網頁 App</td><td>只做網頁，不做 iOS／Android App，也不上 App Store。電腦和手機瀏覽器都要好用：手機寬度照設計稿，電腦寬度用多欄版面。Xcode、Expo、EAS、TestFlight 都不用。</td></tr>
+      <tr><td>網頁 App</td><td>只做網頁，不做 iOS／Android App，也不上 App Store。以電腦螢幕為主（1440 和 1920 寬，最小 1280），用多欄版面；手機只要能讀，主要是 dossier 和 A4 分享連結。Xcode、Expo、EAS、TestFlight 都不用。</td></tr>
       <tr><td>功能全保留</td><td>設計稿的每個功能都做，包括團隊人脈圖層、網絡分頁、文件申請和專家審稿開關、觀察清單。背後要人工的部分（專家審稿、風險簡報、牽線）按鈕和紀錄是真的，由團隊親手完成。逐項清單在 <code>design/intent.md</code> 第 5 節。</td></tr>
       <tr><td>需求文件</td><td><code>design/intent.md</code> 重寫：整合設計稿、「Atlas 建 App 流程」的產品方向（護城河、四種文件、方案、團隊人脈規則）和研究結論。</td></tr>
       <tr><td>從 v2 保留</td><td>Parallel 做研究、Claude 只根據來源寫；先比設計方向再寫程式；Spec 和 Plan 只寫一次；Claude 自己跑指令，你負責登入、貼金鑰、做決定、找使用者、按合併。</td></tr>
       <tr><td>Claude Code 做法</td><td>加上「怎麼帶 Claude」：一次給完整範圍和邊界、每個切片都要通過驗證才算完成、被糾正就寫進 CLAUDE.md、用 auto mode 代替一直按允許。只取 MVP 用得到的，多代理、自動審查機器人、效能爬坡都等送出之後。</td></tr>
-      <tr><td>10/30 更新</td><td>拿掉 cmux，改用 Claude 桌面版（平行 session、自動 worktree、內建瀏覽器、PR 自動修 CI 都內建）。每個切片改用 <code>/goal</code> 迴圈跑到驗收條件成立。研究引擎加「來源檢查迴圈」。分工：你在 Mac mini 上帶 Claude 做，創辦人在 MacBook 和手機看 preview。</td></tr>
+      <tr><td>10/30 更新</td><td>拿掉 cmux，改用 Claude 桌面版（平行 session、自動 worktree、內建瀏覽器、PR 自動修 CI 都內建）。每個切片改用 <code>/goal</code> 迴圈跑到驗收條件成立。研究引擎加「來源檢查迴圈」。分工：你在 Mac mini 上帶 Claude 做，創辦人在 MacBook 和手機看 preview。改成電腦優先：主要寬度 1440 和 1920，手機只要能讀。</td></tr>
       <tr><td>連結</td><td>這頁每個連結都在 10/30 確認打得開。</td></tr>
     </tbody>
   </table></div>
@@ -322,7 +322,7 @@ gh 要登入 JoeyTaipei 帳號。需要我輸入密碼、登入或按允許時�
     <li><input type="checkbox" id="m3-1"><div><div class="t"><span class="cc">Claude</span>寫整個 MVP 的 spec</div>
 <pre><code>/agent-skills:spec 讀 CLAUDE.md、design/intent.md、design/screens/ 的截圖、
 design/mockup/src/ 的 8 個 template 和 src/fixtures/，寫整個 MVP 的 docs/spec.md：
-路由、每頁的載入中／空資料／錯誤狀態、電腦 1280px 和手機 390px 的版面、資料表、
+路由、每頁的載入中／空資料／錯誤狀態、電腦版面（主要 1440 和 1920，最小 1280）和手機能讀的單欄版、資料表、
 Parallel 和 Claude 的分工、研究流程（非同步、顯示進度）、費用上限、分享連結、
 團隊人脈（上傳、比對、暖路徑、撤回）、文件申請和人工代辦的狀態流程。
 intent.md 第 5 節的每一列都要對到 spec 的一個功能，最後附對照表。
@@ -341,7 +341,7 @@ intent.md 第 5 節的每一列都要對到 spec 的一個功能，最後附對�
 <div class="note">設計稿本身就是 2026 年常見的「AI 預設風」（米色 + 赤陶 + 襯線），所以先比方向再寫程式。</div></div></li>
     <li><input type="checkbox" id="m3-d2"><div><div class="t"><span class="you">你</span>看比較頁，選一個（可以混搭），講給 Claude</div>
 <pre><code>選 &lt;方向&gt;（加上 &lt;想混進來的地方&gt;）。把它寫進 design/direction.md：
-配色、字體、間距、圓角、元件樣式、電腦和手機的版面、該做和不該做的事，之後每個切片都照它做。</code></pre></div></li>
+配色、字體、間距、圓角、元件樣式、電腦版面（1440 和 1920）和手機單欄版、該做和不該做的事，之後每個切片都照它做。</code></pre></div></li>
     <li><input type="checkbox" id="m3-3" checked><div><div class="t"><span class="cc">Claude</span>Parallel 試做：量時間、費用和來源品質</div>
 <pre><code>用 Parallel 跑一次 Taiwan UAS（公司、產品、市場和設計稿一樣）。先讀官方文件：
 https://docs.parallel.ai/task-api/task-quickstart 、
@@ -367,7 +367,7 @@ S5 追蹤器 + 會後回報 + Undo
 S6 網絡（存 lead、加入計畫、請專家引薦）+ 文件（申請、專家審稿開關、會前簡報 AI 草稿、狀態）
 S7 團隊人脈圖層（上傳 LinkedIn／通訊錄匯出檔、手動輸入、機構比對、暖路徑、引薦草稿、撤回）
 S8 上線前檢查
-標出可以平行的切片。每個任務寫：要改的檔案、驗收條件（手機 390px 和電腦 1280px 都對）、依賴。
+標出可以平行的切片。每個任務寫：要改的檔案、驗收條件（電腦 1440 和 1920 對、1280 不擠、手機 390 能讀）、依賴。
 驗收條件要能直接貼進 /goal：每一條都是 Claude 能跑出來、印在對話裡的證據（指令 exit 0、截圖、檔案清單）。
 最後附 intent.md 第 5 節每一列 → 切片的對照表，確認沒有漏掉設計稿的功能。
 有取捨就停下來問我。最後 commit docs/。</code></pre></div></li>
@@ -398,7 +398,7 @@ S8 上線前檢查
 <div class="note">Worktree session 已經有自己的分支時，改名成 feature/&lt;切片名稱&gt; 就好。</div></div></li>
     <li><input type="checkbox" id="m5-2"><div><div class="t"><span class="cc">Claude</span>用 <code>/goal</code> 做到驗收條件全部成立</div>
 <pre><code>/goal docs/plan.md 的 S&lt;n&gt; 做完：用 /agent-skills:build 的 TDD 逐項做，只改 S&lt;n&gt; 列的檔案；
-npm test 和 npm run build 都 exit 0；跑 /verify-ui，390px 和 1280px 和設計稿沒有差異、
+npm test 和 npm run build 都 exit 0；跑 /verify-ui，1440、1920、1280 照 design/direction.md、390 能讀、
 載入中／空資料／錯誤狀態都有、console 沒有錯誤；最後印出 git diff --name-only。或 30 輪後停。</code></pre>
 <div class="note">S3、S7 先用 <code>/effort high</code> 和 <code>/plan</code> 看過計畫再設 goal。輸入 <code>/goal</code> 看進度和判斷理由；被判「做不到」就讀理由，改計畫或回答問題後再設一次。走錯方向按 Esc 打斷；要退回前一步按兩次 Esc（或 <code>/rewind</code>）。說明：<a href="https://code.claude.com/docs/en/goal" target="_blank" rel="noopener">/goal</a>。</div></div></li>
     <li><input type="checkbox" id="m5-3"><div><div class="t"><span class="you">你</span>goal 達成後看一眼 <code>/verify-ui</code> 的截圖和 diff 檔案清單</div>
@@ -429,7 +429,7 @@ npm test 和 npm run build 都 exit 0；跑 /verify-ui，390px 和 1280px 和設
 有一頁隱私說明（資料會送到 Parallel 和 Anthropic 處理、團隊人脈怎麼存和怎麼刪）和「不是法律或投資建議」；
 金鑰只在伺服器、每個 Email 和全站每天的研究次數上限有效、分享連結猜不到、
 抓來的網頁內容不會被當成指令、上傳的 CSV／vCard 不能夾帶惡意內容、團隊人脈只有該 dossier 看得到、撤回後真的刪掉。
-完成後在電腦和手機寬度各走一遍正式網址的核心流程。</code></pre>
+完成後在電腦寬度走一遍正式網址的核心流程，再用手機打開 dossier 和 A4 分享連結確認能讀。</code></pre>
 <pre><code>use a workflow to audit every route and server action for leaked API keys, prompt injection
 from fetched pages, guessable share links, and per-email and site-wide research limits,
 and adversarially verify each finding before reporting</code></pre>
@@ -481,7 +481,7 @@ and adversarially verify each finding before reporting</code></pre>
       <tr><td>簡報讀起來像 ChatGPT</td><td>通常缺了客戶資料和判斷。檢查「對客戶的影響」「優先順序」「建議做法」有沒有用到客戶的產品和現況；拿 08 會前簡報當範例。</td></tr>
       <tr><td>A4 報告超過一頁</td><td>不要縮字型硬塞；在模板裡給每段字數上限，產生文字時就遵守。</td></tr>
       <tr><td>人脈對不到機構</td><td>LinkedIn 的公司名常是簡稱、英文名或舊名（「中科院」「NCSIST」）。每個利害關係人存一組別名；信心不夠時讓成員確認，結果存回別名。</td></tr>
-      <tr><td>地圖在手機上卡</td><td>先看節點數；只在畫面變動時重繪，遠處節點合併；手機上提供清單檢視。</td></tr>
+      <tr><td>地圖卡</td><td>先看節點數；只在畫面變動時重繪，遠處節點合併。手機上直接顯示清單，不畫 3D 地圖。</td></tr>
       <tr><td><code>/goal</code> 一直跑不停</td><td>條件太模糊或證據不會出現在對話裡。改成可以印出來的結果（指令 exit 0、檔案清單），並加「或 30 輪後停」。</td></tr>
       <tr><td>新 worktree 缺金鑰</td><td>確認 <code>.worktreeinclude</code> 有 <code>.env.local</code> 這一行，再開新 session。</td></tr>
       <tr><td>兩個 session 改到同一個檔案</td><td>回到 docs/plan.md 重新分檔案。</td></tr>
