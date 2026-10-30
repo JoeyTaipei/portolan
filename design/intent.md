@@ -168,7 +168,7 @@ Portolan（原名 Atlas）是網頁 App。這份是需求的唯一來源，整�
 ### 每一頁都要有
 - 底部分頁：Dossiers、Map、Tracker、Network、Docs
 - 載入中、空資料、錯誤三種狀態都要設計過；按鈕有回饋
-- `/d/sample` 永遠可以看範例 dossier（`src/fixtures/taiwan-uas.ts`），每一頁標「Sample data」
+- `/d/sample` 永遠可以看範例 dossier（`src/fixtures/taiwan-uas.ts`），每一頁標「Sample data」；首頁有一個按鈕直接進去，不用填表或 Email（給 YC 合夥人和第一次來的人）
 
 ## 6. 團隊人脈：「我們已經認識誰？」
 - 每位成員自己選擇加入；不能替別人上傳人脈。

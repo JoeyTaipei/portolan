@@ -194,20 +194,42 @@ ul.refs{margin:0;padding-left:18px;font-size:14px;display:flex;flex-direction:co
   </div>
 </section>
 
-<!-- TIMELINE -->
+<!-- YC -->
 <section class="phase">
-  <div class="ph-head"><span class="ph-num">YC</span><h2>時程</h2><span class="where">伯斯時間</span></div>
+  <div class="ph-head"><span class="ph-num">YC</span><h2>YC 看什麼，Portolan 怎麼對應</h2><span class="where">10/30 讀 YC 官網</span></div>
+  <p class="lead">YC 沒有公開評分表，官網說申請不是「考試拿分數」，是和同一批最好的申請比。下面是 YC 自己寫的重點（<a href="https://www.ycombinator.com/howtoapply" target="_blank" rel="noopener">How to Apply</a>、<a href="https://www.ycombinator.com/faq" target="_blank" rel="noopener">FAQ</a>、<a href="https://www.ycombinator.com/whynot" target="_blank" rel="noopener">Why not invited</a>）。功能做滿只對應其中兩列；最能拉開差距的是真的使用者和清楚的說明，所以時程把最後 1.5 天留給使用者和申請書。</p>
   <div class="tbl"><table>
-    <thead><tr><th>日期</th><th>做什麼</th><th>步驟</th></tr></thead>
+    <thead><tr><th>YC 看的</th><th>Portolan 要拿出來的</th></tr></thead>
     <tbody>
-      <tr><td>10/30（五）</td><td>改名、金鑰、Vercel 上線骨架；Spec、設計方向、Parallel 試做、Plan</td><td>0–3</td></tr>
-      <tr><td>10/31（六）</td><td>ui：S0–S2；engine：S3。晚上 S4 讓真的 dossier 跑起來</td><td>4–5</td></tr>
-      <tr><td>11/1（日）</td><td>S5 追蹤器、S6 網絡 + 文件；網址發給使用者</td><td>5–6</td></tr>
-      <tr><td>11/2（一）</td><td>S7 團隊人脈、S8 上線前檢查；錄 demo 和創辦人影片、填申請書</td><td>5–6</td></tr>
-      <tr><td>11/3 12:00</td><td>截止（太平洋時間 11/2 晚上 8 點）。來不及的切片照常做完，申請書寫當時的進度</td><td>6</td></tr>
-      <tr><td>11/3 起</td><td>每週循環，加送出之後的功能</td><td>7</td></tr>
+      <tr><td>一句話講清楚做什麼</td><td>直白、不行銷，像「X 版的 Y」。例：「給要賣進台灣國防市場的美國無人機新創用的利害關係人地圖，每個人都附來源，見完面回報後分數會更新。」</td></tr>
+      <tr><td>創辦人自己做得出來</td><td>你用 Claude Code 自己做完整個產品：PR 紀錄、正式網址。YC FAQ 提到可選擇附 Paxel builder report（分析你的寫程式 session），自己決定要不要。</td></tr>
+      <tr><td>洞見，不是「做得比較好用」</td><td>只做一條走廊、成果資料和專家網絡、ICD 203 和 Admiralty 可信度格式。寫在 <code>design/intent.md</code> 第 1–2、10 節。</td></tr>
+      <tr><td>知道難在哪</td><td>直接寫出來：AI 研究會編造來源、市場小、使用者是 B2B、團隊人脈的法律風險，各自怎麼處理。YC 說自己想到你沒提的問題是壞訊號。</td></tr>
+      <tr><td>進度</td><td>上線的網址、建了幾份 dossier、幾個人回來填會後回報、使用者原話（<code>docs/users.md</code>）、人工代辦接了幾件（<code>docs/pilots/</code>）。</td></tr>
+      <tr><td>Demo</td><td>合夥人一點就能看：首頁不用註冊就能進 <code>/d/sample</code>，走完地圖 → 簡報 → A4 報告 → 追蹤器。</td></tr>
+      <tr><td>影片</td><td>YC 說有影片的申請被邀面試的機會高很多。1 分鐘創辦人影片 + 1 分鐘 demo。</td></tr>
     </tbody>
   </table></div>
+</section>
+
+<!-- TIMELINE -->
+<section class="phase">
+  <div class="ph-head"><span class="ph-num">⏱</span><h2>時程</h2><span class="where">伯斯時間 · 截止 11/3 12:00</span></div>
+  <p class="lead">用 Claude Code，瓶頸不是寫程式，而是你的決定、審 PR、Parallel 每次研究要跑幾分鐘，和找使用者。估法：每個切片 Claude 跑 1–4 小時，你看 preview 和合併 15–30 分鐘；ui 和 engine 兩條同時跑，晚上讓它繼續跑。程式總共約 20–25 小時的 Claude 時間，兩條平行大約 12 小時。</p>
+  <div class="tbl"><table>
+    <thead><tr><th>時間</th><th>ui 工作區</th><th>engine 工作區</th><th>你</th></tr></thead>
+    <tbody>
+      <tr><td>10/30 白天</td><td colspan="2">Spec（約 45 分）→ 設計方向（約 1 小時）和 Parallel 試做（約 1 小時）同時跑 → Plan（約 20 分）</td><td>金鑰、Vercel、回答 spec 問題、選設計方向和研究等級（共約 2 小時）</td></tr>
+      <tr><td>10/30 晚上</td><td>S0 骨架（1–2 小時，跑通宵也可以）</td><td>—</td><td>睡前合併 S0</td></tr>
+      <tr><td>10/31</td><td>S1 首頁 + 地圖（3 小時）→ S2 簡報 + A4（2 小時）→ S5 追蹤器（2 小時）</td><td>S3 研究引擎（3–4 小時）→ S4 真的 dossier + 進度畫面（2 小時）</td><td>每個 PR 看 preview、合併；跑第一份真的 dossier，點開 5 個來源</td></tr>
+      <tr><td>11/1</td><td>S6 網絡 + 文件畫面（2–3 小時）→ S7 團隊人脈畫面（3 小時）</td><td>會前簡報草稿、匯出檔解析、機構比對（3 小時）</td><td>中午前網址發給使用者，一個一個帶上手</td></tr>
+      <tr><td>11/1 晚上</td><td colspan="2">S8 上線前檢查（1 小時）、使用者回報的問題當天修</td><td>處理人工代辦的需求</td></tr>
+      <tr><td>11/2</td><td colspan="2">只修使用者遇到的問題，不加功能</td><td>更多使用者、錄 demo 和創辦人影片、寫申請書</td></tr>
+      <tr><td>11/2 晚上</td><td colspan="2">—</td><td>送出（留 12 小時緩衝）</td></tr>
+      <tr><td>11/3 起</td><td colspan="2">每週循環，加送出之後的功能</td><td></td></tr>
+    </tbody>
+  </table></div>
+  <p class="callout"><b>落後時：</b>不砍功能，順序往後挪；但 11/1 中午一定要把網址發給使用者，使用者比最後一個切片重要。S7 團隊人脈沒趕上就在 11/2 晚上前做完，申請書照實寫進度。</p>
   <ol class="steps">
     <li><input type="checkbox" id="yc-1"><div><div class="t"><span class="you">創辦人</span>每天和 2 個目標使用者聊，原話寫進 <code>docs/users.md</code></div>
 <div class="note">問：你現在怎麼進一個新市場？最花時間的是哪一步？上次是什麼時候？關心的人留 Email，網址上線就發給他們。</div></div></li>
@@ -413,8 +435,11 @@ claude</code></pre>
     <li><input type="checkbox" id="m6-4"><div><div class="t"><span class="you">創辦人</span>錄 1 分鐘創辦人影片：所有創辦人入鏡、不念稿、不剪接</div></div></li>
     <li><input type="checkbox" id="m6-5"><div><div class="t"><span class="cc">Claude</span>整理申請書草稿，<span class="you">創辦人</span>改成自己的話</div>
 <pre><code>讀 design/intent.md、docs/spec.md、docs/users.md、docs/pilots/、docs/decisions/ 和 PostHog 的數字，
-整理 YC 申請書草稿：我們做了什麼、為什麼是這個問題、進度（聊過幾個人、幾個人在用、引用使用者原話）。
-只用文件裡的事實和數字，不要編造。「為什麼是你們」留空給我寫。</code></pre></div></li>
+整理 YC 申請書草稿，照 https://www.ycombinator.com/howtoapply 的建議：第一句就講清楚做什麼，直白、不用行銷話；
+為什麼是這個問題、我們的洞見；主動寫出最大的 3 個風險和打算怎麼處理；
+進度（聊過幾個人、幾個人在用、幾份 dossier、幾次會後回報、引用使用者原話）。
+只用文件裡的事實和數字，不要編造。「每位創辦人做過最厲害的事」和「hack 過什麼系統」留空給我寫。</code></pre>
+<div class="note">送出前印出來，刪掉每個不需要的字（YC 自己的建議）。</div></div></li>
     <li><input type="checkbox" id="m6-6"><div><div class="t"><span class="you">創辦人</span>在 <a href="https://www.ycombinator.com/apply" target="_blank" rel="noopener">YC 申請頁</a> 填入正式網址、demo、影片，伯斯時間 11/3 中午 12 點前送出</div></div></li>
   </ol>
 </section>
