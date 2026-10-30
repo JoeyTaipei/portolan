@@ -86,7 +86,7 @@ ul.refs{margin:0;padding-left:18px;font-size:14px;display:flex;flex-direction:co
 <body>
 <div class="wrap">
 <header>
-  <span class="eyebrow">Portolan MVP v3 · Next.js 網頁 App · Parallel + Claude API · Mac mini + cmux · Vercel</span>
+  <span class="eyebrow">Portolan MVP v3 · Next.js 網頁 App · Parallel + Claude API · Mac mini（Claude 桌面版）+ MacBook 檢查 · Vercel</span>
   <h1>Portolan MVP 建置流程</h1>
   <p class="sub">目標：伯斯時間 11/3 中午前上線網頁版 Portolan（原名 Atlas），用當時的進度送出 YC Winter 2027 申請。任何人輸入公司和目標市場，就拿到有來源的利害關係人地圖、策略簡報、一頁 A4 報告、追蹤器和會後回報。設計稿 8 個畫面上的功能全部都做，需求見 <code>design/intent.md</code>。標 <span class="cc">Claude</span> 的步驟由 Claude 自己跑，標 <span class="you">你</span> 的才需要你動手。勾選會記在這個瀏覽器。</p>
   <div class="progress"><div class="bar"><i id="bar"></i></div><span id="count">0 / 0</span></div>
@@ -103,6 +103,7 @@ ul.refs{margin:0;padding-left:18px;font-size:14px;display:flex;flex-direction:co
       <tr><td>需求文件</td><td><code>design/intent.md</code> 重寫：整合設計稿、「Atlas 建 App 流程」的產品方向（護城河、四種文件、方案、團隊人脈規則）和研究結論。</td></tr>
       <tr><td>從 v2 保留</td><td>Parallel 做研究、Claude 只根據來源寫；先比設計方向再寫程式；Spec 和 Plan 只寫一次；Claude 自己跑指令，你負責登入、貼金鑰、做決定、找使用者、按合併。</td></tr>
       <tr><td>Claude Code 做法</td><td>加上「怎麼帶 Claude」：一次給完整範圍和邊界、每個切片都要通過驗證才算完成、被糾正就寫進 CLAUDE.md、用 auto mode 代替一直按允許。只取 MVP 用得到的，多代理、自動審查機器人、效能爬坡都等送出之後。</td></tr>
+      <tr><td>10/30 更新</td><td>拿掉 cmux，改用 Claude 桌面版（平行 session、自動 worktree、內建瀏覽器、PR 自動修 CI 都內建）。每個切片改用 <code>/goal</code> 迴圈跑到驗收條件成立。研究引擎加「來源檢查迴圈」。分工：你在 Mac mini 上帶 Claude 做，創辦人在 MacBook 和手機看 preview。</td></tr>
       <tr><td>連結</td><td>這頁每個連結都在 10/30 確認打得開。</td></tr>
     </tbody>
   </table></div>
@@ -114,22 +115,24 @@ ul.refs{margin:0;padding-left:18px;font-size:14px;display:flex;flex-direction:co
   <div class="tbl"><table>
     <thead><tr><th>工具</th><th>要不要</th><th>為什麼</th></tr></thead>
     <tbody>
-      <tr><td>Mac mini</td><td class="yes">要</td><td>主要開發機。cmux 只能在 Mac 上跑；一直插著電開著，Claude 可以整晚跑 <code>/build auto</code>。</td></tr>
-      <tr><td>cmux</td><td class="yes">要</td><td>兩個 Claude 並排跑（畫面、研究引擎），需要你時會通知。</td></tr>
+      <tr><td>Mac mini</td><td class="yes">要</td><td>唯一的開發機。一直插著電開著，Claude 可以整晚跑 <code>/goal</code>。所有程式、金鑰、worktree 都只在這台。</td></tr>
+      <tr><td>Claude 桌面版（Code 分頁）</td><td class="yes">要</td><td>主要工具。每個 session 可以開自己的 worktree，兩個並排跑（ui、engine）；內建瀏覽器給 <code>/verify-ui</code> 用；完成或需要你時跳通知；PR 開了以後可以打開 Auto-fix 自動修 CI。</td></tr>
+      <tr><td>MacBook</td><td class="yes">要（只檢查）</td><td>創辦人在 MacBook 和手機打開 PR 上的 Vercel preview 實際點一遍，在 GitHub 留意見或核准。不在 MacBook 寫程式、不放金鑰。</td></tr>
+      <tr><td><code>/goal</code></td><td class="yes">要</td><td>把切片的驗收條件寫成 <code>/goal</code>，Claude 會一輪一輪做到條件成立；每輪由另一個模型判斷做完沒，不是寫程式的 Claude 自己說了算。</td></tr>
       <tr><td>Next.js + Vercel</td><td class="yes">要</td><td>網址點開就能用，每個 PR 自動有 preview，合併後一分鐘內上線。</td></tr>
       <tr><td>Supabase</td><td class="yes">要</td><td>Postgres 資料庫；只從伺服器連，每張表開 RLS。</td></tr>
       <tr><td>Parallel</td><td class="yes">要</td><td>研究結果附來源（Basis），符合「每個結論都要有來源」；非同步執行，不受 Vercel 函式時間限制。</td></tr>
       <tr><td>Claude API</td><td class="yes">要</td><td>評分、策略簡報、7 天計畫、會前簡報草稿、引薦草稿。</td></tr>
       <tr><td>PostHog</td><td class="yes">要</td><td>量 YC 會問的數字：建 dossier、匯出報告、填會後回報。</td></tr>
-      <tr><td>Playwright MCP</td><td class="yes">要</td><td>cmux 裡的 Claude 靠它開瀏覽器檢查畫面。桌面版有內建瀏覽器，不用它。</td></tr>
+      <tr><td>Playwright MCP</td><td class="no">備用</td><td>桌面版有內建瀏覽器，<code>/verify-ui</code> 用它就好。已經裝了不用移除；端到端測試照樣用 npm 的 Playwright。</td></tr>
       <tr><td>frontend-design skill</td><td class="yes">要</td><td>Anthropic 官方。做畫面時避免掉回 AI 預設風。</td></tr>
       <tr><td>agent-skills（Addy Osmani）</td><td class="yes">要</td><td>spec、plan、build、ship 的流程。</td></tr>
       <tr><td>Xcode、Expo、EAS、TestFlight</td><td class="no">不用</td><td>不做手機 App。</td></tr>
       <tr><td>three.js</td><td class="no">不用</td><td>地圖照設計稿用 SVG 偽 3D（<code>project()</code> + 拖曳），已經夠用，也容易印進 A4 報告。</td></tr>
-      <tr><td>Agent Teams</td><td class="no">先不用</td><td>4 天衝刺裡 token 多、隊友容易改到同一個檔案；兩個 cmux 工作區就夠。</td></tr>
+      <tr><td>Agent Teams</td><td class="no">先不用</td><td>4 天衝刺裡 token 多、隊友容易改到同一個檔案；兩個桌面版 session 就夠。</td></tr>
       <tr><td>Deep research skill</td><td class="no">不用</td><td>一次性研究 Claude 直接上網查就夠；產品裡的研究用 Parallel。</td></tr>
-      <tr><td>/goal、Goal Composer</td><td class="no">先不用</td><td><code>/agent-skills:build auto</code> 加上 plan 裡的驗收條件已經能讓 Claude 一路做完。</td></tr>
-      <tr><td>Ghostty、MacBook</td><td class="no">不用</td><td>cmux 已經用 Ghostty 的引擎；一直開著的 Mac mini 比筆電適合長時間跑。</td></tr>
+      <tr><td>cmux、Ghostty</td><td class="no">不用</td><td>平行 session、通知、瀏覽器桌面版都有，worktree 還是自動的；兩套工具就要盯兩個地方。</td></tr>
+      <tr><td>Goal Composer、Stop hook</td><td class="no">先不用</td><td><code>/goal</code> 本身就是 Stop hook 的簡化版，MVP 夠用。</td></tr>
       <tr><td>gstack、Context7、Lovable</td><td class="no">不用</td><td>查文件直接讀官方網站和 <code>node_modules/next/dist/docs/</code>。</td></tr>
     </tbody>
   </table></div>
@@ -145,8 +148,11 @@ ul.refs{margin:0;padding-left:18px;font-size:14px;display:flex;flex-direction:co
       <tr><td>一次給完整範圍</td><td>不要一步一步下小指令。每個切片的範圍、檔案、驗收條件都已經在 <code>docs/plan.md</code>，指令只要指向它。寫 spec 時用 macOS 聽寫講完整背景，比打字詳細（<code>/voice</code> 不支援中文）。</td></tr>
       <tr><td>講清楚不能做什麼</td><td>只改計畫列的檔案；不加計畫外的功能、工具函式、套件；不動 migration 和 <code>types.ts</code>，要越界先問。</td></tr>
       <tr><td>回報要短</td><td>做完最多 3 行：改了哪些檔案、測試結果、要你看的頁面。不用加「檢查一遍再改錯」這種話，只會更慢更貴。</td></tr>
-      <tr><td>先看計畫再動手</td><td><code>/agent-skills:build auto</code> 會先給計畫讓你核准。研究引擎（S3）和團隊人脈（S7）比較複雜，先用 <code>/plan</code> 看完再開始。</td></tr>
-      <tr><td>驗證才算完成</td><td>每個切片都要：測試和建置通過、<code>/verify-ui</code> 用 Playwright 開瀏覽器截圖比對設計稿、console 沒有錯誤。修 bug 先寫會失敗的測試。</td></tr>
+      <tr><td>用迴圈，不要一直下指令</td><td>你寫「怎樣算做完」，Claude 自己做到。每個切片用 <code>/goal</code> 加上 plan 的驗收條件，在 auto mode 跑。條件要寫成 Claude 會在對話裡印出來的證據（例如「npm test exit 0」），因為判斷的模型只看對話、不自己跑指令。一定加「或 30 輪後停」。</td></tr>
+      <tr><td>做的和查的分開</td><td>寫程式的 session 不審自己：<code>/code-review</code> 在新的 session 跑。修 bug 時測試要先在 main 上失敗、修完通過，兩次結果都給你看。</td></tr>
+      <tr><td>「做完」只是說法</td><td>你和創辦人看過 preview 才算數。同時最多 2 個寫程式的 session：瓶頸是你們看的速度，不是 Claude。</td></tr>
+      <tr><td>先看計畫再動手</td><td>研究引擎（S3）和團隊人脈（S7）比較複雜，先用 <code>/plan</code> 看完再開始。</td></tr>
+      <tr><td>驗證才算完成</td><td>每個切片都要：測試和建置通過、<code>/verify-ui</code> 用內建瀏覽器截圖比對設計稿、console 沒有錯誤。修 bug 先寫會失敗的測試。</td></tr>
       <tr><td>錯誤只犯一次</td><td>你糾正 Claude 一次，就請它把規則用一句話加進 <code>CLAUDE.md</code>。用 <code>/memory</code> 看和整理；保持 80 行以內。個人偏好放 <code>CLAUDE.local.md</code>（不會進 git）。</td></tr>
       <tr><td>模型和思考深度</td><td>用預設模型。Spec、評分、研究引擎用 <code>/effort high</code>；畫面切片用預設。不用 <code>/advisor</code>：比較慢、也比較貴。</td></tr>
       <tr><td>權限</td><td>用 auto mode（Claude Code 2.1.283 以後的預設）：安全的指令自動跑，危險的會擋下或問你，不用一直按允許。金鑰只放 <code>.env.local</code>，不貼進對話。</td></tr>
@@ -157,7 +163,7 @@ ul.refs{margin:0;padding-left:18px;font-size:14px;display:flex;flex-direction:co
     <thead><tr><th>先不用</th><th>為什麼</th></tr></thead>
     <tbody>
       <tr><td>分層 CLAUDE.md</td><td>專案還小，一個根目錄的 <code>CLAUDE.md</code> 就夠。超過 80 行再拆到子資料夾。</td></tr>
-      <tr><td>多代理、上百個 subagent</td><td>給大型遷移用的。MVP 兩個 cmux 工作區就夠。</td></tr>
+      <tr><td>多代理、上百個 subagent</td><td>給大型遷移用的。MVP 兩個桌面版 session 就夠。</td></tr>
       <tr><td>自動審查機器人、GitHub Code Review</td><td>GitHub 上的 Code Review 要 Team／Enterprise 方案；MVP 本機 <code>/code-review</code> 加你看 preview 就夠。</td></tr>
       <tr><td>效能爬坡、<code>claude -p</code> 自動化</td><td>沒有使用者之前沒有東西可以優化。送出後再接進每週流程。</td></tr>
       <tr><td><code>/sandbox</code>、容器</td><td>會擋到 npm、gh、Vercel 的網路，衝刺期間很麻煩。auto mode 加上金鑰只放 <code>.env.local</code> 就夠；之後跑無人看管的排程任務再開。</td></tr>
@@ -236,39 +242,37 @@ ul.refs{margin:0;padding-left:18px;font-size:14px;display:flex;flex-direction:co
   </ol>
 </section>
 
-<div class="loop"><b>每個切片：</b> 開分支 → /agent-skills:build auto → /verify-ui → /code-review → PR → 電腦和手機看 Vercel preview → 你合併（自動上線）</div>
+<div class="loop"><b>每個切片：</b> 新 session（worktree）→ /goal 跑到驗收條件成立 → 新 session /code-review → PR + Auto-fix → 創辦人在 MacBook 和手機看 preview → 你合併（自動上線）</div>
 
 <div class="part">設定（只做一次）</div>
 
 <!-- PHASE 0 -->
 <section class="phase">
   <div class="ph-head"><span class="ph-num">0</span><h2>Mac mini 基本工具</h2><span class="where">你 · Mac 的「終端機」· 約 20 分鐘</span></div>
-  <p class="lead">先在終端機裝 Claude Code CLI（桌面版內建的 Claude Code 不能在終端機用，cmux 需要 CLI）。之後交給 Claude 檢查和補齊；要密碼、登入或按允許的時候你來。10/30 檢查時這台 Mac mini 已經裝好 Playwright MCP、frontend-design 和 agent-skills。</p>
+  <p class="lead">主要用 Claude 桌面版；CLI 留著給終端機和之後的排程任務用。之後交給 Claude 檢查和補齊；要密碼、登入或按允許的時候你來。10/30 檢查時這台 Mac mini 已經裝好 Playwright MCP、frontend-design 和 agent-skills。</p>
   <ol class="steps">
     <li><input type="checkbox" id="m0-1"><div><div class="t"><span class="you">你</span>裝 Claude Code CLI，瀏覽器登入（和桌面版同一個帳號）</div>
 <pre><code>curl -fsSL https://claude.ai/install.sh | bash
 claude --version   # 開新視窗後確認</code></pre>
 <div class="note">說明：<a href="https://code.claude.com/docs/en/setup" target="_blank" rel="noopener">Claude Code 安裝</a>。桌面版從 <a href="https://claude.ai/download" target="_blank" rel="noopener">claude.ai/download</a> 下載。</div></div></li>
     <li><input type="checkbox" id="m0-2"><div><div class="t"><span class="cc">Claude</span>檢查並補齊工具：輸入 <code>claude</code>，貼上</div>
-<pre><code>先執行 claude update。檢查這台 Mac 有沒有：Homebrew、git、node（v20 以上）、gh、cmux、
-Playwright MCP、frontend-design 和 agent-skills 兩個 plugin。缺的用這些指令裝，已經有的跳過：
+<pre><code>先執行 claude update。檢查這台 Mac 有沒有：Homebrew、git、node（v20 以上）、gh、
+frontend-design 和 agent-skills 兩個 plugin。缺的用這些指令裝，已經有的跳過：
   Homebrew：官方 install.sh；工具：brew install git node gh
-  cmux：brew tap manaflow-ai/cmux && brew install --cask cmux，再 cmux hooks setup
-  claude mcp add --scope user playwright -- npx @playwright/mcp@latest
   claude plugin install frontend-design@anthropic-plugin-directory --scope user
   claude plugin marketplace add addyosmani/agent-skills
   claude plugin install agent-skills@addy-agent-skills --scope user
 gh 要登入 JoeyTaipei 帳號。需要我輸入密碼、登入或按允許時告訴我。最後列出每一項的狀態。</code></pre>
 <div class="note">Homebrew 安裝會要 Mac 的登入密碼，那一步你自己在終端機輸入（<a href="https://brew.sh" target="_blank" rel="noopener">brew.sh</a>）。</div></div></li>
-    <li><input type="checkbox" id="m0-3"><div><div class="t"><span class="you">你</span>打開 cmux，確認它認得 Claude Code</div>
-<div class="note">之後都在 cmux 裡開終端機。快捷鍵：⌘N 新工作區、⌘D 分割窗格、⌘⇧R 改名、⌘⇧U 跳到需要你的窗格。說明：<a href="https://cmux.com/docs/getting-started" target="_blank" rel="noopener">cmux Getting Started</a>。</div></div></li>
-    <li><input type="checkbox" id="m0-6"><div><div class="t"><span class="you">你</span>在 claude 裡確認 auto mode，打開不閃爍的畫面</div>
-<pre><code>/tui fullscreen</code></pre>
-<div class="note">按 Shift+Tab 切換權限模式，畫面下方顯示 auto 就對了（Claude Code 2.1.283 以後是預設）。cmux 用 Ghostty 引擎，Shift+Enter 換行本來就能用。說明：<a href="https://code.claude.com/docs/en/permission-modes" target="_blank" rel="noopener">權限模式</a> · <a href="https://code.claude.com/docs/en/fullscreen" target="_blank" rel="noopener">Fullscreen</a>。</div></div></li>
+    <li><input type="checkbox" id="m0-3"><div><div class="t"><span class="you">你</span>打開 Claude 桌面版的 Code 分頁，資料夾選 <code>~/code/portolan</code></div>
+<div class="note">快捷鍵：⌘N 新 session、Ctrl+Tab 切換、Option 點 session 並排、⌘⇧B 開瀏覽器。開 session 前打開 <b>Worktree</b>，Claude 就在自己的資料夾做，不會和另一個 session 打架。說明：<a href="https://code.claude.com/docs/en/desktop" target="_blank" rel="noopener">桌面版</a>。</div></div></li>
+    <li><input type="checkbox" id="m0-6"><div><div class="t"><span class="you">你</span>確認權限模式是 auto，並讓新 worktree 自動帶 <code>.env.local</code></div>
+<pre><code>在專案根目錄建 .worktreeinclude，內容一行：.env.local，commit 進去。</code></pre>
+<div class="note">權限模式在輸入框下方選 auto（Claude Code 2.1.283 以後是預設）。<code>.env.local</code> 不進 git，沒有這個檔新 worktree 會缺金鑰。說明：<a href="https://code.claude.com/docs/en/permission-modes" target="_blank" rel="noopener">權限模式</a> · <a href="https://code.claude.com/docs/en/worktrees" target="_blank" rel="noopener">Worktrees</a>。</div></div></li>
     <li><input type="checkbox" id="m0-4"><div><div class="t"><span class="you">你</span>系統設定 → 能源：接電源時防止自動睡眠</div>
-<div class="note">Claude 才能在你離開時繼續跑。臨時也可以在 cmux 另開窗格跑 <code>caffeinate -dims</code>，回來按 Ctrl+C。</div></div></li>
-    <li><input type="checkbox" id="m0-5"><div><div class="t"><span class="you">你</span>（選配）從別的電腦或手機看 Mac mini</div>
-<div class="note">Mac：系統設定 → 一般 → 共享 → 打開「遠端登入」，PC 的 Claude 桌面版新增 SSH 連線指到 Mac mini。手機看 cmux：<a href="https://cmux.com/docs/ios" target="_blank" rel="noopener">cmux iOS（beta）</a>。</div></div></li>
+<div class="note">Claude 才能在你離開時繼續跑。臨時也可以在終端機跑 <code>caffeinate -dims</code>，回來按 Ctrl+C。</div></div></li>
+    <li><input type="checkbox" id="m0-5"><div><div class="t"><span class="you">創辦人</span>MacBook 設定成檢查用</div>
+<div class="note">GitHub：把創辦人加成 repo 協作者，才能看 PR 和留意見。Vercel：加進團隊，preview 網址才打得開。MacBook 不用裝 Node、不放金鑰。你自己出門時想看 Mac mini 上的 session：在 session 打開 Remote Control，用 <a href="https://claude.ai/code" target="_blank" rel="noopener">claude.ai/code</a> 或手機 Claude App 接手（同一個帳號）。說明：<a href="https://code.claude.com/docs/en/remote-control" target="_blank" rel="noopener">Remote Control</a>。</div></div></li>
   </ol>
 </section>
 
@@ -297,7 +301,7 @@ gh 要登入 JoeyTaipei 帳號。需要我輸入密碼、登入或按允許時�
 <div class="note">內容：Next.js 骨架、<code>design/</code>（原始設計稿 + 8 個畫面的 390px 截圖 + 可讀原始碼）、<code>src/fixtures/taiwan-uas.ts</code>、<code>design/intent.md</code>、<code>CLAUDE.md</code>、<code>/verify-ui</code> skill、<code>.env.example</code>。</div></div></li>
     <li><input type="checkbox" id="m2-2"><div><div class="t"><span class="you">創辦人</span>讀 <code>design/intent.md</code>，補完標「待補」的地方</div>
 <div class="note">目標使用者、評分怎麼算、研究跑多久、每天上限、文件要不要收費、第一批審稿專家。用說的也可以，直接講給 Claude 改。</div></div></li>
-    <li><input type="checkbox" id="m2-3"><div><div class="t"><span class="cc">Claude</span>GitHub repo 和本機資料夾改名，連上 Vercel：在 cmux 輸入 <code>claude</code>，貼上</div>
+    <li><input type="checkbox" id="m2-3"><div><div class="t"><span class="cc">Claude</span>GitHub repo 和本機資料夾改名，連上 Vercel：在桌面版開 session，貼上</div>
 <pre><code>把 GitHub repo JoeyTaipei/atlas 改名成 portolan（gh repo rename portolan），更新 git remote，
 把本機資料夾改成 ~/code/portolan。npm install，npm run build 確認能過。
 確認 .env.local 存在，然後停下來讓我自己貼金鑰。
@@ -311,7 +315,7 @@ gh 要登入 JoeyTaipei 帳號。需要我輸入密碼、登入或按允許時�
 
 <!-- PHASE 3 -->
 <section class="phase">
-  <div class="ph-head"><span class="ph-num">3</span><h2>Spec、設計方向、Parallel 試做、Plan</h2><span class="where">cmux 或桌面版 · 只做一次</span></div>
+  <div class="ph-head"><span class="ph-num">3</span><h2>Spec、設計方向、Parallel 試做、Plan</h2><span class="where">桌面版 · 只做一次</span></div>
   <ol class="steps">
     <li><input type="checkbox" id="m3-1"><div><div class="t"><span class="cc">Claude</span>寫整個 MVP 的 spec</div>
 <pre><code>/agent-skills:spec 讀 CLAUDE.md、design/intent.md、design/screens/ 的截圖、
@@ -353,13 +357,16 @@ S0 骨架（型別 src/lib/types.ts、主題和字體照 design/direction.md、�
    PostHog、Vitest + Playwright、.claude/settings.json 的指令白名單）
 S1 Dossiers 首頁 + 新建表單 + 地圖（3D、Power Matrix、篩選、詳情）（用 fixtures）
 S2 策略簡報 + A4 報告 + 分享連結（用 fixtures）
-S3 研究引擎（Parallel + Claude，寫進資料庫，含網絡的投資人／律師／活動）
+S3 研究引擎（Parallel + Claude，寫進資料庫，含網絡的投資人／律師／活動）+ 來源檢查迴圈：
+   Claude 寫完後用程式（不是模型）檢查每個主張：來源 id 在 Basis 裡、摘錄真的出現在來源、有查證日期；
+   不過的重試一次，再不過標「未驗證」；用 src/fixtures 寫 Vitest 測試，沒來源的主張會讓測試失敗
 S4 接上真的 dossier + 研究進度畫面 + 重新整理 + RE-BRIEF
 S5 追蹤器 + 會後回報 + Undo
 S6 網絡（存 lead、加入計畫、請專家引薦）+ 文件（申請、專家審稿開關、會前簡報 AI 草稿、狀態）
 S7 團隊人脈圖層（上傳 LinkedIn／通訊錄匯出檔、手動輸入、機構比對、暖路徑、引薦草稿、撤回）
 S8 上線前檢查
 標出可以平行的切片。每個任務寫：要改的檔案、驗收條件（手機 390px 和電腦 1280px 都對）、依賴。
+驗收條件要能直接貼進 /goal：每一條都是 Claude 能跑出來、印在對話裡的證據（指令 exit 0、截圖、檔案清單）。
 最後附 intent.md 第 5 節每一列 → 切片的對照表，確認沒有漏掉設計稿的功能。
 有取捨就停下來問我。最後 commit docs/。</code></pre></div></li>
   </ol>
@@ -369,21 +376,14 @@ S8 上線前檢查
 
 <!-- PHASE 4 -->
 <section class="phase">
-  <div class="ph-head"><span class="ph-num">4</span><h2>cmux 平行開發</h2><span class="where">Mac mini · cmux</span></div>
+  <div class="ph-head"><span class="ph-num">4</span><h2>桌面版平行開發</h2><span class="where">Mac mini · Claude 桌面版</span></div>
   <ol class="steps">
-    <li><input type="checkbox" id="m4-1"><div><div class="t"><span class="you">你</span>⌘N 開工作區「ui」（⌘⇧R 改名），依序做 S0、S1、S2、S5、S6、S7</div>
-<pre><code>cd ~/code/portolan
-claude</code></pre></div></li>
-    <li><input type="checkbox" id="m4-2"><div><div class="t"><span class="you">你</span>S0 合併後，⌘N 開工作區「engine」，做 S3、S4</div>
-<pre><code>cd ~/code/portolan
-git switch main && git pull
-git worktree add ../portolan-engine -b feature/engine
-cp .env.local ../portolan-engine/
-cd ../portolan-engine && npm install
-claude</code></pre>
+    <li><input type="checkbox" id="m4-1"><div><div class="t"><span class="you">你</span>每個切片開一個新 session，打開 Worktree，名稱用切片編號（例如「S1 ui」）</div>
+<div class="note">ui 這條依序做 S0、S1、S2、S5、S6、S7。一個切片一個 session，做完、合併就封存，下一個切片開新的，context 才乾淨。</div></div></li>
+    <li><input type="checkbox" id="m4-2"><div><div class="t"><span class="you">你</span>S0 合併後，另開 engine 這條的 session（同樣打開 Worktree），做 S3、S4</div>
 <div class="note">engine 的開發伺服器用 <code>PORT=3001 npm run dev</code>，避免和 ui 搶 3000。S4 做完，engine 接著做 S6、S7 需要的伺服器部分（會前簡報草稿、匯出檔解析、機構比對）。</div></div></li>
     <li><input type="checkbox" id="m4-3"><div><div class="t">平行規則</div>
-<div class="note">最多同時 2 條。同一個檔案只能一條改；<code>src/lib/types.ts</code> 和 migration 只在 ui 改，engine 要改先講。窗格響了按 ⌘⇧U 跳過去處理。spec、看 diff、<code>/verify-ui</code> 也可以在桌面版做，但同一個資料夾同時只讓一邊動手。</div></div></li>
+<div class="note">最多同時 2 個寫程式的 session。同一個檔案只能一條改；<code>src/lib/types.ts</code> 和 migration 只在 ui 改，engine 要改先講。收到通知再切過去處理，其他時間不用盯。睡前讓一個 <code>/goal</code> 整晚跑，早上看結果。</div></div></li>
   </ol>
 </section>
 
@@ -392,24 +392,26 @@ claude</code></pre>
   <div class="ph-head"><span class="ph-num">5</span><h2>每個切片</h2><span class="where">在該切片的工作區</span></div>
   <ol class="steps">
     <li><input type="checkbox" id="m5-1"><div><div class="t"><span class="cc">Claude</span>開分支</div>
-<pre><code>切到 main 拉最新，開一條 feature/&lt;切片名稱&gt;</code></pre>
-<div class="note">engine 工作區已經在 feature/engine，跳過。</div></div></li>
-    <li><input type="checkbox" id="m5-2"><div><div class="t"><span class="cc">Claude</span>照計畫做完這個切片</div>
-<pre><code>/agent-skills:build auto 照 docs/plan.md 做 S&lt;n&gt;。只做這個切片列的任務和檔案。</code></pre>
-<div class="note">核准一次計畫後，它會用 TDD 逐個任務做完。S3、S7 先跑 <code>/effort high</code> 和 <code>/plan</code>。它停下來問你時回答，其他時間讓它跑。走錯方向按 Esc 打斷；要退回前一步按兩次 Esc（或 <code>/rewind</code>）。</div></div></li>
-    <li><input type="checkbox" id="m5-3"><div><div class="t"><span class="cc">Claude</span>開瀏覽器走一遍，和設計稿比對並修好</div>
-<pre><code>/verify-ui</code></pre>
-<div class="note">手機 390px 和電腦 1280px 各走一遍；檢查載入中、空資料、錯誤狀態，和 intent.md 第 5 節這個切片的每一列。</div></div></li>
+<pre><code>從最新的 main 開一條 feature/&lt;切片名稱&gt;</code></pre>
+<div class="note">Worktree session 已經有自己的分支時，改名成 feature/&lt;切片名稱&gt; 就好。</div></div></li>
+    <li><input type="checkbox" id="m5-2"><div><div class="t"><span class="cc">Claude</span>用 <code>/goal</code> 做到驗收條件全部成立</div>
+<pre><code>/goal docs/plan.md 的 S&lt;n&gt; 做完：用 /agent-skills:build 的 TDD 逐項做，只改 S&lt;n&gt; 列的檔案；
+npm test 和 npm run build 都 exit 0；跑 /verify-ui，390px 和 1280px 和設計稿沒有差異、
+載入中／空資料／錯誤狀態都有、console 沒有錯誤；最後印出 git diff --name-only。或 30 輪後停。</code></pre>
+<div class="note">S3、S7 先用 <code>/effort high</code> 和 <code>/plan</code> 看過計畫再設 goal。輸入 <code>/goal</code> 看進度和判斷理由；被判「做不到」就讀理由，改計畫或回答問題後再設一次。走錯方向按 Esc 打斷；要退回前一步按兩次 Esc（或 <code>/rewind</code>）。說明：<a href="https://code.claude.com/docs/en/goal" target="_blank" rel="noopener">/goal</a>。</div></div></li>
+    <li><input type="checkbox" id="m5-3"><div><div class="t"><span class="you">你</span>goal 達成後看一眼 <code>/verify-ui</code> 的截圖和 diff 檔案清單</div>
+<div class="note">清單裡有計畫外的檔案就叫它退回。這一步只花 2 分鐘，但能擋掉大部分越界。</div></div></li>
     <li><input type="checkbox" id="m5-4"><div><div class="t"><span class="cc">Claude</span>審查並開 PR</div>
 <pre><code>/code-review
-修好 Critical 的問題，跑 npm test 和 npm run build，commit、push，用 gh pr create 開 PR。
+（在新的 session 跑，不要用寫程式的那個）修好 Critical 的問題，跑 npm test 和 npm run build，commit、push，用 gh pr create 開 PR。
 說明寫：做了什麼、測試結果、要我在電腦和手機上看的頁面、已知限制。不要合併。</code></pre>
-<div class="note">S3、S7、S8 開 PR 前再跑一次 <code>/security-review</code>。</div></div></li>
-    <li><input type="checkbox" id="m5-5"><div><div class="t"><span class="you">你</span>在電腦和手機打開 PR 上的 Vercel preview 網址，實際點一遍，不對的直接講給 Claude 修</div></div></li>
-    <li><input type="checkbox" id="m5-6"><div><div class="t"><span class="you">你</span>在 GitHub 按合併，Vercel 自動上線，接著做下一個切片</div></div></li>
+<div class="note">S3、S7、S8 開 PR 前再跑一次 <code>/security-review</code>。PR 開了以後在 session 的 Changes 卡片打開 Auto-fix，CI 失敗或有審查意見 Claude 會自己修。</div></div></li>
+    <li><input type="checkbox" id="m5-5"><div><div class="t"><span class="you">創辦人</span>在 MacBook 和手機打開 PR 上的 Vercel preview 網址，實際點一遍</div>
+<div class="note">不對的留在 PR 的留言或直接告訴你，你轉給該切片的 session 修。看的重點：核心流程走得完、每個分數點得開來源、沒有佔位字。</div></div></li>
+    <li><input type="checkbox" id="m5-6"><div><div class="t"><span class="you">你</span>創辦人看過後在 GitHub 按合併，Vercel 自動上線，接著做下一個切片</div></div></li>
     <li><input type="checkbox" id="m5-7"><div><div class="t">你糾正 Claude 的時候</div>
 <pre><code>把這次的教訓用一句話加進 CLAUDE.md。</code></pre>
-<div class="note">只記會重複發生的事。Claude 變笨時先 <code>/context</code>；換切片時 <code>/clear</code> 或開新 session。</div></div></li>
+<div class="note">只記會重複發生的事。Claude 變笨時先 <code>/context</code>；換切片時開新 session。</div></div></li>
   </ol>
 </section>
 
@@ -417,7 +419,7 @@ claude</code></pre>
 
 <!-- PHASE 6 -->
 <section class="phase">
-  <div class="ph-head"><span class="ph-num">6</span><h2>上線、帶使用者、送出申請</h2><span class="where">cmux 或桌面版</span></div>
+  <div class="ph-head"><span class="ph-num">6</span><h2>上線、帶使用者、送出申請</h2><span class="where">桌面版</span></div>
   <ol class="steps">
     <li><input type="checkbox" id="m6-1"><div><div class="t"><span class="cc">Claude</span>上線前檢查</div>
 <pre><code>/agent-skills:ship
@@ -457,7 +459,7 @@ claude</code></pre>
     <li><input type="checkbox" id="m7-3"><div><div class="t">下一批功能，依使用者回饋排順序</div>
 <div class="note">登入和團隊帳號 → 專家審稿網頁後台 → 官方來源監控（Parallel Monitor）→ Google／Microsoft 通訊錄授權連線（上線前請律師看）→ evals（3 個已知市場的標準答案）→ 付費。</div></div></li>
     <li><input type="checkbox" id="m7-4"><div><div class="t">（流程跑順後）加排程任務</div>
-<div class="note">例如每週檢查套件版本、每週抽查來源連結還打不打得開，有問題就開 PR，不直接改 main。說明：<a href="https://code.claude.com/docs/en/routines" target="_blank" rel="noopener">Scheduled tasks</a>。</div></div></li>
+<div class="note">例如每晚對正式網址跑端到端測試、每週抽查來源連結還打不打得開、每週整理 PostHog 數字，有問題就開 PR，不直接改 main。說明：<a href="https://code.claude.com/docs/en/routines" target="_blank" rel="noopener">Scheduled tasks</a>。</div></div></li>
   </ol>
   <p class="callout"><b>原則：</b>人工代辦的需求同一種出現 3 次以上，才把它做成全自動。</p>
 </section>
@@ -474,7 +476,9 @@ claude</code></pre>
       <tr><td>A4 報告超過一頁</td><td>不要縮字型硬塞；在模板裡給每段字數上限，產生文字時就遵守。</td></tr>
       <tr><td>人脈對不到機構</td><td>LinkedIn 的公司名常是簡稱、英文名或舊名（「中科院」「NCSIST」）。每個利害關係人存一組別名；信心不夠時讓成員確認，結果存回別名。</td></tr>
       <tr><td>地圖在手機上卡</td><td>先看節點數；只在畫面變動時重繪，遠處節點合併；手機上提供清單檢視。</td></tr>
-      <tr><td>兩條工作區改到同一個檔案</td><td>回到 docs/plan.md 重新分檔案。</td></tr>
+      <tr><td><code>/goal</code> 一直跑不停</td><td>條件太模糊或證據不會出現在對話裡。改成可以印出來的結果（指令 exit 0、檔案清單），並加「或 30 輪後停」。</td></tr>
+      <tr><td>新 worktree 缺金鑰</td><td>確認 <code>.worktreeinclude</code> 有 <code>.env.local</code> 這一行，再開新 session。</td></tr>
+      <tr><td>兩個 session 改到同一個檔案</td><td>回到 docs/plan.md 重新分檔案。</td></tr>
       <tr><td>Claude 寫出過時的 Next.js 用法</td><td>請它先讀 <code>node_modules/next/dist/docs/</code> 再改。</td></tr>
     </tbody>
   </table></div>
@@ -488,7 +492,7 @@ claude</code></pre>
     <tbody>
       <tr><td><code>/agent-skills:spec</code></td><td>claude</td><td>訪問你，寫 docs/spec.md（只做一次）</td></tr>
       <tr><td><code>/agent-skills:plan</code></td><td>claude</td><td>拆切片到 docs/plan.md</td></tr>
-      <tr><td><code>/agent-skills:build auto</code></td><td>claude</td><td>照計畫用 TDD 做完一個切片</td></tr>
+      <tr><td><code>/agent-skills:build</code></td><td>claude</td><td>照計畫用 TDD 做（放在 /goal 條件裡用）</td></tr>
       <tr><td><code>/verify-ui</code></td><td>claude</td><td>開瀏覽器走流程、和設計稿比對、修正</td></tr>
       <tr><td><code>/code-review</code></td><td>claude</td><td>合併前找錯</td></tr>
       <tr><td><code>/agent-skills:ship</code></td><td>claude</td><td>上線前檢查</td></tr>
@@ -501,7 +505,8 @@ claude</code></pre>
       <tr><td><code>@檔案</code> / <code>!指令</code></td><td>claude</td><td>指定要讀的檔案 / 直接跑指令並把結果給 Claude</td></tr>
       <tr><td>拖曳截圖</td><td>claude</td><td>把畫面問題的截圖拖進輸入框</td></tr>
       <tr><td>Ctrl+O</td><td>claude</td><td>看完整過程（每個工具呼叫）</td></tr>
-      <tr><td>⌘N / ⌘D / ⌘⇧U</td><td>cmux</td><td>新工作區 / 分割窗格 / 跳到需要你的窗格</td></tr>
+      <tr><td><code>/goal 條件</code> / <code>/goal</code> / <code>/goal clear</code></td><td>claude</td><td>跑到條件成立 / 看進度 / 取消</td></tr>
+      <tr><td>⌘N / Ctrl+Tab / ⌘⇧B</td><td>桌面版</td><td>新 session / 切換 session / 開內建瀏覽器</td></tr>
       <tr><td><code>npm run dev</code></td><td>終端機</td><td>本機開發伺服器（localhost:3000；第二個工作區用 <code>PORT=3001</code>）</td></tr>
       <tr><td><code>npm test</code> / <code>npx playwright test</code></td><td>終端機</td><td>單元測試（Vitest）/ 端到端測試</td></tr>
     </tbody>
@@ -514,7 +519,7 @@ claude</code></pre>
   <ul class="refs">
     <li>需求來源：<a href="https://claude.ai/artifact/ReqPdC76coRiG9rqFMwxph" target="_blank" rel="noopener">Atlas 建 App 流程指南</a>（產品方向、團隊人脈規則；Expo 和手機 App 的部分不再適用）</li>
     <li>Claude Code：<a href="https://code.claude.com/docs/en/best-practices" target="_blank" rel="noopener">Best practices</a> · <a href="https://code.claude.com/docs/en/memory" target="_blank" rel="noopener">CLAUDE.md</a> · <a href="https://code.claude.com/docs/en/permission-modes" target="_blank" rel="noopener">權限模式</a> · <a href="https://code.claude.com/docs/en/interactive-mode" target="_blank" rel="noopener">快捷鍵</a> · <a href="https://code.claude.com/docs/en/model-config" target="_blank" rel="noopener">模型和 effort</a> · <a href="https://code.claude.com/docs/en/desktop" target="_blank" rel="noopener">桌面版</a> · <a href="https://code.claude.com/docs/en/routines" target="_blank" rel="noopener">Scheduled tasks</a></li>
-    <li>cmux：<a href="https://cmux.com/docs/getting-started" target="_blank" rel="noopener">Getting Started</a> · <a href="https://cmux.com/docs/ios" target="_blank" rel="noopener">iOS</a></li>
+    <li>迴圈：<a href="https://code.claude.com/docs/en/goal" target="_blank" rel="noopener">/goal</a> · <a href="https://code.claude.com/docs/en/worktrees" target="_blank" rel="noopener">Worktrees</a> · <a href="https://code.claude.com/docs/en/remote-control" target="_blank" rel="noopener">Remote Control</a> · <a href="https://addyosmani.com/blog/loop-engineering/" target="_blank" rel="noopener">Loop Engineering（Addy Osmani）</a></li>
     <li>Skills 和 MCP：<a href="https://github.com/addyosmani/agent-skills" target="_blank" rel="noopener">addyosmani/agent-skills</a> · <a href="https://github.com/microsoft/playwright-mcp" target="_blank" rel="noopener">Playwright MCP</a></li>
     <li>網頁：<a href="https://nextjs.org/docs" target="_blank" rel="noopener">Next.js</a> · <a href="https://ui.shadcn.com/docs" target="_blank" rel="noopener">shadcn/ui</a> · <a href="https://vercel.com/docs/cli" target="_blank" rel="noopener">Vercel CLI</a> · <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@page" target="_blank" rel="noopener">CSS @page（A4 列印）</a></li>
     <li>資料：<a href="https://supabase.com/docs/guides/database/postgres/row-level-security" target="_blank" rel="noopener">Supabase RLS</a> · <a href="https://posthog.com/docs/libraries/next-js" target="_blank" rel="noopener">PostHog + Next.js</a></li>
