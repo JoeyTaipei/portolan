@@ -21,9 +21,9 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Atlas",
+  title: "Portolan",
   description: "Market entry intelligence: evidence-backed stakeholder maps and briefs.",
-  appleWebApp: { capable: true, title: "Atlas", statusBarStyle: "default" },
+  appleWebApp: { capable: true, title: "Portolan", statusBarStyle: "default" },
 };
 
 export const viewport: Viewport = {

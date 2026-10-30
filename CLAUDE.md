@@ -1,7 +1,7 @@
 @AGENTS.md
 
-# Atlas MVP（Next.js 網頁 App）
-幫新創和企業進入海外市場、拿到第一筆合作：有來源的利害關係人地圖、策略簡報、一頁 A4 報告、追蹤器和會後回報。目標：伯斯時間 11/3 中午前上線並送出 YC W2027 申請。流程見 docs/workflow.html。
+# Portolan MVP（Next.js 網頁 App；原名 Atlas）
+幫新創和企業進入海外市場、拿到第一筆合作：有來源的利害關係人地圖、策略簡報、一頁 A4 報告、網絡、文件、追蹤器、會後回報和團隊人脈。設計稿 8 個畫面的功能全部都做（逐項清單在 design/intent.md 第 5 節）。目標：伯斯時間 11/3 中午前上線並送出 YC W2027 申請。流程見 docs/workflow.html。
 
 ## 文件
 - 需求 design/intent.md；設計稿截圖 design/screens/*.png（手機 390×844、A4 794×1123）
@@ -28,7 +28,7 @@
 ## UI
 - 視覺照 design/direction.md（第 3 步選定後才有；在那之前只有 design/screens/ 的版面可以參考，配色和字體不算定案）
 - 做畫面時用 frontend-design skill；避開 docs/research/generic-risks.md 列的 AI 預設風：米色 + 赤陶、紫色漸層、shadcn 預設灰卡片、置中 hero + 三張卡片
-- 手機優先：390px 版面和資訊要和 design/screens/ 一致；桌面 1280px 版面合理即可
+- 只做網頁 App，不做 iOS/Android App。電腦 1280px 和手機 390px 都要好用：手機的版面和資訊和 design/screens/ 一致；電腦用多欄版面，照 design/direction.md
 - 每個分數都能點開看算法和來源；每個利害關係人都有具體的下一步；不准有 [CLIENT]、[DATE] 這類佔位字
 - 底部分頁：Dossiers、Map、Tracker、Network、Docs
 - 地圖用 SVG 偽 3D，照 design/mockup/src/02-map.template.html 的 project() 和拖曳做法，不用 three.js
@@ -37,8 +37,9 @@
 
 ## 範圍
 - 範圍以 design/intent.md 為準，不自行刪減或加功能
-- 人工代辦（文件、網絡引薦）只做「送出需求」按鈕和紀錄，不自動產生
-- 不做：登入、團隊人脈/LinkedIn、專家審稿佇列、觀察清單監控、付費
+- 人工代辦（專家審稿、風險簡報、觀察清單每月更新、專家引薦）：按鈕、狀態和紀錄是真的，內容由團隊親手完成；會前簡報的 AI 草稿和團隊人脈引薦草稿由 App 自動產生
+- 團隊人脈只用成員自己上傳的 LinkedIn 或通訊錄匯出檔和手動輸入；不呼叫 LinkedIn API、不爬網站、不代寄訊息；人脈只屬於該 dossier
+- 不做：登入、通訊錄 OAuth 連線、專家審稿網頁後台、官方來源持續監控、付費（方案標籤只顯示）
 
 ## 安全與費用
 - PARALLEL_API_KEY、ANTHROPIC_API_KEY、SUPABASE_SECRET_KEY 只在伺服器用，不加 NEXT_PUBLIC_，不進 client 元件

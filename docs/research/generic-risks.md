@@ -1,4 +1,4 @@
-# 什麼會讓 Atlas 看起來很普通（2026-10-29）
+# 什麼會讓 Portolan 看起來很普通（2026-10-29）
 
 ## 1. 視覺：設計稿本身就是 AI 預設風
 設計稿用米色底（#F3EEE4）+ 赤陶橘（#A8441F）+ 襯線標題（Newsreader）+ Inter。這正是 2026 年被點名的「有品味的 AI 預設」：米色 + 赤陶 + 襯線，和紫色漸層、shadcn 灰卡片、置中 hero + 三張圓角卡片並列為最常見的 AI 臉。原因是模型在沒有明確方向時會挑訓練資料裡最常見的選擇。解法不是換顏色，而是先決定一個從題材本身長出來的方向，再照它做。
@@ -28,7 +28,7 @@
 ## 6. Chat 深度研究補充（全文：chat-research-2026-10-29.md）
 注意：那次研究沒有網路搜尋，只讀了 Gmail（WSJ、The Batch、數創電子報）。其他內容是模型記憶，價格和數字用之前要再查。
 - **只做一條走廊最能擺脫「包一層」**：台灣無人機／國防，2026 年 8 月起 6 年超過 70 億美元無人機預算、2025 年 9 月以來至少 13 份美台合作協議（WSJ 2026-10-13 電子報，原文未讀，要對照行政院預算）。地區下拉選單如果有 5 個國家，看起來就像通用工具。
-- **真正的對手**是免費的 AmCham Taiwan／TAITRA／InvestTaiwan + 每月 20–200 美元的 deep research + 一個人脈好的顧問。Atlas 的定位是「把這些會議變成策略和紀錄」，不是取代他們。
+- **真正的對手**是免費的 AmCham Taiwan／TAITRA／InvestTaiwan + 每月 20–200 美元的 deep research + 一個人脈好的顧問。Portolan 的定位是「把這些會議變成策略和紀錄」，不是取代他們。
 - **護城河要看得到**：經過驗證的台灣國防利害關係人圖譜，靠會後回報越用越準；追蹤器和會後回報是 system of record。
 - **專家看得懂的可信度格式**：
   - 判斷用 ICD 203 用語加數字區間，例如「Likely (55–80%)」，和可信度（高／中／低）分開寫
@@ -47,7 +47,6 @@
 ## 來源
 - [Why AI Design Looks Generic (2026) — superdesign.dev](https://superdesign.dev/blog/why-ai-design-looks-generic)
 - [avoid-ai-design（包含米色 + 赤陶的「有品味」預設）](https://github.com/funboy322/avoid-ai-design)
-- [AI Slop Design fix guide — vibecodekit.dev](https://vibecodekit.dev/ai-slop-design)
 - [AI Slop Fonts and Gradients — 925studios](https://www.925studios.co/blog/ai-slop-design-tells)
 - [AI wrapper defensibility 2026 — buildmvpfast](https://www.buildmvpfast.com/blog/ai-wrapper-startup-defensible-business-2026)
-- [S&P Global geopolitical risk / market entry](https://www.spglobal.com/market-intelligence/en/solutions/geopolitical-risk-analysis)：大型資料商也做「市場進入 + 政府利害關係人」，所以 Atlas 要贏在具體、可行動、成果資料
+- [S&P Global geopolitical risk / market entry](https://www.spglobal.com/market-intelligence/en/solutions/geopolitical-risk-analysis)：大型資料商也做「市場進入 + 政府利害關係人」，所以 Portolan 要贏在具體、可行動、成果資料
