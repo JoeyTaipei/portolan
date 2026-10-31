@@ -257,6 +257,62 @@ li::marker{font-variant-numeric:normal}
 }
 @media (max-width:1023px){.side,.centre,.right{display:contents}.m-head{order:1}.seg{order:2}.team-t{order:3}.stage{order:4}.ctrl{order:5}.chips{order:6}.inspector{order:7}#teamblk{order:8}.blk{order:9}.all{order:10}}
 </style>
+<style>
+/* Upgrade pass, 31 Oct: patterns borrowed from Apple Maps (bottom sheet), Felt (pinned panel
+   footer), Linear (find with ⌘K), Kumu (focus count) and Palantir Blueprint (non-ideal states). */
+.find{position:relative;display:flex;flex-direction:column;gap:4px}
+.find-l{font-size:12.5px;font-weight:600;color:var(--ink2)}
+.find-box{display:flex;align-items:center;border:1px solid var(--field-line);border-radius:var(--r-m);background:var(--field)}
+.find-box:focus-within{outline:2px solid var(--focus);outline-offset:1px}
+.find-box svg{flex:0 0 auto;width:17px;height:17px;margin-left:10px;fill:none;stroke:var(--ink2);stroke-width:1.8}
+.find-box input{flex:1;min-width:0;min-height:42px;border:0;background:none;padding:0 8px;font:15px var(--font);color:var(--ink)}
+.find-box input:focus{outline:none}
+.find-box input::placeholder{color:var(--ink3)}
+.find-box input::-webkit-search-cancel-button{display:none}
+.find-box kbd{margin-right:8px;font:600 11px var(--font);color:var(--ink2);border:1px solid var(--rule);border-radius:var(--r-s);padding:1px 5px;white-space:nowrap}
+.find-res{position:absolute;top:100%;left:0;right:0;z-index:60;margin:4px 0 0;padding:4px;list-style:none;background:var(--panel);border:1px solid var(--rule-strong);border-radius:var(--r-m);box-shadow:0 10px 28px rgba(0,0,0,.22);max-height:320px;overflow:auto}
+.find-res li{display:grid;grid-template-columns:18px 1fr;gap:0 8px;align-items:center;min-height:44px;padding:5px 8px;border-radius:var(--r-s);cursor:pointer;font-size:14px;font-weight:600;color:var(--ink)}
+.find-res li svg{width:13px;height:13px;overflow:visible;grid-row:span 2}
+.find-res li small{grid-column:2;color:var(--ink2);font-size:12px;font-weight:400}
+.find-res li[aria-selected=true]{background:var(--panel2);box-shadow:inset 3px 0 0 var(--hot)}
+.find-res li.none{display:block;min-height:0;padding:10px;color:var(--ink2);font-weight:400;cursor:default}
+.ins-actions{position:sticky;bottom:0;z-index:2;background:var(--panel);margin:14px -14px -14px;padding:10px 14px 14px;border-top:1px solid var(--rule)}
+.sheet-handle{display:none}
+/* non-ideal states (loading, empty, error) */
+.nis{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:safe center;overflow:auto;gap:9px;padding:24px;text-align:center;background:var(--stage)}
+.nis.inline{position:static;padding:22px 16px;border:1px dashed var(--rule-strong);border-radius:var(--r-l);background:var(--panel)}
+.nis .ic{width:42px;height:42px;fill:none;stroke:var(--ink2);stroke-width:1.5}
+.nis .ic.spin .needle{transform-origin:24px 24px;animation:spin 2.4s linear infinite}
+.nis h3{margin:0;font-size:18px;font-weight:800;color:var(--ink)}
+.nis p{margin:0;max-width:36ch;color:var(--ink2);font-size:14px;line-height:1.5}
+.nis .acts{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:4px}
+.nis .acts .btn{min-height:42px;font-size:14px}
+.nis .bar{width:min(280px,80%);height:6px;border-radius:var(--r-pill);background:var(--rule);overflow:hidden}
+.nis .bar i{display:block;height:100%;width:0;background:var(--hot);transition:width .6s ease}
+.nis .feed{list-style:none;margin:2px 0 0;padding:0;width:min(320px,92%);text-align:left;font-size:13px;color:var(--ink2);display:flex;flex-direction:column;gap:3px;min-height:84px}
+.nis .feed li{display:flex;gap:6px;animation:nisIn .3s ease both}
+.nis .feed li b{color:var(--ink);font-weight:600}
+@keyframes nisIn{from{transform:translateY(4px)}}
+body[data-state] .stage{min-height:470px}
+body[data-state=loading] .right,body[data-state=error] .right{display:none!important}
+.state-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 16px;background:var(--hot);color:var(--bg);font-size:13px;font-weight:600}
+.state-bar a{color:inherit}
+@media (max-width:1023px){
+  .find-box kbd{display:none}
+  .find{order:3}
+  /* Apple Maps-style sheet: details slide up over the map instead of sitting below it */
+  .mapwrap{padding-bottom:250px}
+  .right{display:flex!important;flex-direction:column;gap:12px;position:fixed;left:0;right:0;bottom:calc(62px + env(safe-area-inset-bottom));z-index:40;height:min(80dvh,700px);background:var(--panel);border-top:1px solid var(--rule-strong);border-radius:var(--r-l) var(--r-l) 0 0;box-shadow:0 -12px 32px rgba(0,0,0,.24);padding:0 14px 18px;overflow:auto;overscroll-behavior:contain;transform:translateY(calc(100% - var(--sheet-y,168px)));transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+  .right.dragging{transition:none}
+  .right[data-detent=peek]{overflow:hidden}
+  .right .inspector{border:0;border-radius:0;padding:0;background:none;min-height:0;order:7}
+  .right .blk{order:6}.right.has-sel .blk{order:9}
+  .right .all{order:10}
+  .sheet-handle{display:flex;order:0;position:sticky;top:0;z-index:3;justify-content:center;align-items:center;flex:0 0 auto;width:calc(100% + 28px);margin:0 -14px;min-height:32px;border:0;background:var(--panel);cursor:grab;touch-action:none}
+  .sheet-handle span{width:42px;height:5px;border-radius:3px;background:var(--ink2);opacity:.45}
+}
+@media (prefers-reduced-motion:reduce){.nis .ic.spin .needle{animation:none}.right{transition:none}}
+</style>
 </head>
 <body>
 <div class="frame">
@@ -279,7 +335,11 @@ li::marker{font-variant-numeric:normal}
     <div class="chips" role="group" aria-label="Filter by category">
       <button type="button" data-map-filter="all">All</button><button type="button" data-map-filter="gov">Government</button><button type="button" data-map-filter="ind">Industry</button><button type="button" data-map-filter="cap">Capital</button><button type="button" data-map-filter="leg">Legal</button><button type="button" data-map-filter="evt">Events</button>
     </div>
-    <section class="blk" aria-labelledby="pa-h"><h2 id="pa-h">Contact these three first, in order</h2><ol class="passage" id="rec"></ol></section>
+    <div class="find" role="search">
+      <label class="find-l" for="find">Find a stakeholder</label>
+      <div class="find-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg><input id="find" type="search" autocomplete="off" placeholder="Name or agency" role="combobox" aria-controls="find-res" aria-expanded="false" aria-autocomplete="list"><kbd>⌘K</kbd></div>
+      <ul class="find-res" id="find-res" role="listbox" aria-label="Matching stakeholders" hidden></ul>
+    </div>
     <section class="blk" id="teamblk" hidden aria-labelledby="tm-h">
       <h2 id="tm-h">Your team's network, 3 of 4 connected</h2>
       <ul class="teamlist" id="teamlist"></ul>
@@ -288,7 +348,7 @@ li::marker{font-variant-numeric:normal}
     </section>
   </div>
   <div class="centre">
-    <div class="stage" id="stage"><span class="hint" id="hint">Drag to rotate. Tap a stakeholder.</span></div>
+    <div class="stage" id="stage"><div id="nis" hidden></div><span class="hint" id="hint">Drag to rotate. Tap a stakeholder.</span></div>
     <div class="ctrl">
       <button type="button" class="icon-btn" data-map-rotate="-0.35" aria-label="Rotate left"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.6"/><path d="M4 4v5h5"/></svg></button>
       <button type="button" class="icon-btn" data-map-pause aria-label="Pause rotation"><svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5v14M15 5v14"/></svg><svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5l12 7-12 7z"/></svg></button>
@@ -296,8 +356,10 @@ li::marker{font-variant-numeric:normal}
       <ul class="legend" id="legend" aria-label="Legend"></ul>
     </div>
   </div>
-  <div class="right">
+  <div class="right" aria-label="Stakeholder details">
+    <button type="button" class="sheet-handle" id="sheet-handle" aria-label="Expand details" aria-expanded="false"><span></span></button>
     <section class="inspector" id="ins" aria-live="polite"></section>
+    <section class="blk" aria-labelledby="pa-h"><h2 id="pa-h">Contact these three first, in order</h2><ol class="passage" id="rec"></ol></section>
     <details class="all"><summary>All 20 stakeholders, by influence</summary><ul class="rows" id="rows"></ul></details>
   </div>
 </main>
@@ -783,6 +845,138 @@ var T = {
     document.getElementById('hint').textContent = S.view === 'mx' ? 'Right = more support. Up = more influence.' : on ? 'Dashed lines = your team\'s warm ties.' : (T.hint || 'Drag to rotate. Tap a stakeholder.');
   });
   Array.prototype.forEach.call(document.querySelectorAll('[data-up]'), function (b) { b.addEventListener('click', function () { P.confirm(b, 'File picker opens in the app', 1800); }); });
+})();
+</script>
+<script>
+/* Non-ideal states after Palantir Blueprint's NonIdealState: icon, title, one-line reason,
+   one or two actions. Preview any page in a state with ?state=loading|empty|error. */
+P.NIS_ICON = {
+  loading: '<svg class="ic spin" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="19"/><circle cx="24" cy="24" r="14" stroke-dasharray="2 3"/><g class="needle"><path d="M24 8l4 16h-8z" fill="currentColor" stroke="none"/><path d="M24 40l4-16h-8z"/></g></svg>',
+  empty: '<svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="19"/><path d="M24 5v6M24 37v6M5 24h6M37 24h6"/><path d="M17 31l14-14"/></svg>',
+  error: '<svg class="ic" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6l20 35H4z"/><path d="M24 19v10M24 34v.5"/></svg>'
+};
+P.nis = function (kind, o) {
+  return '<div class="nis' + (o.inline ? ' inline' : '') + '" role="status">' + P.NIS_ICON[kind] + '<h3>' + o.title + '</h3><p>' + o.desc + '</p>' + (o.extra || '') +
+    '<div class="acts">' + (o.acts || []).map(function (a, i) { return a.href ? '<a class="btn ' + (i ? 'btn-ghost' : 'btn-main') + '" href="' + a.href + '">' + a.label + '</a>' : '<button type="button" class="btn ' + (i ? 'btn-ghost' : 'btn-main') + '" data-nis="' + a.id + '">' + a.label + '</button>'; }).join('') + '</div></div>';
+};
+P.progressFeed = function (root) {
+  var bar = root.querySelector('.bar i'), feed = root.querySelector('.feed'), n = 0;
+  var lines = ['<b>Source</b> Drone procurement policy notice, A2', '<b>Stakeholder</b> MND Armaments Bureau, 2 sources', '<b>Source</b> Committee meeting agenda, A1', '<b>Stakeholder</b> Defense Committee, 1 source', '<b>Source</b> NCC frequency-use rules, A1', '<b>Stakeholder</b> NCC, 1 source'];
+  var t = setInterval(function () {
+    if (n >= lines.length) { clearInterval(t); return; }
+    var li = document.createElement('li'); li.innerHTML = lines[n]; feed.appendChild(li);
+    if (feed.children.length > 4) feed.removeChild(feed.firstChild);
+    n++; bar.style.width = Math.min(92, 30 + n * 10) + '%';
+  }, 900);
+};
+P.stateParam = function () { var m = /[?&]state=(loading|empty|error)/.exec(location.search); return m ? m[1] : null; };
+P.stateBar = function (kind) {
+  document.body.setAttribute('data-state', kind);
+  var b = document.createElement('div'); b.className = 'state-bar';
+  b.innerHTML = '<span>Design preview: ' + kind + ' state</span><a href="' + location.pathname + '">Show the normal page</a>';
+  document.body.insertBefore(b, document.body.firstChild);
+};
+if (!P.confirm) P.confirm = function (btn, text) { btn.textContent = text; btn.setAttribute('data-done', 'true'); };
+</script>
+<script>
+/* Map upgrades: find (Linear ⌘K), keyboard, focus count (Kumu), phone sheet (Apple Maps),
+   non-ideal states (Blueprint). Relies on P, T and window.map from the page. */
+(function () {
+  var mac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+  /* find a stakeholder */
+  var inp = document.getElementById('find'), res = document.getElementById('find-res'), items = [], idx = 0;
+  var kbd = document.querySelector('.find-box kbd'); if (kbd) kbd.textContent = mac ? '⌘K' : 'Ctrl K';
+  function mk(st) { return '<svg viewBox="-8 -8 16 16" aria-hidden="true">' + T.mark(st, 6) + '</svg>'; }
+  function render() {
+    var q = inp.value.trim().toLowerCase();
+    if (!q) { res.hidden = true; inp.setAttribute('aria-expanded', 'false'); inp.removeAttribute('aria-activedescendant'); return; }
+    items = P.NODES.filter(function (n) { return (n.short + ' ' + n.name + ' ' + P.CATS[n.cat]).toLowerCase().indexOf(q) >= 0; }).sort(function (a, b) { return b.infl - a.infl; }).slice(0, 8);
+    idx = 0;
+    res.innerHTML = items.length ? items.map(function (n, i) { return '<li role="option" id="fr-' + i + '" data-id="' + n.id + '" aria-selected="' + (i === 0) + '">' + mk(n.st) + '<span>' + P.esc(n.short) + '</span><small>' + P.CATS[n.cat] + ', ' + P.STANCE[n.st].toLowerCase() + ', ' + n.src + ' sources</small></li>'; }).join('')
+      : '<li class="none" role="option" aria-disabled="true">No stakeholder matches “' + P.esc(inp.value.trim()) + '”. Try an agency name, such as NCC or MOEA.</li>';
+    res.hidden = false; inp.setAttribute('aria-expanded', 'true');
+    if (items.length) inp.setAttribute('aria-activedescendant', 'fr-0');
+  }
+  function pick(id) { if (map.state.filter !== 'all') map.setFilter('all'); map.select(id); inp.value = ''; render(); inp.blur(); }
+  if (inp) {
+    inp.addEventListener('input', render);
+    inp.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { inp.value = ''; render(); inp.blur(); return; }
+      if (res.hidden) return;
+      var lis = res.querySelectorAll('li[data-id]');
+      if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && lis.length) {
+        e.preventDefault(); idx = (idx + (e.key === 'ArrowDown' ? 1 : -1) + lis.length) % lis.length;
+        Array.prototype.forEach.call(lis, function (l, i) { l.setAttribute('aria-selected', i === idx); });
+        inp.setAttribute('aria-activedescendant', 'fr-' + idx); lis[idx].scrollIntoView({ block: 'nearest' });
+      } else if (e.key === 'Enter') { e.preventDefault(); if (items[idx]) pick(items[idx].id); }
+    });
+    res.addEventListener('mousedown', function (e) { var li = e.target.closest('li[data-id]'); if (li) { e.preventDefault(); pick(li.getAttribute('data-id')); } });
+    inp.addEventListener('blur', function () { setTimeout(function () { res.hidden = true; inp.setAttribute('aria-expanded', 'false'); }, 120); });
+  }
+  /* keyboard: ⌘K or / to find, Esc to clear, ← → to rotate */
+  document.addEventListener('keydown', function (e) {
+    var t = e.target, typing = t && /INPUT|TEXTAREA|SELECT/.test(t.tagName);
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); inp.focus(); inp.select(); return; }
+    if (typing) return;
+    if (e.key === '/') { e.preventDefault(); inp.focus(); }
+    else if (e.key === 'Escape' && map.state.sel) map.select(null);
+    else if (e.key === 'ArrowLeft' && !e.metaKey) map.rotate(-0.2);
+    else if (e.key === 'ArrowRight' && !e.metaKey) map.rotate(0.2);
+  });
+  /* focus count, after Kumu's focus mode */
+  var hint = document.getElementById('hint');
+  map.onChange(function (S, D) {
+    if (!S.sel) return;
+    var name = D.selOrg ? D.selOrg.short : D.selTeam ? D.selTeam.name : '';
+    var k = Object.keys(D.linked).length;
+    hint.textContent = name + ': ' + k + ' direct connection' + (k === 1 ? '' : 's') + ' shown. Press Esc or tap it again to show all.';
+  });
+  /* phone sheet with three resting heights, like Apple Maps' place card */
+  var sh = document.querySelector('.right'), hd = document.getElementById('sheet-handle'), mq = window.matchMedia('(max-width:1023px)'), det = 'peek', drag = null;
+  function H() { return sh.getBoundingClientRect().height; }
+  function vis(d) { return d === 'full' ? H() : d === 'half' ? Math.round(H() * 0.5) : 168; }
+  function set(d) {
+    det = d; sh.style.setProperty('--sheet-y', vis(d) + 'px'); sh.setAttribute('data-detent', d);
+    hd.setAttribute('aria-expanded', d !== 'peek'); hd.setAttribute('aria-label', d === 'full' ? 'Collapse details' : 'Expand details');
+    if (d === 'peek') sh.scrollTop = 0;
+  }
+  if (sh && hd) {
+    hd.addEventListener('pointerdown', function (e) { drag = { y: e.clientY, v: vis(det), moved: false }; sh.classList.add('dragging'); try { hd.setPointerCapture(e.pointerId); } catch (x) {} });
+    hd.addEventListener('pointermove', function (e) { if (!drag) return; var dy = drag.y - e.clientY; if (Math.abs(dy) > 4) drag.moved = true; sh.style.setProperty('--sheet-y', Math.max(120, Math.min(H(), drag.v + dy)) + 'px'); });
+    hd.addEventListener('pointerup', function () {
+      if (!drag) return; sh.classList.remove('dragging');
+      if (!drag.moved) set(det === 'peek' ? 'half' : det === 'half' ? 'full' : 'peek');
+      else { var cur = parseFloat(sh.style.getPropertyValue('--sheet-y')), best = 'peek', bd = 1e9; ['peek', 'half', 'full'].forEach(function (d) { var dd = Math.abs(vis(d) - cur); if (dd < bd) { bd = dd; best = d; } }); set(best); }
+      drag = null;
+    });
+    hd.addEventListener('keydown', function (e) { if (e.key === 'ArrowUp') { e.preventDefault(); set(det === 'peek' ? 'half' : 'full'); } if (e.key === 'ArrowDown') { e.preventDefault(); set(det === 'full' ? 'half' : 'peek'); } });
+    map.onChange(function (S) {
+      sh.classList.toggle('has-sel', !!S.sel);
+      if (mq.matches && S.sel && det === 'peek') { set('half'); sh.scrollTop = 0; }
+      if (mq.matches && !S.sel && det !== 'peek') set('peek');
+    });
+    set('peek');
+  }
+  /* non-ideal states */
+  var kind = P.stateParam(), box = document.getElementById('nis');
+  if (kind && box) {
+    P.stateBar(kind); map.state.paused = true;
+    var o = {
+      loading: { title: 'Research in progress', desc: 'Stakeholders appear on the map as each one is confirmed. This usually takes a few minutes.', extra: '<div class="bar"><i></i></div><ol class="feed" aria-live="polite"></ol>', acts: [{ id: 'notify', label: 'Email me when it is ready' }] },
+      empty: { title: 'No stakeholders match', desc: 'Nothing in this dossier fits the current filter and search. Clear them to see all 20, or ask for a Portolan expert intro to find someone new.', acts: [{ id: 'clear', label: 'Show all stakeholders' }, { id: 'expert', label: 'Request an expert intro' }] },
+      error: { title: 'The map did not load', desc: 'Portolan could not reach the research service. Your dossier and its 126 sources are saved; nothing was lost.', acts: [{ id: 'retry', label: 'Try again' }, { href: '05-report.html', label: 'Open the A4 brief' }] }
+    }[kind];
+    box.innerHTML = P.nis(kind, o); box.hidden = false;
+    if (kind === 'loading') P.progressFeed(box);
+    box.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-nis]'); if (!b) return;
+      var a = b.getAttribute('data-nis');
+      if (a === 'notify') P.confirm(b, 'We will email you', 0);
+      else if (a === 'expert') P.confirm(b, 'Intro request recorded', 0);
+      else if (a === 'clear') { map.setFilter('all'); box.hidden = true; map.state.paused = false; }
+      else if (a === 'retry') { P.confirm(b, 'Loading…', 0); b.disabled = true; setTimeout(function () { box.hidden = true; map.state.paused = false; }, 1100); }
+    });
+  }
 })();
 </script>
 </body>

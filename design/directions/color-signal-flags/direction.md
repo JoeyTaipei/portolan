@@ -64,7 +64,14 @@
 - **塗黑條**（`.redact`）：團隊人脈的聯絡人姓名一律顯示成 4.4em 的實心條，顏色 `--redact`，`aria-label="name withheld"`。
 - **先聯絡**：虛線 `--route`，粗 `--route-w`，連起 P.REC 的三個；詳情面板的「Recommended action」左邊 4px `--act` 條。
 - **按鈕**：主要 `--btn-bg`；`--act` 只給「下一步」相關的唯一動作。按下有回饋（「Added to tracker」、「Copied」、轉圈的重新整理）。
-- 載入中、空資料、錯誤：目前有表單驗證錯誤、重新整理中、研究進度清單；完整的空資料和錯誤畫面在 S0 依同一組 token 補。
+- 載入中、空資料、錯誤：見下方 Non-ideal state。
+
+## 10/31 加入的元件（向知名產品借的做法）
+- **手機詳情面板**（Apple Maps 地點卡）：地圖頁的詳情在 1023px 以下是固定在分頁列上方的底部面板，三個高度：收合 168px（顯示「先聯絡的三個」）、一半、全高（80dvh）。點節點自動升到一半；取消選取回到收合。把手可拖、可點、可用上下鍵。
+- **固定的動作列**（Felt 面板）：詳情的「View evidence」「Add to tracker」`position:sticky; bottom:0`，捲動時一直看得到。
+- **Find a stakeholder**（Linear ⌘K）：combobox + listbox，⌘K / Ctrl K 或 / 開啟，上下鍵選、Enter 選取、Esc 清除；← → 轉地圖。沒有結果時給一個具體建議。
+- **聚焦計數**（Kumu focus）：選取後提示「名稱：顯示 N 個直接關係，按 Esc 或再點一次恢復全部」。
+- **Non-ideal state**（Blueprint）：`.nis` = 圖示 + 標題 + 一句原因 + 一兩個動作。載入中要列出一條條找到的來源和進度條；空資料給「清除篩選」；錯誤說明資料沒有遺失並給「重試」。首頁錯誤狀態 = 達到每日研究上限。預覽：任何頁面加 `?state=loading|empty|error`。
 
 ## 文字
 - 介面用白話：「Contact these three first, in order」「Open stakeholder map」「Add to tracker」。航海用語只出現在視覺上，不放在按鈕。
