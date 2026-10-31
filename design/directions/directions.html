@@ -60,6 +60,7 @@ code{font-size:.9em;background:#EEEEEC;padding:0 4px}
 @media (max-width:1180px){.cmp{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:720px){.cmp{grid-template-columns:minmax(0,1fr)}.rec{grid-template-columns:minmax(0,1fr)}header.top h1{font-size:25px}.prev{flex-direction:column}.ph{width:100%;height:300px}.ph iframe{transform:scale(.88)}}
 
+.decided{margin:0 0 18px;padding:12px 16px;border:2px solid var(--ink);background:var(--paper);font-size:15px;line-height:1.5}.decided b{background:#FFE14A;padding:0 4px}
 .steps{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 18px}
 .steps a{display:flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--rule);background:var(--paper);text-decoration:none;font-size:14.5px}
 .steps a b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ink2);color:#fff;font-size:12px}
@@ -77,6 +78,7 @@ code{font-size:.9em;background:#EEEEEC;padding:0 4px}
 </head>
 <body>
 <div class="wrap">
+  <p class="decided" role="status"><b>已選定：Estimate</b>（10/31）。規格寫在 <code>design/direction.md</code>，範例畫面在 <a href="estimate/01-home.html">estimate/</a>。下面的比較留著當紀錄。</p>
   <nav class="steps" aria-label="Design choices"><a href="directions.html" aria-current="page"><b>1</b>選方向（4 個）</a><a href="colors.html"><b>2</b>選配色（3 個，都是 Sounding 方向）</a><div class="dev" role="group" aria-label="Preview size"><button type="button" data-dev="phone" aria-pressed="true">手機預覽</button><button type="button" data-dev="desk" aria-pressed="false">電腦預覽</button></div><p class="note2">每個畫面都會自動配合螢幕：在電腦上打開是多欄的電腦版（1280px），在手機上是手機版（390px）。上面的切換只改這頁的縮圖。</p></nav>
   <header class="top">
     <h1>Portolan 設計方向：四選一</h1>
