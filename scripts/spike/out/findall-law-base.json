@@ -1,0 +1,568 @@
+{
+  "wall_s": 187,
+  "run": {
+    "findall_id": "findall_2f937a48caa1421083f0f8908df53b9e",
+    "status": {
+      "status": "completed",
+      "is_active": false,
+      "metrics": {
+        "generated_candidates_count": 10,
+        "matched_candidates_count": 8
+      },
+      "termination_reason": "match_limit_met"
+    },
+    "generator": "base",
+    "metadata": {
+      "query": "law",
+      "spike": "0001"
+    },
+    "created_at": "2026-10-30T04:16:08.585177Z",
+    "modified_at": "2026-10-30T04:19:04.701329Z"
+  },
+  "result": {
+    "run": {
+      "findall_id": "findall_2f937a48caa1421083f0f8908df53b9e",
+      "status": {
+        "status": "completed",
+        "is_active": false,
+        "metrics": {
+          "generated_candidates_count": 10,
+          "matched_candidates_count": 8
+        },
+        "termination_reason": "match_limit_met"
+      },
+      "generator": "base",
+      "metadata": {
+        "query": "law",
+        "spike": "0001"
+      },
+      "created_at": "2026-10-30T04:16:08.585177Z",
+      "modified_at": "2026-10-30T04:19:04.701329Z"
+    },
+    "candidates": [
+      {
+        "candidate_id": "candidate_1b1d1a27-676d-4c9e-b5d6-08df7ab2d86c",
+        "name": "White & Case LLP",
+        "url": "https://www.whitecase.com/law/asia-pacific/taiwan",
+        "description": "White & Case LLP’s Taiwan page and 2026 Taiwan foreign direct investment review provide clear public coverage of Taiwan investment screening. The firm describes a global FDI practice advising from strategic preparation through approvals, and the Taiwan review includes investments involving establishment of a branch, proprietary business, or partnership. This makes the firm a strong match for the foreign-investment-approval aspect of the intent. The cited material does not establish hands-on entity-setup services or a Taiwan office; Taiwan-specific defense or government-procurement and export-control offerings are not examined here.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_49721e4f-ced0-4eef-a344-8569dbd380df",
+        "name": "Wei & Yang Law Firm",
+        "url": "https://www.linkedin.com/company/weiandyang-lawfirm",
+        "description": "Wei &amp; Yang Law Firm | 2 followers on LinkedIn. Wei &amp; Yang is an established worldwide law firm with a global reach based in Taiwan. | Wei &amp; Yang is an established worldwide law firm with a global reach based in Taiwan. Known for our cross-border work. The founder of our firm,  Pochun is a qualified lawyer in both Taiwan and the United States.",
+        "match_status": "matched",
+        "output": {
+          "relevant_practice": {
+            "type": "match_condition",
+            "value": "Government Procurement — Wei & Yang official website: https://weiandyang.com/english-1",
+            "is_matched": true
+          },
+          "taiwan_law_firm": {
+            "type": "match_condition",
+            "value": "Taiwan (TW)",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "relevant_practice",
+            "citations": [
+              {
+                "title": "English",
+                "url": "https://weiandyang.com/english-1",
+                "excerpts": [
+                  "• Military Legal Counsel, Ministry of National Defense\n\nPractice Areas\n\nCivil Law, Civil Litigation, Criminal Litigation, Administrative Litigation, Contract Negotiation, and Government Procurement.\n\n## Counsel\n\n#### Lu Zhuo\n\n#### Liu Xueqi\n\n#### Liu Xueqi\n\n* **Attorney at Law in China**\n\n* Education\n\nLL.B., Renmin University of China\n\nLL.M. in Business and Corporate Law, University of London\n\n* Experience\n\nPartner, Han Shen Law Firm"
+                ]
+              }
+            ],
+            "reasoning": "The firm's official website lists “Government Procurement” under Practice Areas, which directly matches the specified procurement practice area.",
+            "confidence": "high"
+          },
+          {
+            "field": "taiwan_law_firm",
+            "citations": [
+              {
+                "title": "English",
+                "url": "https://weiandyang.com/english-1",
+                "excerpts": [
+                  "We value our clients and welcome you to stop by during business hours.\n\n#### Wei-Yang International Law Firm\n\n8F.-3, No. 101, Fuxing North Road, Songshan District, Taipei City, Taiwan\n\n[\\+886-935-652-133](tel:+886935652133) [pochun@weiyang.ceo](mailto:pochun@weiyang.ceo) Pochun Lin\n\n提供者："
+                ]
+              }
+            ],
+            "reasoning": "The firm's official website gives its address as Fuxing North Road, Taipei City, Taiwan, establishing an office in Taiwan.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_7dd861ab-73c4-4a5f-abdd-5f91a9c03948",
+        "name": "Dacheng Taiwan (Dentons' preferred law firm in Taiwan)",
+        "url": "https://www.linkedin.com/company/dentons-taiwan",
+        "description": "Dacheng Taiwan (Dentons&#39; preferred law firm in Taiwan) | 214 followers on LinkedIn. The World&#39;s Taiwan Law Firm | Formally established in May of 2010, the Taipei office includes experienced lawyers and legal counsel, many of whom hold advanced degrees from and are licensed to practice law in Taiwan, Mainland China, the United States, and the United Kingdom. \n\nDentons Taiwan is one of the largest partnership law firms in Taiwan, with a team of around 100 legal professionals offering clien...",
+        "match_status": "matched",
+        "output": {
+          "relevant_practice": {
+            "type": "match_condition",
+            "value": "Government Procurement and Administrative Contracts — Dacheng Taiwan official website: https://www.dachenglaw.com.tw/en/business_area/detail/58",
+            "is_matched": true
+          },
+          "taiwan_law_firm": {
+            "type": "match_condition",
+            "value": "Taiwan (TW)",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "relevant_practice",
+            "citations": [
+              {
+                "title": "Government Procurement and Administrative Contracts | Dacheng Taiwan 大成台灣",
+                "url": "https://www.dachenglaw.com.tw/en/business_area/detail/58",
+                "excerpts": [
+                  "Government procurement accounts for a significant portion of the global economy, allowing government departments to acquire goods or services from private enterprises more efficiently and in line with audience demands. The scope of industries benefiting from government procurement ranges widely, from standardized product supplies to large-scale infrastructure projects or innovative services.",
+                  "legal actions, and execute government procurement contracts in accordance with any applicable laws or regulations. We combine our legal experience and practical approaches with industry insights into the sectors our clients serve, such as transportation, construction, energy, or defense.",
+                  "Our government procurement lawyers can assist government agencies in setting goals, selecting the best legal solutions, and conducting lawful and efficient tenders until the procurement contracts are signed."
+                ]
+              }
+            ],
+            "reasoning": "Dacheng Taiwan’s official practice page is titled “Government Procurement and Administrative Contracts.” It describes government procurement lawyers advising on tenders and contracts, supporting the practice match.",
+            "confidence": "high"
+          },
+          {
+            "field": "taiwan_law_firm",
+            "citations": [
+              {
+                "title": "Dacheng Taiwan | Dacheng Taiwan 大成台灣",
+                "url": "https://www.dachenglaw.com.tw/en/about/taiwan_dentons",
+                "excerpts": [
+                  "### Expanding Horizons, Embracing Every Opportunity\n\nDacheng Taiwan (大成台灣律師事務所) was officially established in May 2010 with its main office located in Taipei. Our legal service team in Taiwan comprises over 50 highly qualified lawyers, supported by a total staff of approximately 80 individuals."
+                ]
+              }
+            ],
+            "reasoning": "Dacheng Taiwan’s official profile identifies it as a law firm and states that its main office is in Taipei, establishing an office in Taiwan.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_a7d202d4-462b-413c-821a-ab23be8e06dc",
+        "name": "Kingdom's Law Firm",
+        "url": "https://www.kingdomslaw.com/",
+        "description": "Kingdom's Law Firm is a Taiwan-focused boutique corporate law firm. Its public practice expressly includes foreign investment advice, document preparation, and governmental approval, and it says it advises international corporations entering Taiwan on regulatory matters. The firm also describes cross-border technology work and corporate services relevant to technology businesses, including contracts involving procurement and clients in telecommunications and semiconductor sectors. Its public service descriptions do not expressly list entity formation as a service.",
+        "match_status": "matched",
+        "output": {
+          "relevant_practice": {
+            "type": "match_condition",
+            "value": "“Foreign Investments” and “Governmental approval” (listed under its foreign-investment services); the firm also says it advises international corporations entering the local jurisdiction on governmental procedures, compliance and regulatory matters. Source: Kingdom’s Law Firm, https://www.kingdomslaw.com/.",
+            "is_matched": true
+          },
+          "taiwan_law_firm": {
+            "type": "match_condition",
+            "value": "Taiwan (TW)",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "relevant_practice",
+            "citations": [
+              {
+                "title": "Kingdom's Law Firm - Attorneys at Law",
+                "url": "https://www.kingdomslaw.com/",
+                "excerpts": [
+                  "(last verified: 2026-10-30) Foreign Investments We specialize in foreign investments and counsel clients on legal and regulatory concerns associated with business investments.",
+                  "We regularly advise international corporations entering the local jurisdiction on governmental procedures, compliance and regulatory matters."
+                ]
+              }
+            ],
+            "reasoning": "The firm’s official website lists foreign investments and governmental approval among its services, and says it advises international corporations entering the local jurisdiction on governmental procedures and regulatory matters. These statements support a match for foreign-investment approval for companies entering Taiwan.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_law_firm",
+            "citations": [
+              {
+                "title": "Kingdoms Law Firm - Legal services, offices and more",
+                "url": "https://lawzana.com/lawyer/kingdoms-law-firm",
+                "excerpts": [
+                  "[Help center](https://lawzana.com/support)\n\nKingdoms Law Firm Logo\n\n# Kingdoms Law Firm\n\n[Taipei](https://lawzana.com/lawyers/taipei \"Top Lawyers in Taipei\") , [Taiwan](https://lawzana.com/lawyers/taiwan \"Top Lawyers in Taiwan\") • Est. 2000 • 50 people\n\nContact us\n\n## 2021 Founder Recognition for Legal Contribution"
+                ]
+              }
+            ],
+            "reasoning": "The legal-directory listing identifies Kingdoms Law Firm and lists its office in Taipei, Taiwan, with a Taiwan street address. This supports identifying Taiwan as an office country.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_a8103386-f789-46bc-872a-9d3a76550093",
+        "name": "Lin & Partners Attorneys at Law",
+        "url": "https://www.linkedin.com/company/linandpartners",
+        "description": "Lin &amp; Partners Attorneys at Law | 332 followers on LinkedIn. Independent ‧ Boutique ‧ Powerful Law Firm in Taiwan  | Lin &amp; Partners is a full-service law firm. Our practice areas range from capital markets, fintech, M&amp;A, labor law, litigation, to energy, public procurement, hospitality &amp; entertainment, air law and other areas. Our firm has been constantly recognized by leading international rating agencies as one of the top law firms in Taiwan.",
+        "match_status": "matched",
+        "output": {
+          "relevant_practice": {
+            "type": "match_condition",
+            "value": "“Government contracts and their respective public tenders,” including one-stop assistance for foreign clients submitting tenders and managing projects — firm website: http://www.linandpartners.com.tw/expertise_detail.php?expertise=ConstructionInfrastructure. “Foreign investment law and company registration matters” — firm attorney profile: http://www.linandpartners.com.tw/profile.php?name=EasonWan. The firm’s profile also says an attorney assisted “foreigners investing in Taiwan, and applying for special permits” — firm attorney profile: http://www.linandpartners.com.tw/profile.php?name=YiHsuanSung.",
+            "is_matched": true
+          },
+          "taiwan_law_firm": {
+            "type": "match_condition",
+            "value": "Taiwan (TW)",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "relevant_practice",
+            "citations": [
+              {
+                "title": "Lin & Partners 恆業法律事務所",
+                "url": "http://www.linandpartners.com.tw/expertise_detail.php?expertise=ConstructionInfrastructure",
+                "excerpts": [
+                  "[](http://www.linandpartners.com.tw/index.php)\n\nConstruction & Infrastructure\n\nOur Insight\n\nLin & Partners has long been active in the construction and infrastructure field, advising clients, notably, on the review of construction agreements and corresponding land use issues, Build-Operate-Transfer (BOT) structures, Public-Private Partnerships (PPP), government contracts and their respective public tenders. In this sector, the firm’s clientele includes most, if not all, ministries and agencies/commissions within Taiwan Government’s administrative branch.  \n  \nAdditionally, Lin & Partners is also a one-stop shop for foreign clients on how to submit tenders, manage attributed projects and resolve possible disputes related to large construction and infrastructure projects in Taiwan (e.g., railway procurement and build up (including the building of new railway tracks), construction of building complexes etc..).\n\nServices"
+                ]
+              },
+              {
+                "title": "Lin & Partners 恆業法律事務所",
+                "url": "http://www.linandpartners.com.tw/profile.php?name=EasonWan",
+                "excerpts": [
+                  "In addition, Eason holds a Building Renewing Promoter license from the Taipei City Government.  \n  \nEarlier in his career, Eason has extensive experience in assisting clients with urban regeneration, family law, labor law, insurance law, foreign investment law and company registration matters.  \n  \nPrior to joining Lin & Partners, Eason was an attorney at Liang & Partners Law Offices in Taipei."
+                ]
+              },
+              {
+                "title": "Lin & Partners 恆業法律事務所",
+                "url": "http://www.linandpartners.com.tw/profile.php?name=YiHsuanSung",
+                "excerpts": [
+                  "providing comprehensive consultation.  \n  \nAs a lawyer, Ms. Sung has assisted in syndicated loan cases, M&A transactions, foreigners investing in Taiwan, and applying for special permits."
+                ]
+              }
+            ],
+            "reasoning": "The firm’s Construction & Infrastructure page describes advising on government contracts and public tenders, including tender assistance for foreign clients. Its attorney profiles also describe experience with foreign investment law and company registration, and assistance for foreigners investing in Taiwan and applying for special permits. These directly support a match for public procurement and foreign-investment-related services.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_law_firm",
+            "citations": [
+              {
+                "title": "Lin & Partners 恆業法律事務所",
+                "url": "https://www.linandpartners.com.tw/about.php?lang=en",
+                "excerpts": [
+                  "Lin & Partners is one of the very few firms in Taiwan with expertise in aviation and shipping."
+                ]
+              }
+            ],
+            "reasoning": "The firm’s official contact information states that it has offices in Taipei and Kaohsiung, Taiwan, establishing that it is a law firm with offices in Taiwan.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_b19697fc-129f-4082-ab88-15654c04116e",
+        "name": "Tsar & Tsai Law Firm",
+        "url": "https://www.tsartsai.com.tw/about?lang=en",
+        "description": "Tsar & Tsai Law Firm is a Taiwan-based full-service law firm founded in 1965. Its public practice descriptions cover foreign investment, forming branches, subsidiaries and other Taiwan presences, guidance through government approval, and procurement by the Taiwan government from foreign contractors. It also lists Construction and Government Procurement as a practice. This makes it a strong match for the foreign-investment approval/entity-setup and government-procurement aspects of the intent.",
+        "match_status": "matched",
+        "output": {
+          "relevant_practice": {
+            "type": "match_condition",
+            "value": "“Foreign Investment” — Tsar & Tsai Law Firm official website: https://www.tsartsai.com.tw/service@444ffb30-fe70-43db-a64f-f8a2c5015c1a?lang=en; service descriptions include “advising multinational clients on all aspects of foreign investment in Taiwan,” “guidance on the government's approval process,” and “procurement by the ROC government from foreign contractors.” “Construction and Government Procurement” — Tsar & Tsai Law Firm official website: https://www.tsartsai.com.tw/service@18b65f50-c080-46e5-9ff5-d2d42853b134?lang=en; service description: “advising clients on legal matters related to construction and government procurement projects.”",
+            "is_matched": true
+          },
+          "taiwan_law_firm": {
+            "type": "match_condition",
+            "value": "Taiwan (TW)",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "relevant_practice",
+            "citations": [
+              {
+                "title": "Foreign Investment|Expertise|Tsar & Tsai Law Firm",
+                "url": "https://www.tsartsai.com.tw/service@444ffb30-fe70-43db-a64f-f8a2c5015c1a?lang=en",
+                "excerpts": [
+                  "### Foreign Investment The Firm has a long history of advising multinational clients on all aspects of foreign investment in Taiwan (and more recently on outward investment into foreign countries), including tax and foreign exchange control issues. With the client's business objectives in sight, the Firm provides advice on joint ventures and on the formation of branches, subsidiaries, and other ways of establishing an ROC presence, such as liaison and representative offices, as well as on franchising, trademark licensing, and technology transfers. The Firm also prepares all pertinent documentation, and provides explanations and guidance on the government's approval process. The Firm actively represents clients before administrative agencies and also has considerable experience in advising on matters relating to procurement by the ROC government from foreign contractors."
+                ]
+              },
+              {
+                "title": "Construction and Government Procurement|Expertise|Tsar & Tsai Law Firm",
+                "url": "https://www.tsartsai.com.tw/service@18b65f50-c080-46e5-9ff5-d2d42853b134?lang=en",
+                "excerpts": [
+                  "The Firm has vast experience in advising clients on legal matters related to construction and government procurement projects. The clients in this area are mainly international contractors undertaking major infrastructure projects in Taiwan as well as ROC government agencies, such as the rapid transit system projects, power plant projects, incinerator projects and the high speed rail project. Our services range from advising clients in preparing a tender and negotiating commercial terms and conditions of the contract, to helping the client prepare a claim and eventually settle the dispute through either negotiation, arbitration or litigation."
+                ]
+              }
+            ],
+            "reasoning": "The Foreign Investment page describes advice on foreign investment in Taiwan, guidance through the government's approval process, and procurement by the ROC government from foreign contractors. The Construction and Government Procurement page describes the firm's work on government procurement projects and related tendering and dispute services. These official practice descriptions meet the stated procurement and foreign-investment criteria.",
+            "confidence": "high"
+          },
+          {
+            "field": "taiwan_law_firm",
+            "citations": [
+              {
+                "title": "About|Tsar & Tsai Law Firm",
+                "url": "https://www.tsartsai.com.tw/about?lang=en",
+                "excerpts": [
+                  "Tsar & Tsai Law Firm is a leading Taiwan-based law firm that provides services to local and foreign clients on all aspects of commercial transactions, and on domestic and international dispute resolution and litigation."
+                ]
+              }
+            ],
+            "reasoning": "The firm's official About page describes Tsar & Tsai as a Taiwan-based law firm, supporting the conclusion that it has an office in Taiwan.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_c094ade6-023d-45aa-a45f-6d810c919ed4",
+        "name": "Stagg PLLC",
+        "url": "https://www.linkedin.com/company/itar-export-controls-law-firm",
+        "description": "Stagg PLLC | 786 followers on LinkedIn. Leading export controls law firm that uniquely combines regulator, industry, and litigation experience | Stagg PLLC uniquely combines regulator, industry, and litigation experience to provide clients with practical and forward-looking legal guidance on U.S. export controls under the International Traffic in Arms Regulations (ITAR) and Export Administration Regulations (EAR) and national security matters before the Committee on Foreign Investment in the Uni...",
+        "match_status": "unmatched",
+        "output": {
+          "relevant_practice": {
+            "type": "match_condition",
+            "value": "Export Controls; ITAR Issues & Appeals; EAR Issues & Appeals; CFIUS — Martindale, https://www.martindale.com/organization/stagg-pllc-157895509/washington-district-of-columbia-159002821-f/. These listings establish export-controls expertise, not Taiwan-specific services.",
+            "is_matched": true
+          },
+          "taiwan_law_firm": {
+            "type": "match_condition",
+            "value": "United States (US)",
+            "is_matched": false
+          }
+        },
+        "basis": [
+          {
+            "field": "relevant_practice",
+            "citations": [
+              {
+                "title": "Stagg PLLC - Washington, DC  Office Information - Martindale.com",
+                "url": "https://www.martindale.com/organization/stagg-pllc-157895509/washington-district-of-columbia-159002821-f/",
+                "excerpts": [
+                  "* [Washington](https://www.martindale.com/by-location/washington-lawyers/district-of-columbia/ \"Attorneys in Washington, District of Columbia\")\n\nWashington, DC:\n\n# Stagg PLLC\n\nStagg PLLC\n\n* \n* Washington, DC\n* Washington, DC 20007\n* Significant experience in the areas of U.S. export control laws under the International Traffic in Arms Regulations (ITAR), the Export Administration Regulations (EAR), and the Foreign Military Sales (FMS) program.\n* [## Peer Reviews **No Reviews**](https://www.martindale.com/organization/stagg-pllc-157895509/washington-district-of-columbia-159002821-f/)\n* [Update your Profile](https://www.martindale.com/update-profile/)\n\n## Office Details\n\nOffice Size:\n\n1\n\nYear Established:\n\n2014\n\nState Bar Summary:\n\nDistrict of Columbia and New York.\n\n## Areas of Practice (5)\n\nSpecific Areas of Practice for our Washington office:\n\n* Export Controls\n* ITAR Issues & Appeals\n* EAR Issues & Appeals\n* Economic Sanctions\n* CFIUS\n\n## People (1)"
+                ]
+              }
+            ],
+            "reasoning": "The Martindale office profile lists “Export Controls,” “ITAR Issues & Appeals,” and “EAR Issues & Appeals” among the firm’s practice areas, supporting a match for export-control expertise. It also lists CFIUS; the cited listing does not establish Taiwan-specific services.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_law_firm",
+            "citations": [
+              {
+                "title": "Stagg PLLC - Washington, DC Law Firm",
+                "url": "https://www.lawyers.com/washington/district-of-columbia/stagg-pllc-159002821-f/",
+                "excerpts": [
+                  "Lawyers](https://www.lawyers.com/all-legal-issues/washington/district-of-columbia/law-firms/ \"Washington Lawyers\")\n\nOffice | Washington, DC\n\n# Stagg PLLC\n\nNot yet reviewed\n\n1050 30th Street NW, Washington, DC 20007, U.S.A. Export Controls, ITAR Issues & Appeals, EAR Issues & Appeals and 2 more\n\nMEET OUR TEAM"
+                ]
+              }
+            ],
+            "reasoning": "The law-firm directory identifies a Washington, DC office and gives its address as Washington, DC, U.S.A. The cited office listing identifies no Taiwan office, so the supported office country is the United States and the Taiwan-office match is no.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_c6f5a224-1902-42ff-8e28-f2274f85f44d",
+        "name": "Baker McKenzie (Taipei office)",
+        "url": "https://www.bakermckenzie.com/en/locations/asia-pacific/taiwan",
+        "description": "Baker McKenzie is an international law firm with a Taipei office. Its Taiwan office has operated since 1975 and says it helps multinational companies and investors structure local investments and operations. Its published Taiwan-related practices include defense-sector government procurement and export controls, international trade, and foreign-investment screening information.",
+        "match_status": "matched",
+        "output": {
+          "relevant_practice": {
+            "type": "match_condition",
+            "value": "Yes. Public practice descriptions relevant to the requested scope include:\n- “She also provides guidance on government procurement, offset programs, and operational issues encountered by foreign suppliers in defense industry” and “international commercial and trade (export control)” — Su-Fen Chen’s official Baker McKenzie profile: https://www.bakermckenzie.com/en/people/c/chen-sufen\n- “進出口管制及外國貿易法規” [import/export controls and foreign trade regulations] and “策略高科技產品之進出口” [imports and exports of strategic high-tech products] — “國際貿易及關稅” [International Trade and Tariffs], Baker McKenzie Taiwan: https://www.bakermckenzie.com.tw/zh-hant/services-pages/intl-trade-and-tariffs\n- “Foreign investment restrictions” — the Taiwan section of Baker McKenzie’s Global Private M&A Guide describes Taiwan’s mandatory foreign-investment screening procedure and required clearance before completion: https://resourcehub.bakermckenzie.com/en/resources/global-private-ma-guide-limited/asia-pacific/taiwan/topics/quick-reference-guide",
+            "is_matched": true
+          },
+          "taiwan_law_firm": {
+            "type": "match_condition",
+            "value": "Taiwan (TW)",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "relevant_practice",
+            "citations": [
+              {
+                "title": "Su-Fen Chen | People | Baker McKenzie",
+                "url": "https://www.bakermckenzie.com/en/people/c/chen-sufen",
+                "excerpts": [
+                  "She also provides guidance on government procurement, offset programs, and operational issues encountered by foreign suppliers in defense industry, as well as on compliance issues with multinational",
+                  "Su-Fen's practice focuses on renewable energy projects (energy and infrastructure); international commercial and trade (export control); dispute resolution (administrative litigation); and environmental law."
+                ]
+              },
+              {
+                "title": "國際貿易及關稅 | 國際通商法律事務所",
+                "url": "https://www.bakermckenzie.com.tw/zh-hant/services-pages/intl-trade-and-tariffs",
+                "excerpts": [
+                  "[](https://www.bakermckenzie.com.tw/)\n\n請輸入搜尋關鍵字！ 請輸入搜尋關鍵字！\n*\n\n# 國際貿易及關稅\n\n[](https://www.bakermckenzie.com/en/insight/publications/2026/01/how-new-trade-and-investing-corridors-are-reshaping-global-business)\n\n服務簡介\n\n國際通商法律事務所國際貿易與關稅專家對於國際貿易及商務貿易組織相關事務，具有全方位的廣泛經驗。此外，藉助Baker McKenzie全球網路，本所對全球各國及各主要新興貿易市場相關之貿易事項，均能提供縝密之諮詢及協助。團隊成員對於世界貿易組織之規則、區域內自由貿易協定及多邊協議、東南亞國協規範、進出口管制及外國貿易法規有充分的瞭解與處理經驗，並與所內其他專業領域之團隊，特別是與稅務、公司法、公平交易及消費者保護之律師密切合作，在外國投資交易、合資、重大計畫及營建工程合約、外匯管制、技術移轉與授權、貿易融資、經銷、稅務和公司事務等貿易法規領域，以及國際貿易事項爭端解決等方面，為客戶提供相關諮詢。\n\n本團隊熟稔臺灣關稅法令及其實務適用，尤其熟悉特殊產業、高科技和加工出口區之相關法令規章，並就競爭、操縱價格和反傾銷事項，以及消費者保護及環境法規，為客戶提供諮詢建議。本團隊所提供之服務與諮詢範圍包括：\n\n* 國內及國外關稅法規及稅則分類\n* 出口與特別加工區法規\n* 原產地規則\n* 移轉定價\n* 策略高科技產品之進出口\n* 反傾銷法及平衡貿易\n* 反壟斷及競爭法規\n* 消費者保護法規\n* 區域內自由貿易協定及多邊協議\n* 世界貿易組織規則、爭端解決程序及法令遵循之監督\n\n法務團隊\n\nHenry Chang\n\n[張瀚書H. Henry Chang](https://www.bakermckenzie.com.tw/zh-hant/people/executive-partners/h-henry-chang)\n\n特聘資深顧問\n\nT: + 886 2 2715 7259  \n[Email](mailto:HENRY.CHANG@BAKERMCKENZIE.COM)\n\nLouis Hsieh"
+                ]
+              },
+              {
+                "title": "Quick reference guide | Taiwan | Global Private M&A Guide - Limited External Content | Baker McKenzie Resource Hub",
+                "url": "https://resourcehub.bakermckenzie.com/en/resources/global-private-ma-guide-limited/asia-pacific/taiwan/topics/quick-reference-guide",
+                "excerpts": [
+                  "Approvals/registrations\n\n**Foreign investment restrictions**\n\nTaiwan has a mandatory and suspensory foreign investment screening procedure, which means that transactions that meet the relevant criteria need to be notified to the relevant authority and cleared before they can be completed. For further information, see the more detailed section on \"Foreign investment restrictions.\"\n\n**Antitrust/merger control**\n\nTaiwan's merger control regime is mandatory and suspensory. The filing thresholds include tests based on domestic market share, domestic turnover and global turnover."
+                ]
+              }
+            ],
+            "reasoning": "Baker McKenzie’s official profile for its Taipei partner expressly mentions guidance on government procurement involving foreign defense suppliers and identifies export control in her practice. The Taiwan international trade page explicitly describes experience with import/export controls and strategic high-tech products. The firm’s Taiwan M&A guide also describes foreign-investment screening and clearance requirements in Taiwan.",
+            "confidence": "high"
+          },
+          {
+            "field": "taiwan_law_firm",
+            "citations": [
+              {
+                "title": "Taiwan | Locations | Baker McKenzie",
+                "url": "https://www.bakermckenzie.com/en/locations/asia-pacific/taiwan",
+                "excerpts": [
+                  "See More\n\n## Offices\n\n### Taipei\n\n15F, 168 Dunhua North Road  \nTaipei 105405  \nTaipei\n\nTel: +886 2 2712 6151 Fax: +886 2 2712 8292"
+                ]
+              },
+              {
+                "title": "Baker McKenzie - AmCham Taiwan",
+                "url": "https://member.amcham.com.tw/directory/baker-mckenzie/",
+                "excerpts": [
+                  "[Home](https://amcham.com.tw/) / [Directory](https://member.amcham.com.tw/directory) / [Baker McKenzie](https://member.amcham.com.tw/baker-mckenzie)\n\nBaker McKenzie\n\n## Baker McKenzie\n\n* * *\n\n國際通商法律事務所\n\n**Tel:** 2712-6151  \n  \n**Fax:** 2712-8292\n\n**Address:**  \n15F, 168 DunHua N. Rd., Songshan District, Taipei City, Taiwan, 105405  \n台北市敦化北路168號宏泰世界大樓15樓\n\n**Industries:**"
+                ]
+              }
+            ],
+            "reasoning": "Baker McKenzie’s official locations page lists a Taipei office; the Taiwan AmCham directory gives its Taipei address in Taiwan. These establish that the law firm has an office in Taiwan.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_e694478b-ac56-4420-a271-f465dd2370bb",
+        "name": "Chen & Chang, Attorneys-at-Law",
+        "url": "https://www.linkedin.com/company/iadr",
+        "description": "Chen &amp; Chang, Attorneys-at-Law | 159 followers on LinkedIn. iADR is a boutique law firm based in Taipei. All partners at iADR have many years of practice experiences in renowned law firms both in Taiwan and aboard, and are all qualified to practice law in Taiwan, mainland China and New York State.   \n\niADR distinguishes itself from other traditional Taiwan law firms in its ability to handle complex cross-border legal issues, including international arbitration, mediation, M&amp;A, cross-bord...",
+        "match_status": "matched",
+        "output": {
+          "relevant_practice": {
+            "type": "match_condition",
+            "value": "“assisting Mainland China clients in conducting due diligence on target companies in Taiwan and facilitating foreign direct investment” — Chen & Chang’s official website, Claire Liu profile: https://www.triadr.com/en/claire. This is relevant to inbound foreign investment; the page does not specifically name investment approval, company formation, government or defense procurement, or export controls.",
+            "is_matched": true
+          },
+          "taiwan_law_firm": {
+            "type": "match_condition",
+            "value": "Taiwan (TW)",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "relevant_practice",
+            "citations": [
+              {
+                "title": "Claire Liu | 眾才國際律師事務所",
+                "url": "https://www.triadr.com/en/claire",
+                "excerpts": [
+                  "Claire has been in practice since 2023. During her practice, she has supported partners of Chen & Chang, Attorneys-at-Law, in various local dispute resolution, international arbitration and litigation cases. She has also been actively involved in assisting Mainland China clients in conducting due diligence on target companies in Taiwan and facilitating foreign direct investment as well as cross-border transactions."
+                ]
+              }
+            ],
+            "reasoning": "The firm’s official profile states that Claire Liu has helped Mainland China clients conduct due diligence on target companies in Taiwan and facilitate foreign direct investment. This supports a match for publicly listed inbound-investment expertise, though it does not specifically identify investment approval or company setup as a service.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_law_firm",
+            "citations": [
+              {
+                "title": "Home | 眾才國際律師事務所",
+                "url": "https://www.triadr.com/en",
+                "excerpts": [
+                  "top of page\n\n© Chen & Chang, Attorneys-at-Law\n* [Contact Us](https://www.triadr.com/en)\n\n1/4\n\n## Partners\n\nTeam\n\n[陳希佳](https://www.triadr.com/en/chen)\n\n## Dr Helena H. C. CHEN"
+                ]
+              }
+            ],
+            "reasoning": "The firm’s official website lists its contact address in Taipei, Taiwan, establishing that it has an office in Taiwan.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_e77048a8-8825-41a3-8ec6-e540be15abc9",
+        "name": "Lee and Li, Attorneys-at-Law",
+        "url": "https://www.leeandli.com/EN/000000001.htm",
+        "description": "Lee and Li, Attorneys-at-Law is a Taiwan law firm with a Taipei office and other offices in Taiwan. Its public practice descriptions include export controls, government procurement, and assistance with foreign investment permits, approvals, and local entity establishment.",
+        "match_status": "matched",
+        "output": {
+          "relevant_practice": {
+            "type": "match_condition",
+            "value": "“Advise on export control/restriction laws and regulations” — Lee and Li official website, International Trade: https://www.leeandli.com/EN/Specialty/219.htm. “Bidding Management for Government Procurement” — Lee and Li official website, Government Contracts: https://www.leeandli.com/EN/Specialty/208.htm. “assist clients in applying for investment permits” and “advise PRC and foreign corporations that plan to invest in Taiwan” — Lee and Li official website, Corporate and Investment: https://www.leeandli.com/EN/Specialty/201.htm. “establishing local entities” and “securing direct investment and other special approvals” — Lee and Li official website: https://www.leeandli.com/EN/Specialty/201/312.htm",
+            "is_matched": true
+          },
+          "taiwan_law_firm": {
+            "type": "match_condition",
+            "value": "Taiwan (TW)",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "relevant_practice",
+            "citations": [
+              {
+                "title": "International Trade - Lee and Li, Attorneys-at-Law",
+                "url": "https://www.leeandli.com/EN/Specialty/219.htm",
+                "excerpts": [
+                  "* Handle inbound and outbound trade remedy investigations, including anti-dumping, anti-subsidy, anti-circumvention, anti-absorption and safeguard investigations\n* Advise on export control/restriction laws and regulations"
+                ]
+              },
+              {
+                "title": "Government Contracts - Lee and Li, Attorneys-at-Law",
+                "url": "https://www.leeandli.com/EN/Specialty/208.htm",
+                "excerpts": [
+                  "We are committed to promoting the foreign PPP mechanisms of major public infrastructure and public services in Taiwan.\n\nScope of Services\n\n* Drafting and Planning of Government Contracts\n* Bidding Management for Government Procurement\n* Negotiation for Government Contracts\n* Enforcement and Management of Government Contracts\n* Case Study of Government Contracts"
+                ]
+              },
+              {
+                "title": "Corporate and Investment - Lee and Li, Attorneys-at-Law",
+                "url": "https://www.leeandli.com/EN/Specialty/201.htm",
+                "excerpts": [
+                  "We have dedicated task forces in place that assist clients in applying for investment permits, company/ business/ tax registrations, and permits of licensed businesses. We also work closely with law firms in other jurisdictions to assist Taiwan corporations in their investments and business activities around the world. We also advise PRC and foreign corporations that plan to invest in Taiwan.\n\nOur Experiences\n\nWith the growth of Taiwan's economy and the government's efforts to attract investments followed by technology cooperation opportunities, we have been representing both domestic and international clients in major investment projects inside and outside of export processing zones, industrial zones and science parks."
+                ]
+              },
+              {
+                "title": "Practices-Lee and Li, Attorneys-at-Law",
+                "url": "https://www.leeandli.com/EN/Specialty/201/312.htm",
+                "excerpts": [
+                  "羅子倫 Judy Lo\n\n# Judy Lo\n\n## Associate Partner\n\n### 聯絡方式 [](https://www.leeandli.com/EN/vcard2/312)\n\n* [\\+886-2-2763-8000 分機： 2509](tel:+886-2-2763-8000,2509)\n* Email\n\nJudy joined Lee and Li in 2015. Her practice focuses on corporate investment, joint venture, and M&A projects.  \n  \nShe advises clients on their investments and operation in Taiwan, including designing investment structures, securing direct investment and other special approvals, establishing local entities, fostering business development with local partners and stakeholders, and delivering a wide range of commercial legal advisory services. She has particular expertise in assisting clients with forming joint ventures in Taiwan, especially in designing corporate governance frameworks and structuring preferred shares."
+                ]
+              }
+            ],
+            "reasoning": "Lee and Li’s official International Trade practice page expressly says it advises on export-control and restriction laws. Its Government Contracts page lists bidding management for government procurement. Its Corporate and Investment page describes assistance with investment permits and advice to foreign corporations planning to invest in Taiwan; the firm’s official lawyer profile also mentions local entity establishment and special approvals.",
+            "confidence": "high"
+          },
+          {
+            "field": "taiwan_law_firm",
+            "citations": [
+              {
+                "title": "About Us - Lee and Li, Attorneys-at-Law",
+                "url": "https://www.leeandli.com/EN/000000001.htm",
+                "excerpts": [
+                  "Lee and Li has accumulated a wealth of experience since the 1940s. We are the leadingﾠfirmﾠinﾠTaiwanﾠandﾠexcelﾠat crafting customized legal solutions for clients.\n\n### Our History\n\nThe beginnings of Lee and Li can be traced to Shanghai in the 1940s, where James Lee and Dr. C. N. Li, the two founders, practiced transnational law. In 1953, James Lee opened a firm in Taipei and in 1965 was joined by Dr. C. N. Li, at which point the firm began operating under the English name “Lee and Li, Attorneys-at-Law.” Then in 1970, the firm was formally named “理律法律事務所” in Chinese. Lee and Li is now the oldest and largest law firm in Taiwan and is highly sought after by clients worldwide for its comprehensive and premium legal services.\n\nCurrently Lee and Li has over 50 Partners, over 20 SeniorﾠCounselors,ﾠoverﾠ60ﾠAssociate PartnersﾠandﾠCounselors,ﾠandﾠoverﾠ850 employees.\n\n2025 Lee and Li celebrated its 60th Anniversary.\n\n2019 Lee and Li’s Taipei Office moved to its current location.\n\n2005 Dr. C. V."
+                ]
+              },
+              {
+                "title": "Lee and Li Attorneys-at-Law Taipei Office - L&L, Leaven & Co., CPAs",
+                "url": "https://www.leeandlicpas.com/EN/000000078.htm",
+                "excerpts": [
+                  "Rd., Taipei 110055, Taiwan, R.O.C.     Tel: +886-2-2766-5511  \n© Lee and Li, Attorneys-at-Law, All rights reserved."
+                ]
+              }
+            ],
+            "reasoning": "The firm’s official About Us page identifies Lee and Li as a leading firm in Taiwan and gives its official name. Its official office listing provides a Taipei office address in Taiwan, supporting Taiwan (TW) as an office country.",
+            "confidence": "high"
+          }
+        ]
+      }
+    ],
+    "last_event_id": "65f0718b761bf"
+  }
+}

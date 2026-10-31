@@ -1,0 +1,2217 @@
+{
+  "task-pro": {
+    "wall_s": 203,
+    "entities": 33,
+    "sourced_url_and_excerpt": 14,
+    "distinct_source_urls": 9,
+    "capital": 6,
+    "legal": 2,
+    "events": 1,
+    "named_people": 0,
+    "named_people_with_cited_basis": 0,
+    "with_next_step": 33,
+    "fixture_found": "10/16",
+    "fixture_missing": [
+      "g1 MND Armaments Bureau",
+      "i4 Tier-1 telecom (e.g. Chunghwa)",
+      "i5 Taoyuan component suppliers",
+      "c4 National Development Fund",
+      "e2 Drone ecosystem summit (generic)",
+      "e3 Defense procurement briefing (generic)"
+    ],
+    "fixture_hits": [
+      {
+        "label": "g1 MND Armaments Bureau",
+        "found": null
+      },
+      {
+        "label": "g2 NCSIST",
+        "found": "National Chung-Shan Institute of Science and Technology"
+      },
+      {
+        "label": "g3 MOEA Industrial Development Admin.",
+        "found": "Industrial Development Administration"
+      },
+      {
+        "label": "g4 Civil Aeronautics Admin.",
+        "found": "Civil Aviation Administration"
+      },
+      {
+        "label": "g5 NCC",
+        "found": "National Communications Commission"
+      },
+      {
+        "label": "g6 LY Foreign Affairs & National Defense Cttee",
+        "found": "Foreign Affairs and National Defense Committee, Legislative Yuan"
+      },
+      {
+        "label": "i1 TEDIBOA drone alliance",
+        "found": "TEDIBOA"
+      },
+      {
+        "label": "i2 State aerospace prime (AIDC)",
+        "found": "Aerospace Industrial Development Corporation"
+      },
+      {
+        "label": "i3 Listed drone OEM, Taichung (Thunder Tiger)",
+        "found": "Thunder Tiger Corporation"
+      },
+      {
+        "label": "i4 Tier-1 telecom (e.g. Chunghwa)",
+        "found": null
+      },
+      {
+        "label": "i5 Taoyuan component suppliers",
+        "found": null
+      },
+      {
+        "label": "c4 National Development Fund",
+        "found": null
+      },
+      {
+        "label": "l1/l2 Taiwan law firm (export control / cross-border)",
+        "found": "Lee and Li, Attorneys-at-Law"
+      },
+      {
+        "label": "e1 TADTE",
+        "found": "Taipei Aerospace & Defense Technology Exhibition (TADTE) 2027"
+      },
+      {
+        "label": "e2 Drone ecosystem summit (generic)",
+        "found": null
+      },
+      {
+        "label": "e3 Defense procurement briefing (generic)",
+        "found": null
+      }
+    ],
+    "entity_list": [
+      {
+        "name": "Ministry of National Defense",
+        "category": "government",
+        "sourced": false,
+        "n_citations": 0,
+        "claimed_url": "https://www.cna.com.tw/news/aipl/202603260162.aspx",
+        "key_person": null
+      },
+      {
+        "name": "National Police Agency",
+        "category": "government",
+        "sourced": false,
+        "n_citations": 0,
+        "claimed_url": "https://www.upmedia.mg/tw/investigation/military/263412",
+        "key_person": null
+      },
+      {
+        "name": "National Chung-Shan Institute of Science and Technology",
+        "category": "research_institute",
+        "sourced": false,
+        "n_citations": 0,
+        "claimed_url": "https://www.upmedia.mg/tw/investigation/military/263412",
+        "key_person": null
+      },
+      {
+        "name": "Executive Yuan",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://focustaiwan.tw/politics/202608270021",
+        "key_person": null
+      },
+      {
+        "name": "Foreign Affairs and National Defense Committee, Legislative Yuan",
+        "category": "legislature",
+        "sourced": false,
+        "n_citations": 0,
+        "claimed_url": "https://www.cna.com.tw/news/aipl/202603260162.aspx",
+        "key_person": null
+      },
+      {
+        "name": "Finance Committee, Legislative Yuan",
+        "category": "legislature",
+        "sourced": false,
+        "n_citations": 0,
+        "claimed_url": "https://www.cna.com.tw/news/aipl/202603260162.aspx",
+        "key_person": null
+      },
+      {
+        "name": "Ministry of Digital Affairs",
+        "category": "regulator",
+        "sourced": false,
+        "n_citations": 0,
+        "claimed_url": "https://moda.gov.tw/press/press-releases/15420",
+        "key_person": null
+      },
+      {
+        "name": "Civil Aviation Administration",
+        "category": "regulator",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.caa.gov.tw/article.aspx?a=4187&lang=1",
+        "key_person": null
+      },
+      {
+        "name": "National Communications Commission",
+        "category": "regulator",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.ncc.gov.tw/chncc/app/data/view?id=59&module=commonMessage11&serno=51115_538_news",
+        "key_person": null
+      },
+      {
+        "name": "Ministry of Economic Affairs",
+        "category": "government",
+        "sourced": false,
+        "n_citations": 0,
+        "claimed_url": "https://www.aidc.com.tw/tw/News/13639",
+        "key_person": null
+      },
+      {
+        "name": "Ministry of Foreign Affairs",
+        "category": "government",
+        "sourced": false,
+        "n_citations": 0,
+        "claimed_url": "https://www.aidc.com.tw/tw/News/13639",
+        "key_person": null
+      },
+      {
+        "name": "Industrial Development Administration",
+        "category": "government",
+        "sourced": false,
+        "n_citations": 0,
+        "claimed_url": "https://www.aidc.com.tw/tw/News/13639",
+        "key_person": null
+      },
+      {
+        "name": "Aerospace Industrial Development Corporation",
+        "category": "company",
+        "sourced": false,
+        "n_citations": 0,
+        "claimed_url": "https://www.aidc.com.tw/tw/News/13639",
+        "key_person": null
+      },
+      {
+        "name": "TEDIBOA",
+        "category": "industry_association",
+        "sourced": false,
+        "n_citations": 0,
+        "claimed_url": "https://www.tediboa.com.tw/",
+        "key_person": null
+      },
+      {
+        "name": "Thunder Tiger Corporation",
+        "category": "company",
+        "sourced": false,
+        "n_citations": 0,
+        "claimed_url": "https://www.aidc.com.tw/tw/News/13639",
+        "key_person": null
+      },
+      {
+        "name": "Coretronic Intelligent Robotics Corporation",
+        "category": "company",
+        "sourced": false,
+        "n_citations": 0,
+        "claimed_url": "https://www.aidc.com.tw/tw/News/13639",
+        "key_person": null
+      },
+      {
+        "name": "Industrial Technology Research Institute",
+        "category": "research_institute",
+        "sourced": false,
+        "n_citations": 0,
+        "claimed_url": "https://www.aidc.com.tw/tw/News/13639",
+        "key_person": null
+      },
+      {
+        "name": "Institute for Information Industry",
+        "category": "research_institute",
+        "sourced": false,
+        "n_citations": 0,
+        "claimed_url": "https://www.aidc.com.tw/tw/News/13639",
+        "key_person": null
+      },
+      {
+        "name": "Taiwan Aerospace Industry Association",
+        "category": "industry_association",
+        "sourced": false,
+        "n_citations": 0,
+        "claimed_url": "https://www.aidc.com.tw/tw/News/13639",
+        "key_person": null
+      },
+      {
+        "name": "Taiwan Defense Industry Development Association",
+        "category": "industry_association",
+        "sourced": false,
+        "n_citations": 0,
+        "claimed_url": "https://www.aidc.com.tw/tw/News/13639",
+        "key_person": null
+      },
+      {
+        "name": "Tron Future Tech",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.tronfuture.com/news/tron-future-tech-secures-military-antidrone-order",
+        "key_person": null
+      },
+      {
+        "name": "Metal Industries Research & Development Centre",
+        "category": "research_institute",
+        "sourced": false,
+        "n_citations": 0,
+        "claimed_url": "https://newswire.com.tw/news/20260603-mirdc-anduril-mou-drone-key-technology-cooperation",
+        "key_person": null
+      },
+      {
+        "name": "AiSeed",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://startuprise.org/aiseed-raises-6m-to-drive-global-expansion-of-gps-free-autonomous-drones/",
+        "key_person": null
+      },
+      {
+        "name": "Pegatron Corporation",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://startuprise.org/aiseed-raises-6m-to-drive-global-expansion-of-gps-free-autonomous-drones/",
+        "key_person": null
+      },
+      {
+        "name": "SparkLabs Taiwan",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://startuprise.org/aiseed-raises-6m-to-drive-global-expansion-of-gps-free-autonomous-drones/",
+        "key_person": null
+      },
+      {
+        "name": "Taiwania Capital",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.tronfuture.com/news/taiwanese-c-uas-startup-completes-series-a-funding-round",
+        "key_person": null
+      },
+      {
+        "name": "The CID Group",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.tronfuture.com/news/taiwanese-c-uas-startup-completes-series-a-funding-round",
+        "key_person": null
+      },
+      {
+        "name": "Industrial Technology Investment Corporation (ITIC)",
+        "category": "capital",
+        "sourced": false,
+        "n_citations": 0,
+        "claimed_url": "https://www.tronfuture.com/news/taiwanese-c-uas-startup-completes-series-a-funding-round",
+        "key_person": null
+      },
+      {
+        "name": "Taya Venture",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.tronfuture.com/news/taiwanese-c-uas-startup-completes-series-a-funding-round",
+        "key_person": null
+      },
+      {
+        "name": "Taiwan Cooperative Venture Capital",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.tronfuture.com/news/taiwanese-c-uas-startup-completes-series-a-funding-round",
+        "key_person": null
+      },
+      {
+        "name": "Lee and Li, Attorneys-at-Law",
+        "category": "legal",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.leeandli.com/EN/Specialty/219",
+        "key_person": null
+      },
+      {
+        "name": "Tsar & Tsai Law Firm",
+        "category": "legal",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.tsartsai.com.tw/service@444ffb30-fe70-43db-a64f-f8a2c5015c1a?lang=en",
+        "key_person": null
+      },
+      {
+        "name": "Taipei Aerospace & Defense Technology Exhibition (TADTE) 2027",
+        "category": "event",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.tadte.com.tw/en/index.html",
+        "key_person": null
+      }
+    ]
+  },
+  "task-ultra": {
+    "wall_s": 497,
+    "entities": 38,
+    "sourced_url_and_excerpt": 34,
+    "distinct_source_urls": 32,
+    "capital": 6,
+    "legal": 3,
+    "events": 4,
+    "named_people": 6,
+    "named_people_with_cited_basis": 4,
+    "with_next_step": 38,
+    "fixture_found": "10/16",
+    "fixture_missing": [
+      "g1 MND Armaments Bureau",
+      "i4 Tier-1 telecom (e.g. Chunghwa)",
+      "i5 Taoyuan component suppliers",
+      "c4 National Development Fund",
+      "e2 Drone ecosystem summit (generic)",
+      "e3 Defense procurement briefing (generic)"
+    ],
+    "fixture_hits": [
+      {
+        "label": "g1 MND Armaments Bureau",
+        "found": null
+      },
+      {
+        "label": "g2 NCSIST",
+        "found": "National Chung-Shan Institute of Science and Technology"
+      },
+      {
+        "label": "g3 MOEA Industrial Development Admin.",
+        "found": "Industrial Development Administration, Ministry of Economic Affairs"
+      },
+      {
+        "label": "g4 Civil Aeronautics Admin.",
+        "found": "Civil Aviation Administration, Ministry of Transportation and Communications"
+      },
+      {
+        "label": "g5 NCC",
+        "found": "National Communications Commission"
+      },
+      {
+        "label": "g6 LY Foreign Affairs & National Defense Cttee",
+        "found": "Foreign Affairs and National Defense Committee, Legislative Yuan"
+      },
+      {
+        "label": "i1 TEDIBOA drone alliance",
+        "found": "Taiwan Excellence Drone International Business Opportunities Alliance (TEDIBOA)"
+      },
+      {
+        "label": "i2 State aerospace prime (AIDC)",
+        "found": "Aerospace Industrial Development Corporation"
+      },
+      {
+        "label": "i3 Listed drone OEM, Taichung (Thunder Tiger)",
+        "found": "Thunder Tiger Corp."
+      },
+      {
+        "label": "i4 Tier-1 telecom (e.g. Chunghwa)",
+        "found": null
+      },
+      {
+        "label": "i5 Taoyuan component suppliers",
+        "found": null
+      },
+      {
+        "label": "c4 National Development Fund",
+        "found": null
+      },
+      {
+        "label": "l1/l2 Taiwan law firm (export control / cross-border)",
+        "found": "Lee and Li, Attorneys-at-Law"
+      },
+      {
+        "label": "e1 TADTE",
+        "found": "Taipei Aerospace & Defense Technology Exhibition (TADTE) 2027"
+      },
+      {
+        "label": "e2 Drone ecosystem summit (generic)",
+        "found": null
+      },
+      {
+        "label": "e3 Defense procurement briefing (generic)",
+        "found": null
+      }
+    ],
+    "entity_list": [
+      {
+        "name": "National Police Agency, Ministry of the Interior",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.upmedia.mg/tw/investigation/military/263412",
+        "key_person": null
+      },
+      {
+        "name": "Office of Homeland Security, Executive Yuan",
+        "category": "government",
+        "sourced": false,
+        "n_citations": 0,
+        "claimed_url": "https://www.upmedia.mg/tw/investigation/military/245500",
+        "key_person": null
+      },
+      {
+        "name": "National Chung-Shan Institute of Science and Technology",
+        "category": "research_institute",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.upmedia.mg/tw/investigation/military/245500",
+        "key_person": null
+      },
+      {
+        "name": "Ministry of National Defense",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.cna.com.tw/news/aipl/202608270226.aspx",
+        "key_person": null
+      },
+      {
+        "name": "Republic of China Army",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://def.ltn.com.tw/article/breakingnews/5234129",
+        "key_person": null
+      },
+      {
+        "name": "Republic of China Navy",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://def.ltn.com.tw/article/breakingnews/5234129",
+        "key_person": null
+      },
+      {
+        "name": "Republic of China Air Force",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://def.ltn.com.tw/article/breakingnews/5234129",
+        "key_person": null
+      },
+      {
+        "name": "Coast Guard Administration, Ocean Affairs Council",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.cmmedia.com.tw/home/articles/61609",
+        "key_person": null
+      },
+      {
+        "name": "Ministry of Economic Affairs",
+        "category": "government",
+        "sourced": false,
+        "n_citations": 0,
+        "claimed_url": "https://www.ida.gov.tw/ctlr?PRO=news.NewsView&id=43235",
+        "key_person": "何晉滄 — Vice Minister, identified in the June 9, 2026 announcement"
+      },
+      {
+        "name": "Industrial Development Administration, Ministry of Economic Affairs",
+        "category": "government",
+        "sourced": false,
+        "n_citations": 0,
+        "claimed_url": "https://www.ida.gov.tw/ctlr?PRO=news.NewsView&id=43235",
+        "key_person": "邱求慧 — Director-General, identified in the June 9, 2026 announcement"
+      },
+      {
+        "name": "Ministry of Digital Affairs",
+        "category": "regulator",
+        "sourced": false,
+        "n_citations": 0,
+        "claimed_url": "https://moda.gov.tw/press/press-releases/15420",
+        "key_person": null
+      },
+      {
+        "name": "National Communications Commission",
+        "category": "regulator",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.ncc.gov.tw/chncc/app/data/view?id=51&module=announcement&serno=b0755ca8-e936-4b9c-87f7-97551fe4e32b",
+        "key_person": null
+      },
+      {
+        "name": "Civil Aviation Administration, Ministry of Transportation and Communications",
+        "category": "regulator",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.caa.gov.tw/Article.aspx?a=4566&lang=1",
+        "key_person": null
+      },
+      {
+        "name": "Telecom Technology Center",
+        "category": "research_institute",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.ttc.org.tw/News/Event_more?id=b71833a65ba34914b4eab8af3541ef81",
+        "key_person": null
+      },
+      {
+        "name": "Industrial Technology Research Institute",
+        "category": "research_institute",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.itri.org.tw/english/ListStyle.aspx?DisplayStyle=01_content&MGID=114021821194606794&MmmID=617731531241750114&SiteID=1",
+        "key_person": "Edwin Liu — President, as identified in ITRI’s February 18, 2025 release"
+      },
+      {
+        "name": "Foreign Affairs and National Defense Committee, Legislative Yuan",
+        "category": "legislature",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.cna.com.tw/news/aipl/202607250139.aspx",
+        "key_person": null
+      },
+      {
+        "name": "Taiwan Excellence Drone International Business Opportunities Alliance (TEDIBOA)",
+        "category": "industry_association",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://focustaiwan.tw/business/202607270012",
+        "key_person": null
+      },
+      {
+        "name": "MiTAC Advance Technology Corp.",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.rfglobalnet.com/doc/whitefox-and-mitac-partner-to-deliver-sovereign-counter-drone-systems-for-taiwan-0001",
+        "key_person": "Sammy Chiu — President, as identified in the February 2026 announcement"
+      },
+      {
+        "name": "Tron Future Tech",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.tronfuture.com/news/tron-future-tech-secures-military-antidrone-order",
+        "key_person": null
+      },
+      {
+        "name": "JC Tech",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.jctech.tw/en/blog/detail/22",
+        "key_person": null
+      },
+      {
+        "name": "Cub Elecparts Inc.",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://www.taiwannews.com.tw/news/6325838",
+        "key_person": "Yu Shan-chuan (尤山泉) — Founder, quoted in March 2026 reporting"
+      },
+      {
+        "name": "Aerospace Industrial Development Corporation",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://www.ocacnews.net/article/408251",
+        "key_person": null
+      },
+      {
+        "name": "Thunder Tiger Corp.",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://investor.avinc.com/news-releases/news-release-details/av-and-thunder-tiger-sign-mou-explore-uncrewed-systems",
+        "key_person": null
+      },
+      {
+        "name": "Ubiqconn Technology Inc.",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://investor.avinc.com/news-releases/news-release-details/av-signs-mou-taiwans-ubiqconn-develop-common-controller",
+        "key_person": null
+      },
+      {
+        "name": "Coretronic Intelligent Robotics Corporation",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.taipeitimes.com/News/taiwan/archives/2026/10/04/2003865372",
+        "key_person": "Wu Hsiu-hui (吳秀蕙) — President, identified in October 4, 2026 reporting"
+      },
+      {
+        "name": "Taiwania Capital",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://www.taiwaniacapital.com/en/news/category/news/2026/news260318",
+        "key_person": null
+      },
+      {
+        "name": "Industrial Technology Investment Corporation (ITIC)",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://www.taiwaniacapital.com/tw/news/category/news/2024/news240523",
+        "key_person": null
+      },
+      {
+        "name": "CID Group",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://www.taiwaniacapital.com/tw/news/category/news/2024/news240523",
+        "key_person": null
+      },
+      {
+        "name": "Taiwan Cooperative Venture Capital",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://www.taiwaniacapital.com/tw/news/category/news/2024/news240523",
+        "key_person": null
+      },
+      {
+        "name": "PEGATRON Corporation",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://e27.co/taiwans-aiseed-scores-us6m-to-fuel-global-expansion-of-gps-free-autonomous-drones-20250502",
+        "key_person": null
+      },
+      {
+        "name": "SparkLabs Taiwan",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://e27.co/taiwans-aiseed-scores-us6m-to-fuel-global-expansion-of-gps-free-autonomous-drones-20250502",
+        "key_person": null
+      },
+      {
+        "name": "Lee and Li, Attorneys-at-Law",
+        "category": "legal",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.leeandli.com/EN/Specialty/208.htm",
+        "key_person": null
+      },
+      {
+        "name": "Tsar & Tsai Law Firm",
+        "category": "legal",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.tsartsai.com.tw/service@444ffb30-fe70-43db-a64f-f8a2c5015c1a?lang=en",
+        "key_person": null
+      },
+      {
+        "name": "Eiger",
+        "category": "legal",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://eiger.law/practice-areas/corporate-and-investment",
+        "key_person": null
+      },
+      {
+        "name": "Taipei Aerospace & Defense Technology Exhibition (TADTE) 2027",
+        "category": "event",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://www.tadte.com.tw/en/menu/6E0B04FB4400C35AD0636733C6861689/info.html",
+        "key_person": null
+      },
+      {
+        "name": "Secutech 2027",
+        "category": "event",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://secutech.tw.messefrankfurt.com/taipei/en.html",
+        "key_person": null
+      },
+      {
+        "name": "Smart City Summit & Expo / Net Zero City Expo 2027",
+        "category": "event",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://smartcity.org.tw/smartcity.php",
+        "key_person": null
+      },
+      {
+        "name": "Taiwan Automation Intelligence and Robot Show (TAIROS) 2027",
+        "category": "event",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://tairos.chanchao.com.tw/en/VisitorInfo",
+        "key_person": null
+      }
+    ]
+  },
+  "findall-base": {
+    "wall_s": 414,
+    "entities": 56,
+    "sourced_url_and_excerpt": 56,
+    "distinct_source_urls": 116,
+    "capital": 10,
+    "legal": 8,
+    "events": 8,
+    "named_people": 0,
+    "named_people_with_cited_basis": 0,
+    "with_next_step": 0,
+    "fixture_found": "10/16",
+    "fixture_missing": [
+      "g5 NCC",
+      "g6 LY Foreign Affairs & National Defense Cttee",
+      "i4 Tier-1 telecom (e.g. Chunghwa)",
+      "i5 Taoyuan component suppliers",
+      "c4 National Development Fund",
+      "e3 Defense procurement briefing (generic)"
+    ],
+    "fixture_hits": [
+      {
+        "label": "g1 MND Armaments Bureau",
+        "found": "Armaments Bureau of the Ministry of National Defense, Republic of China (Taiwan)"
+      },
+      {
+        "label": "g2 NCSIST",
+        "found": "National Chung-Shan Institute of Science and Technology"
+      },
+      {
+        "label": "g3 MOEA Industrial Development Admin.",
+        "found": "Industrial Development Administration, Ministry of Economic Affairs"
+      },
+      {
+        "label": "g4 Civil Aeronautics Admin.",
+        "found": "Civil Aeronautics Administration (CAA), Ministry of Transportation and Communications (MOTC), Taiwan"
+      },
+      {
+        "label": "g5 NCC",
+        "found": null
+      },
+      {
+        "label": "g6 LY Foreign Affairs & National Defense Cttee",
+        "found": null
+      },
+      {
+        "label": "i1 TEDIBOA drone alliance",
+        "found": "Taiwan Excellence Drone International Business Opportunities Alliance (TEDIBOA)"
+      },
+      {
+        "label": "i2 State aerospace prime (AIDC)",
+        "found": "Aerospace Industrial Development Corporation (AIDC)"
+      },
+      {
+        "label": "i3 Listed drone OEM, Taichung (Thunder Tiger)",
+        "found": "Thunder Tiger Corporation (雷虎科技股份有限公司)"
+      },
+      {
+        "label": "i4 Tier-1 telecom (e.g. Chunghwa)",
+        "found": null
+      },
+      {
+        "label": "i5 Taoyuan component suppliers",
+        "found": null
+      },
+      {
+        "label": "c4 National Development Fund",
+        "found": null
+      },
+      {
+        "label": "l1/l2 Taiwan law firm (export control / cross-border)",
+        "found": "Wei & Yang Law Firm"
+      },
+      {
+        "label": "e1 TADTE",
+        "found": "Taipei Aerospace & Defense Technology Exhibition (TADTE) 2027 — September 23–25, 2027, Taipei, Taiwan"
+      },
+      {
+        "label": "e2 Drone ecosystem summit (generic)",
+        "found": "2026 Taiwan Drone International Forum & Global UAV Academy Inauguration — October 30, 2026, Taipei, Taiwan"
+      },
+      {
+        "label": "e3 Defense procurement briefing (generic)",
+        "found": null
+      }
+    ],
+    "entity_list": [
+      {
+        "name": "Navy Command R.O.C.",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://navy.mnd.gov.tw/en/index.aspx",
+        "key_person": null
+      },
+      {
+        "name": "Ministry of National Defense, Department of Strategic Planning",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://www.mnd.gov.tw/en/informationservices/publication/61179",
+        "key_person": null
+      },
+      {
+        "name": "Ministry of National Defense, Republic of China",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://www.mnd.gov.tw/en",
+        "key_person": null
+      },
+      {
+        "name": "Industrial Development Administration, Ministry of Economic Affairs",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 3,
+        "claimed_url": "https://www.ida.gov.tw/ctlr?PRO=index&lang=1",
+        "key_person": null
+      },
+      {
+        "name": "Ministry of Transportation and Communications, R.O.C. (Taiwan)",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://www.motc.gov.tw/en/index",
+        "key_person": null
+      },
+      {
+        "name": "Bureau of Standards, Metrology and Inspection, Ministry of Economic Affairs (BSMI)",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://www.bsmi.gov.tw/wSite/ct?ctNode=805&mp=2&xItem=3735",
+        "key_person": null
+      },
+      {
+        "name": "Republic of China Air Force (ROCAF) Command Headquarters, Ministry of National Defense",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://air.mnd.gov.tw/en/Home/index.aspx",
+        "key_person": null
+      },
+      {
+        "name": "Ministry of Economic Affairs, R.O.C. (Taiwan)",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://www.moea.gov.tw/Mns/English/home/English.aspx",
+        "key_person": null
+      },
+      {
+        "name": "Civil Aeronautics Administration (CAA), Ministry of Transportation and Communications (MOTC), Taiwan",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 3,
+        "claimed_url": "https://www.caa.gov.tw/index.aspx?Lang=2",
+        "key_person": null
+      },
+      {
+        "name": "Civil Aeronautics Administration Drone Office",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://drone.caa.gov.tw/en-US",
+        "key_person": null
+      },
+      {
+        "name": "Legislative Yuan",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://www.ly.gov.tw/Engpages/index.aspx",
+        "key_person": null
+      },
+      {
+        "name": "Executive Yuan",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 1,
+        "claimed_url": "https://english.ey.gov.tw/",
+        "key_person": null
+      },
+      {
+        "name": "Army Headquarters, Ministry of National Defense, Republic of China (Taiwan)",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://army.mnd.gov.tw/en",
+        "key_person": null
+      },
+      {
+        "name": "Armaments Bureau of the Ministry of National Defense, Republic of China (Taiwan)",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 3,
+        "claimed_url": "https://law.mnd.gov.tw/English/EngLawData.aspx?lsid=FL068473",
+        "key_person": null
+      },
+      {
+        "name": "National Chung-Shan Institute of Science and Technology",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 3,
+        "claimed_url": "https://www.ncsist.org.tw/eng/csistdup/aboutus/page02.html",
+        "key_person": null
+      },
+      {
+        "name": "Taiwan Excellence Drone International Business Opportunities Alliance (TEDIBOA)",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 3,
+        "claimed_url": "https://www.tediboa.com.tw/en/",
+        "key_person": null
+      },
+      {
+        "name": "DronesVision Inc.",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 3,
+        "claimed_url": "https://dronesvision.com/",
+        "key_person": null
+      },
+      {
+        "name": "AAEON Technology Inc.",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://www.aaeon.com/en/about/company-profile",
+        "key_person": null
+      },
+      {
+        "name": "Taiwan Drone Association",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://www.linkedin.com/company/taiwandrone",
+        "key_person": null
+      },
+      {
+        "name": "Advantech Co., Ltd.",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://www.advantech.com/en-us/about/historyandmilestones",
+        "key_person": null
+      },
+      {
+        "name": "Thunder Tiger Corporation (雷虎科技股份有限公司)",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 3,
+        "claimed_url": "https://www.thundertiger.com/",
+        "key_person": null
+      },
+      {
+        "name": "JC TECHNOLOGY INC.",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://www.jctech.tw/en/company",
+        "key_person": null
+      },
+      {
+        "name": "TAIWAN UAV 智飛科技",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 3,
+        "claimed_url": "https://www.linkedin.com/company/taiwanuav",
+        "key_person": null
+      },
+      {
+        "name": "AiSeed Inc.",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://www.aiseedtech.com/",
+        "key_person": null
+      },
+      {
+        "name": "Aerospace Industrial Development Corporation (AIDC)",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 3,
+        "claimed_url": "https://www.aidc.com.tw/en/",
+        "key_person": null
+      },
+      {
+        "name": "ALIGN Corporation Limited",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://www.align.com.tw/index.php/en",
+        "key_person": null
+      },
+      {
+        "name": "MiTAC Advance Technology Corp.",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 4,
+        "claimed_url": "https://www.mitacmat.com/eng",
+        "key_person": null
+      },
+      {
+        "name": "Tron Future Tech Inc.",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://www.tronfuture.com/",
+        "key_person": null
+      },
+      {
+        "name": "GEOSAT Aerospace & Technology Inc.",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://www.geosat.com.tw/TW/about-us-overview.aspx",
+        "key_person": null
+      },
+      {
+        "name": "Coretronic Intelligent Robotics Corporation (CIRC)",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://www.coretronic-robotics.com/",
+        "key_person": null
+      },
+      {
+        "name": "Taiwania Capital",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 3,
+        "claimed_url": "https://www.taiwaniacapital.com/en/about",
+        "key_person": null
+      },
+      {
+        "name": "Pegatron Corporation",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 3,
+        "claimed_url": "https://www.pegatroncorp.com/",
+        "key_person": null
+      },
+      {
+        "name": "Taishan Invest AG",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 4,
+        "claimed_url": "https://www.cbinsights.com/investor/taishan-invest-ag",
+        "key_person": null
+      },
+      {
+        "name": "Wistron Corporation",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 3,
+        "claimed_url": "https://www.wistron.com/en/AboutWistron/CompanyProfile",
+        "key_person": null
+      },
+      {
+        "name": "Taya Venture",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 3,
+        "claimed_url": "https://www.tayaventure.com/about",
+        "key_person": null
+      },
+      {
+        "name": "Warwick Venture Capital",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 3,
+        "claimed_url": "https://www.tronfuture.com/news/tron-future-completes-series-a-financing-to-expand-product-line/",
+        "key_person": null
+      },
+      {
+        "name": "Taiwan Cooperative Venture Capital",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://eng.tcvc.com.tw/",
+        "key_person": null
+      },
+      {
+        "name": "CID Group",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 3,
+        "claimed_url": "https://www.cidgroup.com/en",
+        "key_person": null
+      },
+      {
+        "name": "Innovative Industrial Technology Transfer Co., Ltd.",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://itic.com.tw/",
+        "key_person": null
+      },
+      {
+        "name": "NTU Ventures",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 4,
+        "claimed_url": "https://ntu.vc/",
+        "key_person": null
+      },
+      {
+        "name": "Wei & Yang Law Firm",
+        "category": "legal",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://www.linkedin.com/company/weiandyang-lawfirm",
+        "key_person": null
+      },
+      {
+        "name": "Dacheng Taiwan (Dentons' preferred law firm in Taiwan)",
+        "category": "legal",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://www.linkedin.com/company/dentons-taiwan",
+        "key_person": null
+      },
+      {
+        "name": "Kingdom's Law Firm",
+        "category": "legal",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://www.kingdomslaw.com/",
+        "key_person": null
+      },
+      {
+        "name": "Lin & Partners Attorneys at Law",
+        "category": "legal",
+        "sourced": true,
+        "n_citations": 4,
+        "claimed_url": "https://www.linkedin.com/company/linandpartners",
+        "key_person": null
+      },
+      {
+        "name": "Tsar & Tsai Law Firm",
+        "category": "legal",
+        "sourced": true,
+        "n_citations": 3,
+        "claimed_url": "https://www.tsartsai.com.tw/about?lang=en",
+        "key_person": null
+      },
+      {
+        "name": "Baker McKenzie (Taipei office)",
+        "category": "legal",
+        "sourced": true,
+        "n_citations": 5,
+        "claimed_url": "https://www.bakermckenzie.com/en/locations/asia-pacific/taiwan",
+        "key_person": null
+      },
+      {
+        "name": "Chen & Chang, Attorneys-at-Law",
+        "category": "legal",
+        "sourced": true,
+        "n_citations": 2,
+        "claimed_url": "https://www.linkedin.com/company/iadr",
+        "key_person": null
+      },
+      {
+        "name": "Lee and Li, Attorneys-at-Law",
+        "category": "legal",
+        "sourced": true,
+        "n_citations": 6,
+        "claimed_url": "https://www.leeandli.com/EN/000000001.htm",
+        "key_person": null
+      },
+      {
+        "name": "Global Conference on UAV Technologies, Smart Drones & Aerospace Innovation (GCUTSAI) — Taipei, Taiwan, October 24–25, 2026",
+        "category": "event",
+        "sourced": true,
+        "n_citations": 3,
+        "claimed_url": "https://www.conferencealert.com/eventdetail/2621809",
+        "key_person": null
+      },
+      {
+        "name": "2026 Taiwan-U.S. Defense Industry Forum — May 28, 2026, Taipei, Taiwan",
+        "category": "event",
+        "sourced": true,
+        "n_citations": 3,
+        "claimed_url": "https://www.us-taiwan.org/events/2026-taiwan-us-defense-industry-forum",
+        "key_person": null
+      },
+      {
+        "name": "DSET 2026 Annual Forum: National Strategic Summit on Supply Chain Resilience — June 6, 2026, Taipei",
+        "category": "event",
+        "sourced": true,
+        "n_citations": 3,
+        "claimed_url": "https://dset.tw/en/event-news-en/481-4",
+        "key_person": null
+      },
+      {
+        "name": "Taiwan International Assembly of Space Science, Technology, and Industry (TASTI 2026), November 8–11, 2026, Tainan, Taiwan",
+        "category": "event",
+        "sourced": true,
+        "n_citations": 3,
+        "claimed_url": "https://tasti2026.conf.tw/site/default.aspx?sid=1691&lang=en",
+        "key_person": null
+      },
+      {
+        "name": "Global Conference on UAV Technologies, Smart Drones & Aerospace Innovation (GCUTSAI) — 24–25 October 2026, Taipei, Taiwan",
+        "category": "event",
+        "sourced": true,
+        "n_citations": 3,
+        "claimed_url": "https://www.scienceglobe.org/Conference/30656/GCUTSAI/",
+        "key_person": null
+      },
+      {
+        "name": "2026 1st UAV Business Matchmaking Conference",
+        "category": "event",
+        "sourced": true,
+        "n_citations": 3,
+        "claimed_url": "https://www.uvaitw.com/en/events",
+        "key_person": null
+      },
+      {
+        "name": "2026 Taiwan Drone International Forum & Global UAV Academy Inauguration — October 30, 2026, Taipei, Taiwan",
+        "category": "event",
+        "sourced": true,
+        "n_citations": 3,
+        "claimed_url": "https://www.accupass.com/event/2610050148301866850792",
+        "key_person": null
+      },
+      {
+        "name": "Taipei Aerospace & Defense Technology Exhibition (TADTE) 2027 — September 23–25, 2027, Taipei, Taiwan",
+        "category": "event",
+        "sourced": true,
+        "n_citations": 3,
+        "claimed_url": "https://www.tadte.com.tw/en/menu/6E0B04FB4400C35AD0636733C6861689/info.html",
+        "key_person": null
+      }
+    ]
+  },
+  "findall-base+enrich": {
+    "wall_s": 169,
+    "entities": 56,
+    "sourced_url_and_excerpt": 56,
+    "distinct_source_urls": 326,
+    "capital": 8,
+    "legal": 8,
+    "events": 8,
+    "named_people": 54,
+    "named_people_with_cited_basis": 53,
+    "with_next_step": 56,
+    "fixture_found": "8/16",
+    "fixture_missing": [
+      "g3 MOEA Industrial Development Admin.",
+      "g5 NCC",
+      "g6 LY Foreign Affairs & National Defense Cttee",
+      "i2 State aerospace prime (AIDC)",
+      "i4 Tier-1 telecom (e.g. Chunghwa)",
+      "i5 Taoyuan component suppliers",
+      "c4 National Development Fund",
+      "e3 Defense procurement briefing (generic)"
+    ],
+    "fixture_hits": [
+      {
+        "label": "g1 MND Armaments Bureau",
+        "found": "Armaments Bureau of the Ministry of National Defense"
+      },
+      {
+        "label": "g2 NCSIST",
+        "found": "National Chung-Shan Institute of Science and Technology"
+      },
+      {
+        "label": "g3 MOEA Industrial Development Admin.",
+        "found": null
+      },
+      {
+        "label": "g4 Civil Aeronautics Admin.",
+        "found": "Civil Aeronautics Administration (CAA), Ministry of Transportation and Communications (MOTC), Taiwan"
+      },
+      {
+        "label": "g5 NCC",
+        "found": null
+      },
+      {
+        "label": "g6 LY Foreign Affairs & National Defense Cttee",
+        "found": null
+      },
+      {
+        "label": "i1 TEDIBOA drone alliance",
+        "found": "Taiwan Excellence Drone International Business Opportunities Alliance (TEDIBOA)"
+      },
+      {
+        "label": "i2 State aerospace prime (AIDC)",
+        "found": null
+      },
+      {
+        "label": "i3 Listed drone OEM, Taichung (Thunder Tiger)",
+        "found": "Thunder Tiger Corporation (雷虎科技股份有限公司)"
+      },
+      {
+        "label": "i4 Tier-1 telecom (e.g. Chunghwa)",
+        "found": null
+      },
+      {
+        "label": "i5 Taoyuan component suppliers",
+        "found": null
+      },
+      {
+        "label": "c4 National Development Fund",
+        "found": null
+      },
+      {
+        "label": "l1/l2 Taiwan law firm (export control / cross-border)",
+        "found": "WU LAW INTL PLLC"
+      },
+      {
+        "label": "e1 TADTE",
+        "found": "Taipei Aerospace & Defense Technology Exhibition (TADTE) 2027 — September 23–25, 2027, Taipei, Taiwan"
+      },
+      {
+        "label": "e2 Drone ecosystem summit (generic)",
+        "found": "2026 Taiwan Drone International Forum & Global UAV Academy Inauguration — October 30, 2026, Taipei, Taiwan"
+      },
+      {
+        "label": "e3 Defense procurement briefing (generic)",
+        "found": null
+      }
+    ],
+    "entity_list": [
+      {
+        "name": "Finance Committee of the Legislative Yuan (Taiwan)",
+        "category": "legislature",
+        "sourced": true,
+        "n_citations": 12,
+        "claimed_url": "https://www.ly.gov.tw/Pages/List.aspx?nodeid=456",
+        "key_person": "召集委員賴惠員、林德福(elected October 8, 2026)"
+      },
+      {
+        "name": "Taroko National Park Headquarters",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 13,
+        "claimed_url": "https://www.taroko.gov.tw/en/",
+        "key_person": "劉守禮處長"
+      },
+      {
+        "name": "Ministry of National Defense, Department of Strategic Planning",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://www.mnd.gov.tw/en/informationservices/publication/61179",
+        "key_person": "Lieutenant General Huang Wen-chi, Director-General of the Department of Strategic Planning"
+      },
+      {
+        "name": "Armaments Bureau of the Ministry of National Defense",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 12,
+        "claimed_url": "https://law.moj.gov.tw/ENG/LawClass/LawAll.aspx?media=print&pcode=F0000075",
+        "key_person": "黃超政中將,軍備局局長"
+      },
+      {
+        "name": "Ministry of Transportation and Communications, R.O.C. (Taiwan)",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://www.motc.gov.tw/en/index",
+        "key_person": "Ho Shu-Ping — Director-General, Civil Aviation Administration (CAA), MOTC."
+      },
+      {
+        "name": "Taipei City Government",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 11,
+        "claimed_url": "https://www.gov.taipei/",
+        "key_person": "蔣萬安,市長 (Mayor)"
+      },
+      {
+        "name": "New Taipei City Government",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 12,
+        "claimed_url": "https://www.ntpc.gov.tw/",
+        "key_person": "侯友宜 (Hou Yu-Ih), Mayor of New Taipei City"
+      },
+      {
+        "name": "Civil Aeronautics Administration (CAA), Ministry of Transportation and Communications (MOTC), Taiwan",
+        "category": "regulator",
+        "sourced": true,
+        "n_citations": 12,
+        "claimed_url": "https://www.caa.gov.tw/index.aspx?Lang=2",
+        "key_person": "何淑萍 (Ho, Shu-Ping), Director General"
+      },
+      {
+        "name": "Civil Aeronautics Administration Drone Office",
+        "category": "regulator",
+        "sourced": true,
+        "n_citations": 9,
+        "claimed_url": "https://drone.caa.gov.tw/en-US",
+        "key_person": "何淑萍(Ho, Shu-Ping),民用航空局局長"
+      },
+      {
+        "name": "Taijiang National Park Headquarters, National Park Service, Ministry of the Interior",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 12,
+        "claimed_url": "https://www.tjnp.gov.tw/en/sglarticle/taijiang-national-park-headquarters",
+        "key_person": "陳俊山,處長 (Director)"
+      },
+      {
+        "name": "Yangmingshan National Park Headquarters",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 11,
+        "claimed_url": "https://www.ymsnp.gov.tw/en",
+        "key_person": "張順發 — 處長 (Director)"
+      },
+      {
+        "name": "Legislative Yuan",
+        "category": "legislature",
+        "sourced": true,
+        "n_citations": 11,
+        "claimed_url": "https://www.ly.gov.tw/Engpages/index.aspx",
+        "key_person": "Han Kuo-yu (韓國瑜), President of the Legislative Yuan"
+      },
+      {
+        "name": "Executive Yuan",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 12,
+        "claimed_url": "https://english.ey.gov.tw/",
+        "key_person": "Cho Jung-tai, Premier of the Executive Yuan"
+      },
+      {
+        "name": "Ministry of National Defense, Republic of China (Taiwan)",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 15,
+        "claimed_url": "https://www.mnd.gov.tw/en",
+        "key_person": "Wellington Li-Hsiung Koo (顧立雄), Minister of National Defense (國防部長)"
+      },
+      {
+        "name": "National Chung-Shan Institute of Science and Technology",
+        "category": "research_institute",
+        "sourced": true,
+        "n_citations": 15,
+        "claimed_url": "https://www.ncsist.org.tw/eng/csistdup/aboutus/page02.html",
+        "key_person": "Li Shih-chiang (李世強), President of NCSIST"
+      },
+      {
+        "name": "Taiwan Excellence Drone International Business Opportunities Alliance (TEDIBOA)",
+        "category": "industry_association",
+        "sourced": true,
+        "n_citations": 14,
+        "claimed_url": "https://www.tediboa.com.tw/en/",
+        "key_person": "Tsao Chin-Ping (曹進平), TEDIBOA chairman; the alliance’s 2026 meeting report also identifies him as AIDC chairman."
+      },
+      {
+        "name": "Carbon-Based Technology Inc.",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://www.uaver.com/",
+        "key_person": "陳文宏, Chairman"
+      },
+      {
+        "name": "Roboen Technologies Limited",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 13,
+        "claimed_url": "https://www.roboen.com/",
+        "key_person": "丁奐文 — registered company representative (代表人姓名), as listed in a public company record."
+      },
+      {
+        "name": "Taiwan Drone Association",
+        "category": "industry_association",
+        "sourced": true,
+        "n_citations": 11,
+        "claimed_url": "https://www.linkedin.com/company/taiwandrone",
+        "key_person": "張畯皓, 理事長 (Chairman)"
+      },
+      {
+        "name": "Hang Jian Technology Co., Ltd. (航見科技股份有限公司)",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 13,
+        "claimed_url": "https://www.hjuavs.com/",
+        "key_person": "張東琳 — company representative (負責人)."
+      },
+      {
+        "name": "Thunder Tiger Corporation (雷虎科技股份有限公司)",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 12,
+        "claimed_url": "https://www.thundertiger.com/",
+        "key_person": "蘇聖傑, General Manager"
+      },
+      {
+        "name": "JC TECHNOLOGY INC.",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 11,
+        "claimed_url": "https://www.jctech.tw/en/company",
+        "key_person": "鄭志誠 (General Manager)"
+      },
+      {
+        "name": "TAIWAN UAV 智飛科技",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 12,
+        "claimed_url": "https://www.linkedin.com/company/taiwanuav",
+        "key_person": "黃重生 — Chairman"
+      },
+      {
+        "name": "AiSeed Inc.",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://www.aiseedtech.com/",
+        "key_person": "Joe Wang — CEO & Founder"
+      },
+      {
+        "name": "Taiwan National Drone Industry Association (TNDIA)",
+        "category": "industry_association",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://tndia.tw/en",
+        "key_person": "羅正方, 理事長"
+      },
+      {
+        "name": "ALIGN Corporation Limited",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 12,
+        "claimed_url": "https://www.align.com.tw/index.php/en",
+        "key_person": ""
+      },
+      {
+        "name": "MiTAC Advance Technology Corp.",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 12,
+        "claimed_url": "https://www.mitacmat.com/eng",
+        "key_person": "Sammy Chiu, President of MiTAC Advance Technology Corp. (as identified in the partnership announcement)."
+      },
+      {
+        "name": "Bridge Components",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 11,
+        "claimed_url": "https://bridgecomponents.com/",
+        "key_person": "Mr. Tungyi Wu — CEO"
+      },
+      {
+        "name": "Evergreen Aviation Technologies Corporation (EGAT)",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 13,
+        "claimed_url": "https://www.egat.com.tw/en",
+        "key_person": "謝新文 — General Manager (總經理) and company spokesperson."
+      },
+      {
+        "name": "Coretronic Intelligent Robotics Corporation (CIRC)",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 12,
+        "claimed_url": "https://www.coretronic-robotics.com/",
+        "key_person": "Wu Hsiu-hui (吳秀蕙), CIRC president"
+      },
+      {
+        "name": "Pegatron Corporation",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 13,
+        "claimed_url": "https://www.pegatroncorp.com/",
+        "key_person": "T.H. Tung — Chairman of the Board of Directors"
+      },
+      {
+        "name": "Taishan Invest AG",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 15,
+        "claimed_url": "https://www.cbinsights.com/investor/taishan-invest-ag",
+        "key_person": "Sebastian Kübler — Director (named in a 2011 SEC filing; current role not confirmed)."
+      },
+      {
+        "name": "SparkLabs Taiwan",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 14,
+        "claimed_url": "https://www.sparklabstaiwan.com/",
+        "key_person": "Edgar Chiu(邱彥錡), Co-Founder & Managing Partner(共同創辦人暨管理合夥人)"
+      },
+      {
+        "name": "Wistron Corporation",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 15,
+        "claimed_url": "https://www.wistron.com/en/AboutWistron/CompanyProfile",
+        "key_person": "Simon Lin (林憲銘), Chairman and Chief Strategy Officer (董事長暨策略長)"
+      },
+      {
+        "name": "Taya Venture",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 12,
+        "claimed_url": "https://www.tayaventure.com/about",
+        "key_person": "沈冠廷 (Christopher Shen), General Manager"
+      },
+      {
+        "name": "Warwick Venture Capital",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://www.tronfuture.com/news/tron-future-completes-series-a-financing-to-expand-product-line/",
+        "key_person": ""
+      },
+      {
+        "name": "Taiwan Cooperative Venture Capital",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 11,
+        "claimed_url": "https://eng.tcvc.com.tw/",
+        "key_person": "王育群 (Jeffrey Wang), Chairman"
+      },
+      {
+        "name": "CID Group",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 11,
+        "claimed_url": "https://www.cidgroup.com/en",
+        "key_person": "Charles Chang — Senior Partner and Founding Partner."
+      },
+      {
+        "name": "Innovative Industrial Technology Transfer Co., Ltd.",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 12,
+        "claimed_url": "https://itic.com.tw/",
+        "key_person": "余宛如 — General Manager (總經理)"
+      },
+      {
+        "name": "NTU Ventures",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 12,
+        "claimed_url": "https://ntu.vc/",
+        "key_person": "Brandon Chiang, President"
+      },
+      {
+        "name": "WU LAW INTL PLLC",
+        "category": "legal",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://www.wulawintl.com/en/about",
+        "key_person": "Queenie CH Wu, Founder; Attorney at Law (New York State Bar) and Attorney of Foreign Legal Affairs in Taiwan."
+      },
+      {
+        "name": "Wei & Yang Law Firm",
+        "category": "legal",
+        "sourced": true,
+        "n_citations": 12,
+        "claimed_url": "https://www.linkedin.com/company/weiandyang-lawfirm",
+        "key_person": "Po-Chun (Pochun) Lin (林柏均), Founder and Managing Attorney / Managing Partner (主持律師)."
+      },
+      {
+        "name": "Dacheng Taiwan (Dentons' preferred law firm in Taiwan)",
+        "category": "legal",
+        "sourced": true,
+        "n_citations": 9,
+        "claimed_url": "https://www.linkedin.com/company/dentons-taiwan",
+        "key_person": "James Hsiao — Senior Partner"
+      },
+      {
+        "name": "Kingdom's Law Firm",
+        "category": "legal",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://www.kingdomslaw.com/",
+        "key_person": "Stacey Lee (李貴敏), Founder (創所所長)"
+      },
+      {
+        "name": "Lin & Partners Attorneys at Law",
+        "category": "legal",
+        "sourced": true,
+        "n_citations": 14,
+        "claimed_url": "https://www.linkedin.com/company/linandpartners",
+        "key_person": "Eason Wan — Senior Attorney & Director of Dispute Resolution Department; his listed expertise includes public procurement."
+      },
+      {
+        "name": "Lin & Partners",
+        "category": "legal",
+        "sourced": true,
+        "n_citations": 11,
+        "claimed_url": "http://www.linandpartners.com.tw/about.php",
+        "key_person": "Dr. George Lin, Managing Partner"
+      },
+      {
+        "name": "Chen & Chang, Attorneys-at-Law",
+        "category": "legal",
+        "sourced": true,
+        "n_citations": 12,
+        "claimed_url": "https://www.linkedin.com/company/iadr",
+        "key_person": "Dr Helena H. C. Chen, Managing Partner (陳希佳博士/主持律師)."
+      },
+      {
+        "name": "Lee and Li, Attorneys-at-Law",
+        "category": "legal",
+        "sourced": true,
+        "n_citations": 19,
+        "claimed_url": "https://www.leeandli.com/EN/000000001.htm",
+        "key_person": "Robin Chang, CEO/Partner"
+      },
+      {
+        "name": "Global Conference on UAV Technologies, Smart Drones & Aerospace Innovation (GCUTSAI) — Taipei, Taiwan, October 24–25, 2026",
+        "category": "event",
+        "sourced": true,
+        "n_citations": 12,
+        "claimed_url": "https://www.conferencealert.com/eventdetail/2621809",
+        "key_person": "Ms. Gitanjali Pradhan — Assistant Organizing Secretary, International Division"
+      },
+      {
+        "name": "2026 Taiwan-U.S. Defense Industry Forum — May 28, 2026, Taipei, Taiwan",
+        "category": "event",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://www.us-taiwan.org/events/2026-taiwan-us-defense-industry-forum",
+        "key_person": "Rupert Hammond-Chambers, President of the US-Taiwan Business Council and forum panel moderator."
+      },
+      {
+        "name": "DSET 2026 Annual Forum: National Strategic Summit on Supply Chain Resilience — June 6, 2026, Taipei",
+        "category": "event",
+        "sourced": true,
+        "n_citations": 12,
+        "claimed_url": "https://dset.tw/en/event-news-en/481-4",
+        "key_person": "Wen-Ling Tu, President of DSET"
+      },
+      {
+        "name": "Taiwan International Assembly of Space Science, Technology, and Industry (TASTI 2026), November 8–11, 2026, Tainan, Taiwan",
+        "category": "event",
+        "sourced": true,
+        "n_citations": 11,
+        "claimed_url": "https://tasti2026.conf.tw/site/default.aspx?sid=1691&lang=en",
+        "key_person": "Jong-Shinn Wu, Director General of the Taiwan Space Agency (listed as TASTI 2026 Executive Secretary)."
+      },
+      {
+        "name": "Global Conference on UAV Technologies, Smart Drones & Aerospace Innovation (GCUTSAI) — 24–25 October 2026, Taipei, Taiwan",
+        "category": "event",
+        "sourced": true,
+        "n_citations": 11,
+        "claimed_url": "https://www.scienceglobe.org/Conference/30656/GCUTSAI/",
+        "key_person": "Ms. Gitanjali Pradhan, Assistant Organizing Secretary, International Division, ScienceGlobe"
+      },
+      {
+        "name": "2026 1st UAV Business Matchmaking Conference",
+        "category": "event",
+        "sourced": true,
+        "n_citations": 14,
+        "claimed_url": "https://www.uvaitw.com/en/events",
+        "key_person": "林世賢 (Lin Shih-hsien), Chairman of the Taiwan Unmanned Vehicle Alliance (UVAI)."
+      },
+      {
+        "name": "2026 Taiwan Drone International Forum & Global UAV Academy Inauguration — October 30, 2026, Taipei, Taiwan",
+        "category": "event",
+        "sourced": true,
+        "n_citations": 15,
+        "claimed_url": "https://www.accupass.com/event/2610050148301866850792",
+        "key_person": "李漢銘, Chairperson of the Global UAV Academy (財團法人無人機國際學院)"
+      },
+      {
+        "name": "Taipei Aerospace & Defense Technology Exhibition (TADTE) 2027 — September 23–25, 2027, Taipei, Taiwan",
+        "category": "event",
+        "sourced": true,
+        "n_citations": 14,
+        "claimed_url": "https://www.tadte.com.tw/en/menu/6E0B04FB4400C35AD0636733C6861689/info.html",
+        "key_person": "James C. F. Huang, Chairman of TAITRA, TADTE’s organizer."
+      }
+    ]
+  },
+  "task-ultra+enrich": {
+    "wall_s": 700,
+    "entities": 38,
+    "sourced_url_and_excerpt": 38,
+    "distinct_source_urls": 215,
+    "capital": 6,
+    "legal": 3,
+    "events": 4,
+    "named_people": 38,
+    "named_people_with_cited_basis": 38,
+    "with_next_step": 38,
+    "fixture_found": "10/16",
+    "fixture_missing": [
+      "g1 MND Armaments Bureau",
+      "i4 Tier-1 telecom (e.g. Chunghwa)",
+      "i5 Taoyuan component suppliers",
+      "c4 National Development Fund",
+      "e2 Drone ecosystem summit (generic)",
+      "e3 Defense procurement briefing (generic)"
+    ],
+    "fixture_hits": [
+      {
+        "label": "g1 MND Armaments Bureau",
+        "found": null
+      },
+      {
+        "label": "g2 NCSIST",
+        "found": "National Chung-Shan Institute of Science and Technology"
+      },
+      {
+        "label": "g3 MOEA Industrial Development Admin.",
+        "found": "Industrial Development Administration, Ministry of Economic Affairs"
+      },
+      {
+        "label": "g4 Civil Aeronautics Admin.",
+        "found": "Civil Aviation Administration, Ministry of Transportation and Communications"
+      },
+      {
+        "label": "g5 NCC",
+        "found": "National Communications Commission"
+      },
+      {
+        "label": "g6 LY Foreign Affairs & National Defense Cttee",
+        "found": "Foreign Affairs and National Defense Committee, Legislative Yuan"
+      },
+      {
+        "label": "i1 TEDIBOA drone alliance",
+        "found": "Taiwan Excellence Drone International Business Opportunities Alliance (TEDIBOA)"
+      },
+      {
+        "label": "i2 State aerospace prime (AIDC)",
+        "found": "Aerospace Industrial Development Corporation"
+      },
+      {
+        "label": "i3 Listed drone OEM, Taichung (Thunder Tiger)",
+        "found": "Thunder Tiger Corp."
+      },
+      {
+        "label": "i4 Tier-1 telecom (e.g. Chunghwa)",
+        "found": null
+      },
+      {
+        "label": "i5 Taoyuan component suppliers",
+        "found": null
+      },
+      {
+        "label": "c4 National Development Fund",
+        "found": null
+      },
+      {
+        "label": "l1/l2 Taiwan law firm (export control / cross-border)",
+        "found": "Lee and Li, Attorneys-at-Law"
+      },
+      {
+        "label": "e1 TADTE",
+        "found": "Taipei Aerospace & Defense Technology Exhibition (TADTE) 2027"
+      },
+      {
+        "label": "e2 Drone ecosystem summit (generic)",
+        "found": null
+      },
+      {
+        "label": "e3 Defense procurement briefing (generic)",
+        "found": null
+      }
+    ],
+    "entity_list": [
+      {
+        "name": "National Police Agency, Ministry of the Interior",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 11,
+        "claimed_url": "https://www.npa.gov.tw/en/index",
+        "key_person": "張榮興, Director-General of the National Police Agency"
+      },
+      {
+        "name": "Office of Homeland Security, Executive Yuan",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://www.ey.gov.tw/Page/66A952CE4ACACF01",
+        "key_person": "鄭麗君 (Cheng Li-chun), Vice Premier of the Executive Yuan and convener of the Homeland Security Policy Committee."
+      },
+      {
+        "name": "National Chung-Shan Institute of Science and Technology",
+        "category": "research_institute",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://www.ncsist.org.tw/",
+        "key_person": "李世強,院長"
+      },
+      {
+        "name": "Ministry of National Defense",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 8,
+        "claimed_url": "https://www.mnd.gov.tw/",
+        "key_person": "Wellington Li-Hsiung Koo — Minister of National Defense"
+      },
+      {
+        "name": "Republic of China Army",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 7,
+        "claimed_url": "https://army.mnd.gov.tw/en",
+        "key_person": "GEN Lu, Kun-Xiu — Commanding General of the ROC Army."
+      },
+      {
+        "name": "Republic of China Navy",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 9,
+        "claimed_url": "https://navy.mnd.gov.tw/",
+        "key_person": "Admiral Chiang Cheng-kuo (蔣正國), Commander, Republic of China Navy."
+      },
+      {
+        "name": "Republic of China Air Force",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 12,
+        "claimed_url": "https://air.mnd.gov.tw/",
+        "key_person": "Gen. Cheng Jung-Feng (鄭榮豐), Chief of Air Force / Commander-in-Chief."
+      },
+      {
+        "name": "Coast Guard Administration, Ocean Affairs Council",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 11,
+        "claimed_url": "https://www.cga.gov.tw/",
+        "key_person": "Chang Chung-Lung (張忠龍), Director-General of the Coast Guard Administration and Deputy Minister of the Ocean Affairs Council."
+      },
+      {
+        "name": "Ministry of Economic Affairs",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 8,
+        "claimed_url": "https://www.moea.gov.tw",
+        "key_person": "Ming-Hsin Kung — Minister of Economic Affairs"
+      },
+      {
+        "name": "Industrial Development Administration, Ministry of Economic Affairs",
+        "category": "government",
+        "sourced": true,
+        "n_citations": 8,
+        "claimed_url": "https://www.ida.gov.tw/ctlr?PRO=idx2015&lang=1",
+        "key_person": "Chiou Chyou-huey (邱求慧), Director-General, Industrial Development Administration"
+      },
+      {
+        "name": "Ministry of Digital Affairs",
+        "category": "regulator",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://moda.gov.tw/",
+        "key_person": "Yi-Jing Lin — Minister of Digital Affairs"
+      },
+      {
+        "name": "National Communications Commission",
+        "category": "regulator",
+        "sourced": true,
+        "n_citations": 9,
+        "claimed_url": "https://www.ncc.gov.tw/enncc",
+        "key_person": "Wen Chun-yu (溫俊瑜), NCC Secretary-General; appointed as the agency’s representative to maintain basic operations during the commissioner vacancy in August 2026."
+      },
+      {
+        "name": "Civil Aviation Administration, Ministry of Transportation and Communications",
+        "category": "regulator",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://www.caa.gov.tw/index.aspx?Lang=2",
+        "key_person": "Ho Shu-Ping — Director General, Civil Aviation Administration."
+      },
+      {
+        "name": "Telecom Technology Center",
+        "category": "research_institute",
+        "sourced": true,
+        "n_citations": 11,
+        "claimed_url": "https://www.ttc.org.tw/",
+        "key_person": "鄧惟中 (Wei-Chung Teng), Chief Executive Officer (CEO)."
+      },
+      {
+        "name": "Industrial Technology Research Institute",
+        "category": "research_institute",
+        "sourced": true,
+        "n_citations": 11,
+        "claimed_url": "https://www.itri.org.tw/english/",
+        "key_person": "Pei-Zen Chang (張培仁), President"
+      },
+      {
+        "name": "Foreign Affairs and National Defense Committee, Legislative Yuan",
+        "category": "legislature",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://www.ly.gov.tw/Pages/List.aspx?nodeid=239",
+        "key_person": "Wang Yi-chuan (王義川), DPP lawmaker, and Hsu Chiao-hsin (徐巧芯), KMT lawmaker, are the Committee’s co-conveners."
+      },
+      {
+        "name": "Taiwan Excellence Drone International Business Opportunities Alliance (TEDIBOA)",
+        "category": "industry_association",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://www.tediboa.com.tw/en",
+        "key_person": "Chin-Ping Tsao (曹進平), TEDIBOA Chairman and Chairman of Aerospace Industrial Development Corporation (AIDC)."
+      },
+      {
+        "name": "MiTAC Advance Technology Corp.",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://www.mitacmat.com/",
+        "key_person": "Sammy Chiu, President of MiTAC Advance Technology Corp."
+      },
+      {
+        "name": "Tron Future Tech",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 11,
+        "claimed_url": "https://www.tronfuture.com/",
+        "key_person": "Dr. Yu-Jiu Wang — Chairman & CEO"
+      },
+      {
+        "name": "JC Tech",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 8,
+        "claimed_url": "https://www.jctech.tw/en",
+        "key_person": "Robert Cheng, CEO"
+      },
+      {
+        "name": "Cub Elecparts Inc.",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 12,
+        "claimed_url": "https://www.cubelec.com.tw/",
+        "key_person": "黃淑媛 — 董事長 (Chairperson; listed on the official board roster dated 2025-12-31)."
+      },
+      {
+        "name": "Aerospace Industrial Development Corporation",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 6,
+        "claimed_url": "https://www.aidc.com.tw/en/",
+        "key_person": "Tsao, Chin-pin (曹進平), Chairman of AIDC"
+      },
+      {
+        "name": "Thunder Tiger Corp.",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://www.thundertiger.com/",
+        "key_person": "Su Sheng-chieh (蘇聖傑), General Manager"
+      },
+      {
+        "name": "Ubiqconn Technology Inc.",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 9,
+        "claimed_url": "https://www.ubiqconn.com/",
+        "key_person": "Paul Hsieh — CEO, Ubiqconn Technology"
+      },
+      {
+        "name": "Coretronic Intelligent Robotics Corporation",
+        "category": "company",
+        "sourced": true,
+        "n_citations": 8,
+        "claimed_url": "https://www.coretronic-robotics.com/tw/index",
+        "key_person": "Wu Hsiu-hui (吳秀蕙), President"
+      },
+      {
+        "name": "Taiwania Capital",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://www.taiwaniacapital.com/",
+        "key_person": "David Weng — CEO and General Partner of the Tech / CEE / SEA Fund."
+      },
+      {
+        "name": "Industrial Technology Investment Corporation (ITIC)",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://itic.com.tw/",
+        "key_person": "Yu Wanh-Ru (余宛如), General Manager (總經理)."
+      },
+      {
+        "name": "CID Group",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 11,
+        "claimed_url": "https://www.cidgroup.com/en",
+        "key_person": "Charles Chang — Senior Partner and Founding Partner"
+      },
+      {
+        "name": "Taiwan Cooperative Venture Capital",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://eng.tcvc.com.tw/",
+        "key_person": "Nicole Liu (劉葳之), Head of Global Investment (國際投資主管)."
+      },
+      {
+        "name": "PEGATRON Corporation",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://www.pegatroncorp.com/",
+        "key_person": "T.H. Tung — Chairman and Chief Strategy Officer (CSO)."
+      },
+      {
+        "name": "SparkLabs Taiwan",
+        "category": "capital",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://www.sparklabstaiwan.com/",
+        "key_person": "Edgar Chiu — Co-Founder & Managing Partner, SparkLabs Taiwan."
+      },
+      {
+        "name": "Lee and Li, Attorneys-at-Law",
+        "category": "legal",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://www.leeandli.com/EN/000000001.htm",
+        "key_person": "Jennifer Li (李潔非), Partner; her listed practice includes government procurement."
+      },
+      {
+        "name": "Tsar & Tsai Law Firm",
+        "category": "legal",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://www.tsartsai.com.tw/",
+        "key_person": "Anthony Hsieh — Integrated Partner; his listed expertise includes Foreign Investment and Construction and Government Procurement."
+      },
+      {
+        "name": "Eiger",
+        "category": "legal",
+        "sourced": true,
+        "n_citations": 12,
+        "claimed_url": "https://eiger.law",
+        "key_person": "John Eastwood — Partner, Taipei."
+      },
+      {
+        "name": "Taipei Aerospace & Defense Technology Exhibition (TADTE) 2027",
+        "category": "event",
+        "sourced": true,
+        "n_citations": 9,
+        "claimed_url": "https://www.tadte.com.tw/en/index.html",
+        "key_person": "James C. F. Huang — Chairman of TAITRA, TADTE’s organizer."
+      },
+      {
+        "name": "Secutech 2027",
+        "category": "event",
+        "sourced": true,
+        "n_citations": 8,
+        "claimed_url": "https://secutech.tw.messefrankfurt.com/taipei/en.html",
+        "key_person": "Regina Tsai, General Manager of Messe Frankfurt (HK) Ltd – Taiwan Branch."
+      },
+      {
+        "name": "Smart City Summit & Expo / Net Zero City Expo 2027",
+        "category": "event",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://smartcity.org.tw/smartcity.php",
+        "key_person": "Lin Chien-han (林建涵), Chair of the Taiwan Smart City Solutions Alliance; Chairman of 中保科技集團."
+      },
+      {
+        "name": "Taiwan Automation Intelligence and Robot Show (TAIROS) 2027",
+        "category": "event",
+        "sourced": true,
+        "n_citations": 10,
+        "claimed_url": "https://tairos.chanchao.com.tw/",
+        "key_person": "陳政興 — 理事長, Taiwan Automation Intelligence and Robotics Association (TAIROA); 董事長, 均豪精密工業股份有限公司."
+      }
+    ]
+  }
+}

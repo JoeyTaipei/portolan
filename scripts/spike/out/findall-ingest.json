@@ -1,0 +1,48 @@
+{
+  "objective": "FindAll organizations and events in Taiwan that a US counter-drone (counter-UAS) sensor startup must deal with to win a first Taiwan government pilot within 12 months: government agencies and procurement bodies, defense R&D and test institutes, regulators, legislative committees, industry associations, defense and drone companies, investors in drone or defense startups, law firms advising on defense procurement or export controls, and drone or defense trade events.",
+  "entity_type": "organizations and events",
+  "match_conditions": [
+    {
+      "name": "organization_type_check",
+      "description": "Entity must be an organization that is one or more of the following: a government agency or procurement body; a defense research, development, or test institute; a regulator; a legislative committee; an industry association; a defense or drone company; an investor in drone or defense startups; or a law firm advising on defense procurement or export controls."
+    },
+    {
+      "name": "event_type_check",
+      "description": "Entity must be a drone or defense trade event relevant to Taiwan."
+    },
+    {
+      "name": "taiwan_relevance_check",
+      "description": "Entity must operate in, serve, or be relevant to Taiwan."
+    },
+    {
+      "name": "pilot_relevance_check",
+      "description": "Organization or event must be relevant to helping a US counter-UAS sensor startup pursue its first Taiwan government pilot within 12 months; if that relevance or timeframe cannot be established, return not_sure."
+    }
+  ],
+  "enrichments": [
+    {
+      "processor": "core",
+      "output_schema": {
+        "json_schema": {
+          "type": "object",
+          "properties": {
+            "entity_category": {
+              "type": "string",
+              "description": "Whether the entity is an organization or an event, and its specific category (e.g., government agency, procurement body, defense R&D or test institute, regulator, legislative committee, industry association, defense or drone company, startup investor, defense procurement or export control law firm, drone or defense trade show)"
+            },
+            "taiwan_connection_summary": {
+              "type": "string",
+              "description": "Brief description of how the organization or event operates in, serves, or is relevant to Taiwan's drone or defense sector. Return null if no Taiwan connection can be found."
+            },
+            "next_event_date": {
+              "type": "string",
+              "description": "For events only: the next scheduled date of the drone or defense trade event in format YYYY-MM-DD. If the exact date is unavailable, provide the approximate month or quarter. Return null for organizations or if no scheduling information can be found."
+            }
+          }
+        },
+        "type": "json"
+      }
+    }
+  ],
+  "generator": "core"
+}

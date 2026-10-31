@@ -1,0 +1,11 @@
+[budget] findall-enrich:investors:core:x10: est $0.250 (running total $4.430)
+2s queued generated=17 matched=10
+23s running generated=17 matched=11
+44s running generated=17 matched=11
+64s running generated=17 matched=11
+85s running generated=17 matched=11
+105s running generated=17 matched=11
+126s running generated=17 matched=11
+147s running generated=17 matched=11
+167s completed generated=17 matched=11
+[saved] scripts/spike/out/findall-investors-enriched-core.json

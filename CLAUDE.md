@@ -46,6 +46,7 @@
 - dossier 網址用猜不到的隨機 id（至少 128 bit）
 - 研究有每個 Email 和全站每天的次數上限，超過時友善提示
 - 金鑰只放 .env.local（範本 .env.example），用 vercel env 同步，不 commit；不要叫使用者把金鑰貼進對話
+- 每次呼叫要花錢的 API（Parallel、Claude）前，先報預估費用，等我在對話裡確認才跑
 
 ## 做法
 - 先有 docs/spec.md 和 docs/plan.md 才寫功能；衝突時停下來問

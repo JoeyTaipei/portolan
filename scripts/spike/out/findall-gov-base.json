@@ -1,0 +1,852 @@
+{
+  "wall_s": 292,
+  "run": {
+    "findall_id": "findall_2f937a48caa142109994d7426548f57d",
+    "status": {
+      "status": "completed",
+      "is_active": false,
+      "metrics": {
+        "generated_candidates_count": 21,
+        "matched_candidates_count": 15
+      },
+      "termination_reason": "match_limit_met"
+    },
+    "generator": "base",
+    "metadata": {
+      "query": "gov",
+      "spike": "0001"
+    },
+    "created_at": "2026-10-30T04:15:59.517260Z",
+    "modified_at": "2026-10-30T04:20:41.628393Z"
+  },
+  "result": {
+    "run": {
+      "findall_id": "findall_2f937a48caa142109994d7426548f57d",
+      "status": {
+        "status": "completed",
+        "is_active": false,
+        "metrics": {
+          "generated_candidates_count": 21,
+          "matched_candidates_count": 15
+        },
+        "termination_reason": "match_limit_met"
+      },
+      "generator": "base",
+      "metadata": {
+        "query": "gov",
+        "spike": "0001"
+      },
+      "created_at": "2026-10-30T04:15:59.517260Z",
+      "modified_at": "2026-10-30T04:20:41.628393Z"
+    },
+    "candidates": [
+      {
+        "candidate_id": "candidate_39888c86-5489-487b-8352-85bcfad7efca",
+        "name": "Taroko National Park Headquarters",
+        "url": "https://www.taroko.gov.tw/en/",
+        "description": "Taroko National Park Headquarters is a government body under Taiwan’s National Park Service and Ministry of the Interior. It has a documented, park-specific role in managing civilian drone use: applicants wishing to film with a UAV within the park must apply to the Headquarters for a permit. This makes it relevant to drone regulation in a limited local context; the evidence does not establish a role in military-drone procurement or national counter-drone programs.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_42708e06-7528-49d9-8c7e-8c4da43b4cac",
+        "name": "Navy Command R.O.C.",
+        "url": "https://navy.mnd.gov.tw/en/index.aspx",
+        "description": "Navy Command R.O.C. is Taiwan’s naval command, listed among the Ministry of National Defense’s service commands. It is relevant to the drone-procurement scope: Taiwan’s Navy has said it plans to procure V-BAT surveillance drones through open bidding.",
+        "match_status": "matched",
+        "output": {
+          "drone_role": {
+            "type": "match_condition",
+            "value": "2026-10-18 — https://www.taipeitimes.com/News/taiwan/archives/2026/10/18/2003866167 — Reports that Taiwan’s Navy plans to procure MQ-35A V-BAT surveillance drones through open bidding.",
+            "is_matched": true
+          },
+          "taiwan_public_body": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_role",
+            "citations": [
+              {
+                "title": "Taiwan looking to buy 292 VTOL drones - Taipei Times",
+                "url": "https://www.taipeitimes.com/News/taiwan/archives/2026/10/18/2003866167",
+                "excerpts": [
+                  "The navy and the coast guard reportedly plan to acquire 292 units of MQ-35A V-BAT vertical takeoff and landing (VTOL) surveillance drones. The Navy said it would procure the drones through an open bidding process."
+                ]
+              }
+            ],
+            "reasoning": "The report says the Navy and Coast Guard plan to acquire 292 MQ-35A V-BAT surveillance drones and that the Navy would use an open bidding process. The article’s URL identifies its publication date as 2026-10-18.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_public_body",
+            "citations": [
+              {
+                "title": "Home - Navy Command R.O.C",
+                "url": "https://navy.mnd.gov.tw/en/index.aspx",
+                "excerpts": [
+                  "Ministry of National Defense R.O.C.](https://www.mnd.gov.tw/en \"Open New TargetPage , Link To Ministry of National Defense R.O.C.\") [Army Command Headquarters,MND.](https://army.mnd.gov.tw/EN/index.aspx \"Open New TargetPage , Link To Army Command Headquarters,MND.\") [Navy Command R.O.C."
+                ]
+              }
+            ],
+            "reasoning": "The official Navy Command page links to the Ministry of National Defense and identifies Navy Command R.O.C., supporting that it is a Taiwanese government military command.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_5aa9054a-abf0-44bb-85a4-8717c019bfb8",
+        "name": "Ministry of National Defense, Department of Strategic Planning",
+        "url": "https://www.mnd.gov.tw/en/informationservices/publication/61179",
+        "description": "The Department of Strategic Planning is a policy-staff department within Taiwan’s Ministry of National Defense (MND). Its head presented the MND’s proposed special budget for domestic unmanned systems, including coastal reconnaissance and attack drones, to the Cabinet in 2026. This supports strong relevance to military-drone planning and procurement, although the evidence describes an MND-led procurement proposal rather than independent purchasing authority for the department.",
+        "match_status": "matched",
+        "output": {
+          "drone_role": {
+            "type": "match_condition",
+            "value": "2026-06-18 — https://focustaiwan.tw/politics/202606180012. The head of the MND Department of Strategic Planning described the ministry’s proposed budget for procuring coastal reconnaissance and attack drones and unmanned surface vessels; this shows involvement in drone budgeting, not that the department independently procured them.",
+            "is_matched": true
+          },
+          "taiwan_public_body": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_role",
+            "citations": [
+              {
+                "title": "Cabinet proposes US$6.6 billion special budget for domestic drones - Focus Taiwan",
+                "url": "https://focustaiwan.tw/politics/202606180012",
+                "excerpts": [
+                  "06/18/2026 03:20 PM",
+                  "It would cover the procurement of 1,446 coastal reconnaissance drones, 208,200 coastal attack drones and 1,320 unmanned surface vessels, Huang Wen-chi (黃文啟), head of the MND's Department of Strategic Planning, told a weekly Cabinet news conference."
+                ]
+              }
+            ],
+            "reasoning": "The dated report identifies Huang Wen-chi as head of the MND Department of Strategic Planning and says he described a proposed MND budget covering procurement of reconnaissance and attack drones and unmanned surface vessels. This supports the department’s involvement through its head in drone budgeting, but does not establish that the department independently procured the systems.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_public_body",
+            "citations": [
+              {
+                "title": "中華民國國防部 - 全球資訊網 - 首頁 - Organization",
+                "url": "https://www.mnd.gov.tw/en/informationservices/publication/61179",
+                "excerpts": [
+                  "The MND Policy Staff Units (Article 3 of the Organization Act of the Ministry National Defense and Article 4 of the Regulations for Departmental Affairs of the Ministry of National Defense)Department of Strategic Planning, Department of Resources Planning, Department of Legal Affairs, Department of Integrated Assessment, National Defense Mobilization Office, Administration Office , Personnel Office, Ethics Office, and Comptroller Office."
+                ]
+              }
+            ],
+            "reasoning": "The MND’s official organizational page lists the Department of Strategic Planning among its policy staff units, establishing it as part of Taiwan’s central government.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_710c0a0e-5a0b-4c5f-abc8-1bd943bf3b6f",
+        "name": "Ministry of National Defense, Republic of China",
+        "url": "https://www.mnd.gov.tw/en",
+        "description": "The Ministry of National Defense, Republic of China (MND), is Taiwan’s national defense ministry. It is responsible for national defense affairs and performs policymaking, command, and armament functions.",
+        "match_status": "matched",
+        "output": {
+          "drone_role": {
+            "type": "match_condition",
+            "value": "2026-08-03 — https://www.mnd.gov.tw/en/News/MND/87537 — The Ministry says it is advancing programs for domestic production of unmanned systems and counter-drone capabilities.",
+            "is_matched": true
+          },
+          "taiwan_public_body": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_role",
+            "citations": [
+              {
+                "title": "Ministry of National Defense Republic of China - World Wide Web - News Channel - MND News - Minister Koo: Deepening Security Cooperation and Defense Self-Reliance to Build Taiwan's Layered Defense Capabilities",
+                "url": "https://www.mnd.gov.tw/en/News/MND/87537",
+                "excerpts": [
+                  "MND News 2026.08.03 Issuing Authority:Political Warfare Bureau Share",
+                  "Minister of National Defense Wellington Koo Li-hsiung said in a recent media interview that, in the face of China's escalating military threats, Taiwan will strengthen its self-defense capabilities while deepening security cooperation with like-minded countries to create collective deterrence. The Ministry of National Defense is also advancing programs for the domestic production of unmanned systems, counter-drone capabilities, and the \"Taiwan Dome,\" using layered defense and intelligence fusion to enhance Taiwan's overall defense capabilities."
+                ]
+              }
+            ],
+            "reasoning": "The official MND news item is dated 2026-08-03. It states that the Ministry is advancing programs for domestic production of unmanned systems and counter-drone capabilities, which is post-2024 public evidence of its drone-related role.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_public_body",
+            "citations": [
+              {
+                "title": "Ministry of National Defense Republic of China - World Wide Web - About MND - Organizational Hierarchy and Responsibilities",
+                "url": "https://www.mnd.gov.tw/en/publication/10010",
+                "excerpts": [
+                  "(IV)Ministry of National Defense The MND is in charge of national defense affairs. The MND shall perform its policymaking, command, and armament functions, and shall submit suggestions for defense policies and formulate military strategy accordingly."
+                ]
+              }
+            ],
+            "reasoning": "The official organizational description identifies the Ministry of National Defense and says it is in charge of national defense affairs, establishing that it is a government ministry.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_790c84cd-e51c-4101-9a42-52f802d8ce8a",
+        "name": "Industrial Development Administration, Ministry of Economic Affairs",
+        "url": "https://www.ida.gov.tw/ctlr?PRO=index&lang=1",
+        "description": "A Ministry of Economic Affairs administrative agency with a documented role in Taiwan’s UAV industry development. Its projects coordinate resources across ministries and support UAV technology, applications, manufacturing capabilities, and verification and regulatory-consultation services, making it relevant primarily as an industrial-development body.",
+        "match_status": "matched",
+        "output": {
+          "drone_role": {
+            "type": "match_condition",
+            "value": "2025-03-21 — https://www.ida.gov.tw/ctlr?PRO=executive.ExecutiveInfoView&id=16595&lang=1 — IDA’s Asia UAV Innovation Center program reports an R&D subsidy mechanism and support for UAV technology development, indicating funding-related support for drones. Also, 2026-05-29 — https://www.ida.gov.tw/ctlr?PRO=project.ProjectView&id=2991&lang=1 — the agency’s UAV project describes establishing UAV verification and regulatory-consultation service centers.",
+            "is_matched": true
+          },
+          "taiwan_public_body": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_role",
+            "citations": [
+              {
+                "title": "Asia UAV Innovation Center Development Program | Achievements | 2024 - Industrial Development Administration, Ministry of Economic Affairs",
+                "url": "https://www.ida.gov.tw/ctlr?PRO=executive.ExecutiveInfoView&id=16595&lang=1",
+                "excerpts": [
+                  "A \\-\n\nA\n\nA \\+\n\nPrint\n\n* [Achievements](https://www.ida.gov.tw/ctlr?PRO=executive.ExecutiveInfoList&lang=1&cate=2024 \"Go to Achievements\")\n\n### Asia UAV Innovation Center Development Program\n\n* Published at：2025-03-21\n* Modified at：2025-03-21\n\n⌕\n\n1\\. Develop one operational mechanism for the UAS Industry Development Program Office and one R&D subsidy mechanism.\n\n2\\.",
+                  "Assist domestic companies in developing two key modules: UAV power lift propeller blades and visual navigation vehicles.\n\n9\\. Assist domestic companies in developing one UAV intelligent image recognition software.\n\n* Contact Organization：Metal Electromechanical Industry Division\n* Contact Person：Mr. Lin"
+                ]
+              },
+              {
+                "title": "Asia UAV AI Innovation and Application R&D Center | Plan Introduction | 2026 - Industrial Development Administration, Ministry of Economic Affairs",
+                "url": "https://www.ida.gov.tw/ctlr?PRO=project.ProjectView&id=2991&lang=1",
+                "excerpts": [
+                  "A \\+\n\nPrint\n\n* [Plan Introduction](https://www.ida.gov.tw/ctlr?PRO=project.ProjectList&lang=1 \"Go to Plan Introduction\")\n\n### Asia UAV AI Innovation and Application R&D Center\n\n* Published at:2026-05-29\n* Modified at:2026-05-29\n\n⌕\n\nThis project aligns with Taiwan’s national UAV industry development policy by leveraging cross-ministerial resources to establish a UAV Industry Development Project Office, develop the Asia UAV Innovation Center, build key UAV technology application services and manufacturing capabilities, and establish UAV verification and regulatory consulting service centers. Through these efforts, Taiwan aims to become a pioneer in innovative UAV application services and advance toward the vision of becoming an Asia-Pacific UAV manufacturing hub.\n\nWeb site: [\\-](https://www.ida.gov.tw/- \"New window,-\")\n\nOrganizer:\n\n* Metal Electromechanical Industry Division\n* Contact person:Mr. Tzeng\n\nCommissioner:\n\n* Metal Electromechanical Industry Division\n* Contact person:Mr."
+                ]
+              }
+            ],
+            "reasoning": "The IDA achievement record for its Asia UAV Innovation Center program reports developing an R&D subsidy mechanism and supporting UAV technology development. The agency’s 2026 project description also states that it will establish UAV verification and regulatory-consultation service centers. Together, these official records provide post-2024 evidence of funding-related support and drone verification/regulatory-service work.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_public_body",
+            "citations": [
+              {
+                "title": "\n\tOrganization - About MOEA - Ministry of Economic Affairs,R.O.C.\n",
+                "url": "https://www.moea.gov.tw/mns/english/introduction/Organization.aspx?menu_id=189",
+                "excerpts": [
+                  "## Organization\n\nThe Ministry of Economic Affairs currently consists of 16 staff units, 14 administrative agencies, 6 national corporations, and 64 overseas commercial offices.\n\nStaff Units",
+                  "|[Administration of Commerce, Ministry of Economic Affairs](https://www.aoc.gov.tw/english/index \"Open new window for Administration of Commerce, Ministry of Economic Affairs\") |\n| --- |\n|[Industrial Development Administration, Ministry of Economic Affairs](https://www.ida.gov.tw/ctlr?PRO=index&lang=1 \"Open new window for Industrial Development Administration, Ministry of Economic Affairs\") |\n|[International Trade Administration, Ministry of Economic Affairs](https://www.trade.gov.tw/English/ \"Open new window for International Trade Administration, Ministry of Economic Affairs\") |"
+                ]
+              }
+            ],
+            "reasoning": "The Ministry of Economic Affairs’ organization page states that it has administrative agencies and lists the Industrial Development Administration among them, establishing that IDA is a Taiwan government agency under the Ministry.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_8fb6ca5a-1cd8-4e2a-ad94-7edcc6b201df",
+        "name": "Ministry of Transportation and Communications, R.O.C. (Taiwan)",
+        "url": "https://www.motc.gov.tw/en/index",
+        "description": "The Ministry of Transportation and Communications (MOTC) is a Taiwan government ministry with direct relevance to civilian drones through its Civil Aviation Administration (CAA). The CAA administers civil aviation affairs and manages drone activity in specified airspace; the evidence supports this civilian regulatory connection, not a direct MOTC role in military-drone procurement.",
+        "match_status": "matched",
+        "output": {
+          "drone_role": {
+            "type": "match_condition",
+            "value": "2024-11-14 — https://law.moj.gov.tw/ENG/LawClass/LawAll.aspx?media=print&pcode=K0090083 — The Ministry of Transportation and Communications’ Regulations of Drone set requirements for drones, demonstrating a regulatory role.",
+            "is_matched": true
+          },
+          "taiwan_public_body": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_role",
+            "citations": [
+              {
+                "title": "\n\tRegulations of Drone - Article Content - Laws & Regulations Database of The Republic of China (Taiwan)\n",
+                "url": "http://law.moj.gov.tw/ENG/LawClass/LawAll.aspx?media=print&pcode=K0090083",
+                "excerpts": [
+                  "Add New Folder\nManage Folders\n\n## Article Content\n\n|Title： |Regulations of Drone CH |\n| --- | --- |\n|Amended Date： |2024-11-14 |\n|Category： |Ministry of Transportation and Communications（交通部） |\n|Attachment： |* Attachment 1 Application Form For Registration of Drone, Change of Particulars and Extension of Validity Period.ODT",
+                  "The owner (hereinafter the “Owner”) and the Pilot shall be responsible for the flight safety of the Drone, keep the Drone properly maintained and follow flight safety procedure.\n\nArticle 5"
+                ]
+              }
+            ],
+            "reasoning": "The official record identifies the instrument as the Regulations of Drone, gives its amendment date as 2024-11-14, and includes a drone registration requirement. This establishes public evidence of the ministry’s regulatory role concerning drones after 2024.",
+            "confidence": "high"
+          },
+          {
+            "field": "taiwan_public_body",
+            "citations": [
+              {
+                "title": "\n\tRegulations of Drone - Article Content - Laws & Regulations Database of The Republic of China (Taiwan)\n",
+                "url": "http://law.moj.gov.tw/ENG/LawClass/LawAll.aspx?media=print&pcode=K0090083",
+                "excerpts": [
+                  "Add New Folder\nManage Folders\n\n## Article Content\n\n|Title： |Regulations of Drone CH |\n| --- | --- |\n|Amended Date： |2024-11-14 |\n|Category： |Ministry of Transportation and Communications（交通部） |\n|Attachment： |* Attachment 1 Application Form For Registration of Drone, Change of Particulars and Extension of Validity Period.ODT"
+                ]
+              }
+            ],
+            "reasoning": "The official Taiwan laws database categorizes the record under the Ministry of Transportation and Communications (交通部), identifying it as a Taiwan government ministry.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_94257008-2bf3-467a-935e-dd1be60b22ac",
+        "name": "Taipei City Government",
+        "url": "https://www.gov.taipei/",
+        "description": "Taipei City Government is Taipei’s municipal government. Its official information says it announces permitted drone-activity areas below 400 feet outside specified Civil Aeronautics Administration-controlled zones, reviews applications, and handles enforcement and penalties. This makes it relevant as a local regulator of civilian drone activity; the cited evidence does not establish a role in military-drone procurement or counter-drone systems.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_98970b7b-c10f-4581-8185-0f3e5fb5a86e",
+        "name": "Bureau of Standards, Metrology and Inspection, Ministry of Economic Affairs (BSMI)",
+        "url": "https://www.bsmi.gov.tw/wSite/ct?ctNode=805&mp=2&xItem=3735",
+        "description": "The Bureau of Standards, Metrology and Inspection (BSMI) is a Ministry of Economic Affairs bureau responsible for standards, metrology, commodity inspection, and related certification or testing. Taiwan’s drone regulations require a BSMI certificate of conformity for drones with a maximum take-off weight under 2 kg, making the bureau relevant to drone product certification and inspection.",
+        "match_status": "matched",
+        "output": {
+          "drone_role": {
+            "type": "match_condition",
+            "value": "2026-10-30 — https://law.moj.gov.tw/Eng/LawClass/LawAll.aspx?pcode=K0090083 — Taiwan’s drone regulations require drones with a maximum take-off weight under 2 kg to have a certificate of conformity issued by BSMI, so the bureau certifies drones.",
+            "is_matched": true
+          },
+          "taiwan_public_body": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_role",
+            "citations": [
+              {
+                "title": "Regulations of Drone - Article Content - Laws & Regulations Database of The Republic of China (Taiwan)",
+                "url": "http://law.moj.gov.tw/Eng/LawClass/LawAll.aspx?pcode=K0090083",
+                "excerpts": [
+                  "(last verified: 2026-10-30) Drones with a maximum take-off weight of less than 2 kg shall have a certificate of conformity issued by the Bureau of Standards, Metrology, and Inspection, Ministry of Economic Affairs."
+                ]
+              }
+            ],
+            "reasoning": "The Taiwan government’s drone regulation states that drones under 2 kg maximum take-off weight must have a certificate of conformity issued by BSMI. The source is marked last verified 2026-10-30, and the required certification directly supports the bureau’s drone-related role.",
+            "confidence": "high"
+          },
+          {
+            "field": "taiwan_public_body",
+            "citations": [
+              {
+                "title": "Overview",
+                "url": "https://www.bsmi.gov.tw/wSite/ct?ctNode=805&mp=2&xItem=3735",
+                "excerpts": [
+                  "The Bureau of Standards, Metrology and Inspection (BSMI) under the Ministry of Economic Affairs is the authority responsible for standardization, metrology and product inspection in Taiwan."
+                ]
+              }
+            ],
+            "reasoning": "The official BSMI overview identifies the Bureau of Standards, Metrology and Inspection as being under Taiwan’s Ministry of Economic Affairs, establishing it as a Taiwan government body.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_9b876934-0f8b-4d6c-b927-f9f641ea38b8",
+        "name": "National Science and Technology Council",
+        "url": "https://www.nstc.gov.tw/?l=en",
+        "description": "Taiwan’s National Science and Technology Council is established by the Executive Yuan to plan, coordinate, and review national science and technology policy and allocate resources. It is relevant to drone development as a member of a cross-agency task force overseeing a pilot program for commercial-grade UAVs and UAS platforms for defense use.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_a51e7c02-8def-4bc6-922b-f03d28ed6811",
+        "name": "New Taipei City Government",
+        "url": "https://www.ntpc.gov.tw/",
+        "description": "New Taipei City Government is the municipal government for New Taipei City, Taiwan. Its public-safety agencies have documented civilian-drone roles: the city describes a drone team used for criminal investigation and prevention, traffic, environmental protection, and disaster relief; its Fire Department has also participated in developing and testing drone delivery of emergency blood supplies, including providing test sites and response scenarios. This supports a clear connection to civilian-drone operations and testing, though it does not establish a national military-procurement or counter-drone role.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_a8f02acd-910c-4a5b-ba09-9f9feeca1002",
+        "name": "Republic of China Air Force (ROCAF) Command Headquarters, Ministry of National Defense",
+        "url": "https://air.mnd.gov.tw/en/Home/index.aspx",
+        "description": "The Republic of China Air Force (ROCAF) Command Headquarters is an Air Force headquarters within Taiwan’s Ministry of National Defense. Its stated responsibilities include airspace security, readiness and training, and peacetime disaster rescue. The ROCAF’s stated plans include procuring reconnaissance and combat unmanned aerial systems, making this body directly relevant to military-drone procurement.",
+        "match_status": "matched",
+        "output": {
+          "drone_role": {
+            "type": "match_condition",
+            "value": "2026-03-22 — https://www.mnd.gov.tw/en/news/pressrelease/86381/436 — Taiwan’s Ministry of National Defense reported delivery of the first two MQ-9B unmanned aerial vehicles to the Republic of China Air Force as part of an MND military procurement case.",
+            "is_matched": true
+          },
+          "taiwan_public_body": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_role",
+            "citations": [
+              {
+                "title": "Ministry of National Defense Republic of China - World Wide Web  - News Channel - Press Release - Defense News  - Vice Minister Hsu Szu-chien Attends MQ-9B SkyGuardian High-Altitude UAV Delivery Ceremony",
+                "url": "https://www.mnd.gov.tw/en/news/pressrelease/86381/436",
+                "excerpts": [
+                  "X(Twitter)(另開新視窗)](https://twitter.com/share?url=https://www.mnd.gov.tw/en/news/pressrelease/86381/436)\n\n複製連結\n\n列印\n\nMinistry of National Defense Press Release  \nTime: 1030 hours, March 22, 2026\n\nThe Ministry of National Defense stated today (March 22) that on March 17 (Pacific Time), Vice Minister for Military Administration Hsu Szu-chien, accompanied by Ambassador Alexander Tah-Ray Yui of the Taipei Economic and Cultural Representative Office in the United States, attended the delivery ceremony for the first two “MQ-9B SkyGuardian high-altitude unmanned aerial vehicles” of the Republic of China Air Force.  \n  \n“The MQ-9B SkyGuardian high-altitude UAV” military procurement case was initiated by the Ministry of National Defense in response to enemy threats and urgent national defense needs. The United States planned to deliver four new-model UAVs, with two aircraft each in 2026 and 2027, to enhance operational effectiveness."
+                ]
+              }
+            ],
+            "reasoning": "The MND press release dated March 22, 2026 identifies the first two MQ-9B unmanned aerial vehicles as belonging to the Republic of China Air Force and describes the acquisition as an MND military procurement case. This is public evidence of drone procurement for the entity.",
+            "confidence": "high"
+          },
+          {
+            "field": "taiwan_public_body",
+            "citations": [
+              {
+                "title": "Ministry of National Defense Republic of China - World Wide Web",
+                "url": "https://www.mnd.gov.tw/en",
+                "excerpts": [
+                  "in a new window\") [Army Headquarters, MND (Opens in a new window)](https://army.mnd.gov.tw/en \"Opens in a new window\") [Navy Headquarters, MND (Opens in a new window)](https://navy.mnd.gov.tw/en/index.aspx \"Opens in a new window\") [Air Force Headquarters, MND (Opens in a new window)](https://air.mnd.gov.tw/EN/Home/index.aspx \"Opens in a new window\") [Armed"
+                ]
+              }
+            ],
+            "reasoning": "The official Ministry of National Defense page lists Air Force Headquarters, MND, supporting that the Republic of China Air Force Command Headquarters is a Taiwan government body.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_b451194e-1de6-46c4-b023-4f462b018f29",
+        "name": "Ministry of Economic Affairs, R.O.C. (Taiwan)",
+        "url": "https://www.moea.gov.tw/Mns/English/home/English.aspx",
+        "description": "The Ministry of Economic Affairs of the Republic of China (Taiwan) is relevant to drone policy primarily through industrial development. Its Industrial Development Administration runs a program supporting UAV technology, applications, and manufacturing, and establishing drone certification and regulatory consultation services. The MOEA has also been involved in a cross-agency program to develop commercial-grade UAVs for defense applications.",
+        "match_status": "matched",
+        "output": {
+          "drone_role": {
+            "type": "match_condition",
+            "value": "2025-05-12 — Industrial Development Administration, Ministry of Economic Affairs: https://www.ida.gov.tw/ctlr?PRO=project.ProjectView&id=2908&lang=1. The program develops drone technology and establishes a drone certification and regulatory consultation service center.",
+            "is_matched": true
+          },
+          "taiwan_public_body": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_role",
+            "citations": [
+              {
+                "title": "Asia UAV Innovation Center Development Program | Plan Introduction | 2025 - Industrial Development Administration, Ministry of Economic Affairs",
+                "url": "https://www.ida.gov.tw/ctlr?PRO=project.ProjectView&id=2908&lang=1",
+                "excerpts": [
+                  "(last verified: 2026-10-30) * Published at:2025-05-12",
+                  "In alignment with Taiwan's Drone industry development policy, this project aims to integrate inter-ministerial resources to establish a UAS Industry Development Program Office, creating the Asia Drone Innovation Center, developing Drone technology, applications, and manufacturing processes, and setting up a Drone certification and regulatory consultation service center."
+                ]
+              }
+            ],
+            "reasoning": "The official Industrial Development Administration project page is dated 2025-05-12 and describes a program to develop drone technology and establish a drone certification and regulatory consultation service center, supporting a positive match for post-2024 government activity concerning drones.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_public_body",
+            "citations": [
+              {
+                "title": "Ministry of Economic Affairs,R.O.C.",
+                "url": "https://www.moea.gov.tw/Mns/English/home/English.aspx",
+                "excerpts": [
+                  "Map](https://www.moea.gov.tw/Mns/English/content/ContentFoot.aspx?menu_id=2324) Tel: +886-2-2321-2200 | [Government Website Open Information Announcement](https://www.moea.gov.tw/Mns/English/content/ContentFoot.aspx?menu_id=13962) | [Privacy"
+                ]
+              }
+            ],
+            "reasoning": "The official Ministry of Economic Affairs website identifies the entity as the Ministry of Economic Affairs, R.O.C., matching a Taiwan government ministry.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_be9c17e0-3801-4094-8c38-664d14195be4",
+        "name": "Civil Aeronautics Administration (CAA), Ministry of Transportation and Communications (MOTC), Taiwan",
+        "url": "https://www.caa.gov.tw/index.aspx?Lang=2",
+        "description": "The Civil Aeronautics Administration (CAA), under Taiwan’s Ministry of Transportation and Communications, is a civil aviation regulator with responsibilities for civilian drone activity. Its remit includes drone operations around airports and in restricted airspace, and above 400 feet; its drone information system also provides services for registration, inspection, and operator licensing. This makes it relevant to the query’s civilian-drone regulation scope.",
+        "match_status": "matched",
+        "output": {
+          "drone_role": {
+            "type": "match_condition",
+            "value": "2024-11-14 — Regulations of Drone, Taiwan Laws & Regulations Database: https://law.moj.gov.tw/eng/LawClass/LawAll.aspx?pcode=K0090083. The amended regulations require drone registration applications to be submitted to CAA and registration numbers to be issued by CAA, showing that CAA regulates drones.",
+            "is_matched": true
+          },
+          "taiwan_public_body": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_role",
+            "citations": [
+              {
+                "title": "\n\tRegulations of Drone - Article Content - Laws & Regulations Database of The Republic of China (Taiwan)\n",
+                "url": "http://law.moj.gov.tw/ENG/LawClass/LawAll.aspx?media=print&pcode=K0090083",
+                "excerpts": [
+                  "Add New Folder\nManage Folders\n\n## Article Content\n\n|Title： |Regulations of Drone CH |\n| --- | --- |\n|Amended Date： |2024-11-14 |\n|Category： |Ministry of Transportation and Communications（交通部） |"
+                ]
+              },
+              {
+                "title": "\n\tRegulations of Drone - Article Content - Laws & Regulations Database of The Republic of China (Taiwan)\n",
+                "url": "https://law.moj.gov.tw/eng/LawClass/LawAll.aspx?pcode=K0090083",
+                "excerpts": [
+                  "Chapter 2 – Drone Registration and Management of Radio Frequency\n\nArticle 6\n\nApplication for registration shall be submitted to CAA with the documents listed below for the Drone",
+                  "Drone can only be operated after the registration is completed and the registration number issued by CAA is displayed on a conspicuous part of the Drone."
+                ]
+              }
+            ],
+            "reasoning": "The official Regulations of Drone list an amendment date of 2024-11-14. The regulations require drone registration applications to be submitted to CAA and specify that CAA issues the registration number, supporting a post-2024 drone-regulation role.",
+            "confidence": "high"
+          },
+          {
+            "field": "taiwan_public_body",
+            "citations": [
+              {
+                "title": "Organization Act of the Civil Aviation Administration, Ministry of Transportation and Communications - Article Content - Laws & Regulations Database of The Republic of China (Taiwan)",
+                "url": "https://law.moj.gov.tw/Eng/LawClass/LawAll.aspx?pcode=K0000208",
+                "excerpts": [
+                  "The Ministry of Transportation and Communications shall establish the Civil Aviation Administration (hereinafter referred to as \"CAA\") to administer civil aviation affairs."
+                ]
+              }
+            ],
+            "reasoning": "The Organization Act states that Taiwan’s Ministry of Transportation and Communications establishes the Civil Aviation Administration to administer civil aviation affairs, identifying CAA as a government agency.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_d005c64d-735d-4072-832c-5e99c90e33ab",
+        "name": "Civil Aeronautics Administration Drone Office",
+        "url": "https://drone.caa.gov.tw/en-US",
+        "description": "The Civil Aeronautics Administration (CAA) Drone Office is the Administration’s drone-management office and public service portal. The CAA is established by Taiwan’s Ministry of Transportation and Communications to administer civil aviation affairs.",
+        "match_status": "matched",
+        "output": {
+          "drone_role": {
+            "type": "match_condition",
+            "value": "2024-11-14 — https://law.moj.gov.tw/ENG/LawClass/LawAll.aspx?media=print&pcode=K0090083 — The amended Regulations of Drone assign the CAA drone-related registration, inspection, certification, authorization and flight-activity approval functions; this is evidence that it regulates civilian drones.",
+            "is_matched": true
+          },
+          "taiwan_public_body": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_role",
+            "citations": [
+              {
+                "title": "\n\tRegulations of Drone - Article Content - Laws & Regulations Database of The Republic of China (Taiwan)\n",
+                "url": "http://law.moj.gov.tw/ENG/LawClass/LawAll.aspx?media=print&pcode=K0090083",
+                "excerpts": [
+                  "| Amended Date： | 2024-11-14 | | Category： | Ministry of Transportation and Communications（交通部） | | Attachment： | * Attachment 1 Application Form For Registration of Drone, Change of Particulars and Extension of Validity Period.ODT | ... Article 3 Drones are classified into the following types in accordance with its structure: Unmanned aeroplane; Unmanned helicopter; Unmanned multirotor; Other types as announced by the Civil Aviation Administration (hereinafter the “CAA”) of the MOTC. Article 4 ... Application for registration shall be submitted to CAA with the documents listed below for the Drone with maximum take-off weight exceeding 250g owned by the natural person, and for the Drone owned by the government agencies (institutions), schools or legal persons. ... With respect to Drones that are imported from overseas, the importer shall apply to CAA for type inspection pursuant to paragraph 1 above, or submit the application form (Attachment 5) to CAA for certification. ... The type inspection and certification procedures for Drones referred to in Paragraphs 1 and 2 shall be announced by the CAA."
+                ]
+              }
+            ],
+            "reasoning": "The official regulations record an amendment dated 2024-11-14 and assign the CAA drone registration, type inspection and certification functions. This establishes post-2024 government regulation of drones.",
+            "confidence": "high"
+          },
+          {
+            "field": "taiwan_public_body",
+            "citations": [
+              {
+                "title": "\n\tCivil Aviation Act - Article Content - Laws & Regulations Database of The Republic of China (Taiwan)\n",
+                "url": "http://law.moj.gov.tw/ENG/LawClass/LawAll.aspx?media=print&pcode=K0090001",
+                "excerpts": [
+                  "Article 3 The Ministry of Transportation and Communications (hereinafter referred to as MOTC) shall establish the Civil Aviation Administration (hereinafter referred to as CAA) to administer affairs relating to civil aviation."
+                ]
+              }
+            ],
+            "reasoning": "Taiwan’s Civil Aviation Act says the Ministry of Transportation and Communications establishes the CAA to administer civil aviation affairs, grounding it as a government body.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_da2a02c2-86e9-418e-a84f-92314d421155",
+        "name": "Yangmingshan National Park Headquarters",
+        "url": "https://www.ymsnp.gov.tw/en",
+        "description": "Yangmingshan National Park Headquarters (the Yangmingshan National Park Management Office under Taiwan’s National Park Administration) manages the park. It is relevant to the drone-related government-body scope because procurement records identify the office as procuring training and mission UAVs. The evidence supports a civilian or operational drone-procurement connection, rather than a military counter-drone role.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_dd2cffb4-2e74-4f92-b24e-6c894c6a3ee8",
+        "name": "Legislative Yuan",
+        "url": "https://www.ly.gov.tw/Engpages/index.aspx",
+        "description": "Taiwan’s Legislative Yuan is the state’s highest legislative organ and has authority over statutory and budgetary bills. It is directly relevant to drones: it passed legislation concerning unmanned-vehicle development and procurement.",
+        "match_status": "matched",
+        "output": {
+          "drone_role": {
+            "type": "match_condition",
+            "value": "2026-08-27 — Focus Taiwan: https://focustaiwan.tw/politics/202608270021 — The Legislative Yuan passed a budget bill prioritizing procurement of indigenous unmanned vehicles (drones).",
+            "is_matched": true
+          },
+          "taiwan_public_body": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_role",
+            "citations": [
+              {
+                "title": "Legislature passes drone procurement bill with US$7.56 billion spending cap (update) - Focus Taiwan",
+                "url": "https://focustaiwan.tw/politics/202608270021",
+                "excerpts": [
+                  "Taipei, Aug. 27 (CNA) The Legislative Yuan on Thursday passed a key budget bill that prioritizes the procurement of indigenous unmanned vehicles, setting a spending cap of NT$240 billion (US$7.56 billion) in principle, while allowing additional funding subject to legislative approval."
+                ]
+              }
+            ],
+            "reasoning": "The source reports that on August 27, 2026, the Legislative Yuan passed a budget bill prioritizing procurement of indigenous unmanned vehicles, evidence of legislation concerning drones.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_public_body",
+            "citations": [
+              {
+                "title": "Constitution of the Republic of China (Taiwan) - Chapter - Laws & Regulations Database of The Republic of China (Taiwan)",
+                "url": "http://law.moj.gov.tw/ENG/LawClass/LawParaDeatil.aspx?bp=6&pcode=A0000001",
+                "excerpts": [
+                  "The Legislative Yuan shall be the highest legislative organ of the State, to be constituted of members elected by the people."
+                ]
+              }
+            ],
+            "reasoning": "The Constitution identifies the Legislative Yuan as the State’s highest legislative organ and says it exercises legislative power, supporting its classification as a Taiwan public body.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_e3708447-483a-4424-a21f-e1b59c92623f",
+        "name": "Executive Yuan",
+        "url": "https://english.ey.gov.tw/",
+        "description": "The Executive Yuan is Taiwan’s executive branch and highest administrative body. It is directly relevant to drone policy: its 2025–2030 industry program includes expanding public-sector drone procurement, strategic investment through the National Development Fund, and national-level industry coordination.",
+        "match_status": "matched",
+        "output": {
+          "drone_role": {
+            "type": "match_condition",
+            "value": "2025-10-16 — https://focustaiwan.tw/politics/202510160018 — The Executive Yuan approved a plan to develop Taiwan’s drone industry, pledging NT$44.2 billion in funding through 2030.",
+            "is_matched": true
+          },
+          "taiwan_public_body": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_role",
+            "citations": [],
+            "reasoning": "The dated report states that the Executive Yuan approved a plan to develop Taiwan’s drone industry and pledged funding through 2030. This supports a match for funding drone-related activity from 2024 or later.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_public_body",
+            "citations": [
+              {
+                "title": "Executive Yuan, R.O.C. (Taiwan)-Structure and Functions",
+                "url": "https://english.ey.gov.tw/Page/E43650B2CB14861B",
+                "excerpts": [
+                  "The Executive Yuan is the executive branch of the ROC government, headed by the premier."
+                ]
+              }
+            ],
+            "reasoning": "The source identifies the Executive Yuan as the executive branch of the ROC government, so it matches the Taiwan public-body condition.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_e86663a3-c0ad-4845-93b6-4c43ae533290",
+        "name": "Army Headquarters, Ministry of National Defense, Republic of China (Taiwan)",
+        "url": "https://army.mnd.gov.tw/en",
+        "description": "The Army Headquarters is a Taiwan Ministry of National Defense service command and is directly relevant to military drone and counter-drone activity. The Army Command Headquarters has discussed changes to military-drone procurement procedures, and the Army has procured fixed-site counter-drone systems and tested them. Army training has also included engaging drones as airborne targets.",
+        "match_status": "matched",
+        "output": {
+          "drone_role": {
+            "type": "match_condition",
+            "value": "2026-07-15 — https://www.taiwannews.com.tw/en/news/6401517 — Reports that the Army procured 26 fixed-site drone countermeasure systems and that the systems underwent acceptance testing.",
+            "is_matched": true
+          },
+          "taiwan_public_body": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_role",
+            "citations": [
+              {
+                "title": "Taiwan Army may cancel drone defense contract after failed tests | Taiwan News | Jul. 15, 2026 16:33",
+                "url": "https://www.taiwannews.com.tw/en/news/6401517",
+                "excerpts": [
+                  "Tron Future Tech won the Army's 2025 procurement contract to provide 26 fixed-site drone countermeasure systems, per [<u>UP Media</u>](https://www.upmedia.mg/tw/investigation/military/263496). The equipment reportedly failed to prevent commercially available drones from breaching designated perimeters during testing, leading the Army to consider ending the contract."
+                ]
+              }
+            ],
+            "reasoning": "The report says the Army won a 2025 procurement contract for 26 fixed-site drone countermeasure systems and that the equipment underwent testing, providing public evidence of procurement and testing activity involving counter-drone systems.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_public_body",
+            "citations": [
+              {
+                "title": "Ministry of National Defense Republic of China - World Wide Web",
+                "url": "https://www.mnd.gov.tw/en",
+                "excerpts": [
+                  "Ministry of National Defense, R.O.C.",
+                  "in a new window\") [Army Headquarters, MND (Opens in a new window)](https://army.mnd.gov.tw/en \"Opens in a new window\") [Navy Headquarters, MND (Opens in a new window)](https://navy.mnd.gov.tw/en/index.aspx \"Opens in a new window\") [Air Force Headquarters, MND (Opens in a new window)](https://air.mnd.gov.tw/EN/Home/index.aspx \"Opens in a new window\") [Armed"
+                ]
+              }
+            ],
+            "reasoning": "The official Ministry of National Defense site identifies the ministry as the Ministry of National Defense, R.O.C. Its listed links include Army Headquarters, MND, identifying the entity as a Taiwan government military command.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_ee5d42e2-fa0a-4bd7-8150-4baf162b4847",
+        "name": "Armaments Bureau of the Ministry of National Defense, Republic of China (Taiwan)",
+        "url": "https://law.mnd.gov.tw/English/EngLawData.aspx?lsid=FL068473",
+        "description": "The Armaments Bureau is a Republic of China (Taiwan) Ministry of National Defense bureau established to administer the Armed Forces’ armament affairs. Public sources identify it as the route for substantial military-drone procurement.",
+        "match_status": "matched",
+        "output": {
+          "drone_role": {
+            "type": "match_condition",
+            "value": "2025-11-26 — https://www.trade.gov/country-commercial-guides/taiwan-highly-automated-and-autonomous-systems: reports an MND plan to procure 48,750 drones through its Armaments Bureau. 2024-02-15 — https://www.mnd.gov.tw/en/Publication/82634: MND says the Armament Bureau was facilitating four micro-drone projects.",
+            "is_matched": true
+          },
+          "taiwan_public_body": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_role",
+            "citations": [
+              {
+                "title": "Taiwan - Highly Automated and Autonomous Systems",
+                "url": "https://www.trade.gov/country-commercial-guides/taiwan-highly-automated-and-autonomous-systems",
+                "excerpts": [
+                  "procurement plan to acquire a total of 48,750 drones through its Armaments Bureau—11,270 units in 2026 and 37,480 in 2027.\n\nThe drones are categorized into five types (Type A–E), including both multi-rotor vertical take-off and landing (VTOL) and fixed-wing models. Flight endurance requirements range from 7 minutes to 2.5 hours, depending on the model and payload."
+                ]
+              },
+              {
+                "title": "Ministry of National Defense Republic of China - World Wide Web  - 新聞與公告 - Defense News  - The Ministry of National Defense issues a press release to explain media reports that \"military commercial drones project will be delayed\" (February 15, 2024)",
+                "url": "https://www.mnd.gov.tw/en/Publication/82634",
+                "excerpts": [
+                  "Aside from land-based surveillance and reconnaissance drones that are scheduled for implementation by 2028, the funding for the remaining four micro-drone projects will be acquired in 2025. The project is, for the time being, being facilitated and promoted according to indigenous national defense by the Armament Bureau."
+                ]
+              }
+            ],
+            "reasoning": "The 2025 source describes an MND drone procurement plan carried out through the Armaments Bureau; the 2024 MND release also states that the Bureau was facilitating micro-drone projects. These support a positive match for recent drone procurement activity.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_public_body",
+            "citations": [
+              {
+                "title": "\n\tOrganization Act of the Armaments Bureau of the Ministry of National Defense - Article Content - Laws & Regulations Database of The Republic of China (Taiwan)\n",
+                "url": "https://law.moj.gov.tw/ENG/LawClass/LawAll.aspx?media=print&pcode=F0000075",
+                "excerpts": [
+                  "The Ministry of National Defense establishes the Armaments Bureau (hereinafter the “Bureau”) to administer armament affairs of the Armed Forces.\n\nArticle 2\n\nThe Bureau is responsibe for the following affairs：  \n1,To plan, review, approve and manage the armament programs,technical specifications and standards,reconstruction of Obsolete Barracks,and the fund of production and services.(production enterprise and military and civilian dual-use technology development enterprise.)"
+                ]
+              }
+            ],
+            "reasoning": "The official organization law states that the Ministry of National Defense establishes the Armaments Bureau to administer the Armed Forces’ armament affairs, supporting its classification as a Taiwan government body.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_f75241b7-ae23-49b9-b943-862c8b36feab",
+        "name": "National Chung-Shan Institute of Science and Technology",
+        "url": "https://www.ncsist.org.tw/eng/csistdup/aboutus/page02.html",
+        "description": "The National Chung-Shan Institute of Science and Technology (NCSIST) is a government-funded administrative corporation supervised by Taiwan’s Ministry of National Defense. Its remit includes defense and dual-use technology research and development; its aerial target drone is used for weapon-system testing.",
+        "match_status": "matched",
+        "output": {
+          "drone_role": {
+            "type": "match_condition",
+            "value": "2026-10-29 — https://www.ncsist.org.tw/eng/csistdup/products/product.aspx?catalog=27&product_Id=129 — NCSIST’s official page says its aerial target drone is used to test and evaluate weapon systems.",
+            "is_matched": true
+          },
+          "taiwan_public_body": {
+            "type": "match_condition",
+            "value": "",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_role",
+            "citations": [
+              {
+                "title": "\n\tNCSIST\n",
+                "url": "https://www.ncsist.org.tw/eng/csistdup/products/product.aspx?catalog=27&product_Id=129",
+                "excerpts": [
+                  "The high-speed aerial target drone can be used to simulate fighters, cruise missiles and unmanned aerial vehicles. The primary missions of the drone are to test and to evaluate weapon systems, and to train the operators (such as aviators, missile men, gunners, radar operators, and etc.) in air-defense combat scenarios. The drone supports various mission requirements by carrying a number of internal and external payloads, including towed targets, smoke oil, scoring, IFF (Identification of Friend or Foe),",
+                  "With a 30-year experience in aerial target system operations, NCSIST provides comprehensive services for customers, including payloads customizing, flight planning, flight operation, mission monitoring and controlling, target tracking and locating, and evaluation recording and analyzing. In addition to the high speed target system, NCSIST also provides another target system, SPARK, a realistic target for maximum training efficiency at affordable cost."
+                ]
+              }
+            ],
+            "reasoning": "NCSIST’s official product page describes an aerial target drone and explicitly says its missions include testing and evaluating weapon systems. The page is dated 2026-10-29, which is within the requested period.",
+            "confidence": "high"
+          },
+          {
+            "field": "taiwan_public_body",
+            "citations": [
+              {
+                "title": "\n\tAct of the National Chung Shan Institute of Science and Technology established - Article Content - Laws & Regulations Database of The Republic of China (Taiwan)\n",
+                "url": "https://law.moj.gov.tw/Eng/LawClass/LawAll.aspx?pcode=F0000083",
+                "excerpts": [
+                  "national defense and military and civilian dual use technology, the National Chung Shan Institute of Science and Technology (hereinafter referred to as the “NCSIST”) is hereby established and this Act is hereby adopted.\n\nArticle 2\n\nNCSIST is an administrative corporation; the Ministry of National Defense (hereinafter referred to as the “MND”) is the competent supervisory authority of NCSIST.\n\nArticle 3\n\nParagraph (1)  \nNCSIST is in charge of the following affairs:  \nSubparagraph (1)  \nResearching and developing, manufacturing, and selling defense technology and major weapon equipment."
+                ]
+              },
+              {
+                "title": "°ê¨¾ªk³W¸ê®Æ®w",
+                "url": "https://law.mnd.gov.tw/FLAWDAT0202.aspx?lsid=FL072809&media=1",
+                "excerpts": [
+                  "Technology (hereinafter referred to as the “NCSIST”) is hereby established and this Act is hereby adopted. |\n|**Article 2** |NCSIST is an administrative corporation; the Ministry of National Defense (hereinafter referred to as the “MND”) is the competent supervisory authority of NCSIST. |"
+                ]
+              }
+            ],
+            "reasoning": "Taiwan’s law identifies NCSIST as an administrative corporation supervised by the Ministry of National Defense and states that it receives government-approved budgets and subsidies. This supports classifying it as a government-funded public research institute.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_fca4fc8c-fb5d-4c7d-9302-a7f633a3a30b",
+        "name": "National Communications Commission (NCC), Taiwan",
+        "url": "https://www.ncc.gov.tw/enncc/app/artwebsite?id=6&module=artwebsite&serno=null",
+        "description": "The National Communications Commission (NCC) is Taiwan’s government regulator for telecommunications and broadcasting. Its controlled-radio-frequency-device rules specifically cover equipment designed to restrict drone-control signals and require approval for importing such devices, with internal control procedures also specified. This makes the NCC relevant to drone and counter-drone regulation, particularly radio-frequency equipment oversight; the cited evidence does not establish a role in procuring or testing military drones.",
+        "match_status": "generated"
+      }
+    ],
+    "last_event_id": "65f071e7a949f"
+  }
+}

@@ -1,0 +1,11 @@
+[budget] findall-enrich:gov:core:x15: est $0.375 (running total $3.805)
+4s queued generated=21 matched=15
+24s running generated=27 matched=16
+45s running generated=38 matched=21
+65s running generated=38 matched=23
+86s running generated=38 matched=23
+107s running generated=38 matched=23
+127s running generated=38 matched=23
+148s running generated=38 matched=23
+169s completed generated=38 matched=23
+[saved] scripts/spike/out/findall-gov-enriched-core.json

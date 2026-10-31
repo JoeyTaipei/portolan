@@ -1,0 +1,11 @@
+[budget] findall-enrich:industry:core:x15: est $0.375 (running total $4.180)
+4s running generated=62 matched=15
+24s running generated=64 matched=21
+45s running generated=64 matched=21
+65s running generated=64 matched=21
+86s running generated=64 matched=21
+107s running generated=64 matched=21
+127s running generated=64 matched=21
+148s running generated=64 matched=21
+168s completed generated=64 matched=21
+[saved] scripts/spike/out/findall-industry-enriched-core.json

@@ -1,0 +1,11 @@
+[budget] findall-enrich:law:core:x8: est $0.200 (running total $4.630)
+2s queued generated=10 matched=8
+23s running generated=13 matched=8
+43s running generated=13 matched=10
+64s running generated=13 matched=10
+84s running generated=13 matched=10
+105s running generated=13 matched=10
+126s running generated=13 matched=10
+146s running generated=13 matched=10
+167s completed generated=13 matched=10
+[saved] scripts/spike/out/findall-law-enriched-core.json

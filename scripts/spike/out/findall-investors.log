@@ -1,0 +1,20 @@
+[budget] findall:investors:base:10: est $0.550 (running total $2.450)
+created findall_2f937a48caa14210ab2c8a23659fbe47
+1s queued generated=0 matched=0
+22s running generated=0 matched=0
+42s running generated=0 matched=0
+63s running generated=0 matched=0
+84s running generated=0 matched=0
+104s running generated=0 matched=0
+125s running generated=0 matched=0
+145s running generated=1 matched=0
+166s running generated=3 matched=0
+187s running generated=5 matched=0
+208s running generated=5 matched=1
+228s running generated=10 matched=4
+249s running generated=13 matched=6
+269s running generated=15 matched=6
+290s running generated=16 matched=6
+310s running generated=17 matched=10
+331s completed generated=17 matched=10
+[saved] scripts/spike/out/findall-investors-base.json
