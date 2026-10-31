@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Portolan · Watchfloor · Dossiers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* Watchfloor — a dense analyst workstation. Slate panels, amber only for what needs action,
+   teal/coral/grey only for stance. Function keys for navigation, mono figures everywhere. */
+:root{
+  --bg:#0F171E; --panel:#151F28; --panel2:#1B2733; --line:#2A3947; --line2:#3A4C5C;
+  --text:#D5DDE5; --dim:#8494A2; --amber:#FFB020; --amber-d:#3A2C0E;
+  --sup:#3FC1A5; --neu:#8E9BA7; --res:#F2685E;
+  --ui:'Barlow Semi Condensed',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+figure{margin:0}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--ui);font-size:15px;line-height:1.4;overflow-x:hidden}
+a{color:var(--amber)}
+:focus-visible{outline:2px solid var(--amber);outline-offset:1px}
+.mono{font-family:var(--mono)}
+.status{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--line);background:#0B1218;font:600 12px var(--mono)}
+.status .wm{color:var(--amber);font-weight:700;letter-spacing:.12em;text-decoration:none}
+.status .plan{border:1px solid var(--amber);color:var(--amber);padding:0 5px}
+.status .sp{flex:1}
+.status .sample{background:var(--amber);color:#111;padding:1px 6px;font-weight:700}
+.status .clock{color:var(--dim)}
+.panel{background:var(--panel);border:1px solid var(--line);display:flex;flex-direction:column;min-width:0}
+.ph{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:32px;padding:0 10px;border-bottom:1px solid var(--line);background:var(--panel2);font:600 11.5px var(--mono);color:var(--dim);letter-spacing:.06em}
+.ph b{color:var(--text);font-weight:600}
+.pb{padding:10px}
+.fkeys{position:fixed;left:0;right:0;bottom:0;z-index:50;display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border-top:1px solid var(--line2);padding-bottom:env(safe-area-inset-bottom)}
+.fkeys a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-height:54px;background:#0B1218;color:var(--dim);text-decoration:none;font:600 12.5px var(--ui)}
+.fkeys .k{font:700 10.5px var(--mono);color:var(--dim);border:1px solid var(--line2);padding:0 4px}
+.fkeys a[aria-current=page]{color:var(--amber);background:var(--panel)}
+.fkeys a[aria-current=page] .k{background:var(--amber);color:#111;border-color:var(--amber)}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid var(--line2);border-radius:2px;background:var(--panel2);color:var(--text);font:600 14.5px var(--ui);text-decoration:none;cursor:pointer;letter-spacing:.02em}
+.btn:hover{border-color:var(--amber)}
+.btn-main{background:var(--amber);border-color:var(--amber);color:#111}
+.btn-main:hover{background:#FFC24D}
+.btn-main:disabled{background:var(--amber-d);color:var(--amber);cursor:progress}
+.btn-s{min-height:34px;font-size:13px;padding:0 10px}
+.icon-btn{flex:0 0 auto;width:44px;min-height:44px;display:grid;place-items:center;border:1px solid var(--line2);border-radius:2px;background:var(--panel2);color:var(--text);cursor:pointer}
+.icon-btn:hover{border-color:var(--amber)}
+.icon-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8}
+.icon-btn[aria-busy=true]{color:var(--amber)}.icon-btn[aria-busy=true] svg{animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.t{width:100%;border-collapse:collapse;font:12.5px var(--mono)}
+.t th{text-align:left;font-weight:600;color:var(--dim);padding:5px 8px;border-bottom:1px solid var(--line);font-size:11px;letter-spacing:.05em}
+.t td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.t .r{text-align:right}
+.t tr:hover td{background:var(--panel2)}
+.st-sup{color:var(--sup)}.st-neu{color:var(--neu)}.st-res{color:var(--res)}.st-evt{color:var(--amber)}
+.bar{display:inline-block;height:6px;background:var(--line2);vertical-align:1px;width:60px;position:relative}
+.bar i{position:absolute;inset:0 auto 0 0;background:var(--text)}
+@media (min-width:1024px){
+  .fkeys{position:static;display:flex;gap:1px;background:none;border:0}
+  .fkeys a{flex-direction:row;gap:6px;min-height:34px;padding:0 12px;background:none;font-size:13px}
+  .fkeys a[aria-current=page]{background:var(--panel2)}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<style>
+.pm-svg{display:block;width:100%;height:100%}
+.pm-label{font:600 10.5px var(--mono);fill:var(--text);paint-order:stroke;stroke:var(--panel);stroke-width:3.5px;stroke-linejoin:round;pointer-events:none}
+.pm-node{cursor:pointer;transition:opacity .2s}.pm-node.is-dim{opacity:.14}.pm-node.is-hidden{display:none}
+.n-sup{fill:var(--sup)}.n-res{fill:var(--res)}.n-neu{fill:var(--panel);stroke:var(--neu);stroke-width:1.8}.n-evt{fill:var(--panel);stroke:var(--amber);stroke-width:1.8}
+.pm-node.is-sel .n{stroke:#fff;stroke-width:2.5}
+.brk{fill:none;stroke:var(--amber);stroke-width:1.6;display:none}.brk-n{font:700 10px var(--mono);fill:var(--amber);display:none}
+.pm-node.is-rec .brk,.pm-node.is-rec .brk-n{display:inline}
+.pm-edge{stroke:#5B6E80;stroke-width:1}.pm-edge.hot{stroke:var(--amber);stroke-width:1.8}
+.pm-tie{stroke:#fff;stroke-dasharray:4 3}
+.tm-c{fill:var(--bg);stroke:#fff;stroke-width:1.6}.pm-pending .tm-c{stroke-dasharray:3 2;stroke:var(--dim)}
+.tm-i{font:700 6.5px var(--mono);fill:#fff;text-anchor:middle}
+.g-ring{fill:none;stroke:var(--line2);stroke-width:1}.g-ax{stroke:var(--line2);stroke-width:1;stroke-dasharray:2 3}
+.g-grid{stroke:var(--line);stroke-width:1}.q-line{stroke:var(--line2);stroke-width:1.2}
+.q-lab{font:700 10.5px var(--mono);fill:var(--dim);letter-spacing:.06em}.q-lab.res{fill:var(--res)}.q-lab.sup{fill:var(--sup)}
+.q-ax{font:10px var(--mono);fill:var(--dim)}
+</style>
+<style>
+.grid{display:flex;flex-direction:column;gap:8px;padding:8px 8px 76px}
+.cmd{display:flex;align-items:center;gap:8px;padding:0 10px;min-height:44px;background:#0B1218;border:1px solid var(--line);font:13px var(--mono)}
+.cmd label{color:var(--amber);font-weight:700;white-space:nowrap}
+.cmd input{flex:1;min-width:0;min-height:42px;border:0;background:none;color:var(--text);font:14px var(--mono);outline:none}
+.cmd input::placeholder{color:var(--dim)}
+.cmd .go{font:700 11px var(--mono);background:var(--amber);color:#111;padding:2px 6px;border:0;cursor:pointer}
+.cmd-msg{margin:0;font:12px var(--mono);color:var(--amber);padding:0 2px}
+.intro{display:flex;flex-direction:column;gap:4px;padding:6px 2px 2px}
+.intro h1{margin:0;font-size:24px;line-height:1.1;font-weight:700;letter-spacing:.01em}
+.intro p{margin:0;color:var(--dim);font-size:14.5px}
+.keys{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.keys a{display:flex;align-items:center;gap:10px;min-height:46px;padding:0 10px;background:var(--panel);color:var(--text);text-decoration:none;font:600 14px var(--ui)}
+.keys a .k{font:700 10.5px var(--mono);color:var(--dim);border:1px solid var(--line2);padding:1px 5px;min-width:30px;text-align:center}
+.keys a[aria-current=page]{background:var(--panel2);color:var(--amber)}.keys a[aria-current=page] .k{background:var(--amber);color:#111;border-color:var(--amber)}
+.keys a:hover .k{border-color:var(--amber)}
+.dz{display:flex;flex-direction:column;gap:10px}
+.dz-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.dz h2{margin:0;font-size:22px;font-weight:700;line-height:1.1}
+.dz .meta{margin:2px 0 0;font:12px var(--mono);color:var(--dim)}
+.chip{font:700 11px var(--mono);padding:2px 6px;border:1px solid var(--sup);color:var(--sup)}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.kpis div{background:var(--bg);padding:8px 10px}
+.kpis b{display:block;font:600 24px var(--mono);line-height:1.1}
+.kpis span{font:11px var(--mono);color:var(--dim)}
+.kpis .al b{color:var(--amber)}
+.confb{display:grid;grid-template-columns:1fr auto;gap:6px 10px;width:100%;padding:8px 10px;border:1px solid var(--line2);background:var(--bg);color:var(--text);font:inherit;text-align:left;cursor:pointer}
+.confb:hover{border-color:var(--amber)}
+.confb .l{font:600 12.5px var(--mono)}.confb .l b{color:var(--sup)}
+.confb .q{font:11px var(--mono);color:var(--amber)}
+.cov{grid-column:1/-1;display:flex;height:10px;gap:2px}
+.cov i{display:block;height:100%}
+.cov .c1{background:var(--sup);flex:7}.cov .c2{background:var(--neu);flex:8}.cov .c3{background:repeating-linear-gradient(90deg,var(--res) 0 2px,transparent 2px 4px);flex:5}
+.covk{grid-column:1/-1;display:flex;gap:12px;font:10.5px var(--mono);color:var(--dim)}
+.confp{font:12px/1.6 var(--mono);color:var(--text);border:1px solid var(--line2);border-top:0;margin-top:-10px;padding:8px 10px;background:var(--bg)}
+.confp p{margin:0 0 4px}
+.feed{list-style:none;margin:0;padding:0}
+.feed li{display:grid;grid-template-columns:62px 1fr;gap:4px 10px;padding:9px 10px;border-bottom:1px solid var(--line)}
+.feed .tm{font:700 12px var(--mono);color:var(--amber)}
+.feed .tm.dim{color:var(--dim)}
+.feed b{font-weight:600;font-size:14.5px}
+.feed p{margin:2px 0 0;font-size:14px;color:var(--text)}
+.feed .src{grid-column:2;font:11px var(--mono);color:var(--dim)}
+.dl{display:flex;flex-direction:column}
+.dos{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;width:100%;min-height:46px;padding:0 10px;border:0;border-bottom:1px solid var(--line);background:none;color:var(--text);font:500 14px var(--ui);text-align:left;cursor:pointer}
+.dos:hover{background:var(--panel2)}
+.dos[aria-pressed=true]{background:var(--amber-d);box-shadow:inset 3px 0 0 var(--amber)}
+.dos .n{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dos .c,.dos .s{font:12px var(--mono);color:var(--dim)}
+.dos .c.hi{color:var(--sup)}
+form.new{display:flex;flex-direction:column;gap:8px;padding:10px;border-bottom:1px solid var(--line);background:var(--bg)}
+form.new label{display:flex;flex-direction:column;gap:3px;font:600 11px var(--mono);color:var(--dim);letter-spacing:.04em}
+form.new input,form.new select{min-height:40px;padding:0 8px;border:1px solid var(--line2);border-radius:0;background:var(--panel);color:var(--text);font:14px var(--mono)}
+form.new input:focus,form.new select:focus{border-color:var(--amber);outline:none}
+form.new input[aria-invalid=true]{border-color:var(--res)}
+.form-error{margin:0;font:12px var(--mono);color:var(--res)}
+.progress{margin:0;padding:6px 0 0 18px;font:12px/1.7 var(--mono);color:var(--sup)}
+.livemap{display:none}
+.pipe{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line)}
+.pipe div{background:var(--bg);padding:8px 10px;position:relative}
+.pipe div+div::before{content:"›";position:absolute;left:-5px;top:12px;color:var(--dim);font:12px var(--mono)}
+.pipe b{display:block;font:600 22px var(--mono)}.pipe span{font:10.5px var(--mono);color:var(--dim)}
+.pipe .on b{color:var(--sup)}
+.due{margin:0;padding:8px 10px;font-size:14px;border-top:1px solid var(--line)}
+.due b{font:700 11px var(--mono);color:#111;background:var(--amber);padding:1px 5px;margin-right:6px}
+.top5 .n{color:var(--text);font-family:var(--ui);font-size:14px;font-weight:600}
+@media (min-width:1024px){
+  .grid{display:grid;grid-template-columns:300px minmax(0,1fr) 380px;grid-template-rows:auto auto 1fr;gap:8px;padding:8px;height:calc(100vh - 41px)}
+  .cmdwrap{grid-column:1/-1}
+  .intro{display:none}
+  .keys{display:none}
+  .colL{grid-row:2/4;display:flex;flex-direction:column;gap:8px;min-height:0}
+  .colC{grid-row:2/4;display:flex;flex-direction:column;gap:8px;min-height:0}
+  .colR{grid-row:2/4;display:flex;flex-direction:column;gap:8px;min-height:0}
+  .livemap{display:flex;flex:1;min-height:280px}
+  .livemap .stage{flex:1;position:relative}
+  .scroll{overflow:auto}
+}
+@media (max-width:1023px){.colL,.colC,.colR{display:contents}.cmdwrap{order:1}.intro{order:2}.keys{order:3}.p-dz{order:4}.p-feed{order:5}.p-top{order:6}.p-pipe{order:7}.p-dl{order:8}}
+</style>
+</head>
+<body>
+<header class="status">
+  <a class="wm" href="01-home.html">PORTOLAN</a><span class="plan">PRO</span>
+  <nav class="fkeys" aria-label="Main">
+    <a href="01-home.html" aria-current="page"><span class="k">F1</span>Dossiers</a>
+    <a href="02-map.html"><span class="k">F2</span>Map</a>
+    <a href="#tracker"><span class="k">F3</span>Tracker</a>
+    <a href="#network"><span class="k">F4</span>Network</a>
+    <a href="05-report.html"><span class="k">F5</span>Docs</a>
+  </nav>
+  <span class="sp"></span><span class="sample">SAMPLE DATA</span>
+</header>
+<main class="grid">
+  <div class="cmdwrap">
+    <form class="cmd" id="cmd" role="search"><label for="cmdi">TWN-UAS &gt;</label><input id="cmdi" placeholder="MAP, REPORT or a name" autocomplete="off"><button class="go" type="submit">GO</button></form>
+    <p class="cmd-msg" id="cmdmsg" aria-live="polite" hidden></p>
+  </div>
+  <div class="intro"><h1>Market entry intelligence</h1><p>Every stakeholder, score and next step traces to a graded source.</p></div>
+  <nav class="keys" aria-label="Workspace">
+    <a href="01-home.html" aria-current="page"><span class="k">01</span>Dossiers</a><a href="02-map.html"><span class="k">02</span>3D map</a>
+    <a href="#tracker"><span class="k">03</span>Tracker</a><a href="#network"><span class="k">04</span>Network</a>
+    <a href="05-report.html"><span class="k">05</span>Documents</a><a href="#brief"><span class="k">06</span>Strategy brief</a>
+  </nav>
+
+  <div class="colL">
+    <section class="panel p-dl scroll" aria-labelledby="dl-h">
+      <div class="ph"><span id="dl-h"><b>DOSSIERS</b> 4</span><button type="button" class="btn btn-s" data-form-toggle aria-expanded="false">+ New dossier</button></div>
+      <form class="new" data-form hidden novalidate>
+        <label>COMPANY<input name="company" required data-name="your company" placeholder="Skyward Robotics"></label>
+        <label>PRODUCT OR SERVICE<input name="product" required data-name="the product" placeholder="Counter-UAS sensor kit"></label>
+        <label>TARGET MARKET<select name="market"><option>Taiwan</option><option>United States (coverage limited)</option><option>Japan (coverage limited)</option><option>Singapore (coverage limited)</option><option>China (institutions only)</option></select></label>
+        <label>GOAL<input name="goal" required data-name="a goal" placeholder="First government pilot in 12 months"></label>
+        <label>EMAIL FOR THE LINK<input name="email" type="email" required data-name="an email" placeholder="you@company.com"></label>
+        <p class="form-error" data-form-error hidden></p>
+        <button type="submit" class="btn btn-main">Start research</button>
+        <ol class="progress" data-progress hidden aria-live="polite"></ol>
+      </form>
+      <div class="dl">
+        <button type="button" class="dos" data-dossier aria-pressed="true"><span class="n">Taiwan UAS Defense Grid</span><span class="c hi">HIGH</span><span class="s">126</span></button>
+        <button type="button" class="dos" data-dossier aria-pressed="false"><span class="n">Japan Dual-Use Robotics Entry</span><span class="c hi">HIGH</span><span class="s">97</span></button>
+        <button type="button" class="dos" data-dossier aria-pressed="false"><span class="n">U.S. Generative AI Safety Mandate</span><span class="c hi">HIGH</span><span class="s">112</span></button>
+        <button type="button" class="dos" data-dossier aria-pressed="false"><span class="n">Singapore MedTech Sandbox</span><span class="c">MOD</span><span class="s">58</span></button>
+      </div>
+    </section>
+  </div>
+
+  <div class="colC">
+    <section class="panel p-dz" aria-labelledby="dz-h">
+      <div class="ph"><span><b>ACTIVE DOSSIER</b> TWN-UAS</span><span class="chip">VERIFIED</span></div>
+      <div class="pb dz">
+        <div class="dz-top"><div><h2 id="dz-h">Taiwan UAS Defense Grid</h2><p class="meta">Republic of China (Taiwan) · refreshed <span data-refreshed>2h ago</span></p></div>
+          <button type="button" class="icon-btn" data-refresh aria-label="Refresh dossier"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg></button></div>
+        <div class="kpis"><div><b>48</b><span>STAKEHOLDERS</span></div><div><b>126</b><span>SOURCES</span></div><div class="al"><b>3</b><span>NEW ALERTS</span></div></div>
+        <button type="button" class="confb" data-conf-toggle aria-expanded="false"><span class="l">CONFIDENCE <b>HIGH</b></span><span class="q">METHOD ?</span>
+          <span class="cov" aria-hidden="true"><i class="c1"></i><i class="c2"></i><i class="c3"></i></span>
+          <span class="covk"><span>■ 6+ src: 7</span><span>■ 3–5: 8</span><span>▥ 2 (thin): 5</span></span></button>
+        <div class="confp" data-conf-panel hidden><p>Bar = the 20 shown stakeholders by number of independent sources.</p><p>Confidence weights each source by Admiralty grade (A1 best). Draft rules: docs/scoring.md.</p></div>
+        <a class="btn btn-main" href="02-map.html">Open 3D stakeholder map</a>
+      </div>
+    </section>
+    <section class="panel p-top" aria-labelledby="t5-h">
+      <div class="ph"><span id="t5-h"><b>CONTACT FIRST</b> RANKED</span><span>SUP&nbsp;&nbsp;&nbsp;SRC</span></div>
+      <table class="t top5"><tbody id="top"></tbody></table>
+    </section>
+    <section class="panel p-pipe" aria-labelledby="pp-h">
+      <div class="ph"><span id="pp-h"><b>PIPELINE</b> TRACKER</span><a href="#tracker">OPEN F3</a></div>
+      <div class="pipe"><div><b>28</b><span>FOUND</span></div><div><b>9</b><span>CONTACTED</span></div><div><b>4</b><span>MET</span></div><div class="on"><b>1</b><span>PARTNER</span></div></div>
+      <p class="due"><b>DEBRIEF DUE</b> Drone industry alliance intro meeting was yesterday.</p>
+    </section>
+  </div>
+
+  <div class="colR">
+    <section class="panel livemap" aria-labelledby="lm-h">
+      <div class="ph"><span id="lm-h"><b>MAP</b> 20/48 · AUTO-ROTATE</span><a href="02-map.html">OPEN F2</a></div>
+      <div class="stage" id="stage"></div>
+    </section>
+    <section class="panel p-feed" aria-labelledby="al-h">
+      <div class="ph"><span id="al-h"><b>ALERTS</b> 3 NEW</span><span>T = DAYS</span></div>
+      <ul class="feed">
+        <li><span class="tm">T−14</span><div><b>Committee review of the procurement amendment</b><p>2 supportive stakeholders are co-sponsors.</p></div><span class="src">[4] Committee agenda · A1 · checked 29 Oct</span></li>
+        <li><span class="tm">NOW</span><div><b>NCC spectrum approvals backlogged</b><p>File pre-consultation before the tender opens.</p></div><span class="src">[6] NCC frequency-use rules · A1 · checked 22 Oct</span></li>
+        <li><span class="tm dim">T−328</span><div><b>TADTE 2027, Taipei Nangang</b><p>9 mapped stakeholders expected, 23–25 Sep 2027.</p></div><span class="src">3 sources · thin</span></li>
+      </ul>
+    </section>
+  </div>
+</main>
+<script>
+/* Sample data from src/fixtures/taiwan-uas.ts (Taiwan UAS). Placeholders in the fixture
+   ([Name], [DATE]) are shown as the contact's role and "date unverified", never as brackets. */
+var P = window.P || {};
+P.NODES = [
+  { id:'g1', short:'MND Armaments Bureau', name:'Ministry of National Defense — Armaments Bureau', role:'Runs defense procurement tenders; sets qualification rules for drone suppliers.', cat:'gov', st:'sup', infl:92, sup:62, src:14, action:'Request a pre-tender capability briefing; lead with supply-chain provenance.', x:-0.55, y:-0.35, z:0.25, cites:[1,2] },
+  { id:'g2', short:'NCSIST', name:'National Chung-Shan Institute of Science & Technology', role:'Defense R&D institute; runs testing and certification for UAS payloads.', cat:'gov', st:'neu', infl:85, sup:8, src:11, action:'Propose a joint field test on the 5.1 GHz detection gap.', x:-0.75, y:-0.05, z:-0.15, cites:[3] },
+  { id:'g3', short:'MOEA Industrial Dev.', name:'MOEA — Industrial Development Administration', role:'Funds local manufacturing and supply-chain subsidies.', cat:'gov', st:'sup', infl:74, sup:48, src:9, action:'Apply for co-financing once a local assembly partner is signed.', x:-0.3, y:-0.7, z:-0.1 },
+  { id:'g4', short:'Civil Aeronautics Admin.', name:'Civil Aeronautics Administration', role:'Registers drones and sets operating rules for civilian airspace.', cat:'gov', st:'neu', infl:58, sup:0, src:6, action:'Confirm dual-use registration path before any public demo.', x:-0.9, y:-0.45, z:0.4 },
+  { id:'g5', short:'NCC', name:'National Communications Commission', role:'Approves radio-frequency use for sensors and datalinks.', cat:'gov', st:'res', infl:61, sup:-34, src:5, action:'File spectrum pre-consultation early; approvals are backlogged.', x:-0.6, y:0.2, z:0.6, cites:[6] },
+  { id:'g6', short:'Defense Committee', name:'Legislative Yuan — Foreign Affairs & National Defense Committee', role:'Reviews defense budgets and procurement amendments.', cat:'gov', st:'sup', infl:80, sup:40, src:8, action:'Brief two co-sponsors before the committee review.', x:-0.2, y:-0.25, z:0.75, cites:[4] },
+  { id:'i1', short:'Drone Industry Alliance', name:'Drone industry alliance (TEDIBOA)', role:'260+ member companies; coordinates the "non-red" supply chain.', cat:'ind', st:'sup', infl:70, sup:55, src:7, action:'Join as associate member; fastest route to local partners.', x:0.45, y:-0.35, z:-0.35 },
+  { id:'i2', short:'State aerospace prime', name:'State-linked aerospace prime contractor', role:'Likely system integrator for large government drone contracts.', cat:'ind', st:'neu', infl:78, sup:12, src:6, action:'Position as a subsystem supplier, not a competitor.', x:0.15, y:-0.6, z:0.3, cites:[5] },
+  { id:'i3', short:'Listed drone OEM', name:'Listed drone OEM, Taichung', role:'Incumbent local manufacturer; competes for the same tenders.', cat:'ind', st:'res', infl:66, sup:-52, src:5, action:'Avoid head-on bids; explore a component licensing deal.', x:0.8, y:-0.1, z:0.15 },
+  { id:'i4', short:'Tier-1 telecom', name:'Tier-1 telecom operator', role:'Owns secure network infrastructure; potential datalink partner.', cat:'ind', st:'neu', infl:63, sup:5, src:4, action:'Test datalink compatibility before proposing partnership.', x:0.6, y:0.15, z:0.6 },
+  { id:'i5', short:'Taoyuan suppliers', name:'Component supplier cluster, Taoyuan', role:'Motors, batteries and frames; needed for local-content rules.', cat:'ind', st:'sup', infl:45, sup:38, src:3, action:'Shortlist two suppliers to meet local-content thresholds.', x:0.7, y:-0.5, z:-0.6 },
+  { id:'c1', short:'Kestrel Dual-Use Fund', name:'Kestrel Dual-Use Fund (fictional)', role:'Venture fund focused on dual-use hardware in Asia.', cat:'cap', st:'sup', infl:52, sup:60, src:3, action:'Share the dossier summary; ask for intros to portfolio integrators.', x:0.2, y:0.6, z:0.35 },
+  { id:'c2', short:'Harbor Lane FO', name:'Harbor Lane Family Office (fictional)', role:'Family office; invests $250k–$2M in industrial tech.', cat:'cap', st:'sup', infl:40, sup:45, src:2, action:'Approach after the first government pilot is confirmed.', x:0.45, y:0.75, z:0 },
+  { id:'c3', short:'Angel syndicate', name:'Angel syndicate, 14 members', role:'Individual investors; tickets of $2k–$50k.', cat:'cap', st:'neu', infl:30, sup:10, src:2, action:'Low priority until a local entity is set up.', x:-0.05, y:0.85, z:-0.2 },
+  { id:'c4', short:'National Dev. Fund', name:'National Development Fund', role:'Government co-investment vehicle for strategic industries.', cat:'cap', st:'neu', infl:68, sup:15, src:5, action:'Co-investment requires a Taiwan entity; plan for month 6.', x:-0.25, y:0.5, z:0.15 },
+  { id:'l1', short:'Cross-border counsel', name:'Independent counsel, cross-border VC', role:'Matches foreign startups with local investors; handles entity setup.', cat:'leg', st:'sup', infl:35, sup:50, src:2, action:'Book a scoping call on entity structure and investor intros.', x:-0.55, y:0.65, z:-0.45 },
+  { id:'l2', short:'Export-control firm', name:'Taipei law firm, export controls', role:'Advises on defense export licences and end-user checks.', cat:'leg', st:'neu', infl:48, sup:20, src:4, action:'Confirm export-licence needs before shipping demo units.', x:-0.85, y:0.35, z:-0.6 },
+  { id:'e1', short:'TADTE 2027', name:'Taipei Aerospace & Defense Technology Exhibition', role:'Sep 23–25, 2027, Taipei Nangang Hall 1. 9 mapped stakeholders expected.', cat:'evt', st:'evt', infl:70, sup:30, src:3, action:'Reserve a partner-booth slot; schedule 5 meetings in advance.', x:0.15, y:-0.1, z:-0.8 },
+  { id:'e2', short:'Drone ecosystem summit', name:'Drone ecosystem summit (date unverified)', role:'Industry-alliance event; investors and integrators attend.', cat:'evt', st:'evt', infl:50, sup:25, src:2, action:'Apply for the startup pitch track.', x:0.5, y:0.45, z:-0.55 },
+  { id:'e3', short:'Procurement briefing', name:'Defense procurement briefing day (date unverified)', role:'Annual supplier briefing by the procurement authority.', cat:'evt', st:'evt', infl:55, sup:20, src:2, action:'Register as a prospective supplier to receive the invitation.', x:-0.35, y:-0.55, z:0.7 }
+];
+P.EDGES = [['g1','g2'],['g1','g6'],['g1','i2'],['g2','i2'],['g2','i1'],['g3','i1'],['g3','i5'],['g3','c4'],['g4','i3'],['g5','i4'],['g6','g3'],['i1','i3'],['i1','i5'],['i2','i4'],['c1','c2'],['c1','l1'],['c4','c1'],['l2','i2'],['l1','c3'],['e1','g1'],['e1','i1'],['e1','i2'],['e2','i1'],['e2','c1'],['e3','g1'],['e3','g6'],['g4','g5'],['l2','g1']];
+P.TEAM = [
+  { id:'tm_you', short:'You', name:'You', role:'CEO', initials:'YO', source:'Manual entries', status:'CONNECTED', x:0, y:0.05, z:0 },
+  { id:'tm_mei', short:'Mei Chen', name:'Mei Chen', role:'BD lead', initials:'MC', source:'LinkedIn export', status:'CONNECTED', x:0.12, y:0.12, z:0.1 },
+  { id:'tm_priya', short:'Priya Nair', name:'Priya Nair', role:'Advisor, ex-defense', initials:'PN', source:'LinkedIn + contacts', status:'CONNECTED', x:-0.12, y:0.14, z:0.08 },
+  { id:'tm_dan', short:'Daniel Ruiz', name:'Daniel Ruiz', role:'CTO', initials:'DR', source:'Not connected yet', status:'INVITED', x:0.02, y:0.2, z:-0.12 }
+];
+/* contact = role at the organisation; the person's name stays in the teammate's own export */
+P.TIES = [
+  { m:'tm_mei', org:'i1', s:3, contact:'Secretariat contact', how:'Former colleague, 2019–21' },
+  { m:'tm_mei', org:'i2', s:2, contact:'BD manager', how:'1st-degree LinkedIn' },
+  { m:'tm_priya', org:'g2', s:2, contact:'Researcher', how:'Co-panelist, 2024 conference' },
+  { m:'tm_priya', org:'c1', s:3, contact:'Partner', how:'Invested in her last company' },
+  { m:'tm_you', org:'l1', s:3, contact:'Counsel', how:'Current advisor' }
+];
+P.CATS = { all:'All', gov:'Government', ind:'Industry', cap:'Capital', leg:'Legal', evt:'Events' };
+P.STANCE = { sup:'Supportive', neu:'Neutral', res:'Resistant', evt:'Event' };
+/* Sample source list (report sources [1]–[6]); Admiralty grade = reliability A–F + credibility 1–6 */
+P.SOURCES = [
+  { n:1, title:'Drone procurement policy notice', type:'Government gazette', grade:'A2', checked:'27 Oct 2026' },
+  { n:2, title:'Procurement authority tender archive', type:'Official record', grade:'A1', checked:'27 Oct 2026' },
+  { n:3, title:'NCSIST testing guidelines', type:'Official document', grade:'A2', checked:'24 Oct 2026' },
+  { n:4, title:'Committee meeting agenda', type:'Legislative record', grade:'A1', checked:'29 Oct 2026' },
+  { n:5, title:'Prime contractor annual report', type:'Company filing', grade:'B2', checked:'21 Oct 2026' },
+  { n:6, title:'NCC frequency-use rules', type:'Regulation', grade:'A1', checked:'22 Oct 2026' }
+];
+P.DOSSIER = { name:'Taiwan UAS Defense Grid', country:'Republic of China (Taiwan)', stakeholders:48, sources:126, alerts:3, shown:20,
+  client:'Skyward Robotics (fictional)', product:'Counter-UAS sensor kit', date:'30 Oct 2026', share:'portolan.app/s/q7Hk2mV9xR4tLp8wZc3NbF' };
+P.DOSSIERS = [
+  { name:'Taiwan UAS Defense Grid', conf:'High', pct:94, srcs:126 },
+  { name:'Japan Dual-Use Robotics Entry', conf:'High', pct:88, srcs:97 },
+  { name:'U.S. Generative AI Safety Mandate', conf:'High', pct:89, srcs:112 },
+  { name:'Singapore MedTech Sandbox', conf:'Moderate', pct:81, srcs:58 }
+];
+P.REC = ['g6','i1','g1']; /* recommended first contacts, in order */
+P.TRACK = [
+  { name:'Drone industry alliance', stage:'Contacted', next:'Intro meeting held, debrief due', due:'Yesterday', st:'sup' },
+  { name:'MND Armaments Bureau', stage:'Contacted', next:'Pre-tender briefing requested', due:'Nov 4', st:'sup' },
+  { name:'Kestrel Dual-Use Fund', stage:'Met', next:'Send dossier summary', due:'Nov 2', st:'sup' },
+  { name:'NCC (spectrum)', stage:'Found', next:'File spectrum pre-consultation', due:'Nov 8', st:'res' }
+];
+P.byId = {}; P.NODES.forEach(function(n){ P.byId[n.id]=n; });
+P.teamById = {}; P.TEAM.forEach(function(t){ P.teamById[t.id]=t; });
+P.band = function(v){ return v>=75?'High':v>=50?'Medium':'Low'; };
+P.conf = function(src){ return src>=6?'High':src>=3?'Moderate':'Thin'; };
+P.signed = function(v){ return (v>0?'+':v<0?'−':'±')+Math.abs(v); };
+P.dots = function(s){ return s>=3?'●●●':s===2?'●●○':'●○○'; };
+P.tiesFor = function(org){ return P.TIES.filter(function(t){return t.org===org;}); };
+P.memberTies = function(m){ return P.TIES.filter(function(t){return t.m===m;}); };
+P.warmPath = function(org){
+  var path=null;
+  P.TIES.forEach(function(t){ P.EDGES.forEach(function(e){
+    var other = e[0]===org?e[1]:(e[1]===org?e[0]:null);
+    if(other && other===t.org && (!path || t.s>path.tie.s)) path={tie:t, via:other};
+  });});
+  return path;
+};
+P.first = function(m){ return P.teamById[m].name.split(' ')[0]; };
+P.draft = function(m, contact, orgName, viaName){
+  return 'Hi '+P.first(m)+', could you introduce me to your '+contact.toLowerCase()+(viaName?' at '+viaName+', and ask whether they can connect us with '+orgName:' at '+orgName)+'?\n\nContext: we are entering Taiwan with counter-drone sensors that cover the 5.1 GHz detection gap. A 20-minute intro call is all I am asking for. I can send a short brief they can forward.';
+};
+P.esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+window.P = P;
+</script>
+<script>
+/* Pseudo-3D stakeholder map in SVG. Same projection as design/mockup/src/02-map.template.html
+   project(): rotate around the vertical axis, tilt, then perspective divide. No three.js. */
+P.createMap = function (opts) {
+  var svgNS = 'http://www.w3.org/2000/svg';
+  var host = opts.host, theme = opts.theme;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var S = { ang: 0.6, view: '3d', filter: 'all', sel: null, paused: reduce, team: false, mix: 0 };
+  var W = 360, H = 320, drag = null, raf = 0, last = 0;
+  var svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('class', 'pm-svg');
+  svg.setAttribute('role', 'img');
+  svg.setAttribute('aria-label', opts.label || 'Stakeholder map. Drag to rotate, tap a node for details. A full list follows the map.');
+  var gBack = document.createElementNS(svgNS, 'g'), gEdge = document.createElementNS(svgNS, 'g'), gNode = document.createElementNS(svgNS, 'g');
+  gBack.setAttribute('class', 'pm-back'); gEdge.setAttribute('class', 'pm-edges'); gNode.setAttribute('class', 'pm-nodes');
+  svg.appendChild(gBack); svg.appendChild(gEdge); svg.appendChild(gNode);
+  host.appendChild(svg);
+
+  var all = [];
+  function mk(o, isTeam) {
+    var g = document.createElementNS(svgNS, 'g');
+    g.setAttribute('class', 'pm-node ' + (isTeam ? 'pm-team' : 'pm-' + o.st + ' pm-cat-' + o.cat));
+    g.setAttribute('data-id', o.id);
+    var r = isTeam ? 7 : (theme.nodeBase || 3.5) + o.infl * (theme.nodeScale || 0.07);
+    var rank = P.REC.indexOf(o.id);
+    g.innerHTML = '<g class="pm-shape">' + (isTeam ? theme.team(o, r) : theme.node(o, r)) + (rank >= 0 && theme.rec ? theme.rec(rank + 1, r) : '') + '</g>' +
+      '<text class="pm-label" dy="0.35em">' + o.short + '</text>';
+    gNode.appendChild(g);
+    var rec = { o: o, g: g, shape: g.firstChild, label: g.lastChild, r: r, team: isTeam, rank: rank };
+    all.push(rec);
+    return rec;
+  }
+  P.NODES.forEach(function (n) { mk(n, false); });
+  P.TEAM.forEach(function (t) { mk(t, true); });
+
+  function size() {
+    var b = host.getBoundingClientRect();
+    W = Math.max(280, b.width); H = Math.max(260, b.height);
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    svg.setAttribute('width', W); svg.setAttribute('height', H);
+  }
+  function project(o, ang) {
+    var cx = W / 2, cy = H * (theme.cy || 0.5) - 4, R = Math.min(W, H) * (theme.radius || 0.36), tilt = 0.38;
+    var ca = Math.cos(ang), sa = Math.sin(ang), ct = Math.cos(tilt), st = Math.sin(tilt);
+    var x1 = o.x * ca + o.z * sa, z1 = -o.x * sa + o.z * ca;
+    var y2 = o.y * ct - z1 * st, z2 = o.y * st + z1 * ct;
+    var f = 2.8 / (2.8 + z2);
+    return { x: cx + x1 * R * f, y: cy + y2 * R * f, z: z2, f: f };
+  }
+  function matrixPos(n) {
+    var px = 34, py = 26;
+    return { x: px + (n.sup + 100) / 200 * (W - px * 2), y: py + (1 - n.infl / 100) * (H - py * 2 - 14), z: 0, f: 1 };
+  }
+  function inF(o) { return S.filter === 'all' || o.cat === S.filter; }
+
+  function derive() {
+    var sel = S.sel, teamOn = S.team && S.view === '3d';
+    var selOrg = sel && P.byId[sel] ? P.byId[sel] : null, selTeam = sel && P.teamById[sel] ? P.teamById[sel] : null;
+    var linked = {}, direct = [], path = null, hotEdge = {}, hotTie = {};
+    P.EDGES.forEach(function (e) { if (e[0] === sel) linked[e[1]] = 1; if (e[1] === sel) linked[e[0]] = 1; });
+    if (selOrg) {
+      direct = P.tiesFor(selOrg.id);
+      if (!direct.length) path = P.warmPath(selOrg.id);
+      if (teamOn) {
+        direct.forEach(function (t) { linked[t.m] = 1; hotTie[t.m + '|' + t.org] = 1; });
+        if (path) { linked[path.tie.m] = 1; linked[path.via] = 1; hotTie[path.tie.m + '|' + path.via] = 1; hotEdge[[path.via, selOrg.id].sort().join('|')] = 1; }
+      }
+    }
+    if (selTeam) P.memberTies(sel).forEach(function (t) { linked[t.org] = 1; hotTie[t.m + '|' + t.org] = 1; });
+    return { sel: sel, selOrg: selOrg, selTeam: selTeam, linked: linked, direct: direct, path: path, teamOn: teamOn, hotEdge: hotEdge, hotTie: hotTie };
+  }
+
+  function frame() {
+    var D = derive(), pts = {};
+    var m = S.mix; /* 0 = 3D, 1 = matrix */
+    all.forEach(function (a) {
+      var p3 = project(theme.pos && !a.team ? theme.pos(a.o) : a.o, S.ang), p;
+      if (a.team) p = p3;
+      else { var pm = matrixPos(a.o); p = { x: p3.x + (pm.x - p3.x) * m, y: p3.y + (pm.y - p3.y) * m, z: p3.z * (1 - m), f: p3.f + (1 - p3.f) * m }; }
+      pts[a.o.id] = p; a.p = p;
+    });
+    /* edges */
+    var h = '';
+    if (m < 0.98) {
+      var fade = 1 - m;
+      P.EDGES.forEach(function (e) {
+        var a = P.byId[e[0]], b = P.byId[e[1]], pa = pts[e[0]], pb = pts[e[1]];
+        var key = [e[0], e[1]].sort().join('|');
+        var hot = (D.selOrg && !(D.teamOn && D.path) && (e[0] === D.sel || e[1] === D.sel)) || D.hotEdge[key];
+        var vis = inF(a) && inF(b) && (!D.sel || hot || D.selTeam);
+        var op = (vis ? (hot ? 1 : theme.edgeOpacity || 0.22) : 0.05) * fade;
+        if (D.selTeam) op = 0.05 * fade;
+        h += '<line class="pm-edge' + (hot ? ' hot' : '') + '" x1="' + pa.x.toFixed(1) + '" y1="' + pa.y.toFixed(1) + '" x2="' + pb.x.toFixed(1) + '" y2="' + pb.y.toFixed(1) + '" opacity="' + op.toFixed(2) + '"/>';
+      });
+      if (D.teamOn) P.TIES.forEach(function (t) {
+        var hot = D.hotTie[t.m + '|' + t.org], pa = pts[t.m], pb = pts[t.org];
+        var op = D.sel ? (hot ? 1 : 0.08) : 0.7;
+        h += '<line class="pm-tie' + (hot ? ' hot' : '') + '" stroke-width="' + (hot ? 2.5 : t.s * 0.8) + '" x1="' + pa.x.toFixed(1) + '" y1="' + pa.y.toFixed(1) + '" x2="' + pb.x.toFixed(1) + '" y2="' + pb.y.toFixed(1) + '" opacity="' + op + '"/>';
+      });
+    }
+    gEdge.innerHTML = h;
+    gBack.innerHTML = theme.backdrop ? theme.backdrop({ W: W, H: H, ang: S.ang, mix: m, project: function (o) { return project(o, S.ang); }, R: Math.min(W, H) * (theme.radius || 0.36) }) : '';
+    /* nodes, painted back to front */
+    var order = all.slice().sort(function (a, b) { return b.p.z - a.p.z; });
+    order.forEach(function (a) {
+      var o = a.o, p = a.p, id = o.id;
+      var hidden = a.team && !D.teamOn;
+      var on = a.team || inF(o);
+      var isSel = D.sel === id, lk = !!D.linked[id];
+      var dim = !on || (D.sel && !isSel && !lk);
+      var showLabel = !hidden && on && (isSel || (D.sel ? lk : (a.team ? true : (o.infl >= 78 || a.rank >= 0))));
+      if (m > 0.5 && !a.team && !D.sel) showLabel = on && (o.infl >= 60 || a.rank >= 0);
+      a.g.setAttribute('transform', 'translate(' + p.x.toFixed(1) + ',' + p.y.toFixed(1) + ')');
+      a.shape.setAttribute('transform', 'scale(' + p.f.toFixed(3) + ')');
+      var cls = 'pm-node ' + (a.team ? 'pm-team' + (o.status !== 'CONNECTED' ? ' pm-pending' : '') : 'pm-' + o.st) + (isSel ? ' is-sel' : '') + (dim ? ' is-dim' : '') + (lk ? ' is-linked' : '') + (a.rank >= 0 && !D.sel ? ' is-rec' : '') + (hidden ? ' is-hidden' : '');
+      a.g.setAttribute('class', cls);
+      var right = p.x > W - 130;
+      a.label.setAttribute('x', ((right ? -1 : 1) * (a.r * p.f + 5)).toFixed(1));
+      a.label.setAttribute('text-anchor', right ? 'end' : 'start');
+      a.label.style.display = showLabel ? '' : 'none';
+      gNode.appendChild(a.g);
+    });
+  }
+
+  function tick(t) {
+    raf = requestAnimationFrame(tick);
+    var dt = last ? Math.min(50, t - last) : 16; last = t;
+    var target = S.view === 'mx' ? 1 : 0, changed = false;
+    if (S.mix !== target) { var step = dt / 380; S.mix = target > S.mix ? Math.min(1, S.mix + step) : Math.max(0, S.mix - step); changed = true; }
+    if (!S.paused && !S.sel && S.view === '3d' && !drag) { S.ang += dt * 0.00024; changed = true; }
+    if (changed || S.dirty) { S.dirty = false; frame(); }
+  }
+
+  /* pointer: drag rotates, a short press selects */
+  svg.addEventListener('pointerdown', function (e) {
+    var g = e.target.closest ? e.target.closest('.pm-node') : null;
+    drag = { x: e.clientX, y: e.clientY, lx: e.clientX, id: g ? g.getAttribute('data-id') : null, moved: false };
+    try { svg.setPointerCapture(e.pointerId); } catch (x) {}
+  });
+  svg.addEventListener('pointermove', function (e) {
+    if (!drag) return;
+    if (Math.abs(e.clientX - drag.x) + Math.abs(e.clientY - drag.y) > 5) drag.moved = true;
+    if (drag.moved && S.view === '3d') { S.ang += (e.clientX - drag.lx) * 0.012; S.dirty = true; }
+    drag.lx = e.clientX;
+  });
+  function end() {
+    if (!drag) return;
+    var d = drag; drag = null;
+    if (!d.moved) api.select(d.id && d.id === S.sel ? null : d.id);
+  }
+  svg.addEventListener('pointerup', end);
+  svg.addEventListener('pointercancel', function () { drag = null; });
+
+  var listeners = [];
+  function emit() { var D = derive(); listeners.forEach(function (fn) { fn(S, D); }); S.dirty = true; }
+  var api = {
+    state: S,
+    onChange: function (fn) { listeners.push(fn); fn(S, derive()); },
+    select: function (id) { S.sel = id || null; emit(); },
+    setView: function (v) { S.view = v; if (v === 'mx') S.sel = S.sel && P.teamById[S.sel] ? null : S.sel; emit(); },
+    setFilter: function (f) { S.filter = f; S.sel = null; emit(); },
+    toggleTeam: function () { S.team = !S.team; S.view = '3d'; S.sel = null; emit(); },
+    togglePause: function () { S.paused = !S.paused; emit(); },
+    rotate: function (d) { S.ang += d; S.dirty = true; },
+    project: project
+  };
+  size(); frame();
+  if (window.ResizeObserver) new ResizeObserver(function () { size(); S.dirty = true; }).observe(host);
+  raf = requestAnimationFrame(tick);
+  return api;
+};
+
+/* Wire common controls: any element with data-map-* attributes inside root. */
+P.bindControls = function (map, root) {
+  root = root || document;
+  function each(sel, fn) { Array.prototype.forEach.call(root.querySelectorAll(sel), fn); }
+  each('[data-map-view]', function (b) { b.addEventListener('click', function () { map.setView(b.getAttribute('data-map-view')); }); });
+  each('[data-map-filter]', function (b) { b.addEventListener('click', function () { map.setFilter(b.getAttribute('data-map-filter')); }); });
+  each('[data-map-rotate]', function (b) { b.addEventListener('click', function () { map.rotate(parseFloat(b.getAttribute('data-map-rotate'))); }); });
+  each('[data-map-pause]', function (b) { b.addEventListener('click', function () { map.togglePause(); }); });
+  each('[data-map-team]', function (b) { b.addEventListener('click', function () { map.toggleTeam(); }); });
+  root.addEventListener('click', function (e) {
+    var t = e.target.closest && e.target.closest('[data-pick]');
+    if (t) map.select(t.getAttribute('data-pick'));
+  });
+  map.onChange(function (S) {
+    each('[data-map-view]', function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-map-view') === S.view); });
+    each('[data-map-filter]', function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-map-filter') === S.filter); });
+    each('[data-map-pause]', function (b) { b.setAttribute('aria-pressed', S.paused); b.setAttribute('aria-label', S.paused ? 'Resume rotation' : 'Pause rotation'); b.setAttribute('data-paused', S.paused); });
+    each('[data-map-team]', function (b) { b.setAttribute('aria-pressed', S.team && S.view === '3d'); });
+    each('[data-pick]', function (b) { b.setAttribute('aria-current', b.getAttribute('data-pick') === S.sel ? 'true' : 'false'); });
+  });
+};
+
+/* Button feedback helper: swap label for a confirmation, restore after ms (0 = keep). */
+P.confirm = function (btn, text, ms) {
+  if (!btn.dataset.label) btn.dataset.label = btn.textContent;
+  btn.textContent = text; btn.setAttribute('data-done', 'true');
+  if (ms) setTimeout(function () { btn.textContent = btn.dataset.label; btn.removeAttribute('data-done'); }, ms);
+};
+P.copy = function (text, btn) {
+  var done = function () { P.confirm(btn, 'Copied', 1800); };
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done, done); else done();
+};
+</script>
+<script>
+/* Watchfloor map marks: fill = stance, amber brackets = contact first. */
+var WF = {
+  shape: function (st, r) {
+    if (st === 'evt') return '<rect class="n n-evt" x="' + (-r * .72).toFixed(1) + '" y="' + (-r * .72).toFixed(1) + '" width="' + (r * 1.44).toFixed(1) + '" height="' + (r * 1.44).toFixed(1) + '" transform="rotate(45)" vector-effect="non-scaling-stroke"/>';
+    return '<circle class="n n-' + st + '" r="' + r.toFixed(1) + '" vector-effect="non-scaling-stroke"/>';
+  },
+  small: function (st) { return '<svg viewBox="-7 -7 14 14" aria-hidden="true">' + WF.shape(st, 5) + '</svg>'; },
+  brackets: function (r) {
+    var a = r + 6, b = 4;
+    return '<path class="brk" d="M' + (-a) + ',' + (-a + b) + 'V' + (-a) + 'H' + (-a + b) + 'M' + (a - b) + ',' + (-a) + 'H' + a + 'V' + (-a + b) + 'M' + a + ',' + (a - b) + 'V' + a + 'H' + (a - b) + 'M' + (-a + b) + ',' + a + 'H' + (-a) + 'V' + (a - b) + '" vector-effect="non-scaling-stroke"/>';
+  },
+  theme: function (opts) {
+    opts = opts || {};
+    return {
+      radius: opts.radius || 0.38, edgeOpacity: 0.35, cy: 0.56, nodeBase: 3, nodeScale: 0.065,
+      node: function (n, r) { return WF.shape(n.st, r); },
+      team: function (t, r) { return '<rect class="tm-c" x="' + -r + '" y="' + -r + '" width="' + 2 * r + '" height="' + 2 * r + '" vector-effect="non-scaling-stroke"/><text class="tm-i" dy="0.35em">' + t.initials + '</text>'; },
+      rec: function (k, r) { return WF.brackets(r) + '<text class="brk-n" x="' + (r + 9) + '" y="' + (-r - 3) + '">' + k + '</text>'; },
+      backdrop: function (c) {
+        var s = '', f3 = 1 - c.mix, i, p;
+        if (f3 > 0.02) {
+          s += '<g opacity="' + f3.toFixed(2) + '">';
+          [0.5, 1].forEach(function (rr) {
+            var d = '';
+            for (i = 0; i <= 64; i++) { var t = i / 64 * Math.PI * 2; p = c.project({ x: Math.cos(t) * rr, y: 0.8, z: Math.sin(t) * rr }); d += (i ? 'L' : 'M') + p.x.toFixed(1) + ',' + p.y.toFixed(1); }
+            s += '<path class="g-ring" d="' + d + '"/>';
+          });
+          var o = c.project({ x: 0, y: 0.8, z: 0 });
+          [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(function (v) { p = c.project({ x: v[0], y: 0.8, z: v[1] }); s += '<line class="g-ax" x1="' + o.x.toFixed(1) + '" y1="' + o.y.toFixed(1) + '" x2="' + p.x.toFixed(1) + '" y2="' + p.y.toFixed(1) + '"/>'; });
+          s += '</g>';
+        }
+        if (c.mix > 0.02) {
+          var px = 34, py = 26, x0 = c.W / 2, b = c.H - py - 14, y0 = py + (b - py) / 2;
+          s += '<g opacity="' + c.mix.toFixed(2) + '">';
+          for (i = 0; i <= 8; i++) { var gx = px + i / 8 * (c.W - 2 * px); s += '<line class="g-grid" x1="' + gx + '" y1="' + py + '" x2="' + gx + '" y2="' + b + '"/>'; }
+          for (i = 0; i <= 4; i++) { var gy = py + i / 4 * (b - py); s += '<line class="g-grid" x1="' + px + '" y1="' + gy + '" x2="' + (c.W - px) + '" y2="' + gy + '"/>'; }
+          s += '<line class="q-line" x1="' + x0 + '" y1="' + py + '" x2="' + x0 + '" y2="' + b + '"/><line class="q-line" x1="' + px + '" y1="' + y0 + '" x2="' + (c.W - px) + '" y2="' + y0 + '"/>' +
+            '<text class="q-lab res" x="' + (px + 4) + '" y="' + (py + 13) + '">BLOCKERS</text><text class="q-lab sup" x="' + (c.W - px - 4) + '" y="' + (py + 13) + '" text-anchor="end">CHAMPIONS</text><text class="q-lab" x="' + (px + 4) + '" y="' + (b - 6) + '">MONITOR</text><text class="q-lab" x="' + (c.W - px - 4) + '" y="' + (b - 6) + '" text-anchor="end">ALLIES TO GROW</text>' +
+            '<text class="q-ax" x="' + px + '" y="' + (c.H - 8) + '">SUP −100</text><text class="q-ax" x="' + x0 + '" y="' + (c.H - 8) + '" text-anchor="middle">0</text><text class="q-ax" x="' + (c.W - px) + '" y="' + (c.H - 8) + '" text-anchor="end">+100</text><text class="q-ax" transform="translate(14,' + y0 + ') rotate(-90)" text-anchor="middle">INFL</text></g>';
+        }
+        return s;
+      }
+    };
+  }
+};
+</script>
+<script>
+/* Home screen behaviour shared by every direction. Markup hooks:
+   [data-refresh] [data-refreshed] [data-form-toggle] [data-form] [data-progress]
+   [data-dossier] [data-conf-toggle] [data-conf-panel] */
+(function () {
+  function all(s) { return Array.prototype.slice.call(document.querySelectorAll(s)); }
+  all('[data-refresh]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (b.getAttribute('aria-busy') === 'true') return;
+      b.setAttribute('aria-busy', 'true');
+      all('[data-refreshed]').forEach(function (el) { el.textContent = 'refreshing…'; });
+      setTimeout(function () {
+        b.setAttribute('aria-busy', 'false');
+        all('[data-refreshed]').forEach(function (el) { el.textContent = 'just now'; });
+      }, 1400);
+    });
+  });
+  all('[data-form-toggle]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var f = document.querySelector('[data-form]');
+      var open = f.hasAttribute('hidden');
+      if (open) f.removeAttribute('hidden'); else f.setAttribute('hidden', '');
+      all('[data-form-toggle]').forEach(function (x) { x.textContent = open ? 'Close' : '+ New dossier'; x.setAttribute('aria-expanded', open); });
+      if (open) { var i = f.querySelector('input'); if (i) i.focus(); }
+    });
+  });
+  all('[data-dossier]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      all('[data-dossier]').forEach(function (x) { x.setAttribute('aria-pressed', x === b); });
+    });
+  });
+  all('[data-conf-toggle]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var p = document.querySelector('[data-conf-panel]');
+      var open = p.hasAttribute('hidden');
+      if (open) p.removeAttribute('hidden'); else p.setAttribute('hidden', '');
+      b.setAttribute('aria-expanded', open);
+    });
+  });
+  var form = document.querySelector('[data-form]');
+  if (form) form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var bad = null;
+    Array.prototype.forEach.call(form.querySelectorAll('[required]'), function (i) {
+      var ok = i.value.trim() && (i.type !== 'email' || /.+@.+\..+/.test(i.value));
+      i.setAttribute('aria-invalid', ok ? 'false' : 'true');
+      if (!ok && !bad) bad = i;
+    });
+    var err = form.querySelector('[data-form-error]');
+    if (bad) { if (err) { err.hidden = false; err.textContent = 'Fill in ' + bad.getAttribute('data-name') + ' to start research.'; } bad.focus(); return; }
+    if (err) err.hidden = true;
+    var btn = form.querySelector('[type=submit]');
+    btn.disabled = true; btn.textContent = 'Research running';
+    var list = document.querySelector('[data-progress]');
+    if (!list) return;
+    list.hidden = false; list.innerHTML = '';
+    var company = form.querySelector('[name=company]').value.trim();
+    var steps = [
+      'Queued research for ' + company + ' (preview only; no request is sent)',
+      'Reading procurement gazette notices',
+      'Source found: Drone procurement policy notice (A2)',
+      'Stakeholder found: MND Armaments Bureau, 2 sources',
+      'Source found: Committee meeting agenda (A1)',
+      'Stakeholder found: Defense Committee, 1 source',
+      'We will email the dossier link when all sources are checked'
+    ];
+    steps.forEach(function (s, i) {
+      setTimeout(function () { var li = document.createElement('li'); li.textContent = s; list.appendChild(li); }, 500 + i * 700);
+    });
+  });
+})();
+</script>
+<script>
+document.getElementById('top').innerHTML = P.REC.map(function (id, i) {
+  var n = P.byId[id];
+  return '<tr><td class="mono" style="color:var(--amber)">' + (i + 1) + '</td><td><span class="n">' + n.short + '</span><br><span style="color:var(--dim)">' + n.action + '</span></td><td class="r st-' + n.st + '">' + P.signed(n.sup) + '</td><td class="r">' + n.src + '</td></tr>';
+}).join('');
+if (window.matchMedia('(min-width:1024px)').matches) {
+  var m = P.createMap({ host: document.getElementById('stage'), theme: WF.theme({ radius: 0.4 }) });
+}
+document.getElementById('cmd').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var v = document.getElementById('cmdi').value.trim().toLowerCase(), msg = document.getElementById('cmdmsg');
+  if (!v) return;
+  if (/map|f2/.test(v)) { location.href = '02-map.html'; return; }
+  if (/rep|doc|a4|f5/.test(v)) { location.href = '05-report.html'; return; }
+  var hit = P.NODES.filter(function (n) { return (n.short + ' ' + n.name).toLowerCase().indexOf(v) >= 0; })[0];
+  msg.hidden = false;
+  msg.textContent = hit ? hit.short + ': ' + P.STANCE[hit.st].toLowerCase() + ', influence ' + hit.infl + ', ' + hit.src + ' sources. Next: ' + hit.action : 'No match for "' + v + '". Try MAP, REPORT or a stakeholder name.';
+});
+</script>
+</body>
+</html>

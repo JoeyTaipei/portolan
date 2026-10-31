@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Portolan · Estimate · Dossiers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Public+Sans:ital,wght@0,400;0,600;0,800;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+/* Estimate — an intelligence briefing book. White paper on a grey desk, black ink, and one
+   highlighter yellow for what to act on. ICD 203 likelihood words, Admiralty grades, redaction
+   bars for private contact names. Public Sans (the US government's typeface) + Courier Prime. */
+:root{
+  --desk:#E2E5E8; --paper:#FFFFFF; --ink:#1A1C20; --ink2:#565B62; --rule:#C8CCD1; --faint:#F2F3F5;
+  --hi:#FFE14A; --hi2:#FFF3A8;
+  --sans:'Public Sans',system-ui,sans-serif; --type:'Courier Prime','Courier New',monospace;
+}
+*{box-sizing:border-box}
+figure{margin:0}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--desk);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;overflow-x:hidden}
+a{color:var(--ink)}
+:focus-visible{outline:3px solid var(--ink);outline-offset:2px;box-shadow:0 0 0 6px var(--hi)}
+mark{background:linear-gradient(transparent 12%,var(--hi) 12%,var(--hi) 88%,transparent 88%);color:inherit;padding:0 2px}
+.banner{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--ink);color:var(--paper);font:700 12.5px var(--type);padding:7px 16px;letter-spacing:.04em}
+.banner .s{background:var(--hi);color:var(--ink);padding:1px 7px}
+.type{font-family:var(--type)}
+.grade{display:inline-block;font:700 12px var(--type);border:1.5px solid var(--ink);padding:0 4px;line-height:1.35;vertical-align:1px}
+.cite{font:12.5px var(--type);color:var(--ink2)}
+.redact{display:inline-block;width:4.6em;height:.95em;background:var(--ink);vertical-align:-1px}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:50;display:grid;grid-template-columns:repeat(5,1fr);gap:3px;padding:0 4px calc(8px + env(safe-area-inset-bottom));background:var(--desk);border-top:1px solid var(--rule)}
+.tabs a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:52px;background:var(--faint);border:1px solid var(--rule);border-top:0;border-radius:0 0 8px 8px;color:var(--ink2);text-decoration:none;font-size:12px;font-weight:600}
+.tabs .n{font:700 11px var(--type)}
+.tabs a[aria-current=page]{background:var(--paper);color:var(--ink);border-color:var(--ink);box-shadow:inset 0 3px 0 var(--hi)}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 16px;border:2px solid var(--ink);border-radius:2px;font:700 15px var(--sans);text-decoration:none;cursor:pointer}
+.btn-main{background:var(--ink);color:var(--paper)}
+.btn-main:hover{box-shadow:inset 0 -4px 0 var(--hi)}
+.btn-main:disabled{opacity:.6;cursor:progress}
+.btn-ghost{background:var(--paper);color:var(--ink)}
+.btn-ghost:hover{background:var(--hi2)}
+.btn-s{min-height:38px;font-size:13.5px;padding:0 12px}
+.icon-btn{flex:0 0 auto;width:46px;min-height:46px;display:grid;place-items:center;border:2px solid var(--ink);border-radius:2px;background:var(--paper);cursor:pointer;color:var(--ink)}
+.icon-btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2}
+.icon-btn[aria-busy=true] svg{animation:spin .9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* ICD 203 probability ruler */
+.ruler{display:grid;grid-template-columns:5fr 15fr 25fr 10fr 25fr 15fr 4fr;height:30px;border:1.5px solid var(--ink);margin:8px 0 4px}
+.ruler span{border-right:1px solid var(--ink);position:relative;background:var(--paper)}
+.ruler span:last-child{border-right:0}
+.ruler span.on{background:repeating-linear-gradient(135deg,var(--hi) 0 6px,#F5D21F 6px 8px)}
+.ruler-l{display:flex;justify-content:space-between;font:11px var(--type);color:var(--ink2)}
+.ruler-k{display:grid;grid-template-columns:5fr 15fr 25fr 10fr 25fr 15fr 4fr;font:10.5px var(--type);color:var(--ink2)}
+.ruler-k span{text-align:center;overflow:hidden;white-space:nowrap}
+.ruler-k span.on{color:var(--ink);font-weight:700}
+@media (min-width:1024px){
+  .tabs{position:fixed;left:auto;right:0;top:120px;bottom:auto;width:46px;display:flex;flex-direction:column;gap:4px;padding:0;background:none;border:0}
+  .tabs a{writing-mode:vertical-rl;min-height:112px;border:1px solid var(--rule);border-left:0;border-radius:0 8px 8px 0;flex-direction:row;gap:8px;padding:10px 0;font-size:13px}
+  .tabs a[aria-current=page]{box-shadow:inset 4px 0 0 var(--hi)}
+  .tabs svg{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<style>
+.book{display:flex;flex-direction:column;gap:0;padding:0 0 100px}
+.page{background:var(--paper);padding:20px 18px;border-bottom:1px solid var(--rule)}
+.mast{display:flex;flex-direction:column;gap:8px}
+.mast-row{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.wm{margin:0;font-weight:900;font-size:40px;line-height:1;letter-spacing:-.025em}
+.plan{font:700 12px var(--type);border:1.5px solid var(--ink);padding:1px 6px}
+.sub{margin:0;font:13px var(--type);color:var(--ink2)}
+.tagline{margin:4px 0 0;font-size:16px;line-height:1.45;max-width:36ch}
+.toc{list-style:none;margin:0;padding:0;counter-reset:t}
+.toc li a{display:flex;align-items:baseline;gap:8px;min-height:40px;padding:8px 0;color:var(--ink);text-decoration:none;font-size:15px}
+.toc li a::after{content:"";flex:1;order:2;border-bottom:1.5px dotted var(--ink2);transform:translateY(-4px)}
+.toc .no{font:700 13px var(--type);width:22px}
+.toc .pg{order:3;font:13px var(--type);color:var(--ink2)}
+.toc a[aria-current=page]{font-weight:800}
+.toc a[aria-current=page] .t{background:var(--hi)}
+.toc a:hover .t{text-decoration:underline}
+.h{margin:0 0 10px;font-size:13px;font-weight:800;letter-spacing:.01em;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.memo{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0 0 14px;font-size:14px}
+.memo dt{font:700 12.5px var(--type);color:var(--ink2);padding-top:2px}
+.memo dd{margin:0}
+.d-title{margin:0 0 4px;font-size:30px;line-height:1.05;font-weight:900;letter-spacing:-.02em}
+.kj{border:2px solid var(--ink);padding:14px;margin:0 0 14px}
+.kj-h{margin:0 0 8px;font:700 12.5px var(--type)}
+.kj p{margin:0;font-size:16px;line-height:1.45}
+.kj .conf{margin-top:8px;font-size:13.5px;color:var(--ink2)}
+.paras{counter-reset:p;list-style:none;margin:0 0 14px;padding:0;display:flex;flex-direction:column;gap:10px}
+.paras li{counter-increment:p;display:grid;grid-template-columns:26px 1fr;font-size:14.5px;line-height:1.5}
+.paras li::before{content:counter(p) ".";font:700 13px var(--type);padding-top:2px}
+.hold{display:grid;grid-template-columns:repeat(3,1fr);border-top:2px solid var(--ink);border-bottom:1px solid var(--rule);margin-bottom:14px}
+.hold div{padding:8px 0}.hold div+div{padding-left:12px;border-left:1px solid var(--rule)}
+.hold b{display:block;font-size:28px;font-weight:800;line-height:1.05;font-variant-numeric:tabular-nums}
+.hold span{font-size:12.5px;color:var(--ink2)}
+.hold .a b{background:var(--hi);display:inline-block;padding:0 4px}
+.confbtn{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;padding:10px 0;border:0;border-bottom:1px solid var(--rule);background:none;font:inherit;color:var(--ink);text-align:left;cursor:pointer}
+.confbtn span{font-size:14px}.confbtn b{font-weight:800}
+.confbtn .more{font:700 12px var(--type);text-decoration:underline}
+.confpanel{padding:10px 0 12px;font-size:13.5px;border-bottom:1px solid var(--rule)}
+.confpanel p{margin:0 0 6px}.confpanel ul{margin:0;padding-left:18px}
+.row-act{display:flex;gap:8px;margin-top:14px}.row-act .btn-main{flex:1}
+.dl{display:flex;flex-direction:column}
+.dos{display:grid;grid-template-columns:1fr auto;gap:0 10px;width:100%;min-height:50px;padding:7px 0;border:0;border-bottom:1px solid var(--rule);background:none;font:inherit;color:var(--ink);text-align:left;cursor:pointer}
+.dos:hover .dn{text-decoration:underline}
+.dos[aria-pressed=true] .dn{background:var(--hi)}
+.dn{font-weight:700;font-size:14.5px;justify-self:start}
+.dc{font:12.5px var(--type);color:var(--ink2)}
+.dm{grid-column:1/-1;font:12px var(--type);color:var(--ink2)}
+form.new{display:flex;flex-direction:column;gap:12px;padding:14px;margin:6px 0 10px;border:2px solid var(--ink);background:var(--faint)}
+form.new .fh{margin:0;font:700 12.5px var(--type)}
+form.new label{display:flex;flex-direction:column;gap:3px;font:700 12px var(--type);color:var(--ink2)}
+form.new input,form.new select{min-height:42px;padding:0 2px;border:0;border-bottom:1.5px solid var(--ink);border-radius:0;background:transparent;font:16px var(--sans);color:var(--ink)}
+form.new input[aria-invalid=true]{border-bottom:3px solid var(--ink);background:var(--hi2)}
+.form-error{margin:0;font-weight:700;font-size:13.5px;background:var(--hi);padding:4px 6px}
+.progress{margin:0;padding:8px 8px 8px 26px;font:12.5px/1.7 var(--type);background:var(--paper);border:1px solid var(--rule)}
+.side{display:none}
+.srcs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;font-size:13px}
+.srcs li{display:grid;grid-template-columns:30px 1fr;gap:2px 6px}
+.srcs .n{font:700 12.5px var(--type)}
+.srcs .m{grid-column:2;font:11.5px var(--type);color:var(--ink2)}
+.legend-a{margin:10px 0 0;font-size:12.5px;color:var(--ink2);line-height:1.5}
+@media (min-width:1024px){
+  .book{display:grid;grid-template-columns:290px minmax(0,1fr) 300px;gap:18px;max-width:1220px;margin:22px auto 0;padding:0 64px 40px 18px}
+  .page{border:1px solid var(--rule);box-shadow:0 1px 0 var(--rule),0 3px 0 -1px var(--paper),0 4px 0 -1px var(--rule)}
+  .main{padding:30px 34px}
+  .d-title{font-size:40px}
+  .side{display:block}
+  .col{display:flex;flex-direction:column;gap:18px}
+}
+@media (max-width:1023px){.col{display:contents}.c-mast{order:1}.c-toc{order:2}.main{order:3}.c-dos{order:4}}
+</style>
+</head>
+<body>
+<div class="banner"><span>Confidential. Client use only.</span><span class="s">Sample data</span></div>
+<main class="book">
+  <div class="col">
+    <section class="page mast c-mast">
+      <div class="mast-row"><h1 class="wm">Portolan</h1><span class="plan">Pro</span></div>
+      <p class="sub">Market entry intelligence</p>
+      <p class="tagline">Briefings on who decides in a new market. Every judgment states its sources and how sure we are.</p>
+    </section>
+    <nav class="page c-toc" aria-label="Contents">
+      <h2 class="h">Contents</h2>
+      <ol class="toc">
+        <li><a href="01-home.html" aria-current="page"><span class="no">1</span><span class="t">Dossiers</span><span class="pg">here</span></a></li>
+        <li><a href="02-map.html"><span class="no">2</span><span class="t">Stakeholder map</span><span class="pg">20 shown</span></a></li>
+        <li><a href="#tracker"><span class="no">3</span><span class="t">Tracker</span><span class="pg">8 open</span></a></li>
+        <li><a href="#network"><span class="no">4</span><span class="t">Network</span><span class="pg">8 leads</span></a></li>
+        <li><a href="05-report.html"><span class="no">5</span><span class="t">Documents</span><span class="pg">A4 brief</span></a></li>
+        <li><a href="#brief"><span class="no">6</span><span class="t">Strategy brief</span><span class="pg">v3</span></a></li>
+      </ol>
+    </nav>
+    <section class="page c-dos" aria-labelledby="dl-h">
+      <h2 class="h" id="dl-h">Dossiers in this browser <button type="button" class="btn btn-ghost btn-s" data-form-toggle aria-expanded="false">+ New dossier</button></h2>
+      <form class="new" data-form hidden novalidate>
+        <p class="fh">Research request</p>
+        <label>Your company<input name="company" required data-name="your company" placeholder="Skyward Robotics"></label>
+        <label>Product or service<input name="product" required data-name="the product" placeholder="Counter-UAS sensor kit"></label>
+        <label>Target market<select name="market"><option>Taiwan</option><option>United States (coverage limited)</option><option>Japan (coverage limited)</option><option>Singapore (coverage limited)</option><option>China (institutions only)</option></select></label>
+        <label>Goal<input name="goal" required data-name="a goal" placeholder="First government pilot within 12 months"></label>
+        <label>Email for the dossier link<input name="email" type="email" required data-name="an email" placeholder="you@company.com"></label>
+        <p class="form-error" data-form-error hidden></p>
+        <button type="submit" class="btn btn-main">Start research</button>
+        <ol class="progress" data-progress hidden aria-live="polite"></ol>
+      </form>
+      <div class="dl">
+        <button type="button" class="dos" data-dossier aria-pressed="true"><span class="dn">Taiwan UAS Defense Grid</span><span class="dc">conf. high</span><span class="dm">126 sources</span></button>
+        <button type="button" class="dos" data-dossier aria-pressed="false"><span class="dn">Japan Dual-Use Robotics Entry</span><span class="dc">conf. high</span><span class="dm">97 sources</span></button>
+        <button type="button" class="dos" data-dossier aria-pressed="false"><span class="dn">U.S. Generative AI Safety Mandate</span><span class="dc">conf. high</span><span class="dm">112 sources</span></button>
+        <button type="button" class="dos" data-dossier aria-pressed="false"><span class="dn">Singapore MedTech Sandbox</span><span class="dc">conf. moderate</span><span class="dm">58 sources</span></button>
+      </div>
+    </section>
+  </div>
+
+  <article class="page main" aria-labelledby="dt">
+    <dl class="memo">
+      <dt>Status</dt><dd>Verified dossier. <b>Sample data.</b></dd>
+      <dt>Country</dt><dd>Republic of China (Taiwan)</dd>
+      <dt>Refreshed</dt><dd style="display:flex;align-items:center;gap:10px"><span data-refreshed>2h ago</span><button type="button" class="icon-btn" data-refresh aria-label="Refresh dossier" style="width:38px;min-height:38px"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg></button></dd>
+    </dl>
+    <h2 class="d-title" id="dt">Taiwan UAS Defense Grid</h2>
+    <button type="button" class="confbtn" data-conf-toggle aria-expanded="false"><span>Confidence in this dossier: <b>high</b></span><span class="more">how scored</span></button>
+    <div class="confpanel" data-conf-panel hidden>
+      <p>Confidence counts independent sources per stakeholder, weighted by Admiralty grade (draft rules, docs/scoring.md). It is stated separately from likelihood.</p>
+      <ul><li>7 of 20 shown stakeholders rest on 6 or more sources</li><li>8 rest on 3–5 sources</li><li>5 rest on 2 sources and are marked thin</li></ul>
+    </div>
+    <div class="hold" style="margin-top:14px">
+      <div><b>48</b><span>stakeholders</span></div>
+      <div><b>126</b><span>cited sources</span></div>
+      <div class="a"><b>3</b><span>new alerts</span></div>
+    </div>
+    <section class="kj" aria-labelledby="kj-h">
+      <h3 class="kj-h" id="kj-h">Key judgment</h3>
+      <p>We judge it <mark>likely (55–80%)</mark> that a foreign subsystem supplier can qualify for Taiwan's drone procurement, if it partners locally for assembly. <span class="cite">[1][2][5]</span></p>
+      <div class="ruler" aria-hidden="true"><span></span><span></span><span></span><span></span><span class="on"></span><span></span><span></span></div>
+      <div class="ruler-k" aria-hidden="true"><span></span><span></span><span>unlikely</span><span>even</span><span class="on">likely</span><span></span><span></span></div>
+      <p class="conf">Moderate confidence: official sources agree on the policy, but only one company filing covers the prime contractor.</p>
+    </section>
+    <ol class="paras">
+      <li><span><mark>Committee review in 14 days.</mark> The drone procurement amendment goes to the Defense Committee; two supportive stakeholders are co-sponsors. <span class="cite">[4] <span class="grade">A1</span></span></span></li>
+      <li><span>Spectrum approvals are backlogged. File the NCC pre-consultation before the tender opens. <span class="cite">[6] <span class="grade">A1</span></span></span></li>
+      <li><span>TADTE 2027 (Taipei Nangang, 23–25 Sep 2027) is the one place 9 mapped stakeholders are expected together. <span class="cite">3 sources, thin</span></span></li>
+    </ol>
+    <div class="row-act"><a class="btn btn-main" href="02-map.html">Open the stakeholder map</a><a class="btn btn-ghost" href="05-report.html">A4 brief</a></div>
+  </article>
+
+  <aside class="page side" aria-labelledby="sn-h">
+    <h2 class="h" id="sn-h">Source notes</h2>
+    <ol class="srcs" id="srcs"></ol>
+    <p class="legend-a"><span class="grade">A1</span> Admiralty grade. Letter: how reliable the source is (A–F). Number: how credible this piece of information is (1–6).</p>
+  </aside>
+</main>
+<nav class="tabs" aria-label="Main">
+  <a href="01-home.html" aria-current="page"><span class="n">1</span>Dossiers</a>
+  <a href="02-map.html"><span class="n">2</span>Map</a>
+  <a href="#tracker"><span class="n">3</span>Tracker</a>
+  <a href="#network"><span class="n">4</span>Network</a>
+  <a href="05-report.html"><span class="n">5</span>Docs</a>
+</nav>
+<script>
+/* Sample data from src/fixtures/taiwan-uas.ts (Taiwan UAS). Placeholders in the fixture
+   ([Name], [DATE]) are shown as the contact's role and "date unverified", never as brackets. */
+var P = window.P || {};
+P.NODES = [
+  { id:'g1', short:'MND Armaments Bureau', name:'Ministry of National Defense — Armaments Bureau', role:'Runs defense procurement tenders; sets qualification rules for drone suppliers.', cat:'gov', st:'sup', infl:92, sup:62, src:14, action:'Request a pre-tender capability briefing; lead with supply-chain provenance.', x:-0.55, y:-0.35, z:0.25, cites:[1,2] },
+  { id:'g2', short:'NCSIST', name:'National Chung-Shan Institute of Science & Technology', role:'Defense R&D institute; runs testing and certification for UAS payloads.', cat:'gov', st:'neu', infl:85, sup:8, src:11, action:'Propose a joint field test on the 5.1 GHz detection gap.', x:-0.75, y:-0.05, z:-0.15, cites:[3] },
+  { id:'g3', short:'MOEA Industrial Dev.', name:'MOEA — Industrial Development Administration', role:'Funds local manufacturing and supply-chain subsidies.', cat:'gov', st:'sup', infl:74, sup:48, src:9, action:'Apply for co-financing once a local assembly partner is signed.', x:-0.3, y:-0.7, z:-0.1 },
+  { id:'g4', short:'Civil Aeronautics Admin.', name:'Civil Aeronautics Administration', role:'Registers drones and sets operating rules for civilian airspace.', cat:'gov', st:'neu', infl:58, sup:0, src:6, action:'Confirm dual-use registration path before any public demo.', x:-0.9, y:-0.45, z:0.4 },
+  { id:'g5', short:'NCC', name:'National Communications Commission', role:'Approves radio-frequency use for sensors and datalinks.', cat:'gov', st:'res', infl:61, sup:-34, src:5, action:'File spectrum pre-consultation early; approvals are backlogged.', x:-0.6, y:0.2, z:0.6, cites:[6] },
+  { id:'g6', short:'Defense Committee', name:'Legislative Yuan — Foreign Affairs & National Defense Committee', role:'Reviews defense budgets and procurement amendments.', cat:'gov', st:'sup', infl:80, sup:40, src:8, action:'Brief two co-sponsors before the committee review.', x:-0.2, y:-0.25, z:0.75, cites:[4] },
+  { id:'i1', short:'Drone Industry Alliance', name:'Drone industry alliance (TEDIBOA)', role:'260+ member companies; coordinates the "non-red" supply chain.', cat:'ind', st:'sup', infl:70, sup:55, src:7, action:'Join as associate member; fastest route to local partners.', x:0.45, y:-0.35, z:-0.35 },
+  { id:'i2', short:'State aerospace prime', name:'State-linked aerospace prime contractor', role:'Likely system integrator for large government drone contracts.', cat:'ind', st:'neu', infl:78, sup:12, src:6, action:'Position as a subsystem supplier, not a competitor.', x:0.15, y:-0.6, z:0.3, cites:[5] },
+  { id:'i3', short:'Listed drone OEM', name:'Listed drone OEM, Taichung', role:'Incumbent local manufacturer; competes for the same tenders.', cat:'ind', st:'res', infl:66, sup:-52, src:5, action:'Avoid head-on bids; explore a component licensing deal.', x:0.8, y:-0.1, z:0.15 },
+  { id:'i4', short:'Tier-1 telecom', name:'Tier-1 telecom operator', role:'Owns secure network infrastructure; potential datalink partner.', cat:'ind', st:'neu', infl:63, sup:5, src:4, action:'Test datalink compatibility before proposing partnership.', x:0.6, y:0.15, z:0.6 },
+  { id:'i5', short:'Taoyuan suppliers', name:'Component supplier cluster, Taoyuan', role:'Motors, batteries and frames; needed for local-content rules.', cat:'ind', st:'sup', infl:45, sup:38, src:3, action:'Shortlist two suppliers to meet local-content thresholds.', x:0.7, y:-0.5, z:-0.6 },
+  { id:'c1', short:'Kestrel Dual-Use Fund', name:'Kestrel Dual-Use Fund (fictional)', role:'Venture fund focused on dual-use hardware in Asia.', cat:'cap', st:'sup', infl:52, sup:60, src:3, action:'Share the dossier summary; ask for intros to portfolio integrators.', x:0.2, y:0.6, z:0.35 },
+  { id:'c2', short:'Harbor Lane FO', name:'Harbor Lane Family Office (fictional)', role:'Family office; invests $250k–$2M in industrial tech.', cat:'cap', st:'sup', infl:40, sup:45, src:2, action:'Approach after the first government pilot is confirmed.', x:0.45, y:0.75, z:0 },
+  { id:'c3', short:'Angel syndicate', name:'Angel syndicate, 14 members', role:'Individual investors; tickets of $2k–$50k.', cat:'cap', st:'neu', infl:30, sup:10, src:2, action:'Low priority until a local entity is set up.', x:-0.05, y:0.85, z:-0.2 },
+  { id:'c4', short:'National Dev. Fund', name:'National Development Fund', role:'Government co-investment vehicle for strategic industries.', cat:'cap', st:'neu', infl:68, sup:15, src:5, action:'Co-investment requires a Taiwan entity; plan for month 6.', x:-0.25, y:0.5, z:0.15 },
+  { id:'l1', short:'Cross-border counsel', name:'Independent counsel, cross-border VC', role:'Matches foreign startups with local investors; handles entity setup.', cat:'leg', st:'sup', infl:35, sup:50, src:2, action:'Book a scoping call on entity structure and investor intros.', x:-0.55, y:0.65, z:-0.45 },
+  { id:'l2', short:'Export-control firm', name:'Taipei law firm, export controls', role:'Advises on defense export licences and end-user checks.', cat:'leg', st:'neu', infl:48, sup:20, src:4, action:'Confirm export-licence needs before shipping demo units.', x:-0.85, y:0.35, z:-0.6 },
+  { id:'e1', short:'TADTE 2027', name:'Taipei Aerospace & Defense Technology Exhibition', role:'Sep 23–25, 2027, Taipei Nangang Hall 1. 9 mapped stakeholders expected.', cat:'evt', st:'evt', infl:70, sup:30, src:3, action:'Reserve a partner-booth slot; schedule 5 meetings in advance.', x:0.15, y:-0.1, z:-0.8 },
+  { id:'e2', short:'Drone ecosystem summit', name:'Drone ecosystem summit (date unverified)', role:'Industry-alliance event; investors and integrators attend.', cat:'evt', st:'evt', infl:50, sup:25, src:2, action:'Apply for the startup pitch track.', x:0.5, y:0.45, z:-0.55 },
+  { id:'e3', short:'Procurement briefing', name:'Defense procurement briefing day (date unverified)', role:'Annual supplier briefing by the procurement authority.', cat:'evt', st:'evt', infl:55, sup:20, src:2, action:'Register as a prospective supplier to receive the invitation.', x:-0.35, y:-0.55, z:0.7 }
+];
+P.EDGES = [['g1','g2'],['g1','g6'],['g1','i2'],['g2','i2'],['g2','i1'],['g3','i1'],['g3','i5'],['g3','c4'],['g4','i3'],['g5','i4'],['g6','g3'],['i1','i3'],['i1','i5'],['i2','i4'],['c1','c2'],['c1','l1'],['c4','c1'],['l2','i2'],['l1','c3'],['e1','g1'],['e1','i1'],['e1','i2'],['e2','i1'],['e2','c1'],['e3','g1'],['e3','g6'],['g4','g5'],['l2','g1']];
+P.TEAM = [
+  { id:'tm_you', short:'You', name:'You', role:'CEO', initials:'YO', source:'Manual entries', status:'CONNECTED', x:0, y:0.05, z:0 },
+  { id:'tm_mei', short:'Mei Chen', name:'Mei Chen', role:'BD lead', initials:'MC', source:'LinkedIn export', status:'CONNECTED', x:0.12, y:0.12, z:0.1 },
+  { id:'tm_priya', short:'Priya Nair', name:'Priya Nair', role:'Advisor, ex-defense', initials:'PN', source:'LinkedIn + contacts', status:'CONNECTED', x:-0.12, y:0.14, z:0.08 },
+  { id:'tm_dan', short:'Daniel Ruiz', name:'Daniel Ruiz', role:'CTO', initials:'DR', source:'Not connected yet', status:'INVITED', x:0.02, y:0.2, z:-0.12 }
+];
+/* contact = role at the organisation; the person's name stays in the teammate's own export */
+P.TIES = [
+  { m:'tm_mei', org:'i1', s:3, contact:'Secretariat contact', how:'Former colleague, 2019–21' },
+  { m:'tm_mei', org:'i2', s:2, contact:'BD manager', how:'1st-degree LinkedIn' },
+  { m:'tm_priya', org:'g2', s:2, contact:'Researcher', how:'Co-panelist, 2024 conference' },
+  { m:'tm_priya', org:'c1', s:3, contact:'Partner', how:'Invested in her last company' },
+  { m:'tm_you', org:'l1', s:3, contact:'Counsel', how:'Current advisor' }
+];
+P.CATS = { all:'All', gov:'Government', ind:'Industry', cap:'Capital', leg:'Legal', evt:'Events' };
+P.STANCE = { sup:'Supportive', neu:'Neutral', res:'Resistant', evt:'Event' };
+/* Sample source list (report sources [1]–[6]); Admiralty grade = reliability A–F + credibility 1–6 */
+P.SOURCES = [
+  { n:1, title:'Drone procurement policy notice', type:'Government gazette', grade:'A2', checked:'27 Oct 2026' },
+  { n:2, title:'Procurement authority tender archive', type:'Official record', grade:'A1', checked:'27 Oct 2026' },
+  { n:3, title:'NCSIST testing guidelines', type:'Official document', grade:'A2', checked:'24 Oct 2026' },
+  { n:4, title:'Committee meeting agenda', type:'Legislative record', grade:'A1', checked:'29 Oct 2026' },
+  { n:5, title:'Prime contractor annual report', type:'Company filing', grade:'B2', checked:'21 Oct 2026' },
+  { n:6, title:'NCC frequency-use rules', type:'Regulation', grade:'A1', checked:'22 Oct 2026' }
+];
+P.DOSSIER = { name:'Taiwan UAS Defense Grid', country:'Republic of China (Taiwan)', stakeholders:48, sources:126, alerts:3, shown:20,
+  client:'Skyward Robotics (fictional)', product:'Counter-UAS sensor kit', date:'30 Oct 2026', share:'portolan.app/s/q7Hk2mV9xR4tLp8wZc3NbF' };
+P.DOSSIERS = [
+  { name:'Taiwan UAS Defense Grid', conf:'High', pct:94, srcs:126 },
+  { name:'Japan Dual-Use Robotics Entry', conf:'High', pct:88, srcs:97 },
+  { name:'U.S. Generative AI Safety Mandate', conf:'High', pct:89, srcs:112 },
+  { name:'Singapore MedTech Sandbox', conf:'Moderate', pct:81, srcs:58 }
+];
+P.REC = ['g6','i1','g1']; /* recommended first contacts, in order */
+P.TRACK = [
+  { name:'Drone industry alliance', stage:'Contacted', next:'Intro meeting held, debrief due', due:'Yesterday', st:'sup' },
+  { name:'MND Armaments Bureau', stage:'Contacted', next:'Pre-tender briefing requested', due:'Nov 4', st:'sup' },
+  { name:'Kestrel Dual-Use Fund', stage:'Met', next:'Send dossier summary', due:'Nov 2', st:'sup' },
+  { name:'NCC (spectrum)', stage:'Found', next:'File spectrum pre-consultation', due:'Nov 8', st:'res' }
+];
+P.byId = {}; P.NODES.forEach(function(n){ P.byId[n.id]=n; });
+P.teamById = {}; P.TEAM.forEach(function(t){ P.teamById[t.id]=t; });
+P.band = function(v){ return v>=75?'High':v>=50?'Medium':'Low'; };
+P.conf = function(src){ return src>=6?'High':src>=3?'Moderate':'Thin'; };
+P.signed = function(v){ return (v>0?'+':v<0?'−':'±')+Math.abs(v); };
+P.dots = function(s){ return s>=3?'●●●':s===2?'●●○':'●○○'; };
+P.tiesFor = function(org){ return P.TIES.filter(function(t){return t.org===org;}); };
+P.memberTies = function(m){ return P.TIES.filter(function(t){return t.m===m;}); };
+P.warmPath = function(org){
+  var path=null;
+  P.TIES.forEach(function(t){ P.EDGES.forEach(function(e){
+    var other = e[0]===org?e[1]:(e[1]===org?e[0]:null);
+    if(other && other===t.org && (!path || t.s>path.tie.s)) path={tie:t, via:other};
+  });});
+  return path;
+};
+P.first = function(m){ return P.teamById[m].name.split(' ')[0]; };
+P.draft = function(m, contact, orgName, viaName){
+  return 'Hi '+P.first(m)+', could you introduce me to your '+contact.toLowerCase()+(viaName?' at '+viaName+', and ask whether they can connect us with '+orgName:' at '+orgName)+'?\n\nContext: we are entering Taiwan with counter-drone sensors that cover the 5.1 GHz detection gap. A 20-minute intro call is all I am asking for. I can send a short brief they can forward.';
+};
+P.esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+window.P = P;
+</script>
+<script>
+/* Home screen behaviour shared by every direction. Markup hooks:
+   [data-refresh] [data-refreshed] [data-form-toggle] [data-form] [data-progress]
+   [data-dossier] [data-conf-toggle] [data-conf-panel] */
+(function () {
+  function all(s) { return Array.prototype.slice.call(document.querySelectorAll(s)); }
+  all('[data-refresh]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (b.getAttribute('aria-busy') === 'true') return;
+      b.setAttribute('aria-busy', 'true');
+      all('[data-refreshed]').forEach(function (el) { el.textContent = 'refreshing…'; });
+      setTimeout(function () {
+        b.setAttribute('aria-busy', 'false');
+        all('[data-refreshed]').forEach(function (el) { el.textContent = 'just now'; });
+      }, 1400);
+    });
+  });
+  all('[data-form-toggle]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var f = document.querySelector('[data-form]');
+      var open = f.hasAttribute('hidden');
+      if (open) f.removeAttribute('hidden'); else f.setAttribute('hidden', '');
+      all('[data-form-toggle]').forEach(function (x) { x.textContent = open ? 'Close' : '+ New dossier'; x.setAttribute('aria-expanded', open); });
+      if (open) { var i = f.querySelector('input'); if (i) i.focus(); }
+    });
+  });
+  all('[data-dossier]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      all('[data-dossier]').forEach(function (x) { x.setAttribute('aria-pressed', x === b); });
+    });
+  });
+  all('[data-conf-toggle]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var p = document.querySelector('[data-conf-panel]');
+      var open = p.hasAttribute('hidden');
+      if (open) p.removeAttribute('hidden'); else p.setAttribute('hidden', '');
+      b.setAttribute('aria-expanded', open);
+    });
+  });
+  var form = document.querySelector('[data-form]');
+  if (form) form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var bad = null;
+    Array.prototype.forEach.call(form.querySelectorAll('[required]'), function (i) {
+      var ok = i.value.trim() && (i.type !== 'email' || /.+@.+\..+/.test(i.value));
+      i.setAttribute('aria-invalid', ok ? 'false' : 'true');
+      if (!ok && !bad) bad = i;
+    });
+    var err = form.querySelector('[data-form-error]');
+    if (bad) { if (err) { err.hidden = false; err.textContent = 'Fill in ' + bad.getAttribute('data-name') + ' to start research.'; } bad.focus(); return; }
+    if (err) err.hidden = true;
+    var btn = form.querySelector('[type=submit]');
+    btn.disabled = true; btn.textContent = 'Research running';
+    var list = document.querySelector('[data-progress]');
+    if (!list) return;
+    list.hidden = false; list.innerHTML = '';
+    var company = form.querySelector('[name=company]').value.trim();
+    var steps = [
+      'Queued research for ' + company + ' (preview only; no request is sent)',
+      'Reading procurement gazette notices',
+      'Source found: Drone procurement policy notice (A2)',
+      'Stakeholder found: MND Armaments Bureau, 2 sources',
+      'Source found: Committee meeting agenda (A1)',
+      'Stakeholder found: Defense Committee, 1 source',
+      'We will email the dossier link when all sources are checked'
+    ];
+    steps.forEach(function (s, i) {
+      setTimeout(function () { var li = document.createElement('li'); li.textContent = s; list.appendChild(li); }, 500 + i * 700);
+    });
+  });
+})();
+</script>
+<script>
+document.getElementById('srcs').innerHTML = P.SOURCES.map(function (s) {
+  return '<li><span class="n">[' + s.n + ']</span><span>' + s.title + ' <span class="grade">' + s.grade + '</span></span><span class="m">' + s.type + ', checked ' + s.checked + '</span></li>';
+}).join('');
+</script>
+</body>
+</html>

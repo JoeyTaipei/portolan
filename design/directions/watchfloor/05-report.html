@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Portolan · Watchfloor · A4 report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* Print version of Watchfloor: the screen is dark, paper is white. Amber becomes a fill, never text. */
+:root{--ink:#111A22;--dim:#5C6B78;--line:#C9D1D8;--amber:#FFB020;--sup:#1E8E76;--res:#C9473E;--neu:#6E7C88;--ui:'Barlow Semi Condensed',sans-serif;--mono:'JetBrains Mono',monospace}
+@page{size:A4;margin:0}
+*{box-sizing:border-box}
+body{margin:0;background:#0F171E;padding:24px 0;color:var(--ink);font-family:var(--ui)}
+.sheet{width:794px;height:1123px;margin:0 auto;background:#fff;display:flex;flex-direction:column;overflow:hidden}
+.strip{display:flex;align-items:center;gap:12px;background:var(--ink);color:#fff;padding:9px 36px;font:600 11px var(--mono);letter-spacing:.06em}
+.strip .wm{color:var(--amber);font-weight:700;letter-spacing:.14em}
+.strip .sp{flex:1}.strip .s{background:var(--amber);color:#111;padding:1px 6px;font-weight:700}
+.body{flex:1;display:flex;flex-direction:column;gap:12px;padding:18px 36px 16px}
+.hd{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:end;border-bottom:2px solid var(--ink);padding-bottom:10px}
+.hd .k{font:600 10.5px var(--mono);color:var(--dim);letter-spacing:.06em}
+.hd h1{margin:2px 0 3px;font-size:32px;font-weight:700;line-height:1}
+.hd p{margin:0;font-size:13.5px}
+.conf{text-align:right;font:600 11px var(--mono)}
+.conf b{display:block;font-size:20px;color:var(--sup)}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--ink)}
+.kpi div{padding:7px 10px}.kpi div+div{border-left:1px solid var(--line)}
+.kpi b{display:block;font:600 21px var(--mono);line-height:1.15}
+.kpi .lab{font:600 10px var(--mono);color:var(--dim);letter-spacing:.05em}
+.kpi .src{font:10px var(--mono);color:var(--dim)}
+.kpi .hot{background:var(--amber)}
+.kpi .hot .lab,.kpi .hot .src{color:#3A2C0E}
+.two{display:grid;grid-template-columns:1fr 268px;gap:16px}
+.sec{font:700 10.5px var(--mono);letter-spacing:.07em;color:var(--dim);margin:0 0 5px;display:flex;justify-content:space-between;border-bottom:1px solid var(--ink);padding-bottom:3px}
+.sum{margin:0;font-size:14px;line-height:1.45}
+.sum .c{font:10.5px var(--mono);color:var(--dim)}
+.mini{border:1px solid var(--ink)}
+.mini svg{display:block;width:100%;height:auto;background:#fff}
+.mini .lg{display:flex;flex-wrap:wrap;gap:2px 8px;padding:4px 6px;border-top:1px solid var(--line);font:9.5px var(--mono);color:var(--dim)}
+.mini .pm-l{font:600 8px var(--mono);fill:var(--ink);paint-order:stroke;stroke:#fff;stroke-width:2.5px}
+table{width:100%;border-collapse:collapse;font:11.5px var(--mono)}
+th{text-align:left;font-weight:700;font-size:10px;color:var(--dim);padding:3px 6px 3px 0;border-bottom:1px solid var(--ink);letter-spacing:.05em}
+td{padding:4px 6px 4px 0;border-bottom:1px solid var(--line);vertical-align:top}
+td.n{font:600 13px var(--ui);white-space:nowrap}
+td.r,th.r{text-align:right}
+td.mv{font:13px var(--ui)}
+.rk{display:inline-block;width:15px;text-align:center;background:var(--amber);font-weight:700;margin-right:5px}
+.st-sup{color:var(--sup)}.st-neu{color:var(--neu)}.st-res{color:var(--res)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.path{margin:0 0 6px;font-size:13.5px;font-weight:600;line-height:1.35}
+.plan{margin:0;padding:0;list-style:none;font-size:12.5px}
+.plan li{display:grid;grid-template-columns:68px 1fr;padding:3px 0;border-bottom:1px solid var(--line)}
+.plan b{font:700 10.5px var(--mono);padding-top:2px}
+.ev{margin:0;padding:0;list-style:none;font-size:12.5px}
+.ev li{display:grid;grid-template-columns:1fr auto;gap:8px;padding:3px 0;border-bottom:1px solid var(--line)}
+.ev .c{font:600 11px var(--mono)}
+.risk{margin:0;padding:0;list-style:none;font-size:12.5px}
+.risk li{padding:3px 0 3px 16px;border-bottom:1px solid var(--line);position:relative}
+.risk li::before{content:"!";position:absolute;left:0;top:3px;font:700 10px var(--mono);color:var(--res)}
+.srcs{margin-top:auto}
+.srcs table td{font-size:10.5px;padding:2px 6px 2px 0}
+.ft{display:flex;justify-content:space-between;margin-top:6px;font:10px var(--mono);color:var(--dim)}
+@media print{body{background:none;padding:0}}
+@media screen and (max-width:820px){body{padding:0;overflow-x:auto}}
+</style>
+</head>
+<body>
+<article class="sheet">
+  <div class="strip"><span class="wm">PORTOLAN</span><span>MARKET ENTRY BRIEF · CONFIDENTIAL</span><span class="sp"></span><span class="s">SAMPLE DATA</span></div>
+  <div class="body">
+    <header class="hd">
+      <div><span class="k">DOSSIER TWN-UAS · 30 OCT 2026</span><h1>Taiwan UAS Defense Grid</h1><p>Prepared for Skyward Robotics (fictional), counter-UAS sensor kit</p></div>
+      <div class="conf">CONFIDENCE<b>HIGH</b>126 SRC · 48 STAKEHOLDERS</div>
+    </header>
+    <div class="kpi">
+      <div><span class="lab">ENTRY READINESS</span><b>65–80</b><span class="src">/100 · LIKELY · [1][2][5]</span></div>
+      <div><span class="lab">OPPOSITION</span><b>10–25</b><span class="src">/100 · 2 RESISTANT · [5][6]</span></div>
+      <div class="hot"><span class="lab">WINDOW TO ACT</span><b>14 d</b><span class="src">COMMITTEE REVIEW · [4]</span></div>
+      <div><span class="lab">PIPELINE</span><b>28·9·4·1</b><span class="src">FOUND · CONT · MET · PARTNER</span></div>
+    </div>
+    <div class="two">
+      <section>
+        <p class="sec"><span>EXECUTIVE SUMMARY</span><span>SRC</span></p>
+        <p class="sum">Taiwan is diversifying its drone supply chain away from restricted suppliers <span class="c">[1]</span>. Foreign entrants with verifiable component provenance are welcome, but large contracts flow through a state-linked prime <span class="c">[5]</span>. Enter as a subsystem supplier, secure a local assembly partner, and file spectrum approvals early <span class="c">[6]</span>.</p>
+        <p class="sec" style="margin-top:12px"><span>RECOMMENDED ENTRY PATH</span></p>
+        <p class="path">Subsystem supplier to the prime, backed by alliance membership and a local assembly partner.</p>
+      </section>
+      <figure class="mini" style="margin:0"><svg id="mini" viewBox="0 0 268 180" role="img" aria-label="Fixed-angle snapshot of the stakeholder map"></svg>
+        <div class="lg"><span class="st-sup">● SUPPORTIVE</span><span class="st-neu">○ NEUTRAL</span><span class="st-res">● RESISTANT</span><span>◇ EVENT</span><span>SIZE = INFL</span></div></figure>
+    </div>
+    <section>
+      <p class="sec"><span>TOP 5 STAKEHOLDERS</span><span>HIGHLIGHT = CONTACT FIRST</span></p>
+      <table><thead><tr><th>NAME</th><th>STANCE</th><th class="r">INFL</th><th class="r">SUP</th><th>NEXT MOVE</th><th class="r">SRC</th></tr></thead><tbody id="top"></tbody></table>
+    </section>
+    <div class="cols">
+      <section><p class="sec"><span>7-DAY PLAN</span></p>
+        <ol class="plan"><li><b>D1–2</b>Brief two committee co-sponsors [4]</li><li><b>D3–4</b>Apply to join the drone industry alliance</li><li><b>D5</b>File NCC spectrum pre-consultation [6]</li><li><b>D6–7</b>Book TADTE meetings with the prime</li></ol></section>
+      <section><p class="sec"><span>WHERE TO MEET THEM</span><span>MAPPED</span></p>
+        <ul class="ev"><li>TADTE 2027 · Nangang · 23–25 Sep 2027<span class="c">9</span></li><li>Procurement briefing day · date unverified<span class="c">6</span></li><li>Drone ecosystem summit · date unverified<span class="c">5</span></li></ul>
+        <p class="sec" style="margin-top:10px"><span>KEY RISKS</span></p>
+        <ul class="risk"><li>Spectrum approval may outlast the tender window [6]</li><li>Incumbent OEM may contest foreign-supplier eligibility</li><li>Export licence needed before shipping demo units</li></ul></section>
+    </div>
+    <footer class="srcs">
+      <p class="sec"><span>SOURCES · 6 OF 126</span><span>GRADE · CHECKED</span></p>
+      <table><tbody id="srcs"></tbody></table>
+      <div class="ft"><span>portolan.app/s/q7Hk2mV9xR4tLp8wZc3NbF</span><span>Sample data. Every claim links to a cited source.</span></div>
+    </footer>
+  </div>
+</article>
+<script>
+/* Sample data from src/fixtures/taiwan-uas.ts (Taiwan UAS). Placeholders in the fixture
+   ([Name], [DATE]) are shown as the contact's role and "date unverified", never as brackets. */
+var P = window.P || {};
+P.NODES = [
+  { id:'g1', short:'MND Armaments Bureau', name:'Ministry of National Defense — Armaments Bureau', role:'Runs defense procurement tenders; sets qualification rules for drone suppliers.', cat:'gov', st:'sup', infl:92, sup:62, src:14, action:'Request a pre-tender capability briefing; lead with supply-chain provenance.', x:-0.55, y:-0.35, z:0.25, cites:[1,2] },
+  { id:'g2', short:'NCSIST', name:'National Chung-Shan Institute of Science & Technology', role:'Defense R&D institute; runs testing and certification for UAS payloads.', cat:'gov', st:'neu', infl:85, sup:8, src:11, action:'Propose a joint field test on the 5.1 GHz detection gap.', x:-0.75, y:-0.05, z:-0.15, cites:[3] },
+  { id:'g3', short:'MOEA Industrial Dev.', name:'MOEA — Industrial Development Administration', role:'Funds local manufacturing and supply-chain subsidies.', cat:'gov', st:'sup', infl:74, sup:48, src:9, action:'Apply for co-financing once a local assembly partner is signed.', x:-0.3, y:-0.7, z:-0.1 },
+  { id:'g4', short:'Civil Aeronautics Admin.', name:'Civil Aeronautics Administration', role:'Registers drones and sets operating rules for civilian airspace.', cat:'gov', st:'neu', infl:58, sup:0, src:6, action:'Confirm dual-use registration path before any public demo.', x:-0.9, y:-0.45, z:0.4 },
+  { id:'g5', short:'NCC', name:'National Communications Commission', role:'Approves radio-frequency use for sensors and datalinks.', cat:'gov', st:'res', infl:61, sup:-34, src:5, action:'File spectrum pre-consultation early; approvals are backlogged.', x:-0.6, y:0.2, z:0.6, cites:[6] },
+  { id:'g6', short:'Defense Committee', name:'Legislative Yuan — Foreign Affairs & National Defense Committee', role:'Reviews defense budgets and procurement amendments.', cat:'gov', st:'sup', infl:80, sup:40, src:8, action:'Brief two co-sponsors before the committee review.', x:-0.2, y:-0.25, z:0.75, cites:[4] },
+  { id:'i1', short:'Drone Industry Alliance', name:'Drone industry alliance (TEDIBOA)', role:'260+ member companies; coordinates the "non-red" supply chain.', cat:'ind', st:'sup', infl:70, sup:55, src:7, action:'Join as associate member; fastest route to local partners.', x:0.45, y:-0.35, z:-0.35 },
+  { id:'i2', short:'State aerospace prime', name:'State-linked aerospace prime contractor', role:'Likely system integrator for large government drone contracts.', cat:'ind', st:'neu', infl:78, sup:12, src:6, action:'Position as a subsystem supplier, not a competitor.', x:0.15, y:-0.6, z:0.3, cites:[5] },
+  { id:'i3', short:'Listed drone OEM', name:'Listed drone OEM, Taichung', role:'Incumbent local manufacturer; competes for the same tenders.', cat:'ind', st:'res', infl:66, sup:-52, src:5, action:'Avoid head-on bids; explore a component licensing deal.', x:0.8, y:-0.1, z:0.15 },
+  { id:'i4', short:'Tier-1 telecom', name:'Tier-1 telecom operator', role:'Owns secure network infrastructure; potential datalink partner.', cat:'ind', st:'neu', infl:63, sup:5, src:4, action:'Test datalink compatibility before proposing partnership.', x:0.6, y:0.15, z:0.6 },
+  { id:'i5', short:'Taoyuan suppliers', name:'Component supplier cluster, Taoyuan', role:'Motors, batteries and frames; needed for local-content rules.', cat:'ind', st:'sup', infl:45, sup:38, src:3, action:'Shortlist two suppliers to meet local-content thresholds.', x:0.7, y:-0.5, z:-0.6 },
+  { id:'c1', short:'Kestrel Dual-Use Fund', name:'Kestrel Dual-Use Fund (fictional)', role:'Venture fund focused on dual-use hardware in Asia.', cat:'cap', st:'sup', infl:52, sup:60, src:3, action:'Share the dossier summary; ask for intros to portfolio integrators.', x:0.2, y:0.6, z:0.35 },
+  { id:'c2', short:'Harbor Lane FO', name:'Harbor Lane Family Office (fictional)', role:'Family office; invests $250k–$2M in industrial tech.', cat:'cap', st:'sup', infl:40, sup:45, src:2, action:'Approach after the first government pilot is confirmed.', x:0.45, y:0.75, z:0 },
+  { id:'c3', short:'Angel syndicate', name:'Angel syndicate, 14 members', role:'Individual investors; tickets of $2k–$50k.', cat:'cap', st:'neu', infl:30, sup:10, src:2, action:'Low priority until a local entity is set up.', x:-0.05, y:0.85, z:-0.2 },
+  { id:'c4', short:'National Dev. Fund', name:'National Development Fund', role:'Government co-investment vehicle for strategic industries.', cat:'cap', st:'neu', infl:68, sup:15, src:5, action:'Co-investment requires a Taiwan entity; plan for month 6.', x:-0.25, y:0.5, z:0.15 },
+  { id:'l1', short:'Cross-border counsel', name:'Independent counsel, cross-border VC', role:'Matches foreign startups with local investors; handles entity setup.', cat:'leg', st:'sup', infl:35, sup:50, src:2, action:'Book a scoping call on entity structure and investor intros.', x:-0.55, y:0.65, z:-0.45 },
+  { id:'l2', short:'Export-control firm', name:'Taipei law firm, export controls', role:'Advises on defense export licences and end-user checks.', cat:'leg', st:'neu', infl:48, sup:20, src:4, action:'Confirm export-licence needs before shipping demo units.', x:-0.85, y:0.35, z:-0.6 },
+  { id:'e1', short:'TADTE 2027', name:'Taipei Aerospace & Defense Technology Exhibition', role:'Sep 23–25, 2027, Taipei Nangang Hall 1. 9 mapped stakeholders expected.', cat:'evt', st:'evt', infl:70, sup:30, src:3, action:'Reserve a partner-booth slot; schedule 5 meetings in advance.', x:0.15, y:-0.1, z:-0.8 },
+  { id:'e2', short:'Drone ecosystem summit', name:'Drone ecosystem summit (date unverified)', role:'Industry-alliance event; investors and integrators attend.', cat:'evt', st:'evt', infl:50, sup:25, src:2, action:'Apply for the startup pitch track.', x:0.5, y:0.45, z:-0.55 },
+  { id:'e3', short:'Procurement briefing', name:'Defense procurement briefing day (date unverified)', role:'Annual supplier briefing by the procurement authority.', cat:'evt', st:'evt', infl:55, sup:20, src:2, action:'Register as a prospective supplier to receive the invitation.', x:-0.35, y:-0.55, z:0.7 }
+];
+P.EDGES = [['g1','g2'],['g1','g6'],['g1','i2'],['g2','i2'],['g2','i1'],['g3','i1'],['g3','i5'],['g3','c4'],['g4','i3'],['g5','i4'],['g6','g3'],['i1','i3'],['i1','i5'],['i2','i4'],['c1','c2'],['c1','l1'],['c4','c1'],['l2','i2'],['l1','c3'],['e1','g1'],['e1','i1'],['e1','i2'],['e2','i1'],['e2','c1'],['e3','g1'],['e3','g6'],['g4','g5'],['l2','g1']];
+P.TEAM = [
+  { id:'tm_you', short:'You', name:'You', role:'CEO', initials:'YO', source:'Manual entries', status:'CONNECTED', x:0, y:0.05, z:0 },
+  { id:'tm_mei', short:'Mei Chen', name:'Mei Chen', role:'BD lead', initials:'MC', source:'LinkedIn export', status:'CONNECTED', x:0.12, y:0.12, z:0.1 },
+  { id:'tm_priya', short:'Priya Nair', name:'Priya Nair', role:'Advisor, ex-defense', initials:'PN', source:'LinkedIn + contacts', status:'CONNECTED', x:-0.12, y:0.14, z:0.08 },
+  { id:'tm_dan', short:'Daniel Ruiz', name:'Daniel Ruiz', role:'CTO', initials:'DR', source:'Not connected yet', status:'INVITED', x:0.02, y:0.2, z:-0.12 }
+];
+/* contact = role at the organisation; the person's name stays in the teammate's own export */
+P.TIES = [
+  { m:'tm_mei', org:'i1', s:3, contact:'Secretariat contact', how:'Former colleague, 2019–21' },
+  { m:'tm_mei', org:'i2', s:2, contact:'BD manager', how:'1st-degree LinkedIn' },
+  { m:'tm_priya', org:'g2', s:2, contact:'Researcher', how:'Co-panelist, 2024 conference' },
+  { m:'tm_priya', org:'c1', s:3, contact:'Partner', how:'Invested in her last company' },
+  { m:'tm_you', org:'l1', s:3, contact:'Counsel', how:'Current advisor' }
+];
+P.CATS = { all:'All', gov:'Government', ind:'Industry', cap:'Capital', leg:'Legal', evt:'Events' };
+P.STANCE = { sup:'Supportive', neu:'Neutral', res:'Resistant', evt:'Event' };
+/* Sample source list (report sources [1]–[6]); Admiralty grade = reliability A–F + credibility 1–6 */
+P.SOURCES = [
+  { n:1, title:'Drone procurement policy notice', type:'Government gazette', grade:'A2', checked:'27 Oct 2026' },
+  { n:2, title:'Procurement authority tender archive', type:'Official record', grade:'A1', checked:'27 Oct 2026' },
+  { n:3, title:'NCSIST testing guidelines', type:'Official document', grade:'A2', checked:'24 Oct 2026' },
+  { n:4, title:'Committee meeting agenda', type:'Legislative record', grade:'A1', checked:'29 Oct 2026' },
+  { n:5, title:'Prime contractor annual report', type:'Company filing', grade:'B2', checked:'21 Oct 2026' },
+  { n:6, title:'NCC frequency-use rules', type:'Regulation', grade:'A1', checked:'22 Oct 2026' }
+];
+P.DOSSIER = { name:'Taiwan UAS Defense Grid', country:'Republic of China (Taiwan)', stakeholders:48, sources:126, alerts:3, shown:20,
+  client:'Skyward Robotics (fictional)', product:'Counter-UAS sensor kit', date:'30 Oct 2026', share:'portolan.app/s/q7Hk2mV9xR4tLp8wZc3NbF' };
+P.DOSSIERS = [
+  { name:'Taiwan UAS Defense Grid', conf:'High', pct:94, srcs:126 },
+  { name:'Japan Dual-Use Robotics Entry', conf:'High', pct:88, srcs:97 },
+  { name:'U.S. Generative AI Safety Mandate', conf:'High', pct:89, srcs:112 },
+  { name:'Singapore MedTech Sandbox', conf:'Moderate', pct:81, srcs:58 }
+];
+P.REC = ['g6','i1','g1']; /* recommended first contacts, in order */
+P.TRACK = [
+  { name:'Drone industry alliance', stage:'Contacted', next:'Intro meeting held, debrief due', due:'Yesterday', st:'sup' },
+  { name:'MND Armaments Bureau', stage:'Contacted', next:'Pre-tender briefing requested', due:'Nov 4', st:'sup' },
+  { name:'Kestrel Dual-Use Fund', stage:'Met', next:'Send dossier summary', due:'Nov 2', st:'sup' },
+  { name:'NCC (spectrum)', stage:'Found', next:'File spectrum pre-consultation', due:'Nov 8', st:'res' }
+];
+P.byId = {}; P.NODES.forEach(function(n){ P.byId[n.id]=n; });
+P.teamById = {}; P.TEAM.forEach(function(t){ P.teamById[t.id]=t; });
+P.band = function(v){ return v>=75?'High':v>=50?'Medium':'Low'; };
+P.conf = function(src){ return src>=6?'High':src>=3?'Moderate':'Thin'; };
+P.signed = function(v){ return (v>0?'+':v<0?'−':'±')+Math.abs(v); };
+P.dots = function(s){ return s>=3?'●●●':s===2?'●●○':'●○○'; };
+P.tiesFor = function(org){ return P.TIES.filter(function(t){return t.org===org;}); };
+P.memberTies = function(m){ return P.TIES.filter(function(t){return t.m===m;}); };
+P.warmPath = function(org){
+  var path=null;
+  P.TIES.forEach(function(t){ P.EDGES.forEach(function(e){
+    var other = e[0]===org?e[1]:(e[1]===org?e[0]:null);
+    if(other && other===t.org && (!path || t.s>path.tie.s)) path={tie:t, via:other};
+  });});
+  return path;
+};
+P.first = function(m){ return P.teamById[m].name.split(' ')[0]; };
+P.draft = function(m, contact, orgName, viaName){
+  return 'Hi '+P.first(m)+', could you introduce me to your '+contact.toLowerCase()+(viaName?' at '+viaName+', and ask whether they can connect us with '+orgName:' at '+orgName)+'?\n\nContext: we are entering Taiwan with counter-drone sensors that cover the 5.1 GHz detection gap. A 20-minute intro call is all I am asking for. I can send a short brief they can forward.';
+};
+P.esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+window.P = P;
+</script>
+<script>
+(function () {
+  var C = { sup: '#1E8E76', neu: '#6E7C88', res: '#C9473E' };
+  function shape(st, r) {
+    if (st === 'evt') return '<rect x="' + (-r * .72) + '" y="' + (-r * .72) + '" width="' + (r * 1.44) + '" height="' + (r * 1.44) + '" transform="rotate(45)" fill="#fff" stroke="#111A22" stroke-width="1.2"/>';
+    return st === 'neu' ? '<circle r="' + r + '" fill="#fff" stroke="' + C.neu + '" stroke-width="1.4"/>' : '<circle r="' + r + '" fill="' + C[st] + '"/>';
+  }
+  var W = 268, H = 180, ang = 0.5, tilt = 0.38, cx = W / 2, cy = H / 2 - 4, R = 78;
+  var ca = Math.cos(ang), sa = Math.sin(ang), ct = Math.cos(tilt), stt = Math.sin(tilt);
+  function pr(o) { var x1 = o.x * ca + o.z * sa, z1 = -o.x * sa + o.z * ca, y2 = o.y * ct - z1 * stt, z2 = o.y * stt + z1 * ct, f = 2.8 / (2.8 + z2); return { x: cx + x1 * R * f, y: cy + y2 * R * f, z: z2, f: f }; }
+  var s = '';
+  for (var gx = 0; gx <= W; gx += 24) s += '<line x1="' + gx + '" y1="0" x2="' + gx + '" y2="' + H + '" stroke="#EEF1F3"/>';
+  for (var gy = 0; gy <= H; gy += 24) s += '<line x1="0" y1="' + gy + '" x2="' + W + '" y2="' + gy + '" stroke="#EEF1F3"/>';
+  P.EDGES.forEach(function (e) { var a = pr(P.byId[e[0]]), b = pr(P.byId[e[1]]); s += '<line x1="' + a.x.toFixed(1) + '" y1="' + a.y.toFixed(1) + '" x2="' + b.x.toFixed(1) + '" y2="' + b.y.toFixed(1) + '" stroke="#9AA6B0" stroke-width=".6"/>'; });
+  P.NODES.map(function (n) { return { n: n, p: pr(n) }; }).sort(function (a, b) { return b.p.z - a.p.z; }).forEach(function (q) {
+    var r = (2.4 + q.n.infl * 0.045) * q.p.f, k = P.REC.indexOf(q.n.id);
+    s += '<g transform="translate(' + q.p.x.toFixed(1) + ',' + q.p.y.toFixed(1) + ')">' + (k >= 0 ? '<rect x="' + (-r - 4) + '" y="' + (-r - 4) + '" width="' + (2 * r + 8) + '" height="' + (2 * r + 8) + '" fill="#FFB020"/>' : '') + shape(q.n.st, r) + (q.n.infl >= 78 || k >= 0 ? '<text class="pm-l" x="' + (r + 5) + '" dy="0.35em">' + q.n.short + '</text>' : '') + '</g>';
+  });
+  document.getElementById('mini').innerHTML = s;
+  document.getElementById('top').innerHTML = ['g1', 'g2', 'g6', 'i2', 'g5'].map(function (id) {
+    var n = P.byId[id], k = P.REC.indexOf(id);
+    return '<tr><td class="n">' + (k >= 0 ? '<span class="rk">' + (k + 1) + '</span>' : '<span class="rk" style="background:none"></span>') + n.short + '</td><td class="st-' + n.st + '">' + P.STANCE[n.st].toUpperCase() + '</td><td class="r">' + n.infl + '</td><td class="r st-' + n.st + '">' + P.signed(n.sup) + '</td><td class="mv">' + n.action + '</td><td class="r">' + n.cites.map(function (c) { return '[' + c + ']'; }).join('') + '/' + n.src + '</td></tr>';
+  }).join('');
+  document.getElementById('srcs').innerHTML = P.SOURCES.map(function (x) { return '<tr><td>[' + x.n + ']</td><td>' + x.title + '</td><td>' + x.type.toUpperCase() + '</td><td><b>' + x.grade + '</b></td><td class="r">' + x.checked.toUpperCase() + '</td></tr>'; }).join('');
+})();
+</script>
+</body>
+</html>
