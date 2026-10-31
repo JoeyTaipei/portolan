@@ -310,6 +310,21 @@ body[data-state=loading] .right,body[data-state=error] .right{display:none!impor
   .sheet-handle span{width:42px;height:5px;border-radius:3px;background:var(--ink2);opacity:.45}
 }
 @media (prefers-reduced-motion:reduce){.nis .ic.spin .needle{animation:none}.right{transition:none}}
+
+/* Founder choice: phone details as a sheet (default) or below the map as in the mockup */
+.layout-pick{display:none}
+@media (max-width:1023px){
+  .layout-pick{display:flex;order:1;align-items:center;justify-content:space-between;gap:8px;padding:6px 8px;border:1px dashed var(--rule-strong);border-radius:var(--r-m);font-size:12.5px;color:var(--ink2)}
+  .layout-pick div{display:flex;gap:4px}
+  .layout-pick button{min-height:34px;padding:0 10px;border:1px solid var(--rule);border-radius:var(--r-s);background:var(--panel);color:var(--ink);font:600 12.5px var(--font);cursor:pointer}
+  .layout-pick button[aria-pressed=true]{background:var(--tile-on);color:var(--tile-on-ink);border-color:var(--tile-on)}
+  body.layout-below .mapwrap{padding-bottom:110px}
+  body.layout-below .right{display:contents!important;position:static;transform:none}
+  body.layout-below .sheet-handle{display:none}
+  body.layout-below .right .inspector{border:1px solid var(--rule-strong);border-radius:var(--r-l);background:var(--panel);padding:14px}
+  body.layout-below .right .blk,body.layout-below .right.has-sel .blk{order:9}
+  body.layout-below .ins-actions{position:static;margin:14px 0 0;padding:0;border:0;background:none}
+}
 </style>
 </head>
 <body>
@@ -327,6 +342,7 @@ body[data-state=loading] .right,body[data-state=error] .right{display:none!impor
 </header>
 <main class="mapwrap">
   <div class="side">
+    <div class="layout-pick" role="group" aria-label="Phone layout for details (design preview)"><span>Details layout (preview)</span><div><button type="button" data-layout="sheet">Sheet over map</button><button type="button" data-layout="below">Below map</button></div></div>
     <div class="m-head"><p class="k">Stakeholder map</p><h1>Taiwan UAS Defense Grid</h1><p>20 of 48 stakeholders shown. Size shows influence.</p></div>
     <div class="seg" role="group" aria-label="View"><button type="button" data-map-view="3d">3D map</button><button type="button" data-map-view="mx">Power matrix</button></div>
     <button type="button" class="team-t" data-map-team><span><b>Your team's connections</b><small id="team-sub">Show who already knows someone</small></span><span class="sw" aria-hidden="true"></span></button>
@@ -1005,6 +1021,20 @@ if (!P.confirm) P.confirm = function (btn, text) { btn.textContent = text; btn.s
       else if (a === 'retry') { P.confirm(b, 'Loading…', 0); b.disabled = true; setTimeout(function () { box.hidden = true; map.state.paused = false; }, 1100); }
     });
   }
+})();
+</script>
+<script>
+/* Founder choice between the two phone layouts; also ?layout=below|sheet, remembered per browser */
+(function () {
+  var m = /[?&]layout=(below|sheet)/.exec(location.search), saved = null;
+  try { saved = localStorage.getItem('portolan-layout'); } catch (e) {}
+  function apply(v) {
+    document.body.classList.toggle('layout-below', v === 'below');
+    Array.prototype.forEach.call(document.querySelectorAll('[data-layout]'), function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-layout') === v); });
+    try { localStorage.setItem('portolan-layout', v); } catch (e) {}
+  }
+  apply(m ? m[1] : saved || 'sheet');
+  Array.prototype.forEach.call(document.querySelectorAll('[data-layout]'), function (b) { b.addEventListener('click', function () { apply(b.getAttribute('data-layout')); window.scrollTo(0, 0); }); });
 })();
 </script>
 </body>
