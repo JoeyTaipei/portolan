@@ -55,14 +55,26 @@ code{font-size:.9em;background:#EEEEEC;padding:0 4px}
 .note{margin-top:12px;font-size:13.5px;color:var(--ink2)}
 @media (max-width:1100px){.cmp{grid-template-columns:minmax(0,1fr)}.prev{max-width:520px}}
 @media (max-width:720px){.rec{grid-template-columns:minmax(0,1fr)}header.top h1{font-size:25px}}
+
+.steps{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 18px}
+.steps a{display:flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--rule);background:var(--paper);text-decoration:none;font-size:14.5px}
+.steps a b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ink2);color:#fff;font-size:12px}
+.steps a[aria-current=page]{border:2px solid var(--ink)}.steps a[aria-current=page] b{background:var(--ink)}
+.steps .dev{margin-left:auto;display:flex;border:1px solid var(--rule);background:var(--paper)}
+.steps .dev button{min-height:38px;padding:0 14px;border:0;background:none;font:inherit;font-size:14px;cursor:pointer}
+.steps .dev button[aria-pressed=true]{background:var(--ink);color:#fff}
+.steps .note2{width:100%;margin:0;font-size:13px;color:var(--ink2)}
+.desk .prev{grid-template-columns:1fr}
+.desk .ph{aspect-ratio:1280/800}
 </style>
 </head>
 <body>
 <div class="wrap">
+  <nav class="steps" aria-label="Design choices"><a href="directions.html"><b>1</b>選方向（4 個）</a><a href="colors.html" aria-current="page"><b>2</b>選配色（3 個，都是 Sounding 方向）</a><div class="dev" role="group" aria-label="Preview size"><button type="button" data-dev="phone" aria-pressed="true">手機預覽</button><button type="button" data-dev="desk" aria-pressed="false">電腦預覽</button></div><p class="note2">每個畫面都會自動配合螢幕：在電腦上打開是多欄的電腦版（1280px），在手機上是手機版（390px）。上面的切換只改這頁的縮圖。</p></nav>
   <header class="top">
     <h1>Portolan 配色三選一（都是 Sounding 的結構）</h1>
     <p>三個版本的版面、地圖、元件完全一樣：羅盤線、立場形狀、虛線連起先聯絡的三個、下一步卡片附來源數和等級章，加上 Estimate 的 ICD 機率尺、A1/B2 等級章和聯絡人塗黑條。只有顏色、字體和立場記號不同。資料是 <code>src/fixtures/taiwan-uas.ts</code>，每頁標 Sample data。</p>
-    <p>每個版本都有 <code>direction.md</code> 草稿（token、字級、間距、圓角、立場編碼、電腦版面、該做和不該做），選定的那份可以直接改名成 <code>design/direction.md</code>。四個原始方向的比較在 <a href="index.html">index.html</a>。</p>
+    <p>每個版本都有 <code>direction.md</code> 草稿（token、字級、間距、圓角、立場編碼、電腦版面、該做和不該做），選定的那份可以直接改名成 <code>design/direction.md</code>。四個原始方向的比較在 <a href="directions.html">第 1 步：選方向</a>。</p>
   </header>
 
   <div class="cmp">
@@ -132,9 +144,12 @@ code{font-size:.9em;background:#EEEEEC;padding:0 4px}
   </section>
 </div>
 <script>
-/* scale each 390px preview to its box */
-function fit(){document.querySelectorAll('.ph').forEach(function(b){var f=b.querySelector('iframe');f.style.transform='scale('+(b.clientWidth/390)+')';});}
-window.addEventListener('resize',fit);fit();
+/* Phone or desktop thumbnails; the real pages adapt to whatever screen opens them */
+(function(){var desk=false;
+function fit(){document.querySelectorAll('.ph').forEach(function(b){var f=b.querySelector('iframe');var w=desk?1280:390,h=desk?800:844;f.style.width=w+'px';f.style.height=h+'px';f.style.transformOrigin='0 0';f.style.transform='scale('+(b.clientWidth/w)+')';});}
+document.querySelectorAll('[data-dev]').forEach(function(btn){btn.addEventListener('click',function(){desk=btn.getAttribute('data-dev')==='desk';document.body.classList.toggle('desk',desk);document.querySelectorAll('[data-dev]').forEach(function(x){x.setAttribute('aria-pressed',x===btn);});fit();});});
+window.addEventListener('resize',fit);fit();})();
 </script>
+
 </body>
 </html>
