@@ -52,6 +52,11 @@
 - 先有 docs/spec.md 和 docs/plan.md 才寫功能；衝突時停下來問
 - 有取捨就給 2–3 個選項和優缺點讓我選
 - 一次一個垂直切片，做完就 commit；每個切片一條分支和一個 PR，不要自己合併
+- 同一區塊的相關小改（例如幾個 UI 微調）集中在同一個 session 一次做完，不拆成好幾個 session
+- 新元件或有視覺取捨時，先做一個獨立 HTML 頁並排 2–3 種版本讓我選，選定才寫進 App
+- 規格不清楚或複雜的功能：先用 grilling skill 一次問一題，把 UX 和技術細節問定、寫進 docs/spec.md，然後 /compact 再開始寫程式
+- 我回到 session 或你重新接手時：先用白話 2–3 句說目前狀態和下一步要做什麼，一次只問一個問題
+- 審查關卡：開 PR 前在新的 session（模型選 Sonnet）同步最新基底分支、跑 npm test 和 npm run build、/code-review、/verify-ui 截圖；我以看截圖為主
 - 指令：開發 npm run dev（第二個 worktree 用 PORT=3001 npm run dev）；單元測試 npm test（Vitest）；端到端 npx playwright test；建置 npm run build
 - 查函式庫用法先讀官方文件，不要憑記憶
 - 只做這個切片在 docs/plan.md 列的事：只改列出的檔案；不加計畫外的功能、工具函式或套件；不改 migration 和 src/lib/types.ts，除非計畫寫了；要越界先停下來問
