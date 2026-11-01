@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Sans_Condensed } from "next/font/google";
+import { AnalyticsProvider } from "@/lib/analytics";
 import "./globals.css";
 
 // One family only (design/direction.md): IBM Plex Sans Condensed, 400–700 + italic.
@@ -25,7 +26,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${plexCondensed.variable} h-full antialiased`}>
-      <body className="min-h-full">{children}</body>
+      <body className="min-h-full">
+        {children}
+        <AnalyticsProvider />
+      </body>
     </html>
   );
 }
