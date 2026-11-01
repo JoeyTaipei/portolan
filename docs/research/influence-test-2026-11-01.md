@@ -71,3 +71,27 @@ Where we differ:
 3. **Buyers are over-rated relative to the founder.** We rank the Coast Guard and Police Agency 2nd–3rd; the founder 6th–7th.
 
 Caveats: one expert, 10 items, one duplicate. Ask the founder why AIDC and ITRI are 3rd and 5th before changing weights.
+
+## Re-run with the clarified rubric (2-pass + 3rd if split, US$0.36)
+
+| Founder rank | Stakeholder | Before | After |
+|---|---|---|---|
+| 1 | Defense Committee | Medium 53 | Medium 53 |
+| 2 | NCSIST | High 71 | High 70 |
+| 3 | AIDC | Low 33 | Low 33 |
+| 4 | Armaments Bureau | High 87 | High 87 |
+| 5 | ITRI | Low 30 | Medium 50 |
+| 6 | National Police Agency | High 77 | High 82 |
+| 7 | Coast Guard | High 82 | High 82 |
+| 8 | Tron Future | Medium 45 | Medium 62 |
+| 9 | Taiwania Capital | Low 15 | Low 6 |
+| 10 | Lee and Li | no score | no score |
+
+Spearman fell to **0.34 / 0.43** (from 0.44 / 0.57). The model applied the new wording; the gap is evidence:
+- Defense Committee: its sources show it reviewing the drone bill, while the plenary passes the budget, so budget stayed 1.
+- AIDC: its sources show it only as one bidder in the NPA tender, so it stayed low.
+- Tron Future: the gatekeeper wording lifted it (prime on the Army C-UAS contract), against the founder's view.
+
+Conclusion: the remaining gap is knowledge the founder has that our sources don't (e.g. AIDC as the defence ministry's aerospace prime, the committee's practical power over the defence budget). Rubric wording can't add it; better research queries or expert input as a dated, attributed source can.
+
+Cost: 7 of 10 needed a 3rd pass, so "3rd only if split" averages about 2.7 passes; at S3's live price (about US$0.029 per pass) that is about US$3.8 for 48 entities, still over the US$3.5 Claude cap.
