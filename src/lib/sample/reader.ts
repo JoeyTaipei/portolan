@@ -1,6 +1,6 @@
 // The sample dossier behind /d/sample. Never touches the database (spec §5).
-// S0b swaps the import below to the curated, sourced src/fixtures/sample-dossier.ts.
+// Curated, sourced data from the Parallel spike (spec D1, plan S0b).
 import type { Dossier } from "@/lib/types";
-import { standInDossier } from "./stand-in";
+import { sampleDossier as curated } from "@/fixtures/sample-dossier";
 
-export const sampleDossier: Dossier = standInDossier;
+export const sampleDossier: Dossier = curated;
