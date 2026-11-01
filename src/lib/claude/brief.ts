@@ -10,7 +10,7 @@ import { briefMetrics, briefStatus, contactFirst, quadrant, resistant, scoreStak
 import type { Brief, Dossier, IcdTerm, KeyJudgment, MeetItem, PlanAction, Sentence } from "@/lib/types";
 import { callStructured, claudeLive, type LedgerContext } from "./client";
 import { relabel } from "./mock";
-import { sourceBlocks, type PromptSource } from "./prompts";
+import { attr, fence, sourceBlocks, type PromptSource } from "./prompts";
 
 // The `brief` step and RE-BRIEF (spec §11.1, docs/scoring.md §5–7). Opus 5.5, effort high,
 // structured output. Code decides everything that is a number or an order: the metrics, the
@@ -117,10 +117,10 @@ function userPrompt(args: Inputs, p: ReturnType<typeof plan>): string {
       const influence = sc?.influence ? `${sc.influence.level} (${sc.influence.low}–${sc.influence.high})` : "not rated";
       const support = sc?.support.kind === "known" ? `${sc.support.score > 0 ? "+" : ""}${sc.support.score} (${sc.support.stance})` : "Unknown";
       const lines = [
-        ...facts.map((f) => `- ${f.field}: ${String(f.value)} [${f.sourceIds.map((i) => label.get(i)).filter(Boolean).join(", ")}]`),
-        ...stmts.map((x) => `- statement (${x.rating > 0 ? "+" : ""}${x.rating}): ${x.summary} [${label.get(x.sourceId) ?? ""}]`),
+        ...facts.map((f) => `- ${f.field}: ${fence(String(f.value))} [${f.sourceIds.map((i) => label.get(i)).filter(Boolean).join(", ")}]`),
+        ...stmts.map((x) => `- statement (${x.rating > 0 ? "+" : ""}${x.rating}): ${fence(x.summary)} [${label.get(x.sourceId) ?? ""}]`),
       ];
-      return `<stakeholder key="${s.id}" name="${s.name.replace(/"/g, "'")}"${s.nameZh ? ` name_zh="${s.nameZh}"` : ""} category="${s.category}">
+      return `<stakeholder key="${s.id}" name="${attr(s.name)}"${s.nameZh ? ` name_zh="${attr(s.nameZh)}"` : ""} category="${s.category}">
 Influence: ${influence}; support: ${support}; status: ${s.status}
 ${lines.join("\n")}
 </stakeholder>`;
@@ -130,7 +130,7 @@ ${lines.join("\n")}
     .filter((e) => e.status === "sourced" && e.date && e.date >= today)
     .map((e) => {
       e.sourceIds.forEach((i) => cited.add(i));
-      return `- ${e.date} · ${e.kind} · ${e.title} [${e.sourceIds.map((i) => label.get(i)).filter(Boolean).join(", ")}]`;
+      return `- ${e.date} · ${e.kind} · ${fence(e.title)} [${e.sourceIds.map((i) => label.get(i)).filter(Boolean).join(", ")}]`;
     });
   const sources = d.sources
     .filter((s) => s.accepted && cited.has(s.id))
@@ -141,14 +141,14 @@ ${lines.join("\n")}
     ["Existing Taiwan partners", d.twPartners],
     ["Client's own deadline", d.clientDeadline],
   ]
-    .map(([k, v]) => `${k}: ${v ?? "not given"}`)
+    .map(([k, v]) => `${k}: ${v ? fence(v) : "not given"}`)
     .join("\n");
   return `Today is ${today}.
 
 <client>
-Company: ${d.company}
-Product: ${d.product}
-Goal: ${d.goal}
+Company: ${fence(d.company)}
+Product: ${fence(d.product)}
+Goal: ${fence(d.goal)}
 Target market: Taiwan
 ${optional}
 </client>
@@ -339,4 +339,9 @@ export async function writeBrief(args: Inputs & { ledger: LedgerContext }): Prom
     inputsAt: now.toISOString(),
   };
   return { ok: true, brief: { draft, removed, log, model } };
+}
+
+/** The user prompt for one brief, exposed for the prompt-fencing test. */
+export function briefPrompt(args: Inputs): string {
+  return userPrompt(args, plan(args));
 }
