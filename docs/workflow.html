@@ -172,6 +172,10 @@ ul.refs{margin:0;padding-left:18px;font-size:14px;display:flex;flex-direction:co
       <tr><td>自動審查機器人、GitHub Code Review</td><td>GitHub 上的 Code Review 要 Team／Enterprise 方案；MVP 本機 <code>/code-review</code> 加你看 preview 就夠。</td></tr>
       <tr><td>效能爬坡、<code>claude -p</code> 自動化</td><td>沒有使用者之前沒有東西可以優化。送出後再接進每週流程。</td></tr>
       <tr><td><code>/sandbox</code>、容器</td><td>會擋到 npm、gh、Vercel 的網路，衝刺期間很麻煩。auto mode 加上金鑰只放 <code>.env.local</code> 就夠；之後跑無人看管的排程任務再開。</td></tr>
+      <tr><td>另一家公司的模型審查</td><td>不同公司的模型會抓到不同問題。這台 Mac mini 沒裝 Codex 或 Gemini CLI；送出後裝一個，只用在大或有風險的 PR（像 S3、S7、S8）。</td></tr>
+      <tr><td>使用者回報迴圈</td><td>回報 → Claude 只讀不改地調查 → 開 GitHub issue 附短摘要，或當雜訊／重複關掉 → 你核准 → 修、審、上線。一開始只讓最安全的約 10% 自己跑，其他 90% 等你點頭。衝刺期間先把使用者回報貼進一個 session 讓它分類。</td></tr>
+      <tr><td>公開 changelog</td><td>用合併的 PR 產生版本紀錄，比 commit 數更能證明進度；也能放進 YC 申請的「進度」。</td></tr>
+      <tr><td>從自己的 session 找迴圈</td><td>累積一週 session 後，分析自己重複在做的事，挑一兩個做成第一批迴圈；不要照抄別人的 skill。</td></tr>
     </tbody>
   </table></div>
 </section>
