@@ -116,3 +116,14 @@
 - C 是在同一次 ultra 名單上補資料；沒有測「把第一步 schema 改小、要求 40–50 個實體」之後 ultra 會列幾個。S3 第一個測試就測這個。
 - 只跑了一個案例，各一次；結果會有變動。
 - 實際帳單數字要到 Parallel 網站確認。
+
+## S3-T8 實測（2026-11-01，Joey 在對話確認「Yes, run it」）
+用 S3 的程式碼（`RESEARCH_MODE=live`）跑：一個 Task Group 2 個 `core`（警政署、創未來），再用 Sonnet 5.5 對警政署評 3 次取多數（0004）。
+- **Task Group 輪詢可行**：`GET /v1/tasks/groups/{id}` 的 `is_active`、`task_run_status_counts` 正常，2 個 run 193 秒完成。
+- **Basis 陣列欄位的名稱**：`ties`、`ties.0`、`events.0`…，和 `steps.ts` 的前綴比對一致。
+- **即時評分通過來源檢查**：角色、局長（張榮興）、正式職權 3、預算 2、最近行動 3、下一步都有來源且摘錄逐字找得到；「接近決策者」三次是 none、none、2 → none（多數決有作用）。2 筆立場、5 筆可信度、4 筆翻譯。
+- **費用**：Parallel US$0.05（估計）＋ Claude 實際 US$0.088（每次約 7.3k 輸入、1.5k 輸出 token，每次 US$0.029）= 約 **US$0.14**，比預估的 US$0.09–0.10 多約 US$0.04。
+- **⚠ 費用風險**：每個實體 3 次 × US$0.029 ≈ US$0.088；48 個實體約 US$4.2，**超過每份 Claude US$3.5 上限**（評分可用 US$2.9，約 33 個實體）。超過時程式會停止評分、剩下的標「研究中」，不會超支，但地圖會不完整。要選：降低每次的輸入（來源摘錄截短）、改 2 次、或調高上限。
+
+## 還沒驗證（S3 之後）
+- **Task Group 的 run 會不會送 webhook**：這次沒有公開的 https 網址可收（localhost 收不到，第三方收件網址被沙箱擋下），所以沒測。正確性不靠它：進度端點會輪詢 Task Group（P-5）。要測就把 `APP_BASE_URL` 設成部署好的網址、在 Vercel 設好 Parallel 的 webhook secret 後跑一次。
