@@ -159,6 +159,9 @@ ul.refs{margin:0;padding-left:18px;font-size:14px;display:flex;flex-direction:co
       <tr><td>模型和思考深度</td><td>用預設模型。Spec、評分、研究引擎用 <code>/effort high</code>；畫面切片用預設。不用 <code>/advisor</code>：比較慢、也比較貴。</td></tr>
       <tr><td>權限</td><td>用 auto mode（Claude Code 2.1.283 以後的預設）：安全的指令自動跑，危險的會擋下或問你，不用一直按允許。金鑰只放 <code>.env.local</code>，不貼進對話。</td></tr>
       <tr><td>審查</td><td>每個 PR 跑 <code>/code-review</code>；S3、S7、S8 再加 <code>/security-review</code>（金鑰、prompt injection、上傳檔、分享連結）。最後你看過 preview 才合併。</td></tr>
+      <tr><td>審查意見先分類</td><td>審查一定會找到東西，就算沒有大問題。每條意見標「多常發生」和「多嚴重」，交回寫程式的 session 問「必修還是想太多」，只修必修的；同一個 PR 最多重審一次。</td></tr>
+      <tr><td>風險變更先停</td><td>動到來源與「未驗證」標記、金鑰或付費 API、中國只做機構層級、dossier id 和分享連結、上傳的人脈檔時，Claude 先列出可能傷到使用者的地方和驗證方法，再動手。</td></tr>
+      <tr><td>測試不灌水</td><td>Claude 很容易寫一堆只為了通過的測試。只保留計畫列的、修 bug 的，和同一類錯誤第二次出現時加的那一個。</td></tr>
     </tbody>
   </table></div>
   <div class="tbl"><table>
