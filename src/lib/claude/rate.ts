@@ -7,16 +7,40 @@ import { mockRate } from "./mock";
 import { RATE_SYSTEM, ratePrompt, type PromptClient } from "./prompts";
 import { RatingOutput } from "./schemas";
 
-// The `rate` step (spec §7.2) with the source-check loop (§7.7) folded in: one Sonnet call per
-// entity; code drops claims citing ids we didn't supply (§7.8), checks every remaining claim,
-// sends failures back once with the reasons, and stores what still fails as Unverified.
-// Refusal or invalid output (after at most 2 retries) → every rating for the entity Unverified.
+// The `rate` step (spec §7.2) with the source-check loop (§7.7) folded in. Live: three Sonnet
+// passes over the same sources, and each influence factor takes the majority answer
+// (docs/scoring.md §0, decision 0004): "none" counts as an answer, and so does a rating that
+// fails the source check; three different answers → the middle value. The cited source and
+// quote come from a pass in the majority. The three passes take the place of the single §7.7
+// re-ask (at most 3 calls per entity, spec §7.8). Code drops claims citing ids we didn't
+// supply and checks every claim; what fails is stored Unverified. A failed or refused pass
+// casts no vote; no successful pass → every rating Unverified. Mock: one pass over S0b.
+// Structural zeros and the 2-factor minimum are scoring rules (src/lib/scoring), not here.
 
 export const NO_ROUTE = "Find a sourced contact route first";
 export const NO_RATING = "No sourced rating";
-// Adaptive thinking counts against max_tokens, so leave room beyond the JSON itself.
-const MAX_TOKENS = 16000;
-const RATED: FactField[] = ["authority", "budget", "access", "recent"];
+// Adaptive thinking counts against max_tokens, so leave room beyond the JSON (a pass uses about
+// 1k output tokens at medium effort). Kept moderate because the ledger reserves the worst case
+// until the actual comes in: 8 entities × 3 passes in flight ≈ 24 × US$0.07 ≈ US$1.8, under
+// the US$2.9 rating cap.
+const MAX_TOKENS = 6000;
+const FACTORS = ["authority", "budget", "access", "recent"] as const;
+/** Live passes per entity (decision 0004). Each pass writes its own cost-ledger estimate. */
+export const RATE_PASSES = 3;
+
+/**
+ * Majority over the passes' answers (null = "none"). No majority → the middle value, with
+ * "none" ordered below 0; with two different answers, the lower one.
+ */
+export function vote(answers: (Rating03 | null)[]): Rating03 | null {
+  if (!answers.length) return null;
+  const count = new Map<Rating03 | null, number>();
+  for (const a of answers) count.set(a, (count.get(a) ?? 0) + 1);
+  const [top, n] = [...count].sort((a, b) => b[1] - a[1])[0];
+  if (n > answers.length / 2) return top;
+  const sorted = [...answers].sort((a, b) => (a ?? -1) - (b ?? -1));
+  return sorted[Math.floor((sorted.length - 1) / 2)];
+}
 
 export interface RateSource extends CheckSource {
   label: string;
@@ -84,15 +108,10 @@ function collect(raw: Raw, entity: RateEntity, byLabel: Map<string, RateSource>,
   // Names only for sourced public officials (spec §16 Q6); China is organisation level only.
   if (entity.category === "gov" && !entity.isChina) fact("head", raw.head);
   fact("action", raw.next_step);
-  const seen = new Set<string>();
-  for (const r of raw.ratings) {
-    if (!isInt(r.rating, 0, 3)) {
-      log.push(`${r.factor}: dropped rating out of range (${r.rating})`);
-      continue;
-    }
-    if (seen.has(r.factor)) continue;
-    seen.add(r.factor);
-    fact(r.factor, r, r.rating as Rating03);
+  for (const f of FACTORS) {
+    const r = raw.ratings?.[f];
+    if (!r || r.rating === "none") continue;
+    fact(f, r, Number(r.rating) as Rating03);
   }
   for (const s of raw.statements) {
     if (!isInt(s.rating, -2, 2)) {
@@ -137,61 +156,62 @@ export async function rateEntity(args: {
   const live = claudeLive();
   let model: string | null = live ? MODELS.sonnet : "mock";
 
-  // At most 3 calls per entity (spec §7.8: no more than 2 retries): up to 2 for the first
-  // answer, and the one §7.7 retry with the failure reasons.
-  let callsLeft = 3;
-  const ask = async (failures?: string[]): Promise<Raw | null> => {
+  const ask = async (): Promise<Raw | null> => {
     if (!live) return mockRate(args.entity, args.sources);
-    const tries = failures ? 1 : 2;
-    for (let attempt = 0; attempt < tries && callsLeft > 0; attempt++) {
-      callsLeft--;
-      const r = await callStructured({
-        model: MODELS.sonnet,
-        system: RATE_SYSTEM,
-        user: ratePrompt({ client: args.client, entity: args.entity, sources: args.sources, today: args.today, failures }),
-        schema: RatingOutput,
-        maxTokens: MAX_TOKENS,
-        effort: "medium",
-        ledger: args.ledger,
-      });
-      if (r.ok) return r.data;
-      log.push(`Claude ${r.reason}: ${r.detail}`);
-      if (r.reason === "budget") return null;
-    }
+    const r = await callStructured({
+      model: MODELS.sonnet,
+      system: RATE_SYSTEM,
+      user: ratePrompt({ client: args.client, entity: args.entity, sources: args.sources, today: args.today }),
+      schema: RatingOutput,
+      maxTokens: MAX_TOKENS,
+      effort: "medium",
+      ledger: args.ledger,
+    });
+    if (r.ok) return r.data;
+    log.push(`Claude ${r.reason}: ${r.detail}`);
     return null;
   };
 
-  const passed: ReturnType<typeof collect> = [];
-  let raw = args.sources.length ? await ask() : null;
-  if (raw) {
-    const first = check(collect(raw, args.entity, byLabel, log), byId, args.runId);
-    passed.push(...first.passed);
-    // §7.7: failures go back to Claude once with the reasons (live only; the mock is curated).
-    if (first.failed.length && live) {
-      raw = await ask(first.failed.flatMap((f) => f.problems));
-      if (raw) {
-        const again = check(collect(raw, args.entity, byLabel, log), byId, args.runId);
-        const key = (c: (typeof passed)[number]) => c.fact?.field ?? `st:${c.statement!.sourceId}:${c.statement!.quote}`;
-        const have = new Set(passed.map(key));
-        passed.push(...again.passed.filter((c) => !have.has(key(c))));
-        for (const f of again.failed) log.push(...f.problems.map((p) => `Unverified after retry: ${p}`));
-      }
-    } else {
-      for (const f of first.failed) log.push(...f.problems.map((p) => `Unverified: ${p}`));
-    }
-  } else {
+  const raws = args.sources.length
+    ? (await Promise.all(Array.from({ length: live ? RATE_PASSES : 1 }, ask))).filter((x): x is Raw => x !== null)
+    : [];
+  const passes = raws.map((raw, i) => {
+    const { passed, failed } = check(collect(raw, args.entity, byLabel, log), byId, args.runId);
+    for (const f of failed) log.push(...f.problems.map((p) => `Unverified (pass ${i + 1}): ${p}`));
+    return { raw, passed };
+  });
+  if (!passes.length) {
     model = null;
-    if (args.sources.length === 0) log.push("No accepted sources: everything Unverified");
+    log.push(args.sources.length ? "No valid rating pass: everything Unverified" : "No accepted sources: everything Unverified");
   }
+  const factOf = (p: (typeof passes)[number], field: FactField) => p.passed.find((c) => c.fact?.field === field)?.fact ?? null;
+
+  const byField = new Map<FactField, FactDraft>();
+  for (const f of FACTORS) {
+    const answers = passes.map((p) => factOf(p, f));
+    const winner = vote(answers.map((a) => a?.rating ?? null));
+    const pick = winner === null ? null : answers.find((a) => a?.rating === winner);
+    if (pick) byField.set(f, pick);
+    if (passes.length > 1 && new Set(answers.map((a) => a?.rating ?? "none")).size > 1) {
+      log.push(`${f}: passes said ${answers.map((a) => a?.rating ?? "none").join(", ")} → ${winner ?? "none"}`);
+    }
+  }
+  // Role, head and next step: the first pass that has a checked one.
+  for (const field of ["role", "head", "action"] as const) {
+    const hit = passes.map((p) => factOf(p, field)).find((x) => x !== null);
+    if (hit) byField.set(field, hit);
+  }
+  // Statements, credibility and translations from one pass only, so nothing counts three times.
+  const main = passes.find((p) => p.passed.some((c) => c.statement)) ?? passes[0];
+  const raw = main?.raw ?? null;
+  const passed = main?.passed ?? [];
 
   // One fact per field; missing ones are stored Unverified so screens can say "based on 3 of 5".
   const facts: FactDraft[] = [];
-  const byField = new Map<FactField, FactDraft>();
-  for (const c of passed) if (c.fact && !byField.has(c.fact.field)) byField.set(c.fact.field, c.fact);
   const unverified = (field: FactField, value: string): FactDraft => ({ field, value, rating: null, quote: null, sourceIds: [], status: "unverified" });
   facts.push(byField.get("role") ?? unverified("role", args.entity.whyRelevant || args.entity.name));
   if (byField.has("head")) facts.push(byField.get("head")!);
-  if (args.entity.category !== "evt") for (const f of RATED) facts.push(byField.get(f) ?? unverified(f, NO_RATING));
+  if (args.entity.category !== "evt") for (const f of FACTORS) facts.push(byField.get(f) ?? unverified(f, NO_RATING));
   facts.push(byField.get("action") ?? unverified("action", NO_ROUTE));
 
   const statements = passed.flatMap((c) => (c.statement ? [c.statement] : []));

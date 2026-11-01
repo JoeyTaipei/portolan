@@ -13,6 +13,12 @@ const cited = {
 
 export const RatedFactor = z.enum(["authority", "budget", "access", "recent"]);
 
+const FactorRating = z.object({
+  rating: z.enum(["0", "1", "2", "3", "none"]).describe('0–3 per the rubric, or "none" if no source supports a rating'),
+  value: z.string().describe('Short reason for the rating, one sentence ("" when none)'),
+  ...cited,
+});
+
 export const RatingOutput = z.object({
   role: z
     .object({ value: z.string().describe("What this organisation does that matters for the client's goal, one sentence"), ...cited })
@@ -24,14 +30,13 @@ export const RatingOutput = z.object({
     })
     .nullable()
     .describe("Only a public official or executive named in a source; null if none, or if the organisation is in China"),
-  ratings: z.array(
-    z.object({
-      factor: RatedFactor,
-      rating: z.number().int().describe("0–3 per the rubric"),
-      value: z.string().describe("Short reason for the rating, one sentence"),
-      ...cited,
-    }),
-  ),
+  // One slot per factor; "none" = no source supports a rating (docs/scoring.md §0).
+  ratings: z.object({
+    authority: FactorRating,
+    budget: FactorRating,
+    access: FactorRating,
+    recent: FactorRating,
+  }),
   statements: z.array(
     z.object({
       rating: z.number().int().describe("−2 clearly against … +2 clearly for foreign companies like the client"),

@@ -42,7 +42,7 @@ export const RATE_SYSTEM = `You rate one stakeholder for a startup entering Taiw
 
 ${DATA_RULES}
 
-Influence ratings, each 0–3, judged as power over the client's goal (not general importance). Rate a factor only when a source supports it; otherwise omit it.
+Influence ratings, each 0–3, judged as power over the client's goal (not general importance). Rate a factor only when a source supports it; otherwise answer "none" with no source ids.
 - authority: 3 decides or approves this procurement, licence or grant by law; 2 gives formal advice or review; 1 takes part with no formal decision; 0 no formal role.
 - budget: 3 drafts or approves this budget; 2 executes or allocates it; 1 can influence its priorities (e.g. committee questioning); 0 unrelated to the budget.
 - access: 3 is the decision-maker or reports directly to them; 2 meets them regularly or proposes jointly; 1 occasional contact (same committee, event); 0 no contact found.

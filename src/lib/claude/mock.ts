@@ -49,7 +49,16 @@ function findSampleStakeholder(entity: { name: string; nameZh: string | null }, 
 }
 
 export function mockRate(entity: { name: string; nameZh: string | null }, sources: PromptSource[]): RatingOutput {
-  const out: RatingOutput = { role: null, head: null, ratings: [], statements: [], credibility: [], next_step: null, translations: [] };
+  const none = { rating: "none" as const, value: "", source_ids: [], quote: "" };
+  const out: RatingOutput = {
+    role: null,
+    head: null,
+    ratings: { authority: none, budget: none, access: none, recent: none },
+    statements: [],
+    credibility: [],
+    next_step: null,
+    translations: [],
+  };
   const st = findSampleStakeholder(entity, sources);
   if (!st) return out;
   const used = new Set<string>();
@@ -62,7 +71,7 @@ export function mockRate(entity: { name: string; nameZh: string | null }, source
     else if (f.field === "head") out.head = claim;
     else if (f.field === "action") out.next_step = claim;
     else if (f.rating !== null && (f.field === "authority" || f.field === "budget" || f.field === "access" || f.field === "recent")) {
-      out.ratings.push({ factor: f.field, rating: f.rating, ...claim });
+      out.ratings[f.field] = { rating: String(f.rating) as "0" | "1" | "2" | "3", ...claim };
     }
   }
   for (const s of sample.statements.filter((x) => x.stakeholderId === st.id)) {
