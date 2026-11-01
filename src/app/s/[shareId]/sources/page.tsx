@@ -7,20 +7,13 @@ import { buildSourcesModel } from "@/components/sources/model";
 import { SourceList } from "@/components/sources/source-list";
 import { SourcesSkeleton } from "@/components/sources/sources-skeleton";
 import { loadByShareId } from "@/lib/db/load-dossier";
-import { isShareId, SAMPLE_SHARE_ID } from "@/lib/ids";
 
 export const metadata = { title: "Report sources · Portolan" };
 
 // /s/[shareId]/sources: only the sources the shared report cites, without the facts list.
-export function generateStaticParams() {
-  return [{ shareId: SAMPLE_SHARE_ID }];
-}
-
-export default async function SharedSourcesPage({ params }: PageProps<"/s/[shareId]/sources">) {
-  // A malformed id (a dossier id is never one: "sample" isn't 22 characters) is a real 404
-  // before anything streams, with no lookup.
-  const { shareId } = await params;
-  if (!isShareId(shareId)) notFound();
+// Malformed ids (a dossier id like "sample" is never a share id) are a real 404 via the
+// rewrite in next.config.ts, before anything streams.
+export default function SharedSourcesPage({ params }: PageProps<"/s/[shareId]/sources">) {
   return (
     <Suspense fallback={<SourcesSkeleton />}>
       <Content params={params} />
