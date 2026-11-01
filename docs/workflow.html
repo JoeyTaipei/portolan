@@ -310,7 +310,7 @@ gh 要登入 JoeyTaipei 帳號。需要我輸入密碼、登入或按允許時�
 <div class="note">內容：Next.js 骨架、<code>design/</code>（原始設計稿 + 8 個畫面的 390px 截圖 + 可讀原始碼）、<code>src/fixtures/taiwan-uas.ts</code>、<code>design/intent.md</code>、<code>CLAUDE.md</code>、<code>/verify-ui</code> skill、<code>.env.example</code>。</div></div></li>
     <li><input type="checkbox" id="m2-2"><div><div class="t"><span class="you">創辦人</span>讀 <code>design/intent.md</code>，補完標「待補」的地方</div>
 <div class="note">目標使用者、評分怎麼算、研究跑多久、每天上限、文件要不要收費、第一批審稿專家。用說的也可以，直接講給 Claude 改。</div></div></li>
-    <li><input type="checkbox" id="m2-3"><div><div class="t"><span class="cc">Claude</span>GitHub repo 和本機資料夾改名，連上 Vercel：在桌面版開 session，貼上</div>
+    <li><input type="checkbox" id="m2-3" checked><div><div class="t"><span class="cc">Claude</span>GitHub repo 和本機資料夾改名，連上 Vercel：在桌面版開 session，貼上</div>
 <pre><code>把 GitHub repo JoeyTaipei/atlas 改名成 portolan（gh repo rename portolan），更新 git remote，
 把本機資料夾改成 ~/code/portolan。npm install，npm run build 確認能過。
 確認 .env.local 存在，然後停下來讓我自己貼金鑰。
@@ -326,7 +326,7 @@ gh 要登入 JoeyTaipei 帳號。需要我輸入密碼、登入或按允許時�
 <section class="phase">
   <div class="ph-head"><span class="ph-num">3</span><h2>Spec、設計方向、Parallel 試做、Plan</h2><span class="where">桌面版 · 只做一次</span></div>
   <ol class="steps">
-    <li><input type="checkbox" id="m3-1"><div><div class="t"><span class="cc">Claude</span>寫整個 MVP 的 spec</div>
+    <li><input type="checkbox" id="m3-1" checked><div><div class="t"><span class="cc">Claude</span>寫整個 MVP 的 spec</div>
 <pre><code>/agent-skills:spec 讀 CLAUDE.md、design/intent.md、design/screens/ 的截圖、
 design/mockup/src/ 的 8 個 template 和 src/fixtures/，寫整個 MVP 的 docs/spec.md：
 路由、每頁的載入中／空資料／錯誤狀態、電腦版面（主要 1440 和 1920，最小 1280）和手機能讀的單欄版、資料表、
@@ -335,7 +335,7 @@ Parallel 和 Claude 的分工、研究流程（非同步、顯示進度）、費
 intent.md 第 5 節的每一列都要對到 spec 的一個功能，最後附對照表。
 可信度照 intent.md 第 10 節：ICD 203 用語 + 數字區間、Admiralty A–F／1–6、分數用區間 + 公開評分表（寫進 docs/scoring.md）。
 有取捨時給我 2–3 個選項和優缺點，一次問一個問題。</code></pre></div></li>
-    <li><input type="checkbox" id="m3-2"><div><div class="t"><span class="you">你</span>回答問題，讀完 <code>docs/spec.md</code>，尤其是評分和來源規則</div>
+    <li><input type="checkbox" id="m3-2" checked><div><div class="t"><span class="you">你</span>回答問題，讀完 <code>docs/spec.md</code>，尤其是評分和來源規則</div>
 <div class="note">這是客戶能不能信任 Portolan 的核心，Claude 不能替你決定。</div></div></li>
     <li><input type="checkbox" id="m3-d1" checked><div><div class="t"><span class="cc">Claude</span>做 4 個設計方向，畫成可以點的畫面</div>
 <pre><code>先讀 docs/research/generic-risks.md 和 design/screens/，用 frontend-design skill 做 4 個設計方向。
@@ -360,7 +360,7 @@ https://docs.parallel.ai/findall-api/findall-quickstart 。
 有沒有找到投資人／律師／活動（04 網絡要用）、各花多久、各花多少錢。
 結果寫進 docs/decisions/0001-research-engine.md，給我建議。程式放 scripts/spike/，不要進正式程式碼。</code></pre></div></li>
     <li><input type="checkbox" id="m3-4" checked><div><div class="t"><span class="you">你</span>選一個做法（品質夠、每份 dossier 的成本你能接受）</div></div></li>
-    <li><input type="checkbox" id="m3-5"><div><div class="t"><span class="cc">Claude</span>拆成切片</div>
+    <li><input type="checkbox" id="m3-5" checked><div><div class="t"><span class="cc">Claude</span>拆成切片</div>
 <pre><code>/agent-skills:plan 依 docs/spec.md 和 docs/decisions/ 拆成垂直切片，寫進 docs/plan.md：
 S0 骨架（型別 src/lib/types.ts、主題和字體照 design/direction.md、底部分頁、Supabase migration + RLS、
    PostHog、Vitest + Playwright、.claude/settings.json 的指令白名單）
@@ -387,9 +387,9 @@ S8 上線前檢查
 <section class="phase">
   <div class="ph-head"><span class="ph-num">4</span><h2>桌面版平行開發</h2><span class="where">Mac mini · Claude 桌面版</span></div>
   <ol class="steps">
-    <li><input type="checkbox" id="m4-1"><div><div class="t"><span class="you">你</span>每個切片開一個新 session，打開 Worktree，名稱用切片編號（例如「S1 ui」）</div>
+    <li><input type="checkbox" id="m4-1" checked><div><div class="t"><span class="you">你</span>每個切片開一個新 session，打開 Worktree，名稱用切片編號（例如「S1 ui」）</div>
 <div class="note">ui 這條依序做 S0、S1、S2、S5、S6、S7。一個切片一個 session，做完、合併就封存，下一個切片開新的，context 才乾淨。</div></div></li>
-    <li><input type="checkbox" id="m4-2"><div><div class="t"><span class="you">你</span>S0 合併後，另開 engine 這條的 session（同樣打開 Worktree），做 S3、S4</div>
+    <li><input type="checkbox" id="m4-2" checked><div><div class="t"><span class="you">你</span>S0 合併後，另開 engine 這條的 session（同樣打開 Worktree），做 S3、S4</div>
 <div class="note">engine 的開發伺服器用 <code>PORT=3001 npm run dev</code>，避免和 ui 搶 3000。S4 做完，engine 接著做 S6、S7 需要的伺服器部分（會前簡報草稿、匯出檔解析、機構比對）。</div></div></li>
     <li><input type="checkbox" id="m4-3"><div><div class="t">平行規則</div>
 <div class="note">最多同時 2 個寫程式的 session。同一個檔案只能一條改；<code>src/lib/types.ts</code> 和 migration 只在 ui 改，engine 要改先講。收到通知再切過去處理，其他時間不用盯。睡前讓一個 <code>/goal</code> 整晚跑，早上看結果。</div></div></li>
