@@ -611,8 +611,8 @@ export function influenceScore(r: InfluenceRatings): Banded | null {
   - `checks`: the source-check loop over the sample fixture (an unsourced claim, a quote not in its excerpt, or a missing verified date fails the test); pre-display check (missing source id, person not on the map, placeholder, individual in China → sentence removed and logged).
   - `limits`: email and site-wide counts, UTC+8 day boundary, cost cap blocks the call.
   - `team`: LinkedIn CSV (with the note lines at the top), Google CSV and vCard parsing that drops email/phone; formula-prefixed values neutralised; oversized or binary files rejected; organisation matching; 2-hop limit on warm paths; no data left after withdrawal.
-  - State flows: documents, intros, tracker stages and Undo.
-- **Playwright end-to-end** (`RESEARCH_MODE=mock`, no spend): all eight screens on `/d/sample` at 1280, 1440, 1920 and 390; create a dossier → progress lines appear → done; debrief → support changes → Out of date → Undo; the A4 print preview is one page; the share link doesn't show the tracker; `?state=` for the three states; no horizontal scroll at 1280; no console errors.
+  - State flows: tracker stages and Undo (documents and intros dropped 2026-11-01, `docs/plan.md` P-17).
+- **Playwright end-to-end** (`RESEARCH_MODE=mock`, no spend; trimmed 2026-11-01, see `docs/plan.md` P-17): one demo-path walk on `/d/sample` (no console errors, no horizontal scroll at 1280, A4 print preview is one page, the share link doesn't show the tracker, debrief → support changes → Out of date → Undo); create a dossier → progress lines appear → done; `?state=` for the three states. Four-width screenshots of all eight screens are checked by hand with `/verify-ui`, not Playwright.
 - Bug fixes: write a failing test first. Add a dedicated test only when the same kind of bug happens a second time.
 - Definition of done (each slice): `npm test` and `npm run build` pass, `/verify-ui` is run, and the browser console has no errors.
 

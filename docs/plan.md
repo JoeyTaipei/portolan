@@ -35,7 +35,7 @@
 | 16:00–20:00 | Fix only what users hit | — | Send URL, record demo + founder video, write application |
 | 11/2 ~20:00 | | | **Submit** (16 h buffer to the deadline) |
 
-Total estimate: about 37 lane-hours (ui 21 h, engine 16 h) plus about 3 h of your reviews.
+Total estimate: about 37 lane-hours for the full spec; with the simpler versions and trimmed tests (P-16, P-17) about 31 (ui 18 h, engine 13 h), plus about 3 h of your reviews. The clock times below keep the original slots as buffer.
 
 ---
 
@@ -57,6 +57,8 @@ Total estimate: about 37 lane-hours (ui 21 h, engine 16 h) plus about 3 h of you
 | P-12 | **`cacheComponents: true` is on** (`next.config.ts`). Pages read per-request data (searchParams, the dossier) inside `<Suspense>`; `loading.tsx` files are the skeletons. Every UI slice reads the caching docs first. | This Next.js differs from older versions. |
 | P-13 | **`/verify-ui` is user-invoked only** (`disable-model-invocation: true`). Inside `/goal`, Claude follows the steps in `.claude/skills/verify-ui/SKILL.md` with the built-in browser or Playwright MCP and prints the screenshots; you can still type `/verify-ui` at the end. | The skill can't be called by the model. |
 | P-14 | **Vitest can't resolve `server-only`** (Next.js bundles it). `vitest.config.ts` aliases `server-only` to an empty module. | Server modules stay testable. |
+| P-16 | **Simpler versions are the default** (Joey, 2026-11-01 evening). Every "Simpler version" below is built first; the fuller spec behaviour comes after the YC submission. All are spec defaults or borrowed patterns, not intent §5 rows; none touches sourcing, Unverified, China, the debrief → support loop or the A4 report. | 28 h left vs ~37 h for the full spec. |
+| P-17 | **Tests trimmed to what protects users and money** (Joey, 2026-11-01 evening). Unit: scoring, sample sourcing, source-check + pre-display, quality + China filters, refresh matching, limits + cost cap, team parsing/matching/withdrawal, tracker debrief/Undo. Docs/intro state-flow unit tests are dropped. E2E: one `e2e/demo-path.spec.ts` grown by S1, S2, S5 (sample walk with no console errors and no sideways scroll at 1280; A4 is one page; share link hides the tracker; debrief → support → Out of date → Undo), plus `e2e/create.spec.ts` (S4, mock create → ready) and the existing `e2e/shell.spec.ts`. Four-width screenshots stay manual (`/verify-ui`), not Playwright. | Spec §17 updated to match. |
 | P-15 | **The dev stand-in strips mockup placeholders.** `src/lib/sample/stand-in.ts` maps `taiwan-uas.ts` into the new types and drops `[DATE]`-style fields, "5.1 GHz", the fictional funds (Kestrel, Harbor Lane) and the US$7B figure, marking them Unverified. Until S0b merges, production `/d/sample` shows stand-in data, so the URL is not shared before S8. | No placeholders on screen, even in dev. |
 
 ---
@@ -147,7 +149,7 @@ The slice's `/goal acceptance` block is what gets pasted into `/goal`. Each task
 
 **Tests added**: `src/lib/scoring/scoring.test.ts` (spec §17 scoring); `e2e/shell.spec.ts` (§17 "`?state=` for the three states").
 
-**Simplify if behind**: "Still loading…" after 8 s (spec default) → drop the timer, keep the skeleton.
+**Simpler version (built by default)**: "Still loading…" after 8 s (spec default) → drop the timer, keep the skeleton.
 
 **/goal acceptance**: §4 block with routes `/`, `/d/sample`, `/d/not-a-real-id`; specs `e2e/shell.spec.ts`; plus:
 ```
@@ -187,7 +189,7 @@ The slice's `/goal acceptance` block is what gets pasted into `/goal`. Each task
 
 **Tests added**: `src/fixtures/sample-dossier.test.ts` (§17 checks: "source-check loop over the sample fixture").
 
-**Simplify if behind**: none — S0b is P1 and has no spec defaults; if short of time, curate fewer stakeholders (≥20) rather than relax sourcing.
+**Simpler version (built by default)**: none — S0b has no spec defaults; if short of time, curate fewer stakeholders (≥20) rather than relax sourcing.
 
 **/goal acceptance**:
 ```
@@ -215,7 +217,7 @@ The slice's `/goal acceptance` block is what gets pasted into `/goal`. Each task
 - *Dossier ids in the browser list* (`browser-dossiers.ts`): ids stored in localStorage are visible to anyone using that browser. Verify: only ids and names are stored, no email; the list is never sent anywhere.
 - *Sample writes*: "Add to tracker" on the sample must never hit the server or a paid API. Verify: network log during the e2e shows no POST on `/d/sample`.
 
-**Files** (allowed regex: `^(src/app/(page|loading|error)\.tsx|src/app/d/\[id\]/(page|loading|error)\.tsx|src/app/d/\[id\]/map/.*|src/components/(home|map|score)/.*|src/lib/browser-dossiers\.ts|e2e/s1-home-map\.spec\.ts)$`)
+**Files** (allowed regex: `^(src/app/(page|loading|error)\.tsx|src/app/d/\[id\]/(page|loading|error)\.tsx|src/app/d/\[id\]/map/.*|src/components/(home|map|score)/.*|src/lib/browser-dossiers\.ts|e2e/demo-path\.spec\.ts)$`)
 
 **Tasks**
 - **S1-T1 Score components** — `src/components/score/score-x.tsx` (SCORE-X panel: result, factors with rating and weight, "Based on 3 of 5 factors", sources per factor linking `/d/[id]/sources?id=`, plain summary of the scoring.md section; Unknown → "No sourced statement found yet"), `stamp.tsx`, `icd-scale.tsx`, `paras.tsx`, `exhibit.tsx`.
@@ -232,18 +234,18 @@ The slice's `/goal acceptance` block is what gets pasted into `/goal`. Each task
   Accept: `?view=matrix` survives reload.
 - **S1-T7 Details and lists** — `details-panel.tsx` (MAP-9 fields incl. "High · 70–85 · based on 3 of 5 factors", Unverified fields; MAP-10 recommended action with 4px `--act` bar, View evidence → `/d/[id]/sources?s=`, Add to tracker via overlay → "Added to tracker"; sticky action bar), `contact-first.tsx` (MAP-11 list + dashed `--route` line), `stakeholder-list.tsx` (full list, phone order), `find-stakeholder.tsx` (⌘K / Ctrl K / `/`, arrows, Enter, Esc, empty suggestion).
   Accept: every stakeholder shows a next step (never blank).
-- **S1-T8 E2E** — `e2e/s1-home-map.spec.ts`: screens 01 and 02 on `/d/sample` at 1280/1440/1920/390; no horizontal scroll at 1280; no console errors; add-to-tracker sends no request.
+- **S1-T8 E2E** — `e2e/demo-path.spec.ts` (create): `/` → Open the sample → map → select a node → Add to tracker (sends no request); no console errors; no sideways scroll at 1280.
 
-**Tests added**: `e2e/s1-home-map.spec.ts` (§17 "all eight screens…" for 01, 02; "no horizontal scroll at 1280"; "no console errors").
+**Tests added**: `e2e/demo-path.spec.ts`, home + map part (P-17).
 
-**Simplify if behind** (spec defaults or borrowed patterns not required by intent):
+**Simpler version (built by default)** (spec defaults or borrowed patterns not required by intent):
 - Find a stakeholder ⌘K combobox (direction.md 10/31) → a plain search input above the full list.
 - Focus hint "showing N direct ties" → highlight only; Esc still clears.
 - Sticky action bar → normal position.
 - HOME-7 "Link no longer works" + remove → hide dossiers that fail to load.
 - HOME-3 new alerts "this browser hasn't seen" → count of future timed events.
 
-**/goal acceptance**: §4 block with routes `/`, `/d/sample`, `/d/sample/map`, `/d/sample/map?view=matrix`; specs `e2e/s1-home-map.spec.ts`; allowed regex above; plus `- or stop after 30 rounds`.
+**/goal acceptance**: §4 block with routes `/`, `/d/sample`, `/d/sample/map`, `/d/sample/map?view=matrix`; specs `e2e/demo-path.spec.ts`; allowed regex above; plus `- or stop after 30 rounds`.
 
 ---
 
@@ -260,7 +262,7 @@ The slice's `/goal acceptance` block is what gets pasted into `/goal`. Each task
 - *Sources display*: an evidence row without a grade or date misleads experts. Verify: e2e asserts every evidence row has a stamp and a verified date.
 - *Analytics*: `report_exported` must not carry ids. Verify: the PostHog request payload in the network log shows `/d/:id`.
 
-**Files** (allowed regex: `^(next\.config\.ts|src/app/robots\.ts|src/app/d/\[id\]/(brief|report|sources)/.*|src/app/s/.*|src/app/privacy/.*|src/components/(brief|report|sources)/.*|e2e/s2-brief-report\.spec\.ts)$`)
+**Files** (allowed regex: `^(next\.config\.ts|src/app/robots\.ts|src/app/d/\[id\]/(brief|report|sources)/.*|src/app/s/.*|src/app/privacy/.*|src/components/(brief|report|sources)/.*|e2e/demo-path\.spec\.ts)$`)
 
 **Tasks**
 - **S2-T1 Brief header and metrics** — `src/app/d/[id]/brief/page.tsx` (280/1fr/380, ≥1600 300/1fr/440; `?v=`), `loading.tsx`, `error.tsx` ("The brief failed to generate. Your research is saved." + retry), `src/components/brief/versions.tsx` (BRIEF-1 version list, Out of date label with reasons from `brief-status.ts`, RE-BRIEF button: cost confirm → `rebrief` stub; disabled on the sample with the reason), `metrics.tsx` (BRIEF-2 four metrics → SCORE-X; "No sourced deadline found" without a number).
@@ -268,16 +270,16 @@ The slice's `/goal acceptance` block is what gets pasted into `/goal`. Each task
 - **S2-T3 Sources page** — `src/app/d/[id]/sources/page.tsx` (`?s=`, `?id=`), `loading.tsx`, `error.tsx`, `src/components/sources/source-list.tsx` (filters by stakeholder/type; "Recheck due" over 90 days; facts citing each source; "Rejected sources" tab).
 - **S2-T4 A4 report** — `src/app/d/[id]/report/page.tsx`, `src/components/report/a4-report.tsx` (REP-1…10; "Prepared for" line hidden when data is missing), `map-exhibit.tsx` (REP-5 fixed-angle SVG, three zones, Exhibit 1 + takeaway + "Source: Portolan analysis of N sources"), `report-toolbar.tsx` (Print / Save as PDF → `window.print()`; Copy share link → "Copied"; `report_exported`), `report.css` (`@page { size: A4; margin: 0 }`, 794×1123, padding 42/46/32, 6px tick border, toolbar hidden in print, phone `transform: scale`; fixed caps so it stays one page).
 - **S2-T5 Share, headers, privacy shell** — `src/app/s/[shareId]/page.tsx` (report only, via `loadByShareId`; "This report is still being prepared" when no brief), `src/app/s/[shareId]/sources/page.tsx` (only cited sources), `next.config.ts` (`X-Robots-Tag: noindex`, `Referrer-Policy: no-referrer` for `/d/:path*` and `/s/:path*`), `src/app/robots.ts` (disallow `/d/`, `/s/`), `src/app/privacy/page.tsx` (shell: headings for each §10.8 topic).
-- **S2-T6 E2E** — `e2e/s2-brief-report.spec.ts`: screens 03, 05 and the sources page at four widths; print preview is one page (`page.pdf()` page count = 1); share link shows no tracker; headers present.
+- **S2-T6 E2E** — extend `e2e/demo-path.spec.ts`: map → brief → report; print is one page (`page.pdf()` page count = 1); the share link shows no tracker; `X-Robots-Tag` present.
 
-**Tests added**: `e2e/s2-brief-report.spec.ts` (§17 "A4 print preview is one page", "share link doesn't show the tracker", screens 03 and 05).
+**Tests added**: brief/report part of `e2e/demo-path.spec.ts` (P-17).
 
-**Simplify if behind**:
+**Simpler version (built by default)**:
 - REP-12 code-shortened lists → fixed caps always (top 5, risks 2, sources = those in the table).
 - Rejected sources tab (spec addition) → drop the tab; rejects stay logged and on the progress screen.
 - Separate share id (§9 spec default) → no simpler version recommended: sharing `/d/[id]/report` hands over an editable dossier. Keep as is.
 
-**/goal acceptance**: §4 block with routes `/d/sample/brief`, `/d/sample/report`, `/d/sample/sources`, `/s/<sample share id>`, `/privacy`; specs `e2e/s2-brief-report.spec.ts`; plus:
+**/goal acceptance**: §4 block with routes `/d/sample/brief`, `/d/sample/report`, `/d/sample/sources`, `/s/<sample share id>`, `/privacy`; specs `e2e/demo-path.spec.ts`; plus:
 ```
 - `curl -sI localhost:$PORT/d/sample/report | grep -i 'x-robots-tag: noindex'` prints a line
 - `curl -s -o /dev/null -w '%{http_code}' localhost:$PORT/s/sample` prints 404
@@ -298,20 +300,20 @@ The slice's `/goal acceptance` block is what gets pasted into `/goal`. Each task
 - *Playbook anonymity* (TRK-5): a playbook row with names or free text leaks one client's meeting to the shared data. Verify: `flow.test.ts` asserts the outcome has only route, category, overall, next_step_agreed.
 - *Support recalculation*: a wrong debrief weight changes every score the founder shows. Verify: support after debrief equals the scoring §3.1 formula (test reuses `support.ts`).
 
-**Files** (allowed regex: `^(src/app/d/\[id\]/tracker/.*|src/components/tracker/.*|src/components/map/details-panel\.tsx|src/lib/tracker/.*|src/lib/db/tracker\.ts|e2e/s5-tracker\.spec\.ts)$`)
+**Files** (allowed regex: `^(src/app/d/\[id\]/tracker/.*|src/components/tracker/.*|src/components/map/details-panel\.tsx|src/lib/tracker/.*|src/lib/db/tracker\.ts|e2e/demo-path\.spec\.ts)$`)
 
 **Tasks**
 - **S5-T1 State flow** — `src/lib/tracker/flow.ts` (stage moves; `applyDebrief` → debrief as A1 ×2 source, stage ≥ Met, optional next step with due date, playbook outcome, Out of date; `undoDebrief` restores everything), `src/lib/tracker/flow.test.ts`.
 - **S5-T2 Page** — `src/app/d/[id]/tracker/page.tsx` (two columns 1fr/420, ≥1600 1fr/480), `loading.tsx`, `error.tsx`, `src/components/tracker/stage-counts.tsx` (TRK-1 filter + Show all), `next-steps.tsx` (TRK-7 editable stage/next step/due/meeting date, remove; stance marks; TRK-8 "Prepare a briefing note" → `/d/[id]/docs?item=`; empty state copy).
 - **S5-T3 Debrief** — `debrief-due.tsx` (TRK-2 from the day after `meeting_at`, oldest first, one at a time; "Set meeting date"), `debrief-form.tsx` (TRK-3 Overall required with the reason on disabled Save; Yes/Not yet; notes ≤1000; playbook ticked by default), `debrief-result.tsx` (TRK-4 "old → new" + reason, stage change, next step, "Strategy brief marked out of date"; TRK-6 Undo; `debrief_saved`).
 - **S5-T4 Real-dossier writes** — `src/app/d/[id]/tracker/actions.ts` (zod → id check → work → `ActionResult`: add item, edit, remove, save debrief, undo), `src/lib/db/tracker.ts`, `src/components/map/details-panel.tsx` (Add to tracker uses the action on real dossiers, overlay on the sample).
-- **S5-T5 E2E** — `e2e/s5-tracker.spec.ts`: screen 06 at four widths; debrief → support changes → Out of date on the brief → Undo restores support.
+- **S5-T5 E2E** — extend `e2e/demo-path.spec.ts`: report → tracker; debrief → support changes → Out of date on the brief → Undo restores support.
 
-**Tests added**: `src/lib/tracker/flow.test.ts` (§17 "state flows: tracker stages and Undo"); `e2e/s5-tracker.spec.ts` (§17 "debrief → support changes → Out of date → Undo", screen 06).
+**Tests added**: `src/lib/tracker/flow.test.ts` (debrief and Undo); tracker part of `e2e/demo-path.spec.ts` (P-17).
 
-**Simplify if behind**: TRK-6 Undo "later from the tracker item's history" → Undo on the result card only.
+**Simpler version (built by default)**: TRK-6 Undo "later from the tracker item's history" → Undo on the result card only.
 
-**/goal acceptance**: §4 block with routes `/d/sample/tracker`; specs `e2e/s5-tracker.spec.ts`; plus `- or stop after 30 rounds`.
+**/goal acceptance**: §4 block with routes `/d/sample/tracker`; specs `e2e/demo-path.spec.ts`; plus `- or stop after 30 rounds`.
 
 ### Checkpoint A — demo path (target 11/2 09:30)
 - [ ] S0, S0b, S1, S2, S5 merged to main; production `/d/sample` uses `sample-dossier.ts`
@@ -350,7 +352,7 @@ The slice's `/goal acceptance` block is what gets pasted into `/goal`. Each task
 
 **Tests added**: `research.test.ts` (quality filter, China person filter), `checks.test.ts` (source-check loop, pre-display), `limits.test.ts` (§17 limits); updates `sample-dossier.test.ts`.
 
-**Simplify if behind**:
+**Simpler version (built by default)**:
 - §7.3 background work to 40 min + late entities added + brief marked Out of date (spec default) → stop everything at 20 min; unfinished entities `incomplete`.
 - §8 daily limits for RE-BRIEF, documents, intro drafts (spec default) → one shared per-dossier AI counter (`dossier:<id>:ai`, 10/day) plus the cost ledger cap.
 
@@ -384,7 +386,7 @@ The slice's `/goal acceptance` block is what gets pasted into `/goal`. Each task
 - *Sources on refresh*: a wrong merge attaches one stakeholder's debriefs to another. Verify: `research.test.ts` refresh matching three outcomes; uncertain matches go to "Needs your check".
 - *Email*: stored as entered for `email_outbox` and as a salted hash for counting; never in PostHog. Verify: grep for `email` in `src/lib/analytics.tsx` prints nothing.
 
-**Files** (allowed regex: `^(src/app/actions/research\.ts|src/components/progress/.*|src/lib/db/(dossiers|read|briefs|load-dossier)\.ts|src/lib/research/(refresh-match|steps|research\.test)\.ts|src/lib/claude/brief\.ts|e2e/s4-create\.spec\.ts)$`)
+**Files** (allowed regex: `^(src/app/actions/research\.ts|src/components/progress/.*|src/lib/db/(dossiers|read|briefs|load-dossier)\.ts|src/lib/research/(refresh-match|steps|research\.test)\.ts|src/lib/claude/brief\.ts|e2e/create\.spec\.ts)$`)
 
 **Tasks**
 - **S4-T1 Create** — `src/app/actions/research.ts` (`createDossier`: zod, honeypot, limits, ids, write `dossiers` / `research_runs` / `email_outbox`, `start.ts`; returns `{ id, url }`), `src/lib/db/dossiers.ts`.
@@ -392,14 +394,14 @@ The slice's `/goal acceptance` block is what gets pasted into `/goal`. Each task
 - **S4-T3 Reads** — `src/lib/db/load-dossier.ts` (DB branch for `loadDossier` and `loadByShareId`; 404 for unknown), `src/lib/db/read.ts` (assemble the `Dossier` aggregate; scores recomputed via `scoring`, never read from storage).
 - **S4-T4 Brief** — `src/lib/claude/brief.ts` (Opus 5.5 effort high; inputs = sourced facts, code scores, contact-first order, form; outputs per scoring §6 + summary, risks, meet; `pre-display.ts`; "What changed and why" for v2+), `src/lib/research/steps.ts` (brief step), `src/lib/db/briefs.ts` (versions, `brief_check_log`), `rebrief` in `research.ts` (cost estimate → confirm → new version; limit).
 - **S4-T5 Refresh** — `src/lib/research/refresh-match.ts` (§7.6 three rules), `research.test.ts` (three outcomes), `refreshDossier` + `resolveMatch` in `research.ts`, `src/components/progress/match-check.tsx` ("Same as X" / "Different"), `steps.ts` (refresh run kind; `not_found_latest`).
-- **S4-T6 E2E** — `e2e/s4-create.spec.ts` (mock: form → link shown → ≥10 progress lines one by one → ready in <60 s; third same-email request blocked).
+- **S4-T6 E2E** — `e2e/create.spec.ts` (mock: form → link shown → ≥10 progress lines one by one → ready in <60 s; third same-email request blocked).
 - **S4-T7 Live run (paid)** — one real dossier end to end (the founder's chosen market/case). **Estimated cost: Parallel ≈ US$1.25–1.50 (cap $2) + Claude ≈ US$1.5–2.5 (cap $3.5) → about US$3–4, at most US$5.5. Report this estimate in chat and wait for Joey's confirmation before running with `RESEARCH_MODE=live`.** Print the `cost_ledger` total and elapsed time afterwards (spec §19.4).
 
-**Tests added**: `research.test.ts` refresh matching (§17); `e2e/s4-create.spec.ts` (§17 "create a dossier → progress lines appear → done").
+**Tests added**: `research.test.ts` refresh matching (§17); `e2e/create.spec.ts` (§17 "create a dossier → progress lines appear → done").
 
-**Simplify if behind**: none of S4's items are spec defaults (D2 refresh matching and D3 no-email are Joey's decisions). If late, ship create + RES-1 + reads + brief first and leave refresh for after the demo path (HOME-5 stays disabled with "Refresh opens soon").
+**Simpler version**: none of S4's items are spec defaults (D2 refresh matching and D3 no-email are Joey's decisions). If late, ship create + RES-1 + reads + brief first and leave refresh for after the demo path (HOME-5 stays disabled with "Refresh opens soon").
 
-**/goal acceptance**: §4 block with routes `/` (form), `/d/<mock dossier id>`, `/d/<mock id>/map`, `/d/<mock id>/brief`, `/d/<mock id>/report`; specs `e2e/s4-create.spec.ts`; plus:
+**/goal acceptance**: §4 block with routes `/` (form), `/d/<mock dossier id>`, `/d/<mock id>/map`, `/d/<mock id>/brief`, `/d/<mock id>/report`; specs `e2e/create.spec.ts`; plus:
 ```
 - In mock mode the e2e prints elapsed < 60 s and ≥ 10 progress lines
 - `grep -n 'email' src/lib/analytics.tsx` prints nothing
@@ -427,27 +429,27 @@ The slice's `/goal acceptance` block is what gets pasted into `/goal`. Each task
 - *Ops scripts and the secret key*: scripts run only locally with `.env.local`. Verify: `scripts/ops` reads the key from env, never logs it; every action writes `ops_log`.
 - *Sources in the note*: names verified >90 days ago are not used or marked "recheck"; "5.1 GHz" can't appear. Verify: `pre-display.ts` runs on every note sentence; placeholder grep.
 
-**Files** — ui (allowed: `^(src/app/d/\[id\]/(network|docs)/.*|src/components/(network|docs)/.*|src/lib/docs/.*|src/lib/db/(network|documents)\.ts|e2e/s6-network-docs\.spec\.ts)$`); engine (allowed: `^(docs/templates/.*|src/lib/claude/briefing-note\.ts|src/app/actions/drafts\.ts|scripts/ops/.*|src/fixtures/sample-dossier\.ts)$`). The slice PR diff must match the union.
+**Files** — ui (allowed: `^(src/app/d/\[id\]/(network|docs)/.*|src/components/(network|docs)/.*|src/lib/db/(network|documents)\.ts)$`); engine (allowed: `^(docs/templates/.*|src/lib/claude/briefing-note\.ts|src/app/actions/drafts\.ts|scripts/ops/.*|src/fixtures/sample-dossier\.ts)$`). The slice PR diff must match the union.
 
 **Tasks**
 - **S6-T1 Network page (ui)** — `src/app/d/[id]/network/page.tsx` (260/1fr/360, ≥1600 280/1fr/400; grid 2 cols at 1440, 3 at 1920), `loading.tsx`, `error.tsx`, `src/components/network/tabs.tsx` (NET-1, NET-2 notes), `lead-card.tsx` (NET-3 match "High match · 3 of 4 checks", events "9 mapped stakeholders", why, route, stamp, Unverified).
 - **S6-T2 Network actions (ui)** — `src/app/d/[id]/network/actions.ts` (save lead / add to plan → tracker Found with event date; intro request), `src/lib/db/network.ts`, `src/components/network/intro-form.tsx` (NET-6: preselected who, purpose ≤300, "Request received — we'll update your tracker", no success fee), NET-5 Show on map (disabled with a reason when not on the map) in `lead-card.tsx`.
 - **S6-T3 Documents page (ui)** — `src/app/d/[id]/docs/page.tsx` (320/1fr/340, ≥1600 360/1fr/400), `loading.tsx`, `error.tsx`, `src/components/docs/request-form.tsx` (DOC-2…6, `?item=` preselect, expert switch text with `EXPERT_REVIEW_ETA_TEXT`), `doc-card.tsx` (DOC-10…12 status stamps per §11.3 labels; progress while drafting; Open / Add debrief / Open PDF / Strategy brief), `watch-list.tsx` (DOC-13).
-- **S6-T4 Document flow (ui)** — `src/lib/docs/flow.ts` (document and intro state machines §11.3, §11.5), `src/lib/docs/flow.test.ts`, `src/app/d/[id]/docs/actions.ts` (writes `document_requests` + `documents`, calls `startBriefingDraft`), `src/lib/db/documents.ts`.
+- **S6-T4 Document flow (ui)** — `src/app/d/[id]/docs/actions.ts` (status moves per §11.3, §11.5 kept inline) (writes `document_requests` + `documents`, calls `startBriefingDraft`), `src/lib/db/documents.ts`.
 - **S6-T5 Briefing note viewer (ui)** — `src/app/d/[id]/docs/[docId]/page.tsx` (NOTE-1…5, three A4 pages, print styles; uploaded PDFs: embedded viewer + download streamed after the id check), `src/components/docs/briefing-note.tsx`.
-- **S6-T6 E2E (ui)** — `e2e/s6-network-docs.spec.ts`: screens 04, 07, 08 on the sample at four widths; save lead → tracker Found; request a briefing note on the sample → draft_ready with the sample note.
+- **S6-T6 Walk-through (ui)** — `/verify-ui` steps on screens 04, 07, 08: save lead → tracker Found; request a briefing note on the sample → draft_ready with the sample note (screenshots printed; no new spec, P-17).
 - **S6-T7 Template + sample note (engine)** — `docs/templates/briefing-note.md` (from mockup 08 with the §11.2 limits), `src/fixtures/sample-dossier.ts` (pre-written sample briefing note, sourced, Sample data; 48,750 only with its source).
 - **S6-T8 Draft (engine)** — `src/lib/claude/briefing-note.ts` (Opus 5.5 per template; sourced facts only; `pre-display.ts`; inside `after()`), `src/app/actions/drafts.ts` (`startBriefingDraft`: limit, cost ledger, status drafting → draft_ready / failed). Live check of one draft is paid: **estimated ≈ US$0.30 (Opus); report in chat and wait for Joey's confirmation before `RESEARCH_MODE=live`.**
 - **S6-T9 Ops scripts (engine)** — `scripts/ops/index.ts` (command router, `ops_log`), `docs.ts` (`doc:start`, `doc:approve`, `doc:changes`, `doc:upload`), `intro.ts` (`intro:update`, `introduced` moves the tracker item to Contacted), `admin.ts` (`outbox:list`, `dossier:delete`). Relative imports only (run with `node` via the `ops` script from S0-T1).
 
-**Tests added**: `src/lib/docs/flow.test.ts` (§17 "state flows: documents, intros"); `e2e/s6-network-docs.spec.ts` (screens 04, 07, 08).
+**Tests added**: none (P-17).
 
-**Simplify if behind**:
+**Simpler version (built by default)**:
 - Q4 match level (spec default) → show only "3 of 4 checks" with the list, no level word.
 - Ops scripts (§11.4 spec default method) → keep `doc:approve`, `doc:upload`, `intro:update`, `dossier:delete`; do `doc:start`, `doc:changes`, `outbox:list` with the SQL editor (still writing an `ops_log` row by hand).
 - Daily limit for document requests (spec default) → the shared AI counter (see S3).
 
-**/goal acceptance**: §4 block with routes `/d/sample/network`, `/d/sample/network?tab=lawyers`, `/d/sample/docs`, `/d/sample/docs/<sample note id>`; specs `e2e/s6-network-docs.spec.ts`; allowed regex = ui ∪ engine; plus:
+**/goal acceptance**: §4 block with routes `/d/sample/network`, `/d/sample/network?tab=lawyers`, `/d/sample/docs`, `/d/sample/docs/<sample note id>`; the `npx playwright test` line runs the full suite; allowed regex = ui ∪ engine; plus:
 ```
 - `grep -rn 'getPublicUrl' src scripts` prints nothing
 - `git log --oneline feature/S6-engine | head -1` is contained in `git log feature/S6` (sub-branch merged, P-3)
@@ -487,7 +489,7 @@ The slice's `/goal acceptance` block is what gets pasted into `/goal`. Each task
 
 **Tests added**: `src/lib/team/team.test.ts` (§17 team bullet in full).
 
-**Simplify if behind**:
+**Simpler version (built by default)**:
 - §10.3 "store only matched contacts" server path (spec default; real dossiers stay off until the lawyer anyway) → skip S7-T3 entirely; the flag stays false and the server actions stay stubs. Saves ~1 h.
 - Intro-draft daily limit (spec default) → shared AI counter (see S3).
 
