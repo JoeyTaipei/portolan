@@ -84,7 +84,8 @@ The plan (`docs/plan.md`) breaks these into tasks with files and acceptance crit
 
 | Slice | Scope | Lane | Depends on |
 |---|---|---|---|
-| **S0** Skeleton | `src/lib/types.ts` (the full data model for every slice), theme and font per direction.md, top bar and bottom tabs (SHELL-1), `.nis` state component and `?state=` preview (SHELL-2), **all Supabase migrations + RLS** (§13), PostHog, Vitest + Playwright, `.claude/settings.json` command allowlist, `src/lib/scoring/` (pure functions for `docs/scoring.md`), **curated sample dossier (D1)** and the sample reader with the localStorage overlay (SHELL-3) | ui | — |
+| **S0** Skeleton | `src/lib/types.ts` (the full data model for every slice), theme and font per direction.md, top bar and bottom tabs (SHELL-1), `.nis` state component and `?state=` preview (SHELL-2), **all Supabase migrations + RLS** (§13), PostHog, Vitest + Playwright, `.claude/settings.json` command allowlist, `src/lib/scoring/` (pure functions for `docs/scoring.md`), the sample reader with the localStorage overlay (SHELL-3), and a **dev stand-in**: the old `taiwan-uas.ts` mapped into the new types so S1/S2 can start (never shipped) | ui | — |
+| **S0b** Sample data | Curate `src/fixtures/sample-dossier.ts` from `scripts/spike/out/` (D1): real organisations, sources, hand-filled ratings citing source ids, Unverified/Unknown where nothing is sourced; swap the reader from the stand-in to it; unit test that every claim passes §7.7. Only touches the fixture file, its test and the reader's import | engine | S0 |
 | **S1** Home + map | HOME-1…8, MAP-1…11, on the sample | ui | S0 |
 | **S2** Brief + A4 + share | BRIEF-1…8, REP-1…12, sources page, share link (§9), privacy page shell; on the sample | ui | S0 |
 | **S3** Research engine | Parallel flow (§7.2–7.5), source quality filter, China filter, **source-check loop** (§7.7), Claude rating, leads, timed events, writing to the database, cost ledger and limits (§8). Mock mode first, then live | engine | S0 |
@@ -92,9 +93,9 @@ The plan (`docs/plan.md`) breaks these into tasks with files and acceptance crit
 | **S5** Tracker | TRK-1…8, debrief, Undo, playbook | ui | S0 (S4 for real dossiers) |
 | **S6** Network + documents | NET-1…6, DOC-1…13, NOTE-1…5, intro requests, ops scripts (§11.4); briefing-note AI draft is server work for the engine lane | ui + engine | S5, S4 |
 | **S7** Team network | TEAM-1…9 (§10): upload, parsing, matching, warm paths, intro drafts, withdrawal. Sample works in the browser; real dossiers stay off until the lawyer agrees. Parsing and matching are server work for the engine lane | ui + engine | S1, S4 |
-| **S8** Pre-launch check | §19 success criteria, §18 boundaries, security review of every route and server action, privacy page content | — | all |
+| **S8** Pre-launch check | S0b has replaced the dev stand-in; §19 success criteria, §18 boundaries, security review of every route and server action, privacy page content | — | all |
 
-Lane rules (workflow.html): at most two coding sessions at once; one file is edited by one lane only. `src/lib/types.ts` and migrations are changed only in the ui lane. S0 defines the whole schema up front so S3/S4 should not need to change it; if they do, they stop and ask. The lowest bar for 11/3: `/d/sample` with every screen, and one real dossier that completes research and a brief.
+Lane rules (workflow.html): at most two coding sessions at once; one file is edited by one lane only. `src/lib/types.ts` and migrations are changed only in the ui lane. S0 defines the whole schema up front so S3/S4 should not need to change it; if they do, they stop and ask. S0b runs in the engine lane while the ui lane does S1, so the screens never wait for the curated data. The lowest bar for 11/3: `/d/sample` with every screen, and one real dossier that completes research and a brief.
 
 ---
 
@@ -227,7 +228,7 @@ The app never re-fetches pages itself; it stores Parallel's excerpt and verified
 
 ### 7.7 Source-check loop (S3; risky change: sources and "Unverified" marks)
 After rating and again before the brief is shown, **code (not a model)** checks every claim (each rating, statement, title, next step, brief sentence):
-1. Every cited source id exists in this dossier and came from this entity's Basis (or is a debrief).
+1. Every cited source id exists in this dossier and is an accepted source (§7.4) from this research run's Basis, or a debrief.
 2. The quote the claim relies on appears in the stored source excerpt (compared after normalising whitespace, quotes and full-width characters).
 3. The source has a verified date.
 A claim that fails is sent back to Claude once with the failure reason. If it fails again it is stored as Unverified (or, for a brief sentence, removed and logged). Vitest runs the same check over the sample fixture: any claim without a valid source fails the test.
@@ -401,7 +402,7 @@ Every score (influence, support, the four metrics, confidence, match) opens the 
 - **MAP-1** Title bar: dossier name, "20 of 48 stakeholders shown" (3D draws at most the top 30 by influence + the selected one + the contact-first three; the list has everyone), Sample data.
 - **MAP-2** 3D Influence Map / Power Matrix toggle (remembered in the URL as `?view=matrix`).
 - **MAP-3** 3D: `project()`, auto-rotate, drag to rotate, ← → keys and left/right buttons, pause/resume; paused by default under `prefers-reduced-motion`.
-- **MAP-4** Nodes: size = influence; depth dot under the node = influence level (`--depth1/2/3`); shape = stance (cone supportive, square resistant, hollow circle neutral, diamond event, grey hollow = Unknown); names shown by default for influence ≥ 78; `still researching` and `pending check` nodes have a dashed outline.
+- **MAP-4** Nodes: size = influence; depth dot under the node = influence level (`--depth1/2/3`); stance = colour + shape, never colour alone (`--sup` green cone supportive, `--res` red square resistant, `--neu` ink hollow circle neutral, `--evt` diamond event, grey dashed hollow circle = Unknown); names shown by default for influence ≥ 78; `still researching` and `pending check` nodes have a dashed outline.
 - **MAP-5** Click a node: highlight connected nodes and edges, fade the rest; focus hint "Name: showing N direct ties. Press Esc or click again to show all". Click again or Esc to clear.
 - **MAP-6** Power Matrix: x = support −100…+100, y = influence; three depth bands; quadrants per `docs/scoring.md` section 5 (Champions, Blockers, Allies to grow, Monitor); Unknown listed beside the matrix.
 - **MAP-7** Category filter: All, Government, Industry, Capital, Legal, Events; empty after filtering → "Clear filter".
@@ -419,7 +420,7 @@ Every score (influence, support, the four metrics, confidence, match) opens the 
 - **BRIEF-4** Recommended executive path in 3–5 steps + "How to reduce opposition" for blockers.
 - **BRIEF-5** 7-day entry plan in four boxes; every action names one stakeholder and a source; Day 5 with no event says "No sourced event this week".
 - **BRIEF-6** Pre-display check (§11.1).
-- **BRIEF-7** Evidence dossier: source title, type (Government gazette, Legislative record, News…), Admiralty stamp, verbatim excerpt; Taiwanese sources show the Chinese original + translation (labelled machine translation); "3 of 126 · Show all" → sources page. No "Score 98%".
+- **BRIEF-7** Evidence dossier: source title, type (Government gazette, Legislative record, News…), Admiralty stamp (this is the source's "score" from intent 03, shown as a grade instead of a %), verbatim excerpt; Taiwanese sources show the Chinese original + translation (labelled machine translation); "3 of 126 · Show all" → sources page. No "Score 98%".
 - **BRIEF-8** "Export one-page A4 PDF" → `/d/[id]/report`.
 - States: loading skeleton; empty = brief still being written (link to research progress); error = "The brief failed to generate. Your research is saved." + retry (RE-BRIEF flow, cost shown first).
 
@@ -729,4 +730,4 @@ export function influenceScore(r: InfluenceRatings): Banded | null {
 | 08 | Quality bar (sourced numbers, no 5.1 GHz) | NOTE-5, §11.2 | S6 |
 | Every page | Bottom tabs | SHELL-1 | S0 |
 | Every page | Loading, empty, error; button feedback | SHELL-2, "States" under each screen in §12 | S0 + each slice |
-| Every page | `/d/sample`, Sample data on every page, direct entry from home | SHELL-3, D1 | S0, S1 |
+| Every page | `/d/sample`, Sample data on every page, direct entry from home | SHELL-3, D1 | S0, S0b, S1 |

@@ -6,7 +6,7 @@
 ## 文件
 - 需求 design/intent.md；設計稿截圖 design/screens/*.png（手機 390×844、A4 794×1123）
 - 設計稿原始碼 design/mockup/src/*.template.html（可讀的 HTML/CSS/資料）；design/mockup/<編號>.html 可直接用瀏覽器開；design/atlas-mockup.html 是原檔
-- 範例資料 src/fixtures/taiwan-uas.ts（設計稿原樣），`/d/sample` 用它
+- 範例資料 src/fixtures/sample-dossier.ts（從 scripts/spike/out 整理、附來源），`/d/sample` 用它；taiwan-uas.ts 是設計稿原樣，只當版面參考
 - 規格 docs/spec.md；計畫 docs/plan.md；決策 docs/decisions/；使用者訪談 docs/users.md；指標 docs/metrics.md；人工代辦紀錄 docs/pilots/
 
 ## 技術棧
