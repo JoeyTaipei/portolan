@@ -1,4 +1,5 @@
 import "server-only";
+import { writeBrief } from "@/lib/claude/brief";
 import { writeLeads } from "@/lib/claude/leads";
 import { rateEntity } from "@/lib/claude/rate";
 import {
@@ -17,6 +18,9 @@ import {
   updateRun,
   updateStep,
 } from "@/lib/db/research";
+import { insertBrief, latestVersion } from "@/lib/db/briefs";
+import { aliasRows, leadStakeholderIds, markMatched, markNotFound, refreshStakeholders, setPending } from "@/lib/db/dossiers";
+import { readDossier } from "@/lib/db/read";
 import {
   insertEdges,
   insertEvents,
@@ -37,14 +41,16 @@ import { addGroupRuns, createTaskGroup, createTaskRun, getTaskGroup, getTaskRun,
 import type { TaskRunResult } from "@/lib/parallel/types";
 import type { Json, ResearchRun, ResearchStep, TimedEventKind } from "@/lib/types";
 import { DISCOVER_SPEC, ENRICH_SPEC, discoverInput, enrichInput, parseDiscover } from "./discover";
-import { filterEntities, normaliseName } from "./filter";
+import { filterEntities, normaliseName, type KeptEntity } from "./filter";
 import { nameVariants } from "./quality";
+import { matchEntity } from "./refresh-match";
 import { basisToSources } from "./sources";
 
 // The research state machine (spec §7.2–7.3; simpler version, plan P-16):
 //   discover (Parallel ultra) → filter (code) → enrich (Parallel core, one Task Group)
 //   → sources (code) → rate + check (Sonnet + code, per entity) → score (code, on every read)
-//   → leads (Sonnet). The brief is S4.
+//   → leads (Sonnet) → brief (Opus, S4; on a refresh only when the dossier has no brief yet:
+//   otherwise the brief shows Out of date and the user decides on RE-BRIEF, spec §7.6).
 // Nothing waits: Parallel results arrive by webhook or are found by polling in `advance`
 // (called from the progress endpoint every 3 s); Claude steps are claimed and run in after().
 // At 20 minutes everything unfinished stops: entities still being researched become
@@ -165,8 +171,10 @@ async function afterDiscover(run: ResearchRun, step: ResearchStep, result: TaskR
     await updateStep(step.id, { status: "done", locked_at: null });
     return;
   }
-  const existing = (await listStakeholders(run.dossierId)).filter((s) => s.status === "still_researching");
-  const ids = existing.length
+  const existing = run.kind === "refresh" ? [] : (await listStakeholders(run.dossierId)).filter((s) => s.status === "still_researching");
+  const ids = run.kind === "refresh"
+    ? await matchForRefresh(run, kept)
+    : existing.length
     ? new Map(kept.flatMap((e) => {
         const s = existing.find((x) => x.name === e.name);
         return s ? [[e.key, s.id] as const] : [];
@@ -210,6 +218,46 @@ async function afterDiscover(run: ResearchRun, step: ResearchStep, result: TaskR
     result: { taskgroupId, found: found.length, kept: kept.length, enriched: toEnrich.length, dropped: dropped as unknown as Json, at: now.toISOString() },
   });
   log(run.id, `discover: ${found.length} found, ${kept.length} kept, ${toEnrich.length} sent to enrich`);
+}
+
+/**
+ * Refresh (spec §7.6): match what this run found to the stakeholders already on the map.
+ * Same → keep the id (debriefs, tracker items and ties stay attached) and research it again;
+ * similar → a new node in "Pending check", left out of the metrics and not researched until the
+ * user decides; else → new. Old stakeholders not found this time → `not_found_latest`.
+ * Returns key → id for the entities to enrich.
+ */
+async function matchForRefresh(run: ResearchRun, kept: KeptEntity[]): Promise<Map<string, string>> {
+  const all = await refreshStakeholders(run.dossierId);
+  const byName = (rows: typeof all) =>
+    new Map(kept.flatMap((e) => {
+      const s = rows.find((x) => normaliseName(x.name) === normaliseName(e.name));
+      return s ? [[e.key, s.id] as const] : [];
+    }));
+  // A retry of this step after a partial failure: the matching was already written.
+  const mine = all.filter((s) => s.lastRunId === run.id);
+  if (mine.length) return byName(mine.filter((s) => s.status !== "pending_check"));
+
+  const existing = all.filter((s) => s.status !== "pending_check");
+  const aliases = await aliasRows(run.dossierId);
+  const same = new Map<string, string>();
+  const fresh: KeptEntity[] = [];
+  const pending: KeptEntity[] = [];
+  for (const e of kept) {
+    const m = matchEntity(e, existing, aliases);
+    if (m.kind === "same" && ![...same.values()].includes(m.existingId)) same.set(e.key, m.existingId);
+    else if (m.kind === "check") pending.push(e);
+    else if (m.kind === "new") fresh.push(e);
+  }
+  const inserted = await insertStakeholders(run.dossierId, run.id, [...fresh, ...pending]);
+  const pendingIds = pending.flatMap((e) => (inserted.has(e.key) ? [inserted.get(e.key)!] : []));
+  await setPending(pendingIds);
+  await markMatched([...same.values()], run.id);
+  await markNotFound(run.dossierId, [...same.values(), ...inserted.values()]);
+  log(run.id, `refresh: ${same.size} matched, ${fresh.length} new, ${pending.length} need a check`);
+  const ids = new Map(same);
+  for (const e of fresh) if (inserted.has(e.key)) ids.set(e.key, inserted.get(e.key)!);
+  return ids;
 }
 
 /**
@@ -335,7 +383,9 @@ async function runRate(run: ResearchRun, step: ResearchStep, now: Date) {
     entity: { key: me.id, name: me.name, nameZh: me.nameZh, category: me.category, whyRelevant: me.role ?? "", isChina: me.isChina },
     client: d,
     sources,
-    runId: run.id,
+    // Only labels this run's Basis returned are supplied. On a refresh, a source found again
+    // keeps its first run's id (sources accumulate, spec §7.6), so the run check is off there.
+    runId: run.kind === "refresh" ? null : run.id,
     ledger: { store: ledgerStore, runId: run.id, dossierId: run.dossierId, purpose: "rate" },
     today: day(now),
   });
@@ -365,8 +415,43 @@ async function runLeads(run: ResearchRun, step: ResearchStep, now: Date) {
     ledger: { store: ledgerStore, runId: run.id, dossierId: run.dossierId, purpose: "leads" },
     today: day(now),
   });
-  await insertLeads(run.dossierId, leads);
+  // A refresh adds cards only for stakeholders that don't have one (saved cards stay as they are).
+  const have = run.kind === "refresh" ? await leadStakeholderIds(run.dossierId) : new Set<string>();
+  await insertLeads(run.dossierId, leads.filter((l) => !have.has(l.stakeholderId)));
   await updateStep(step.id, { status: "done", result: { leads: leads.length, log: notes.slice(0, 20) } });
+}
+
+/** Names research found but left off the map (discover's dropped list), for the pre-display check. */
+export function offMapNames(steps: ResearchStep[]): string[] {
+  const dropped = (steps.find((s) => s.kind === "discover")?.result as { dropped?: unknown } | null)?.dropped;
+  return Array.isArray(dropped)
+    ? dropped.flatMap((x) => {
+        const n = (x as { name?: unknown; reason?: unknown }).name;
+        // Duplicates are on the map under another name; everything else isn't.
+        return typeof n === "string" && !String((x as { reason?: unknown }).reason ?? "").startsWith("Duplicate") ? [n] : [];
+      })
+    : [];
+}
+
+async function runBrief(run: ResearchRun, step: ResearchStep, now: Date) {
+  const d = await readDossier(run.dossierId);
+  if (!d) {
+    await updateStep(step.id, { status: "skipped" });
+    return;
+  }
+  const r = await writeBrief({
+    d,
+    now,
+    offMapNames: offMapNames(await listSteps(run.id)),
+    ledger: { store: ledgerStore, runId: run.id, dossierId: run.dossierId, purpose: "brief" },
+  });
+  if (!r.ok) {
+    // The research is kept; the brief page offers RE-BRIEF (cost shown first).
+    await updateStep(step.id, { status: "failed", result: { error: r.reason.slice(0, 300) } });
+    return;
+  }
+  const version = await insertBrief(run.dossierId, r.brief.draft, r.brief.removed);
+  await updateStep(step.id, { status: "done", result: { version, removed: r.brief.removed.length, log: r.brief.log.slice(0, 20), model: r.brief.model } });
 }
 
 /** Run one claimed step (inside after()). Errors put it back in the queue via the stale check. */
@@ -377,6 +462,7 @@ export async function runStep(step: ResearchStep, now = new Date()): Promise<voi
     if (step.kind === "discover") await startDiscover(run, step);
     else if (step.kind === "rate") await runRate(run, step, now);
     else if (step.kind === "leads") await runLeads(run, step, now);
+    else if (step.kind === "brief") await runBrief(run, step, now);
     else await updateStep(step.id, { status: "skipped" });
   } catch (err) {
     log(run.id, `step ${step.kind} ${step.id} error: ${(err as Error).message}`);
@@ -461,9 +547,23 @@ export async function advance(runId: string, now = new Date()): Promise<Work[]> 
   if (discover?.status === "done" && !pending("enrich") && !pending("rate") && !leads) {
     await insertStepsOnce(run.id, [{ kind: "leads", parallelRunId: `leads:${run.id}` }]);
   }
-  if (leads && (leads.status === "done" || leads.status === "failed" || leads.status === "skipped")) {
+  // Leads finished → the brief, once (a refresh with a brief already leaves it Out of date).
+  const ended = (s: ResearchStep | undefined) => !!s && (s.status === "done" || s.status === "failed" || s.status === "skipped");
+  const brief = steps.find((s) => s.kind === "brief");
+  if (ended(leads) && !brief) {
+    if (run.kind === "refresh" && (await latestVersion(run.dossierId)) > 0) {
+      await Promise.all([requeued, finishRun(run, now)]);
+      return work;
+    }
+    await insertStepsOnce(run.id, [{ kind: "brief", parallelRunId: `brief:${run.id}` }]);
+  }
+  if (ended(brief)) {
     await Promise.all([requeued, finishRun(run, now)]);
     return work;
+  }
+  // requeueStale only knows the rate/leads guard keys: a brief whose worker died goes back here.
+  if (brief?.status === "running" && brief.lockedAt && now.getTime() - Date.parse(brief.lockedAt) > CLAUDE_STALE_MS) {
+    await updateStep(brief.id, { status: brief.attempts >= 3 ? "failed" : "queued", locked_at: null });
   }
 
   const [claimed] = await Promise.all([claimSteps(run.id, MAX_CLAIM), requeued]);
