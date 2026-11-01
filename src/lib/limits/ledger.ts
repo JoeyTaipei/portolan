@@ -36,6 +36,16 @@ export function capFor(provider: CostProvider, purpose: string): number {
  */
 export async function reserve(store: LedgerStore, row: LedgerRow): Promise<Reservation> {
   if (!Number.isFinite(row.estimatedUsd) || row.estimatedUsd < 0) return { ok: false, reason: "Bad cost estimate" };
+  // Check-then-insert under one lock, so concurrent calls in this instance can't all pass
+  // against the same "spent". (Across instances the overshoot is at most one call each.)
+  const next = chain.then(() => reserveNow(store, row));
+  chain = next.catch(() => {});
+  return next;
+}
+
+let chain: Promise<unknown> = Promise.resolve();
+
+async function reserveNow(store: LedgerStore, row: LedgerRow): Promise<Reservation> {
   if (row.runId) {
     const spent = await store.spentUsd(row.runId, row.provider);
     const cap = capFor(row.provider, row.purpose);

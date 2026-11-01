@@ -161,6 +161,9 @@ export async function sourcesByLabel(dossierId: string, labels: string[]): Promi
 
 export async function writeRating(stakeholderId: string, runId: string, res: RateResult) {
   const client = db();
+  // A requeued step writes again: replace this run's rows instead of adding a second set.
+  must(await client.from("facts").delete().eq("stakeholder_id", stakeholderId).eq("run_id", runId), "clear facts");
+  must(await client.from("support_statements").delete().eq("stakeholder_id", stakeholderId).eq("run_id", runId).is("debrief_id", null), "clear statements");
   must(
     await client.from("facts").insert(
       res.facts.map((f) => ({

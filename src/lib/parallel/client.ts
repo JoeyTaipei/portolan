@@ -28,6 +28,11 @@ export class ParallelError extends Error {
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+/**
+ * GETs retry on 429, 5xx and network errors. POSTs create paid runs, so they retry only on 429
+ * (rejected before anything was created): after a timeout or 5xx the run may exist, and a
+ * retry could pay twice without a ledger row.
+ */
 async function call<T>(method: "GET" | "POST", path: string, body?: unknown): Promise<T> {
   const key = process.env.PARALLEL_API_KEY;
   if (!key) throw new ParallelError("Parallel isn't configured on this server.", null);
@@ -45,10 +50,11 @@ async function call<T>(method: "GET" | "POST", path: string, body?: unknown): Pr
       const text = await res.text();
       if (res.ok) return (text ? JSON.parse(text) : null) as T;
       last = new ParallelError(`Parallel ${method} ${path} → ${res.status}: ${text.slice(0, 300)}`, res.status);
-      // Only rate limits and server errors are worth retrying.
-      if (res.status !== 429 && res.status < 500) throw last;
+      const retry = res.status === 429 || (method === "GET" && res.status >= 500);
+      if (!retry) throw last;
     } catch (err) {
-      if (err instanceof ParallelError && err.status !== null && err.status !== 429 && err.status < 500) throw err;
+      if (err instanceof ParallelError && err.status !== null && !(err.status === 429 || (method === "GET" && err.status >= 500))) throw err;
+      if (!(err instanceof ParallelError) && method === "POST") throw err;
       last = err;
     }
   }

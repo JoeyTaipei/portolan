@@ -22,9 +22,14 @@ export interface Removed {
   reason: string;
 }
 
+const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+/** Chinese names match anywhere; Latin names only as whole words ("AB" is not in "about"). */
 const mentions = (text: string, name: string) => {
   const n = normaliseText(name).toLowerCase();
-  return n.length >= 2 && normaliseText(text).toLowerCase().includes(n);
+  const t = normaliseText(text).toLowerCase();
+  if (n.length < 2) return false;
+  if (/[\u3400-\u9fff]/.test(n)) return t.includes(n);
+  return new RegExp(`(^|[^\\p{L}\\p{N}])${escape(n)}($|[^\\p{L}\\p{N}])`, "u").test(t);
 };
 
 /** Why a sentence can't be shown, or null if it passes. */

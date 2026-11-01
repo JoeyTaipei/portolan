@@ -159,12 +159,24 @@ async function afterDiscover(run: ResearchRun, step: ResearchStep, result: TaskR
   if (!d) return;
   const found = parseDiscover(result.output.content);
   const { kept, dropped } = filterEntities(found, await listAliases(run.dossierId));
-  const ids = await insertStakeholders(run.dossierId, run.id, kept);
+  // A retry after a partial failure must not add the map twice or pay for a second group.
+  const steps = await listSteps(run.id);
+  if (steps.some((s) => s.kind === "enrich")) {
+    await updateStep(step.id, { status: "done", locked_at: null });
+    return;
+  }
+  const existing = (await listStakeholders(run.dossierId)).filter((s) => s.status === "still_researching");
+  const ids = existing.length
+    ? new Map(kept.flatMap((e) => {
+        const s = existing.find((x) => x.name === e.name);
+        return s ? [[e.key, s.id] as const] : [];
+      }))
+    : await insertStakeholders(run.dossierId, run.id, kept);
 
   // Parallel cap (spec §8): no new core runs past US$2; the rest are marked incomplete.
   const room = await affordableRuns(ledgerStore, run.id, "parallel", "enrich", PARALLEL_PER_RUN.core);
   const toEnrich = kept.filter((e) => ids.has(e.key)).slice(0, room);
-  for (const e of kept.slice(toEnrich.length)) {
+  for (const e of kept.filter((x) => !toEnrich.includes(x))) {
     const id = ids.get(e.key);
     if (id) await updateStakeholder(id, { status: "incomplete" });
   }

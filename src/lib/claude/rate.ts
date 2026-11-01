@@ -14,7 +14,8 @@ import { RatingOutput } from "./schemas";
 
 export const NO_ROUTE = "Find a sourced contact route first";
 export const NO_RATING = "No sourced rating";
-const MAX_TOKENS = 8000;
+// Adaptive thinking counts against max_tokens, so leave room beyond the JSON itself.
+const MAX_TOKENS = 16000;
 const RATED: FactField[] = ["authority", "budget", "access", "recent"];
 
 export interface RateSource extends CheckSource {
@@ -80,8 +81,8 @@ function collect(raw: Raw, entity: RateEntity, byLabel: Map<string, RateSource>,
     claims.push({ where: field, fact: { field, value: c.value.trim(), rating, quote: c.quote, sourceIds, status: "sourced" } });
   };
   fact("role", raw.role);
-  // China is organisation level only: never a named individual.
-  if (!entity.isChina) fact("head", raw.head);
+  // Names only for sourced public officials (spec §16 Q6); China is organisation level only.
+  if (entity.category === "gov" && !entity.isChina) fact("head", raw.head);
   fact("action", raw.next_step);
   const seen = new Set<string>();
   for (const r of raw.ratings) {
@@ -136,9 +137,14 @@ export async function rateEntity(args: {
   const live = claudeLive();
   let model: string | null = live ? MODELS.sonnet : "mock";
 
+  // At most 3 calls per entity (spec §7.8: no more than 2 retries): up to 2 for the first
+  // answer, and the one §7.7 retry with the failure reasons.
+  let callsLeft = 3;
   const ask = async (failures?: string[]): Promise<Raw | null> => {
     if (!live) return mockRate(args.entity, args.sources);
-    for (let attempt = 0; attempt < 3; attempt++) {
+    const tries = failures ? 1 : 2;
+    for (let attempt = 0; attempt < tries && callsLeft > 0; attempt++) {
+      callsLeft--;
       const r = await callStructured({
         model: MODELS.sonnet,
         system: RATE_SYSTEM,
