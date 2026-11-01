@@ -23,7 +23,7 @@ type ScoreInput = Pick<Dossier, "stakeholders" | "facts" | "edges" | "statements
 export function scoreStakeholders(d: ScoreInput, now: Date): ScoredStakeholder[] {
   return d.stakeholders.map((s) => {
     const srcs = sourcesFor(s.id, d.facts, d.statements, d.sources);
-    const influence = influenceFor(s.id, d.facts, d.edges);
+    const influence = influenceFor(s.id, d.facts, d.edges, s.category);
     return {
       id: s.id,
       influence,
