@@ -69,36 +69,64 @@ function log(runId: string, msg: string) {
 
 // ─── Parallel steps (discover, enrich) ───────────────────────────────────────
 
-/**
- * Process a finished Parallel run for one step, exactly once: the webhook and the poll both call
- * this; the step lock lets one of them through. Returns what happened.
- */
-export async function completeParallelStep(step: ResearchStep, now = new Date()): Promise<"done" | "running" | "busy" | "failed"> {
+type Fetched = { step: ResearchStep; result: TaskRunResult };
+type Outcome = "done" | "running" | "busy" | "failed";
+
+/** Lock one step and fetch its Parallel result if the run has finished. */
+async function fetchFinished(run: ResearchRun, step: ResearchStep, now: Date): Promise<Fetched | Exclude<Outcome, "done">> {
   if (step.status !== "running" || !step.parallelRunId) return "busy";
   if (!(await lockStep(step.id, now, LOCK_STALE_MS))) return "busy";
   try {
-    const run = await getTaskRun(step.parallelRunId);
-    if (run.is_active) {
+    const t = await getTaskRun(step.parallelRunId);
+    if (t.is_active) {
       await updateStep(step.id, { locked_at: null });
       return "running";
     }
-    const r = await getRun(step.runId);
-    if (!r) return "busy";
-    if (run.status !== "completed") {
-      await updateStep(step.id, { status: "failed", result: { error: run.error?.message ?? run.status } });
-      if (step.kind === "discover") await failRun(r, "Research didn't finish.");
+    if (t.status !== "completed") {
+      await updateStep(step.id, { status: "failed", result: { error: t.error?.message ?? t.status } });
+      if (step.kind === "discover") await failRun(run, "Research didn't finish.");
       else if (step.entityKey) await updateStakeholder(step.entityKey, { status: "incomplete" });
       return "failed";
     }
-    const result = await getTaskRunResult(step.parallelRunId);
-    if (step.kind === "discover") await afterDiscover(r, step, result, now);
-    else await afterEnrich(r, step, result, now);
-    return "done";
+    return { step, result: await getTaskRunResult(step.parallelRunId) };
   } catch (err) {
-    log(step.runId, `step ${step.kind} ${step.id} failed to process: ${(err as Error).message}`);
+    log(run.id, `step ${step.kind} ${step.id} fetch failed: ${(err as Error).message}`);
     await updateStep(step.id, { locked_at: null }).catch(() => {});
     return "busy";
   }
+}
+
+/**
+ * Process finished Parallel runs, each exactly once: the webhook and the poll both call this,
+ * and the step lock lets one of them through. Enrich results are written as one batch.
+ */
+export async function completeParallelSteps(steps: ResearchStep[], now = new Date()): Promise<Map<string, Outcome>> {
+  const outcome = new Map<string, Outcome>();
+  if (!steps.length) return outcome;
+  const run = await getRun(steps[0].runId);
+  if (!run) return outcome;
+  const ready: Fetched[] = [];
+  await pool(steps, MAX_CLAIM, async (step) => {
+    const f = await fetchFinished(run, step, now);
+    if (typeof f === "string") outcome.set(step.id, f);
+    else ready.push(f);
+  });
+  const discover = ready.filter((f) => f.step.kind === "discover");
+  const enrich = ready.filter((f) => f.step.kind === "enrich");
+  try {
+    for (const f of discover) await afterDiscover(run, f.step, f.result, now);
+    if (enrich.length) await afterEnrich(run, enrich, now);
+    for (const f of ready) outcome.set(f.step.id, "done");
+  } catch (err) {
+    log(run.id, `processing ${ready.length} results failed: ${(err as Error).message}`);
+    await Promise.allSettled(ready.map((f) => updateStep(f.step.id, { locked_at: null })));
+    for (const f of ready) outcome.set(f.step.id, "busy");
+  }
+  return outcome;
+}
+
+export async function completeParallelStep(step: ResearchStep, now = new Date()): Promise<Outcome> {
+  return (await completeParallelSteps([step], now)).get(step.id) ?? "busy";
 }
 
 async function startDiscover(run: ResearchRun, step: ResearchStep) {
@@ -110,7 +138,7 @@ async function startDiscover(run: ResearchRun, step: ResearchStep) {
     provider: "parallel",
     purpose: "discover",
     estimatedUsd: PARALLEL_PER_RUN.ultra,
-    model: "ultra",
+    model: isLive() ? "ultra" : "mock:ultra",
   });
   if (!r.ok) {
     await updateStep(step.id, { status: "failed", result: { error: r.reason } });
@@ -149,7 +177,7 @@ async function afterDiscover(run: ResearchRun, step: ResearchStep, result: TaskR
       provider: "parallel",
       purpose: "enrich",
       estimatedUsd: PARALLEL_PER_RUN.core * toEnrich.length,
-      model: "core",
+      model: isLive() ? "core" : "mock:core",
     });
     if (r.ok) {
       taskgroupId = await createTaskGroup();
@@ -172,63 +200,97 @@ async function afterDiscover(run: ResearchRun, step: ResearchStep, result: TaskR
   log(run.id, `discover: ${found.length} found, ${kept.length} kept, ${toEnrich.length} sent to enrich`);
 }
 
+/**
+ * In-process lock around label numbering. Across server instances the unique (dossier, label)
+ * constraint is the backstop: a clash fails the insert and the step is retried on the next poll.
+ */
+let labelChain: Promise<unknown> = Promise.resolve();
+function withLabelLock<T>(fn: () => Promise<T>): Promise<T> {
+  const next = labelChain.then(fn, fn);
+  labelChain = next.catch(() => {});
+  return next;
+}
+
+/** Run tasks with at most `n` at a time. */
+async function pool<T>(items: T[], n: number, fn: (x: T) => Promise<unknown>) {
+  const queue = [...items];
+  await Promise.all(Array.from({ length: Math.min(n, queue.length) }, async () => {
+    for (let x = queue.shift(); x !== undefined; x = queue.shift()) await fn(x);
+  }));
+}
+
 const asText = (v: unknown) => (typeof v === "string" && v.trim() ? v.trim() : null);
 const fieldIds = (byField: Map<string, string[]>, prefix: string) =>
   [...byField].filter(([f]) => f === prefix || f.startsWith(`${prefix}.`)).flatMap(([, v]) => v);
 
-async function afterEnrich(run: ResearchRun, step: ResearchStep, result: TaskRunResult, now: Date) {
+async function afterEnrich(run: ResearchRun, batch: Fetched[], now: Date) {
   const stakeholders = await listStakeholders(run.dossierId);
-  const me = stakeholders.find((s) => s.id === step.entityKey);
-  if (!me) return;
-  const content = result.output.content ?? {};
-  const nameZh = me.nameZh ?? asText(content.name_local);
-  const verifiedAt = (result.run.modified_at ?? now.toISOString()).slice(0, 10);
-
-  const { known, nextLabel } = await sourceIndex(run.dossierId);
-  const out = basisToSources({
-    basis: result.output.basis ?? [],
-    entity: { name: me.name, nameZh },
-    officialUrl: asText(content.official_url),
-    verifiedAt,
-    known,
-    nextLabel,
+  const items = batch.flatMap((f) => {
+    const me = stakeholders.find((s) => s.id === f.step.entityKey);
+    if (!me) return [];
+    const content = f.result.output.content ?? {};
+    return [{ ...f, me, content, nameZh: me.nameZh ?? asText(content.name_local) }];
   });
-  await insertSources(run.dossierId, run.id, out.drafts);
-  const accepted = await sourcesByLabel(run.dossierId, out.accepted);
+
+  // S-labels are numbered per dossier: read the next number and insert under one lock.
+  const outs = await withLabelLock(async () => {
+    const { known, nextLabel } = await sourceIndex(run.dossierId);
+    let next = nextLabel;
+    const list = items.map((it) => {
+      const o = basisToSources({
+        basis: it.result.output.basis ?? [],
+        entity: { name: it.me.name, nameZh: it.nameZh },
+        officialUrl: asText(it.content.official_url),
+        verifiedAt: (it.result.run.modified_at ?? now.toISOString()).slice(0, 10),
+        known,
+        nextLabel: next,
+      });
+      next = o.nextLabel;
+      return o;
+    });
+    await insertSources(run.dossierId, run.id, list.flatMap((o) => o.drafts));
+    return list;
+  });
+  const accepted = await sourcesByLabel(run.dossierId, [...new Set(outs.flatMap((o) => o.accepted))]);
   const idOf = new Map(accepted.map((s) => [s.label, s.id]));
   const toIds = (labels: string[]) => [...new Set(labels.map((l) => idOf.get(l)).filter((x): x is string => !!x))];
 
-  // Ties → sourced edges to stakeholders on this map.
-  const ties = Array.isArray(content.ties) ? (content.ties as { entity?: unknown; relation?: unknown }[]) : [];
-  const edges = ties.flatMap((t, i) => {
-    const other = matchStakeholder(asText(t.entity), stakeholders, me.id);
-    const ids = toIds([...fieldIds(out.byField, `ties.${i}`), ...(out.byField.get("ties") ?? [])]);
-    return other && ids.length ? [{ aId: me.id, bId: other.id, relation: asText(t.relation) ?? "Tie", sourceIds: ids }] : [];
-  });
-  await insertEdges(run.dossierId, edges);
-
-  // Dated upcoming events with a source.
   const today = day(now);
-  const evs = Array.isArray(content.events) ? (content.events as { title?: unknown; kind?: unknown; date?: unknown }[]) : [];
   const KINDS: TimedEventKind[] = ["budget_vote", "tender_close", "committee_review", "event"];
-  const events = evs.flatMap((e, i) => {
-    const date = asText(e.date);
-    const title = asText(e.title);
-    const kind = KINDS.includes(e.kind as TimedEventKind) ? (e.kind as TimedEventKind) : "event";
-    const ids = toIds([...fieldIds(out.byField, `events.${i}`), ...(out.byField.get("events") ?? [])]);
-    return title && date && /^\d{4}-\d{2}-\d{2}$/.test(date) && date >= today && ids.length
-      ? [{ title, kind, date, stakeholderIds: [me.id], sourceIds: ids, relevantToGoal: kind !== "event" }]
-      : [];
+  const edges: Parameters<typeof insertEdges>[1] = [];
+  const events: Parameters<typeof insertEvents>[1] = [];
+  items.forEach((it, n) => {
+    const out = outs[n];
+    // Ties → sourced edges to stakeholders on this map.
+    const ties = Array.isArray(it.content.ties) ? (it.content.ties as { entity?: unknown; relation?: unknown }[]) : [];
+    ties.forEach((t, i) => {
+      const other = matchStakeholder(asText(t.entity), stakeholders, it.me.id);
+      const ids = toIds([...fieldIds(out.byField, `ties.${i}`), ...(out.byField.get("ties") ?? [])]);
+      if (other && ids.length) edges.push({ aId: it.me.id, bId: other.id, relation: asText(t.relation) ?? "Tie", sourceIds: ids });
+    });
+    // Dated upcoming events with a source.
+    const evs = Array.isArray(it.content.events) ? (it.content.events as { title?: unknown; kind?: unknown; date?: unknown }[]) : [];
+    evs.forEach((e, i) => {
+      const date = asText(e.date);
+      const title = asText(e.title);
+      const kind = KINDS.includes(e.kind as TimedEventKind) ? (e.kind as TimedEventKind) : "event";
+      const ids = toIds([...fieldIds(out.byField, `events.${i}`), ...(out.byField.get("events") ?? [])]);
+      if (title && date && /^\d{4}-\d{2}-\d{2}$/.test(date) && date >= today && ids.length) {
+        events.push({ title, kind, date, stakeholderIds: [it.me.id], sourceIds: ids, relevantToGoal: kind !== "event" });
+      }
+    });
   });
-  await insertEvents(run.dossierId, events);
-
-  await updateStakeholder(me.id, { name_zh: nameZh, city: asText(content.city) });
-  await updateStep(step.id, {
-    status: "done",
-    locked_at: null,
-    result: { labels: out.accepted, accepted: out.accepted.length, rejected: out.drafts.filter((x) => !x.accepted).length },
+  await Promise.all([insertEdges(run.dossierId, edges), insertEvents(run.dossierId, events)]);
+  await pool(items, MAX_CLAIM, async (it) => {
+    const out = outs[items.indexOf(it)];
+    await updateStakeholder(it.me.id, { name_zh: it.nameZh, city: asText(it.content.city) });
+    await updateStep(it.step.id, {
+      status: "done",
+      locked_at: null,
+      result: { labels: out.accepted, accepted: out.accepted.length, rejected: out.drafts.filter((x) => !x.accepted).length },
+    });
   });
-  await insertStepsOnce(run.id, [{ kind: "rate", entityKey: me.id, parallelRunId: `rate:${me.id}` }]);
+  await insertStepsOnce(run.id, items.map((it) => ({ kind: "rate" as const, entityKey: it.me.id, parallelRunId: `rate:${it.me.id}` })));
 }
 
 function matchStakeholder(name: string | null, all: StakeholderLite[], notId: string): StakeholderLite | null {
@@ -275,11 +337,14 @@ async function runLeads(run: ResearchRun, step: ResearchStep, now: Date) {
   const all = await listStakeholders(run.dossierId);
   const steps = await listSteps(run.id);
   const candidates = all.filter((s) => (s.category === "cap" || s.category === "leg" || s.category === "evt") && s.status === "active");
-  const entities = [];
-  for (const s of candidates) {
-    const sources = (await sourcesByLabel(run.dossierId, await labelsFor(run.id, s.id, steps))).filter((x) => x.accepted);
-    entities.push({ stakeholderId: s.id, name: s.name, nameZh: s.nameZh, category: s.category, sources });
-  }
+  const labels = new Map<string, string[]>();
+  for (const s of candidates) labels.set(s.id, await labelsFor(run.id, s.id, steps));
+  const pool_ = await sourcesByLabel(run.dossierId, [...new Set([...labels.values()].flat())]);
+  const entities = candidates.map((s) => {
+    const mine = new Set(labels.get(s.id));
+    const sources = pool_.filter((x) => x.accepted && mine.has(x.label));
+    return { stakeholderId: s.id, name: s.name, nameZh: s.nameZh, category: s.category, sources };
+  });
   const { leads, log: notes } = await writeLeads({
     entities,
     mapNames: all.filter((s) => s.status === "active").map((s) => s.name),
@@ -342,9 +407,9 @@ const shuffle = <T>(xs: T[]) => xs.map((x) => [Math.random(), x] as const).sort(
  * Parallel runs to process and claimed Claude steps to run. Safe to call concurrently.
  */
 export async function advance(runId: string, now = new Date()): Promise<Work[]> {
-  const run = await getRun(runId);
+  const [run, firstSteps] = await Promise.all([getRun(runId), listSteps(runId)]);
   if (!run || run.status !== "running") return [];
-  let steps = await listSteps(run.id);
+  let steps = firstSteps;
   if (run.deadlineAt && now.getTime() > Date.parse(run.deadlineAt)) {
     const pastStop = steps.some((s) => s.kind === "leads");
     if (!pastStop) {
@@ -354,13 +419,14 @@ export async function advance(runId: string, now = new Date()): Promise<Work[]> 
       steps = await listSteps(run.id);
     }
   }
-  await requeueStale(run.id, ["discover", "rate", "leads"], new Date(now.getTime() - CLAUDE_STALE_MS));
+  // A requeued step is claimed on the next request.
+  const requeued = requeueStale(run.id, ["discover", "rate", "leads"], new Date(now.getTime() - CLAUDE_STALE_MS));
 
   const work: Work[] = [];
   const discover = steps.find((s) => s.kind === "discover");
   if (discover?.status === "running" && discover.parallelRunId) {
     const waited = now.getTime() - Date.parse(discover.createdAt);
-    if (!isLive() || waited > WEBHOOK_GRACE_MS) work.push(async () => void (await completeParallelStep(discover, now)));
+    if (!isLive() || waited > WEBHOOK_GRACE_MS) work.push(async () => void (await completeParallelSteps([discover], now)));
   }
 
   const enrichRunning = steps.filter((s) => s.kind === "enrich" && s.status === "running");
@@ -374,10 +440,7 @@ export async function advance(runId: string, now = new Date()): Promise<Work[]> 
       const finished = (c.completed ?? 0) + (c.failed ?? 0) + (c.cancelled ?? 0);
       check = finished > doneCount || !g.status.is_active ? shuffle(enrichRunning).slice(0, 10) : [];
     }
-    // One after another: each writes sources with the next S-labels for this dossier.
-    if (check.length) work.push(async () => {
-      for (const s of check) await completeParallelStep(s, now);
-    });
+    if (check.length) work.push(async () => void (await completeParallelSteps(check, now)));
   }
 
   // Everything enriched and rated → leads, once.
@@ -387,11 +450,11 @@ export async function advance(runId: string, now = new Date()): Promise<Work[]> 
     await insertStepsOnce(run.id, [{ kind: "leads", parallelRunId: `leads:${run.id}` }]);
   }
   if (leads && (leads.status === "done" || leads.status === "failed" || leads.status === "skipped")) {
-    await finishRun(run, now);
+    await Promise.all([requeued, finishRun(run, now)]);
     return work;
   }
 
-  const claimed = await claimSteps(run.id, MAX_CLAIM);
+  const [claimed] = await Promise.all([claimSteps(run.id, MAX_CLAIM), requeued]);
   for (const s of claimed) work.push(() => runStep(s, now));
   return work;
 }

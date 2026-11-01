@@ -1,6 +1,7 @@
 import "server-only";
 import { randomBytes } from "node:crypto";
-import type { BasisEntry, RunInput, TaskGroupStatus, TaskRun, TaskRunResult } from "./types";
+import { sampleDossier } from "@/fixtures/sample-dossier";
+import type { BasisEntry, Citation, RunInput, TaskGroupStatus, TaskRun, TaskRunResult } from "./types";
 
 // RESEARCH_MODE=mock (the default): replays the spike runs already paid for
 // (scripts/spike/out/task-ultra.json and task-ultra-enriched-core.json) with short delays.
@@ -122,7 +123,43 @@ export async function getTaskRunResult(runId: string): Promise<TaskRunResult> {
   const spike = runs[p.idx];
   // An entity the spike never enriched comes back empty: it stays Unverified.
   if (!spike) return { run, output: { type: "json", content: {}, basis: [] } };
-  return { run, output: { type: "json", content: spike.result.output.content, basis: spike.result.output.basis } };
+  return { run, output: withSampleTies(spike) };
+}
+
+/**
+ * The spike's enrich schema had no ties or events. The replay adds the curated S0b edges and
+ * events for this entity, but only where the sample's source URL is one of this run's own
+ * citations, and with that citation as the Basis. Nothing is added without a real excerpt.
+ */
+function withSampleTies(spike: SpikeEnrichRun): TaskRunResult["output"] {
+  const content = { ...spike.result.output.content } as Record<string, unknown>;
+  const basis = [...spike.result.output.basis];
+  const me = sampleDossier.stakeholders.find((s) => norm(s.name) === norm(spike.name));
+  const citationFor = (sourceIds: string[]): Citation | null => {
+    const urls = new Set(sourceIds.map((id) => sampleDossier.sources.find((s) => s.id === id)?.url));
+    for (const b of spike.result.output.basis) for (const c of b.citations) if (urls.has(c.url)) return c;
+    return null;
+  };
+  const ties: { entity: string; relation: string }[] = [];
+  const events: { title: string; kind: string; date: string | null }[] = [];
+  if (me) {
+    for (const e of sampleDossier.edges.filter((x) => x.aId === me.id || x.bId === me.id)) {
+      const other = sampleDossier.stakeholders.find((s) => s.id === (e.aId === me.id ? e.bId : e.aId));
+      const c = citationFor(e.sourceIds);
+      if (!other || !c) continue;
+      basis.push({ field: `ties.${ties.length}`, citations: [c] });
+      ties.push({ entity: other.name, relation: e.relation });
+    }
+    for (const ev of sampleDossier.events.filter((x) => x.stakeholderIds.includes(me.id) && x.date)) {
+      const c = citationFor(ev.sourceIds);
+      if (!c) continue;
+      basis.push({ field: `events.${events.length}`, citations: [c] });
+      events.push({ title: ev.title, kind: ev.kind, date: ev.date });
+    }
+  }
+  content.ties = ties;
+  content.events = events;
+  return { type: "json", content, basis };
 }
 
 /** The discover step's shape (src/lib/research/discover.ts), built from the 38 spike entities. */

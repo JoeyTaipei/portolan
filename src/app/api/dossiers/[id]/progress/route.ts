@@ -59,10 +59,14 @@ export async function GET(_request: Request, ctx: RouteContext<"/api/dossiers/[i
         });
       }
     }
-    const fresh = (await getDossierBasics(id)) ?? d;
-    const run = fresh.currentRunId ? await getRun(fresh.currentRunId) : null;
-    const steps = run ? await listSteps(run.id) : [];
-    const rows = run ? await progressRows(id, run.id) : { stakeholders: [], sources: [], acceptedSources: 0 };
+    const runId = d.currentRunId;
+    const [fresh_, run, steps, rows] = await Promise.all([
+      getDossierBasics(id),
+      runId ? getRun(runId) : null,
+      runId ? listSteps(runId) : [],
+      runId ? progressRows(id, runId) : { stakeholders: [], sources: [], acceptedSources: 0 },
+    ]);
+    const fresh = fresh_ ?? d;
 
     const by = (k: ResearchStep["kind"]) => steps.filter((s) => s.kind === k);
     const discover = by("discover")[0];
