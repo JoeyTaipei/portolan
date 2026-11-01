@@ -4,12 +4,14 @@ import Link from "next/link";
 import { STANCE_LABEL, influenceText, supportText } from "@/components/score/explain";
 import { ScoreX } from "@/components/score/score-x";
 import { Stamp } from "@/components/score/stamp";
+import { AddToTrackerButton } from "@/components/tracker/add-button";
 import type { TrackerItem } from "@/lib/types";
 import { AddToTracker } from "./add-to-tracker";
 import { CATEGORY_LABEL, type NodeVM } from "./model";
 import { MarkIcon } from "./node-mark";
 
-// MAP-9 details + MAP-10 recommended action. Unverified fields say Unverified; a stakeholder
+// MAP-9 details + MAP-10 recommended action. Add to tracker: the browser overlay on the sample,
+// the tracker Server Action on real dossiers (S5). Unverified fields say Unverified; a stakeholder
 // with no sourced next step says "Find a sourced contact route first" (never blank).
 
 const STATUS_NOTE: Partial<Record<NodeVM["status"], string>> = {
@@ -138,7 +140,11 @@ export function DetailsPanel({
         <Link href={`/d/${dossierId}/sources?s=${encodeURIComponent(n.id)}`} className="btn btn-ghost flex-1">
           View evidence
         </Link>
-        <AddToTracker dossierId={dossierId} isSample={isSample} stakeholderId={n.id} baseTracker={tracker} />
+        {isSample ? (
+          <AddToTracker dossierId={dossierId} isSample stakeholderId={n.id} baseTracker={tracker} />
+        ) : (
+          <AddToTrackerButton dossierId={dossierId} stakeholderId={n.id} alreadyTracked={tracker.some((t) => t.stakeholderId === n.id)} />
+        )}
       </div>
     </section>
   );

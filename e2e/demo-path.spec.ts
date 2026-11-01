@@ -4,7 +4,7 @@ import { SAMPLE_SHARE_ID } from "../src/lib/ids";
 // The YC demo path on the sample (plan P-17). S1: home → open the sample → map → select a
 // stakeholder → Add to tracker, with no request sent, no console errors and no sideways scroll
 // at 1280. S2: map → brief → A4 report (prints on one page) → share link (report only, no
-// tracker), with noindex headers. S5 extends this file.
+// tracker), with noindex headers. S5: report → tracker → debrief → support → Out of date → Undo.
 
 test.use({ viewport: { width: 1280, height: 800 }, reducedMotion: "reduce" });
 
@@ -146,5 +146,77 @@ test("the share link shows the report only, and private pages send noindex", asy
   expect(robots).toContain("Disallow: /d/");
   expect(robots).toContain("Disallow: /s/");
 
+  expect(errors).toEqual([]);
+});
+
+test("report → tracker: debrief changes support, marks the brief out of date, and Undo restores it", async ({ page }) => {
+  const errors = watchErrors(page);
+
+  await page.goto("/d/sample/report");
+  await expect(page.getByTestId("a4-sheet").or(page.getByText("This report is still being prepared"))).toBeVisible();
+  await page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Tracker" }).click();
+  await expect(page).toHaveURL(/\/d\/sample\/tracker$/);
+  await expect(page.getByRole("heading", { name: "From first contact to first deal" })).toBeVisible();
+  await expectNoSideScroll(page);
+
+  // Sample writes stay in this browser: nothing but page loads leaves the page.
+  const sent: string[] = [];
+  page.on("request", (r) => {
+    if (r.method() !== "GET") sent.push(`${r.method()} ${r.url()}`);
+  });
+
+  const row = page.getByTestId("tracker-row").first();
+  const supportBefore = (await row.getByText(/^Support/).textContent())?.replace("Support", "").trim();
+  await expect(row.getByText("Found", { exact: true })).toBeVisible();
+
+  // TRK-2: a meeting yesterday makes the debrief due.
+  await row.getByRole("button", { name: "Set meeting date" }).click();
+  const yesterday = await page.evaluate(() => {
+    const d = new Date();
+    d.setDate(d.getDate() - 1);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  });
+  await row.getByLabel("Meeting date").fill(yesterday);
+  await row.getByRole("button", { name: "Save", exact: true }).click();
+  const due = page.getByTestId("debrief-due");
+  await expect(due).toContainText("Meeting was yesterday");
+
+  // TRK-3: Save stays disabled with a reason until Overall is picked.
+  const save = due.getByRole("button", { name: "Save debrief" });
+  await expect(save).toBeDisabled();
+  await expect(due.getByText("Pick Overall to save.")).toBeVisible();
+  await due.getByRole("button", { name: "Positive" }).click();
+  await due.getByRole("button", { name: "Yes" }).click();
+  await due.getByLabel("Next step", { exact: true }).fill("Send the sensor spec sheet");
+  await due.getByLabel(/What did they say/).fill("Interested in the radar layer.");
+  await expect(due.getByLabel(/anonymised outcome/i)).toBeChecked();
+  await save.click();
+
+  // TRK-4: what changed — support recalculated, stage → Met, next step, brief out of date.
+  const result = page.getByTestId("debrief-result");
+  await expect(result).toContainText("Debrief saved");
+  const change = (await result.getByTestId("support-change").locator("b").textContent()) ?? "";
+  const [from, to] = change.split("→").map((s) => s.trim());
+  expect(from).toBe(supportBefore);
+  expect(to).not.toBe(from);
+  await expect(result).toContainText("Found → Met");
+  await expect(result).toContainText("Send the sensor spec sheet");
+  await expect(result.getByTestId("brief-out-of-date")).toHaveText("Strategy brief marked out of date");
+  await expect(row.getByText("Met", { exact: true })).toBeVisible();
+  await expect(row.getByText(/^Support/)).toContainText(to);
+  const playbook = await page.evaluate(() => localStorage.getItem("portolan.sample.playbook"));
+  expect(playbook).not.toContain("Interested");
+
+  // TRK-6: Undo puts everything back.
+  await result.getByRole("button", { name: "Undo" }).click();
+  await expect(page.getByTestId("debrief-result")).toHaveCount(0);
+  await expect(row.getByText("Found", { exact: true })).toBeVisible();
+  await expect(row.getByText(/^Support/)).toContainText(supportBefore ?? "");
+  await expect(page.getByTestId("debrief-due")).toContainText("Meeting was yesterday");
+  expect(await page.evaluate(() => localStorage.getItem("portolan.sample.debriefs"))).toBe("[]");
+  expect(await page.evaluate(() => localStorage.getItem("portolan.sample.playbook"))).toBe("[]");
+
+  await expectNoSideScroll(page);
+  expect(sent).toEqual([]);
   expect(errors).toEqual([]);
 });
