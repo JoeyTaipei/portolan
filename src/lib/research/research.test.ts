@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { filterEntities, type DiscoveredEntity } from "./filter";
 import { checkCitation } from "./quality";
+import { matchEntity } from "./refresh-match";
 
 const NPA = { name: "National Police Agency, Ministry of the Interior", nameZh: "內政部警政署" };
 const ARTICLE = "https://www.upmedia.mg/tw/investigation/military/272263";
@@ -97,5 +98,44 @@ describe("entity filter (spec §7.2)", () => {
       "Duplicate of Thunder Tiger Corp.",
       "Over the 2-entity limit",
     ]);
+  });
+});
+
+describe("refresh matching (spec §7.6)", () => {
+  const existing = [
+    { id: "st-npa", name: "National Police Agency, Ministry of the Interior", nameZh: "內政部警政署" },
+    { id: "st-ncsist", name: "National Chung-Shan Institute of Science and Technology", nameZh: null },
+    { id: "st-ab", name: "Armaments Bureau", nameZh: null },
+  ];
+  const aliases = [
+    { alias: "NCSIST", stakeholderKey: "ncsist" },
+    { alias: "National Chung-Shan Institute of Science and Technology", stakeholderKey: "ncsist" },
+  ];
+
+  it("keeps the stakeholder id for equal names, equal Chinese names and alias hits", () => {
+    expect(matchEntity({ name: "the national police agency — ministry of the interior", nameZh: null }, existing, aliases)).toEqual({
+      kind: "same",
+      existingId: "st-npa",
+    });
+    expect(matchEntity({ name: "NPA", nameZh: "內政部警政署" }, existing, aliases)).toEqual({ kind: "same", existingId: "st-npa" });
+    expect(matchEntity({ name: "NCSIST", nameZh: null }, existing, aliases)).toEqual({ kind: "same", existingId: "st-ncsist" });
+    // "Same as X" stores the stakeholder id as this dossier's alias key.
+    expect(matchEntity({ name: "MND Armaments Bureau", nameZh: null }, existing, [{ alias: "MND Armaments Bureau", stakeholderKey: "st-ab" }])).toEqual({
+      kind: "same",
+      existingId: "st-ab",
+    });
+  });
+
+  it("sends similar but unequal names to Needs your check, never merging them", () => {
+    expect(matchEntity({ name: "Armaments Bureau MND", nameZh: null }, existing, aliases)).toEqual({
+      kind: "check",
+      existingId: "st-ab",
+      similarity: 0.67,
+    });
+  });
+
+  it("treats anything else as a new stakeholder", () => {
+    expect(matchEntity({ name: "Coast Guard Administration", nameZh: "海巡署" }, existing, aliases)).toEqual({ kind: "new" });
+    expect(matchEntity({ name: "National Science and Technology Council", nameZh: null }, existing, aliases)).toEqual({ kind: "new" });
   });
 });
