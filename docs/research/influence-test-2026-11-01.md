@@ -45,3 +45,29 @@ Does the influence method in `docs/scoring.md` §2 give stable, sourced ratings?
 - **D. Founder check (10 minutes, free):** rank these 10 from most to least influential for a US counter-drone startup's first government pilot. We compare that order with the scores; that is the number to quote.
 
 Raw outputs and scripts: kept outside the repo (scratchpad), not committed.
+
+## Founder ranking check (2026-11-01 evening)
+
+The founder ranked the 10 by influence over a US counter-drone startup's first government pilot. The list named NCSIST twice (2nd and 6th) and left out the National Police Agency, so it is compared two ways. "Ours" = Sonnet majority of 3 with the decision 0004 rules.
+
+| Founder rank | Stakeholder | Ours | Our rank |
+|---|---|---|---|
+| 1 | Defense Committee | Medium 53 | 5 |
+| 2 | NCSIST | High 71 | 4 |
+| 3 | AIDC | Low 33 | 7 |
+| 4 | Armaments Bureau | High 87 | 1 |
+| 5 | ITRI | Low 30 | 8 |
+| 6 | (NCSIST again; read as National Police Agency) | High 77 | 3 |
+| 7 | Coast Guard | High 82 | 2 |
+| 8 | Tron Future | Medium 45 | 6 |
+| 9 | Taiwania Capital | Low 15 | 9 |
+| 10 | Lee and Li | no score | 10 |
+
+Rank agreement (Spearman): **0.44** reading the 6th as the Police Agency, **0.57** dropping the duplicate (Opus: 0.52 / 0.63). Moderate: right at the bottom, wrong in the middle and top.
+
+Where we differ:
+1. **The legislature is under-rated.** The Defense Committee scored budget 1 ("can influence priorities"), but the Legislative Yuan approves the defence budget, which the rubric's 3 ("drafts or approves this budget") should cover. The rubric wording led the model to treat "approve" as an executive act.
+2. **Gatekeepers are missing.** The founder puts AIDC (state-backed aerospace prime) and ITRI high; we put them low, partly because decision 0004 sets their authority and budget to 0. For a foreign startup the route often runs through a local prime or certifier (the NPA tender is open to domestic firms only), and none of the five factors measures "controls the route in".
+3. **Buyers are over-rated relative to the founder.** We rank the Coast Guard and Police Agency 2nd–3rd; the founder 6th–7th.
+
+Caveats: one expert, 10 items, one duplicate. Ask the founder why AIDC and ITRI are 3rd and 5th before changing weights.
