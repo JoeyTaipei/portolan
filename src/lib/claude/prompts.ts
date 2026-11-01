@@ -44,7 +44,7 @@ ${DATA_RULES}
 
 Influence ratings, each 0–3, judged as power over the client's goal (not general importance). Rate a factor only when a source supports it; otherwise answer "none" with no source ids.
 - authority: 3 decides or approves this procurement, licence or grant by law; 2 gives formal advice or review; 1 takes part with no formal decision; 0 no formal role.
-- budget: 3 drafts or approves this budget; 2 executes or allocates it; 1 can influence its priorities (e.g. committee questioning); 0 unrelated to the budget.
+- budget: 3 drafts or approves this budget (the legislature passing or cutting the defence budget counts as approving); 2 executes or allocates it; 1 can influence its priorities (e.g. committee questioning); 0 unrelated to the budget.
 - access: 3 is the decision-maker or reports directly to them; 2 meets them regularly or proposes jointly; 1 occasional contact (same committee, event); 0 no contact found.
 - recent: within the last 12 months, 3 led an action directly tied to the goal (tender, bill, pilot); 2 took part in one; 1 spoke publicly about the issue; 0 nothing relevant.
 Statements: things this stakeholder said or did about foreign companies like the client, each rated −2 clearly against, −1 leaning against, 0 neutral or both, +1 leaning for, +2 clearly for. One source per statement.

@@ -138,7 +138,7 @@ export async function sourcesByLabel(dossierId: string, labels: string[]): Promi
   if (!labels.length) return [];
   const r = await db()
     .from("sources")
-    .select("id, label, url, title, excerpt, excerpt_lang, accepted, verified_at, origin, run_id")
+    .select("id, label, url, title, excerpt, excerpt_lang, accepted, verified_at, origin, run_id, reliability, credibility, published_at")
     .eq("dossier_id", dossierId)
     .in("label", labels);
   return (must(r, "sources by label") as Row[])
@@ -153,6 +153,9 @@ export async function sourcesByLabel(dossierId: string, labels: string[]): Promi
       verifiedAt: (x.verified_at as string) ?? null,
       origin: x.origin as RateSource["origin"],
       runId: (x.run_id as string) ?? null,
+      reliability: x.reliability as RateSource["reliability"],
+      credibility: x.credibility as RateSource["credibility"],
+      publishedAt: (x.published_at as string) ?? null,
     }))
     .sort((a, b) => labelNumber(a.label) - labelNumber(b.label));
 }

@@ -1,18 +1,19 @@
 import "server-only";
 import { claimProblems, type CheckSource } from "@/lib/checks/source-check";
 import { MODELS } from "@/lib/limits/prices";
-import type { Credibility, FactField, FactStatus, Rating03, StatementRating } from "@/lib/types";
+import type { Credibility, FactField, FactStatus, Rating03, Reliability, StatementRating } from "@/lib/types";
 import { callStructured, claudeLive, type LedgerContext } from "./client";
 import { mockRate } from "./mock";
 import { RATE_SYSTEM, ratePrompt, type PromptClient } from "./prompts";
 import { RatingOutput } from "./schemas";
 
-// The `rate` step (spec §7.2) with the source-check loop (§7.7) folded in. Live: three Sonnet
-// passes over the same sources, and each influence factor takes the majority answer
-// (docs/scoring.md §0, decision 0004): "none" counts as an answer, and so does a rating that
-// fails the source check; three different answers → the middle value. The cited source and
-// quote come from a pass in the majority. The three passes take the place of the single §7.7
-// re-ask (at most 3 calls per entity, spec §7.8). Code drops claims citing ids we didn't
+// The `rate` step (spec §7.2) with the source-check loop (§7.7) folded in. Live (decision 0004):
+// two Sonnet passes over the entity's 4 strongest sources (excerpts cut to ~1,200 chars), a
+// 3rd pass only if they disagree on any factor; each influence factor takes the majority
+// answer (docs/scoring.md §0): "none" counts as an answer, and so does a rating that fails the
+// source check; three different answers → the middle value. The cited source and quote come
+// from a pass in the majority. The passes take the place of the single §7.7 re-ask (at most 3
+// calls per entity, spec §7.8). Code drops claims citing ids we didn't
 // supply and checks every claim; what fails is stored Unverified. A failed or refused pass
 // casts no vote; no successful pass → every rating Unverified. Mock: one pass over S0b.
 // Structural zeros and the 2-factor minimum are scoring rules (src/lib/scoring), not here.
@@ -25,8 +26,12 @@ export const NO_RATING = "No sourced rating";
 // the US$2.9 rating cap.
 const MAX_TOKENS = 6000;
 const FACTORS = ["authority", "budget", "access", "recent"] as const;
-/** Live passes per entity (decision 0004). Each pass writes its own cost-ledger estimate. */
-export const RATE_PASSES = 3;
+/**
+ * Live passes per entity (decision 0004): 2, and a 3rd only when they disagree on any factor
+ * (or one failed). Each pass writes its own cost-ledger estimate.
+ */
+export const RATE_PASSES = 2;
+export const MAX_PASSES = 3;
 
 /**
  * Majority over the passes' answers (null = "none"). No majority → the middle value, with
@@ -47,6 +52,35 @@ export interface RateSource extends CheckSource {
   url: string | null;
   title: string;
   excerptLang: string;
+  reliability?: Reliability;
+  credibility?: Credibility;
+  publishedAt?: string | null;
+}
+
+/** Live input trim (decision 0004): the 4 strongest accepted sources, each cut to ~1,200 chars. */
+export const MAX_SOURCES = 4;
+export const MAX_EXCERPT = 1200;
+// Admiralty weights (docs/scoring.md §1): F "can't judge" ranks above E.
+const RELIABILITY_RANK: Record<Reliability, number> = { A: 0, B: 1, C: 2, D: 3, F: 4, E: 5 };
+const CREDIBILITY_RANK: Record<Credibility, number> = { 1: 0, 2: 1, 3: 2, 4: 3, 6: 4, 5: 5 };
+
+/**
+ * What Claude sees in live mode: higher reliability, then credibility, then most recent.
+ * The excerpt is cut, never rewritten, so a quote from it is still found in the stored full
+ * excerpt by the source check.
+ */
+export function strongestSources(sources: RateSource[], n = MAX_SOURCES, maxChars = MAX_EXCERPT): RateSource[] {
+  const date = (s: RateSource) => s.publishedAt ?? s.verifiedAt ?? "";
+  return sources
+    .filter((s) => s.accepted)
+    .sort(
+      (a, b) =>
+        RELIABILITY_RANK[a.reliability ?? "F"] - RELIABILITY_RANK[b.reliability ?? "F"] ||
+        CREDIBILITY_RANK[a.credibility ?? 6] - CREDIBILITY_RANK[b.credibility ?? 6] ||
+        date(b).localeCompare(date(a)),
+    )
+    .slice(0, n)
+    .map((s) => (s.excerpt.length > maxChars ? { ...s, excerpt: s.excerpt.slice(0, maxChars) } : s));
 }
 
 export interface RateEntity {
@@ -156,12 +190,15 @@ export async function rateEntity(args: {
   const live = claudeLive();
   let model: string | null = live ? MODELS.sonnet : "mock";
 
+  // Live: Claude sees the trimmed strongest sources; claims are checked against full excerpts.
+  const shown = live ? strongestSources(args.sources) : args.sources;
+  const shownLabel = new Map(shown.map((s) => [s.label, s]));
   const ask = async (): Promise<Raw | null> => {
     if (!live) return mockRate(args.entity, args.sources);
     const r = await callStructured({
       model: MODELS.sonnet,
       system: RATE_SYSTEM,
-      user: ratePrompt({ client: args.client, entity: args.entity, sources: args.sources, today: args.today }),
+      user: ratePrompt({ client: args.client, entity: args.entity, sources: shown, today: args.today }),
       schema: RatingOutput,
       maxTokens: MAX_TOKENS,
       effort: "medium",
@@ -171,15 +208,24 @@ export async function rateEntity(args: {
     log.push(`Claude ${r.reason}: ${r.detail}`);
     return null;
   };
-
-  const raws = args.sources.length
-    ? (await Promise.all(Array.from({ length: live ? RATE_PASSES : 1 }, ask))).filter((x): x is Raw => x !== null)
-    : [];
-  const passes = raws.map((raw, i) => {
-    const { passed, failed } = check(collect(raw, args.entity, byLabel, log), byId, args.runId);
+  const toPass = (raw: Raw, i: number) => {
+    const { passed, failed } = check(collect(raw, args.entity, live ? shownLabel : byLabel, log), byId, args.runId);
     for (const f of failed) log.push(...f.problems.map((p) => `Unverified (pass ${i + 1}): ${p}`));
     return { raw, passed };
-  });
+  };
+  const answersOf = (p: { passed: ReturnType<typeof collect> }) =>
+    FACTORS.map((f) => p.passed.find((c) => c.fact?.field === f)?.fact?.rating ?? "none").join(",");
+
+  const passes: { raw: Raw; passed: ReturnType<typeof collect> }[] = [];
+  if (shown.length) {
+    const first = await Promise.all(Array.from({ length: live ? RATE_PASSES : 1 }, ask));
+    first.forEach((raw, i) => raw && passes.push(toPass(raw, i)));
+    // A 3rd pass only when the two disagree on any factor, or one of them failed.
+    if (live && (passes.length < RATE_PASSES || new Set(passes.map(answersOf)).size > 1)) {
+      const raw = await ask();
+      if (raw) passes.push(toPass(raw, passes.length));
+    }
+  }
   if (!passes.length) {
     model = null;
     log.push(args.sources.length ? "No valid rating pass: everything Unverified" : "No accepted sources: everything Unverified");
