@@ -65,7 +65,7 @@ export function NewDossierForm() {
         setError(r.error);
         return;
       }
-      rememberDossier(r.data.id, `${input.company} in Taiwan`);
+      rememberDossier(r.data.id, input.company); // the user's own words; the real name replaces it on first visit
       setCreated(r.data);
       formRef.current?.reset();
     });

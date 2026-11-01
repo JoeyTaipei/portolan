@@ -28,6 +28,11 @@ export function MapView({ model, tracker }: { model: MapModel; tracker: TrackerI
     const s = params.get("s");
     return s && model.nodes.some((n) => n.id === s) ? s : null;
   });
+  // Activity keeps this page's state across visits, so follow a new ?s= when one arrives.
+  const sParam = params.get("s");
+  useEffect(() => {
+    if (sParam && model.nodes.some((n) => n.id === sParam)) setSelected(sParam);
+  }, [sParam, model.nodes]);
   const [filter, setFilter] = useState<Category | "all">("all");
   const [query, setQuery] = useState("");
   const [paused, setPaused] = useState(false);

@@ -135,7 +135,7 @@ export function InfluenceMap({
     <div
       ref={hostRef}
       className={s.stage}
-      onPointerEnter={() => setHover(true)}
+      onPointerEnter={(e) => e.pointerType === "mouse" && setHover(true)}
       onPointerLeave={() => setHover(false)}
     >
       <svg
