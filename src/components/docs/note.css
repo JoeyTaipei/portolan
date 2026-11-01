@@ -1,0 +1,157 @@
+/* 08 Briefing note: three A4 pages (spec §12, design/mockup/src/08-briefing-note.template.html).
+   Builds on the A4 report's paper (report.css: .rp-desk, .rp-sheet, .rp-fit); bn- prefix.
+   Colours are tokens from globals.css. */
+
+.bn-sheet {
+  gap: 10px;
+  font-size: 12.6px;
+  line-height: 1.45;
+}
+
+.bn-kick {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--ink2);
+}
+
+.bn-head {
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  gap: 18px;
+  align-items: start;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--rule-strong);
+}
+.bn-head h1 {
+  margin: 2px 0 0;
+  font-size: 26px;
+  line-height: 1.1;
+  font-weight: 800;
+}
+.bn-head .sub {
+  margin: 4px 0 0;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--ink2);
+}
+.bn-review {
+  border: 1.5px solid var(--stamp);
+  border-radius: var(--r-m);
+  padding: 8px 10px;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--ink);
+}
+.bn-review b {
+  display: block;
+  color: var(--stamp);
+  font-size: 11.5px;
+}
+.bn-review.is-draft {
+  border-color: var(--notice);
+  background: var(--notice-bg);
+}
+.bn-review.is-draft b {
+  color: var(--notice-text);
+}
+
+.bn-strip {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  gap: 14px;
+  background: var(--panel2);
+  border-radius: var(--r-m);
+  padding: 8px 12px;
+  font-size: 12px;
+}
+.bn-strip .k {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--ink2);
+}
+
+.bn-sec h2 {
+  margin: 4px 0 4px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--ink2);
+}
+.bn-sec ul {
+  margin: 0;
+  padding-left: 18px;
+  list-style: disc;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.bn-sec p {
+  margin: 0;
+}
+.bn-sec blockquote {
+  margin: 0;
+  padding: 2px 0 2px 12px;
+  border-left: 3px solid var(--act);
+  font-style: italic;
+}
+.bn-sec .note {
+  margin-top: 3px;
+  font-size: 11.5px;
+  color: var(--ink2);
+}
+.bn-sec .none {
+  color: var(--ink2);
+  font-style: italic;
+}
+.bn-cite {
+  font-size: 0.8em;
+  vertical-align: 0.3em;
+  font-weight: 600;
+  color: var(--ink2);
+  white-space: nowrap;
+  margin-left: 1px;
+}
+.bn-cite a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.bn-foot {
+  margin-top: auto;
+  border-top: 1px solid var(--rule);
+  padding-top: 6px;
+  font-size: 10.5px;
+  line-height: 1.4;
+  color: var(--ink2);
+}
+.bn-foot .src {
+  margin: 0 0 4px;
+}
+.bn-foot .stamp {
+  font-size: 8.5px;
+}
+.bn-foot .line {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.bn-pdf {
+  width: min(794px, calc(100vw - 32px));
+  height: min(1123px, 80dvh);
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--r-l);
+  background: var(--panel);
+}
+
+@media print {
+  .bn-page {
+    break-after: page;
+  }
+  .bn-page:last-child {
+    break-after: auto;
+  }
+}

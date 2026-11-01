@@ -17,14 +17,18 @@ import { SAMPLE_DOSSIER_ID, SAMPLE_SHARE_ID } from "@/lib/ids";
 import { briefMetrics } from "@/lib/scoring";
 import type {
   Brief,
+  BriefingNoteContent,
   Category,
   Credibility,
   Dossier,
+  DocumentRequest,
   Edge,
   Fact,
   FactField,
   Lead,
   MatchCheck,
+  NoteSection,
+  PortolanDocument,
   Rating03,
   Reliability,
   Sentence,
@@ -933,6 +937,89 @@ const tracker: TrackerItem[] = tracked.map((id) => ({
   createdAt: AT,
 }));
 
+// ─── Briefing note: pre-written, sourced (spec SHELL-3, §11.2; docs/templates/briefing-note.md) ──
+
+const section = (key: string, title: string, kind: NoteSection["kind"], sentences: Sentence[], note: string | null = null): NoteSection => ({
+  key,
+  title,
+  kind,
+  sentences,
+  note,
+});
+
+const NOTE_SECTIONS: NoteSection[] = [
+  section("objective", "Objective of the meeting", "bullets", [
+    s("Learn which technical specifications and standards the Bureau will set for counter-UAS sensors, since it plans and approves armament programmes and specifications.", "moj-f0000075"),
+    s("Confirm whether your kit can come in as foreign technology that fills a gap, given that drone module parts must be made in Taiwan.", "taiwannews-6253686"),
+    s("Ask which Taiwanese makers from the Bureau's November 2025 procurement briefing could integrate your kit.", "taiwannews-6253686"),
+  ]),
+  section("stakeholder", "The stakeholder: remit, structure, influence", "bullets", [
+    s("Remit: by law the Bureau plans, reviews, approves and manages armament programmes, technical specifications and standards.", "moj-f0000075"),
+    s("Structure: the Armaments Bureau is one of the agencies directly under the Ministry of National Defense.", "mnd-71861"),
+    s("Influence: it runs the plan to buy 48,750 drones, 11,270 in 2026 and 37,480 in 2027, which Taiwan News called the largest military drone purchase in the ministry's history.", "trade-systems", "taiwannews-6253686"),
+  ]),
+  section("views", "Likely views on your team", "paragraph", [
+    s("At its procurement briefing the Bureau said Chinese companies and Chinese capital may not take part, and drone module parts must be made in Taiwan.", "taiwannews-6253686"),
+    s("It also said foreign suppliers' technology may fill areas Taiwan lacks, such as flight-control software and satellite communication chips.", "taiwannews-6253686"),
+    s("A foreign sensor kit presented as filling a gap through a Taiwanese maker is therefore more likely to be welcomed than one presented as replacing local makers.", "taiwannews-6253686"),
+  ], "Likely (55–80%) to be open to a gap-filling foreign sensor. Confidence: moderate, from one news report of the Bureau's briefing."),
+  section("pitch", "Elevator pitch", "quote", [
+    s("We make a counter-UAS sensor kit and want to fill a gap for Taiwanese makers, through a Taiwanese partner and with no Chinese parts. We are here to learn your technical specifications and standards, not to replace local suppliers.", "taiwannews-6253686", "moj-f0000075"),
+  ], "Delivery note: lead with the gap your kit fills for Taiwanese makers, not with your company's size."),
+  section("talking", "Talking points", "bullets", [
+    s("Local content: drone module parts must be made in Taiwan, so bring a Taiwanese integration partner into the conversation from the start.", "taiwannews-6253686"),
+    s("Gap filling: the Bureau named flight-control software and satellite communication chips as areas where foreign technology may help.", "taiwannews-6253686"),
+    s("Scope: the 2026–2027 purchase covers FPV, bomb-dropping, loitering and coastal surveillance drones.", "trade-systems", "taiwannews-6253686"),
+    s("Route for US firms: military procurement in Taiwan runs through domestic tenders, Foreign Military Sales or Direct Commercial Sales.", "trade-systems"),
+    s("Who was there: AIDC, Thunder Tiger and Coretronic were among the makers at the Bureau's procurement briefing.", "taiwannews-6253686"),
+  ]),
+  section("asks", "Suggested asks", "bullets", [
+    s("Which technical specifications and standards will apply to counter-UAS sensors in coming armament programmes?", "moj-f0000075"),
+    s("Which areas does the Bureau still see as gaps that foreign suppliers' technology may fill?", "taiwannews-6253686"),
+    s("Would the Bureau point you to makers from its procurement briefing as integration partners?", "taiwannews-6253686"),
+  ]),
+  section("risks", "Risks and sensitivities", "bullets", [
+    s("Chinese companies, Chinese capital and Chinese-made parts are excluded, so check your supply chain before the meeting.", "taiwannews-6253686"),
+    s("Module parts must be made in Taiwan, so a fully imported kit may look like competition for local makers.", "taiwannews-6253686"),
+    s("Foreign Military Sales are handled by the U.S. Department of Defense, so confirm your export route before promising timelines.", "trade-systems"),
+  ]),
+];
+
+/** The sample's pre-written note on the Armaments Bureau (Sample data). */
+export const SAMPLE_NOTE: BriefingNoteContent = {
+  preparedFor: "US counter-UAS startup (sample client) · Counter-UAS sensor kit",
+  stakeholderId: "ab",
+  meeting: { at: null, place: null, length: null },
+  sections: NOTE_SECTIONS,
+  sourceIds: [...new Set(NOTE_SECTIONS.flatMap((x) => x.sentences.flatMap((y) => y.sourceIds)))],
+};
+
+export const SAMPLE_NOTE_ID = "doc-sample-ab";
+
+const documentRequests: DocumentRequest[] = [
+  { id: "req-sample-ab", dossierId: D, type: "briefing_note", trackerItemId: "trk-ab", expertReview: false, createdAt: AT },
+];
+
+const documents: PortolanDocument[] = [
+  {
+    id: SAMPLE_NOTE_ID,
+    dossierId: D,
+    requestId: "req-sample-ab",
+    type: "briefing_note",
+    title: "Armaments Bureau: first meeting",
+    pages: 3,
+    status: "draft_ready",
+    reviewerName: null,
+    reviewerKind: null,
+    factsCheckedAt: "2026-10-30",
+    content: SAMPLE_NOTE,
+    storagePath: null,
+    nextUpdateAt: null,
+    changesNote: null,
+    createdAt: AT,
+  },
+];
+
 // ─── The dossier (brief added below) ─────────────────────────────────────────
 
 const base: Dossier = {
@@ -987,8 +1074,8 @@ const base: Dossier = {
   leads,
   tracker,
   debriefs: [],
-  documentRequests: [],
-  documents: [],
+  documentRequests,
+  documents,
   intros: [],
   team: [],
   contacts: [],
