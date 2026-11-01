@@ -1,14 +1,36 @@
-// Placeholder until slice S1 replaces it with the Dossiers screen (design/screens/01-dossiers.png).
+import Link from "next/link";
+import { Suspense } from "react";
+import { DossierShell } from "@/components/shell/dossier-shell";
+import { StatePreview } from "@/components/shell/nis";
+import { PickFirstNotice } from "@/components/shell/pick-first";
+
+// Minimal home until S1 builds the Dossiers screen.
 export default function Home() {
   return (
-    <main className="flex flex-1 flex-col justify-center gap-3 bg-[#F3EEE4] px-6 py-16 text-[#1C1B19]">
-      <p className="font-mono text-xs tracking-widest text-[#6B655B]">MARKET ENTRY INTELLIGENCE</p>
-      <h1 className="font-serif text-4xl font-semibold leading-tight">
-        PORTOLAN <span className="font-normal italic text-[#A8441F]">{"// Cognitive Brief"}</span>
-      </h1>
-      <p className="max-w-sm font-serif text-lg italic text-[#4F4A42]">
-        Turning unverified public data into evidence-backed, fully traceable stakeholder influence maps.
+    <DossierShell dossierId={null} isSample={false}>
+      <Suspense fallback={<HomeContent />}>
+        <StatePreview>
+          <HomeContent />
+        </StatePreview>
+      </Suspense>
+    </DossierShell>
+  );
+}
+
+function HomeContent() {
+  return (
+    <section className="flex max-w-[68ch] flex-col gap-4 px-[18px] py-10 lg:px-6">
+      <Suspense fallback={null}>
+        <PickFirstNotice />
+      </Suspense>
+      <p className="m-0 text-[13px] font-semibold text-ink2">Market entry intelligence</p>
+      <h1 className="m-0 text-[50px] font-bold uppercase leading-[.95] tracking-[.02em] lg:text-[40px]">Portolan</h1>
+      <p className="m-0 max-w-[34ch] text-[15.5px] text-ink2">
+        Sourced stakeholder maps and briefs for entering a new market.
       </p>
-    </main>
+      <Link className="btn btn-main self-start" href="/d/sample">
+        Open the sample dossier
+      </Link>
+    </section>
   );
 }
