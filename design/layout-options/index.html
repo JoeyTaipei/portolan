@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portolan desktop layouts</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:ital,wght@0,400;0,500;0,600;1,500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F3F4F2;--ink:#17191C;--mut:#5C6168;--line:#D9DCDF;--pick:#C2187A}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121416;--ink:#E8EAEC;--mut:#9AA1A9;--line:#2C3136;--pick:#F06AAE}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,-apple-system,sans-serif;padding:32px 16px 64px}
+.wrap{max-width:1480px;margin:0 auto}
+h1{font-size:26px;margin:0 0 4px}
+.lead{color:var(--mut);margin:0 0 18px;max-width:820px}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+nav a{color:var(--ink);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px}
+section{margin-bottom:56px}
+.head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:12px}
+.head h2{margin:0;font-size:21px}
+.tag{font-size:12px;border:1px solid var(--line);border-radius:4px;padding:1px 8px;color:var(--mut)}
+.tag.rec{border-color:var(--pick);color:var(--pick)}
+.cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:0 0 14px;font-size:14px}
+.cols b{display:block;font-size:12px;color:var(--mut);font-weight:600;letter-spacing:.04em}
+.screen{border:1px solid var(--line);border-radius:8px;overflow:hidden}
+svg{display:block;width:100%;height:auto}
+.note{font-size:13px;color:var(--mut)}
+@media (max-width:820px){.cols{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Portolan: three desktop layouts</h1>
+<p class="lead">Each layout borrows the structure of an app your users already use every day, drawn at 1440×900 in the Admiralty chart palette (the palette is swappable). The phone gets a single readable column in all three. All data is Sample data.</p>
+<nav><a href="#a">A · Chart table (Google Maps)</a><a href="#b">B · Workbench (Linear, Notion, Salesforce)</a><a href="#c">C · Brief with margin notes (Google Docs)</a></nav>
+<div id="out"></div>
+<p class="note">Agency names come from the sample dossier and the Parallel trial run. Scores, grades and dates are placeholders.</p>
+</div>
+<script>
+const C={bg:'#FBFCFA',panel:'#FFFFFF',ink:'#14233A',mut:'#5D6B7E',line:'#D3E2EE',rose:'#A33A6B',sup:'#0F6E5A',opp:'#B23B2E',neu:'#7A8798',act:'#C2187A',tile:'#EEF5FA',land:'#EAD58A',deep:['#E4F0F8','#BFDBEF','#93C1E3']};
+const F="'IBM Plex Sans Condensed',sans-serif",M="'IBM Plex Mono',monospace";
+const N=[
+ {x:100,y:118,l:'Ministry of National Defense',s:'MND',st:'opp',w:9,role:'Buyer · procurement',src:4,g:'A2',stage:'Research',next:'Map the procurement office'},
+ {x:62,y:92,l:'NCSIST',s:'NCSIST',st:'sup',w:8,role:'R&D · industry liaison',src:3,g:'A2',stage:'Contact',next:'Request a briefing'},
+ {x:142,y:84,l:'Legislative Yuan',s:'Leg. Yuan',st:'neu',w:7,role:'Budget · drone act',src:5,g:'B2',stage:'Research',next:'Track the budget vote'},
+ {x:48,y:150,l:'TEDIBOA',s:'TEDIBOA',st:'sup',w:6,role:'Industry alliance',src:2,g:'B3',stage:'Meeting',next:'Join the alliance demo day'},
+ {x:150,y:150,l:'Taiwania Capital',s:'Taiwania Cap.',st:'sup',w:5,role:'Investor',src:2,g:'B2',stage:'Research',next:'Ask for a portfolio intro'},
+ {x:110,y:70,l:'AIT',s:'AIT',st:'neu',w:5,role:'US policy channel',src:3,g:'A3',stage:'Research',next:'Brief the commercial section'},
+ {x:78,y:178,l:'Civil Aeronautics Admin.',s:'CAA',st:'opp',w:4,role:'Airspace rules',src:1,g:'C3',stage:'Research',next:'Check test-flight permits'}];
+const ROUTE=[1,2,0];
+const t=(x,y,s,o={})=>`<text x="${x}" y="${y}" font-family="${o.m?M:F}" font-size="${o.z||13}" font-weight="${o.b?600:400}" fill="${o.c||C.ink}" ${o.a?`text-anchor="${o.a}"`:''} ${o.i?'font-style="italic"':''}>${s}</text>`;
+const r=(x,y,w,h,o={})=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${o.rx??6}" fill="${o.f||C.panel}" ${o.s?`stroke="${o.s}" stroke-width="${o.sw||1}"`:''}/>`;
+function shape(n,x,y,rr){const c=C[n.st];return n.st==='sup'?`<polygon points="${x},${y-rr} ${x+rr},${y+rr*0.8} ${x-rr},${y+rr*0.8}" fill="${c}"/>`:n.st==='opp'?`<rect x="${x-rr*0.8}" y="${y-rr*0.8}" width="${rr*1.6}" height="${rr*1.6}" fill="${c}"/>`:`<circle cx="${x}" cy="${y}" r="${rr*0.85}" fill="${C.bg}" stroke="${c}" stroke-width="1.6"/>`}
+function chart(ox,oy,sc,W,H,label=true){let s=`<svg x="${ox}" y="${oy}" width="${W}" height="${H}" viewBox="0 0 ${W/sc} ${H/sc}" overflow="hidden"><g transform="translate(${(W/sc-200)/2},${(H/sc-240)/2})">`;
+ s+=`<rect x="-400" y="-400" width="1200" height="1200" fill="${C.deep[0]}"/><circle cx="100" cy="120" r="80" fill="${C.deep[1]}"/><circle cx="100" cy="120" r="44" fill="${C.deep[2]}"/><path d="M-200 -100 L60 -100 L60 0 C40 40 30 70 -200 96 Z" fill="${C.land}"/><path d="M400 160 C170 170 150 195 140 400 L400 400Z" fill="${C.land}"/>`;
+ for(let a=0;a<16;a++){const q=a*Math.PI/8;s+=`<line x1="100" y1="120" x2="${(100+Math.cos(q)*400).toFixed(1)}" y2="${(120+Math.sin(q)*400).toFixed(1)}" stroke="${C.rose}" stroke-width="${a%4?0.25:0.5}" opacity="${a%4?0.45:0.85}"/>`}
+ s+=`<circle cx="100" cy="120" r="9" fill="none" stroke="${C.rose}" stroke-width=".5"/><path d="M100 107 L102.5 120 L100 133 L97.5 120Z" fill="${C.rose}"/>`;
+ s+=`<polyline points="${ROUTE.map(i=>N[i].x+','+N[i].y).join(' ')}" fill="none" stroke="${C.act}" stroke-width="1.4" stroke-dasharray="4 3"/>`;
+ N.forEach((n,i)=>{const rr=n.w*0.85;s+=shape(n,n.x,n.y,rr);if(ROUTE.includes(i))s+=`<circle cx="${n.x}" cy="${n.y}" r="${rr+3.5}" fill="none" stroke="${C.act}" stroke-width=".9"/>`+t(n.x+rr+4,n.y-rr-1,ROUTE.indexOf(i)+1,{m:1,z:5.5,c:C.act});if(label)s+=t(n.x,n.y+rr+8,n.s,{z:6,a:'middle'})});
+ return s+'</g></svg>'}
+function topbar(active,left=0){let s=r(left,0,1440-left,56,{rx:0,s:C.line})+t(left+24,35,'Portolan',{z:21,b:1});
+ ['Dossiers','Map','Tracker','Network','Docs'].forEach((n,i)=>{const x=left+200+i*96,on=n===active;s+=t(x,35,n,{z:14,b:on,c:on?C.ink:C.mut})+(on?`<rect x="${x}" y="52" width="${n.length*7.6}" height="4" fill="${C.act}"/>`:'')});
+ return s+t(1416,35,'SAMPLE DATA · Taiwan · counter-UAS',{m:1,z:11,c:C.mut,a:'end'})}
+function scores(x,y,w,gap,h=56){return [['Entry readiness','55–70','5 src'],['Opposition','Low–med','4 src'],['Window to act','41 days','3 src']].map((v,i)=>{const xx=x+i*(w+gap);return r(xx,y,w,h,{f:C.tile,s:C.line})+t(xx+10,y+18,v[0],{z:11,c:C.mut})+t(xx+10,y+43,v[1],{z:19,b:1})+t(xx+w-10,y+43,v[2],{m:1,z:9,c:C.mut,a:'end'})}).join('')}
+function nextCard(x,y,w){return r(x,y,w,84,{s:C.line})+`<rect x="${x}" y="${y}" width="4" height="84" fill="${C.act}"/>`+t(x+16,y+20,'NEXT STEP · 1 of 3',{z:10,c:C.mut})+t(x+16,y+44,'Request a briefing with NCSIST industry liaison',{z:15,b:1})+t(x+16,y+66,'3 sources · A2 · checked 30 Oct',{m:1,z:10,c:C.mut})}
+function sources(x,y,w){const S=[['[1]','ncsist.org.tw · industry programme page','A2'],['[2]','cna.com.tw · drone act reading','A2'],['[3]','trade.gov · Taiwan UAS market note','B2']];return S.map((q,i)=>{const yy=y+i*50;return `<line x1="${x}" y1="${yy}" x2="${x+w}" y2="${yy}" stroke="${C.line}"/>`+t(x,yy+20,q[0],{m:1,z:11,c:C.act})+t(x+30,yy+20,q[1],{z:12.5})+t(x+w,yy+20,q[2],{m:1,z:10,c:C.mut,a:'end'})+t(x+30,yy+38,'checked 30 Oct 2026',{z:11,c:C.mut})}).join('')}
+function scale(x,y,w){return t(x,y,'How likely they back a pilot',{z:11,c:C.mut})+`<rect x="${x}" y="${y+8}" width="${w}" height="8" fill="${C.line}"/><rect x="${x+w*0.55}" y="${y+8}" width="${w*0.25}" height="8" fill="${C.sup}"/>`+t(x,y+32,'likely · 55–80% · moderate confidence',{m:1,z:10,c:C.mut})}
+function stepper(x,y,w,cur){const L=['Research','Contact','Meeting','Pilot'];let s=`<line x1="${x+8}" y1="${y}" x2="${x+w-8}" y2="${y}" stroke="${C.line}" stroke-width="2"/>`;L.forEach((l,i)=>{const xx=x+8+i*(w-16)/3,st=i<cur?'done':i===cur?'on':'todo';s+=`<circle cx="${xx}" cy="${y}" r="6" fill="${st==='done'?C.ink:st==='on'?C.act:C.panel}" stroke="${st==='todo'?C.mut:'none'}"/>`+t(xx,y+22,l,{z:10.5,a:'middle',c:st==='on'?C.act:C.mut,b:st==='on'})});return s}
+
+function A(){let s=`<svg viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Layout A, chart table"><rect width="1440" height="900" fill="${C.deep[0]}"/>`;
+ s+=chart(200,56,2.7,1040,844);s+=topbar('Map');
+ s+=r(24,76,380,800,{s:C.line,rx:10});s+=r(40,92,348,40,{f:C.tile,s:C.line})+t(56,117,'Search stakeholders, agencies, people',{z:13,c:C.mut});
+ s+=t(40,160,'Contact first',{z:11,c:C.mut,b:1});
+ [1,2,0].forEach((i,k)=>{const n=N[i],y=172+k*70,on=k===0;s+=r(40,y,348,62,{f:on?C.tile:C.panel,s:on?C.act:C.line,sw:on?1.5:1})+`<g>${shape(n,62,y+31,8)}</g>`+t(82,y+26,n.l,{z:14,b:1})+t(82,y+46,n.role,{z:11.5,c:C.mut})+t(376,y+26,`#${k+1}`,{m:1,z:11,c:C.act,a:'end'})+t(376,y+46,`${n.src} src · ${n.g}`,{m:1,z:10,c:C.mut,a:'end'})});
+ s+=t(40,398,'Everyone else · 35 more',{z:11,c:C.mut,b:1});
+ [3,4,5,6].forEach((i,k)=>{const n=N[i],y=410+k*52;s+=`<line x1="40" y1="${y}" x2="388" y2="${y}" stroke="${C.line}"/>`+shape(n,56,y+26,6)+t(74,y+24,n.l,{z:13})+t(74,y+42,n.role,{z:11,c:C.mut})+t(388,y+24,`${n.src} src`,{m:1,z:10,c:C.mut,a:'end'})});
+ s+=t(40,640,'Selected',{z:11,c:C.mut,b:1})+t(40,668,'NCSIST',{z:20,b:1})+t(40,690,'R&D · industry liaison · supports you',{z:12,c:C.mut})+stepper(48,720,330,1)+nextCard(40,760,348);
+ s+=scores(1010,76,128,8);
+ s+=r(1010,148,400,40,{s:C.line})+t(1026,173,'Map  ·  Power matrix  ·  Team connections',{z:13,c:C.mut})+`<rect x="1026" y="182" width="30" height="2" fill="${C.act}"/>`;
+ s+=r(1220,820,190,56,{s:C.line})+t(1236,842,'Legend',{z:11,c:C.mut,b:1})+shape({st:'sup'},1242,860,6)+t(1252,864,'support',{z:11})+shape({st:'opp'},1312,860,6)+t(1322,864,'oppose',{z:11})+shape({st:'neu'},1378,860,6);
+ return s+'</svg>'}
+function B(){let s=`<svg viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Layout B, workbench"><rect width="1440" height="900" fill="${C.bg}"/>`;
+ s+=r(0,0,232,900,{rx:0,f:C.tile,s:C.line})+t(20,36,'Portolan',{z:21,b:1})+t(20,76,'DOSSIERS',{z:10.5,c:C.mut,b:1});
+ ['Taiwan · counter-UAS','Japan · maritime drones','Philippines · coast guard'].forEach((d,i)=>{const y=88+i*36;s+=(i===0?r(12,y,208,30,{f:C.panel,s:C.line}):'')+t(24,y+20,d,{z:13,b:i===0,c:i===0?C.ink:C.mut})});
+ s+=t(20,222,'THIS DOSSIER',{z:10.5,c:C.mut,b:1});
+ ['Overview','Stakeholders','Strategy brief','Tracker','Network','Docs','A4 report'].forEach((d,i)=>{const y=234+i*34,on=i===1;s+=(on?`<rect x="12" y="${y}" width="3" height="28" fill="${C.act}"/>`:'')+t(28,y+19,d,{z:13.5,b:on,c:on?C.ink:C.mut})});
+ s+=r(12,820,208,64,{s:C.line})+t(24,842,'Learned from debriefs',{z:11,c:C.mut,b:1})+t(24,864,'NCSIST wants a field demo',{z:12});
+ s+=t(256,40,'Stakeholders',{z:22,b:1})+t(256,62,'38 found · 38 with sources · refreshed 30 Oct',{z:12,c:C.mut});
+ s+=r(668,22,250,34,{s:C.line})+t(684,44,'Table',{z:13,b:1})+`<rect x="684" y="50" width="34" height="2" fill="${C.act}"/>`+t(740,44,'Map',{z:13,c:C.mut})+t(790,44,'Power matrix',{z:13,c:C.mut});
+ s+=scores(256,78,212,10,52);
+ const cols=[[256,'Stakeholder'],[540,'Stance'],[610,'Influence'],[690,'Sources'],[760,'Stage'],[850,'Next step']];
+ s+=`<line x1="256" y1="160" x2="1060" y2="160" stroke="${C.ink}"/>`;cols.forEach(c=>s+=t(c[0],152,c[1],{z:11,c:C.mut,b:1}));
+ N.forEach((n,i)=>{const y=160+i*56,on=i===1;s+=(on?r(248,y+2,820,52,{f:C.tile,s:C.act,sw:1.5,rx:4}):`<line x1="256" y1="${y+56}" x2="1060" y2="${y+56}" stroke="${C.line}"/>`)+t(256,y+25,n.l,{z:14,b:1})+t(256,y+43,n.role,{z:11.5,c:C.mut})+shape(n,556,y+30,7)+`<rect x="610" y="${y+26}" width="60" height="6" fill="${C.line}"/><rect x="610" y="${y+26}" width="${n.w*6.5}" height="6" fill="${C.deep[2]}"/>`+t(690,y+33,`${n.src} · ${n.g}`,{m:1,z:11})+t(760,y+33,n.stage,{z:12.5})+t(850,y+33,n.next,{z:12.5,c:ROUTE.includes(i)?C.act:C.ink})});
+ s+=r(1084,0,356,900,{rx:0,s:C.line})+t(1104,40,'NCSIST',{z:22,b:1})+t(1104,62,'R&D · industry liaison · supports you',{z:12,c:C.mut})+stepper(1112,96,316,1)+scale(1104,150,316)+nextCard(1104,206,316)+t(1104,322,'SOURCES',{z:10.5,c:C.mut,b:1})+sources(1104,334,316);
+ s+=r(1104,500,316,120,{f:C.tile,s:C.line})+t(1120,524,'Mini map',{z:11,c:C.mut,b:1})+chart(1112,532,1.15,300,82,false);
+ s+=r(1104,640,150,40,{f:C.act,s:C.act})+t(1179,665,'Add to tracker',{z:13.5,b:1,c:'#fff',a:'middle'})+r(1264,640,156,40,{s:C.line})+t(1342,665,'Draft intro',{z:13.5,a:'middle'});
+ return s+'</svg>'}
+function Cc(){let s=`<svg viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Layout C, brief with margin notes"><rect width="1440" height="900" fill="${C.bg}"/>`;s+=topbar('Dossiers');
+ s+=r(24,76,300,800,{s:C.line,rx:10})+t(40,104,'Taiwan · counter-UAS',{z:16,b:1})+t(40,124,'Strategy brief · v3 · re-briefed 30 Oct',{z:11.5,c:C.mut});
+ s+=chart(36,140,1.25,276,300);s+=t(40,470,'OUTLINE',{z:10.5,c:C.mut,b:1});
+ ['Key judgments','Who to contact first','Who could block you','The window to act','7-day plan','Sources (38)'].forEach((d,i)=>{const y=482+i*32,on=i===1;s+=(on?`<rect x="36" y="${y}" width="3" height="24" fill="${C.act}"/>`:'')+t(50,y+17,d,{z:13.5,b:on,c:on?C.ink:C.mut})});
+ s+=r(36,690,276,36,{f:C.act})+t(174,713,'Export A4 report',{z:13.5,b:1,c:'#fff',a:'middle'})+r(36,736,276,36,{s:C.line})+t(174,759,'Share link',{z:13.5,a:'middle'});
+ s+=r(348,76,700,800,{s:C.line,rx:4});
+ s+=t(388,124,'KEY JUDGMENTS',{z:11,c:C.mut,b:1})+t(388,162,'A pilot with NCSIST in the next 12 months',{z:27,b:1})+t(388,194,'is likely (55–80%), if you get a field demo before the budget vote.',{z:27,b:1});
+ s+=scores(388,222,200,10,56);
+ const paras=[[300,'1','NCSIST runs the industry liaison programme that has sponsored foreign counter-UAS trials since 2024 [1].',1],[372,'2','The Legislative Yuan reads the drone act in the coming session; the vote sets next year’s procurement budget [2].',2],[444,'3','MND procurement is cautious about foreign sensors and will follow NCSIST’s test results, not lead [3].',3]];
+ paras.forEach(([y,n,txt,src])=>{s+=t(388,y,n+'.',{z:15,b:1,c:C.act});const words=txt.split(' ');let line='',ly=y,lines=[];words.forEach(w=>{if((line+w).length>78){lines.push(line);line=''}line+=w+' '});lines.push(line);lines.forEach((l,k)=>s+=t(412,y+k*24,l.replace(/\[(\d)\]/,'[$1]'),{z:15.5}))});
+ s+=r(388,528,620,108,{f:C.tile,s:C.line})+`<rect x="388" y="528" width="4" height="108" fill="${C.act}"/>`+t(408,554,'WHO TO CONTACT FIRST',{z:11,c:C.mut,b:1});
+ [1,2,0].forEach((i,k)=>{const n=N[i];s+=shape(n,418,578+k*22,6)+t(432,582+k*22,`${k+1}. ${n.l} — ${n.next.toLowerCase()}`,{z:14})});
+ s+=t(388,672,'WHO COULD BLOCK YOU',{z:11,c:C.mut,b:1})+shape(N[6],398,698,6)+t(412,702,'Civil Aeronautics Admin. — test-flight permits take 6–10 weeks (unverified)',{z:14.5})+t(388,744,'Wording follows ICD 203: likely = 55–80%. Every claim links to a source in the margin.',{z:12,c:C.mut,i:1});
+ s+=t(1072,104,'SOURCES IN THE MARGIN',{z:10.5,c:C.mut,b:1});
+ [[300,'[1]','ncsist.org.tw','Industry programme page','A2'],[372,'[2]','cna.com.tw','Drone act second reading','A2'],[444,'[3]','trade.gov','Taiwan UAS market note','B2']].forEach(([y,n,d,ti,g])=>{s+=`<line x1="1048" y1="${y-6}" x2="1072" y2="${y-6}" stroke="${C.act}"/>`+r(1072,y-26,344,62,{s:C.line})+t(1086,y-6,n,{m:1,z:11,c:C.act})+t(1112,y-6,d,{z:13,b:1})+t(1404,y-6,g,{m:1,z:10,c:C.mut,a:'end'})+t(1112,y+14,ti+' · checked 30 Oct',{z:11.5,c:C.mut})});
+ s+=r(1072,540,344,96,{f:C.tile,s:C.line})+t(1086,562,'Approve before sending',{z:11,c:C.mut,b:1})+t(1086,584,'Intro draft to NCSIST liaison',{z:13.5,b:1})+r(1086,598,90,28,{f:C.act})+t(1131,617,'Approve',{z:12.5,b:1,c:'#fff',a:'middle'})+r(1184,598,70,28,{s:C.line})+t(1219,617,'Edit',{z:12.5,a:'middle'});
+ return s+'</svg>'}
+const OPTS=[
+ {id:'a',name:'A · Chart table',like:'Google Maps',rec:true,svg:A,
+  good:'The map fills the screen and stays the hero, which is the most memorable demo and matches the Portolan name. Familiar: search and a ranked list on the left, click opens details in the same panel.',
+  bad:'Tables and long sources get less room. Tracker, Network and Docs need their own layouts.',
+  best:'Founders and BD leads deciding who to contact first; YC demo.'},
+ {id:'b',name:'B · Workbench',like:'Linear, Notion, Salesforce',svg:B,
+  good:'The fastest to work in every day: sidebar for dossiers and sections, a sortable table, a detail panel on the right. Map and Power matrix are views of the same list. Scales to 38+ stakeholders and many dossiers.',
+  bad:'Looks like a CRM at first glance, so the map and the nautical identity matter less. Closest to generic SaaS.',
+  best:'Daily use once a team runs several dossiers.'},
+ {id:'c',name:'C · Brief with margin notes',like:'Google Docs comments',svg:Cc,
+  good:'Reads like an intelligence briefing: key judgments with ICD wording, every claim tied to a source card in the margin. Strongest trust signal for experts and buyers; the A4 report is the same layout.',
+  bad:'The map becomes a small side panel. More reading, less exploring.',
+  best:'Meeting prep, expert review, and sharing with someone outside the team.'}];
+const out=document.getElementById('out');
+OPTS.forEach(o=>out.insertAdjacentHTML('beforeend',`<section id="${o.id}"><div class="head"><h2>${o.name}</h2><span class="tag">like ${o.like}</span>${o.rec?'<span class="tag rec">Recommended</span>':''}</div><div class="cols"><div><b>WHY IT WORKS</b>${o.good}</div><div><b>TRADE-OFF</b>${o.bad}</div><div><b>BEST FOR</b>${o.best}</div></div><div class="screen">${o.svg()}</div></section>`));
+</script>
+</body>
+</html>

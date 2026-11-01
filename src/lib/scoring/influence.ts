@@ -1,0 +1,115 @@
+// docs/scoring.md §2: influence 0–100 from five factors; Claude rates four, code computes centrality.
+import type {
+  Banded,
+  Edge,
+  Fact,
+  FactorBreakdown,
+  InfluenceFactor,
+  InfluenceRatings,
+  Level,
+  Rating03,
+  RatedFactor,
+} from "@/lib/types";
+
+export const INFLUENCE_WEIGHTS = {
+  authority: 0.3,
+  budget: 0.25,
+  access: 0.2,
+  centrality: 0.15,
+  recent: 0.1,
+} as const satisfies Record<InfluenceFactor, number>;
+
+const FACTORS = Object.keys(INFLUENCE_WEIGHTS) as InfluenceFactor[];
+const RATED: RatedFactor[] = ["authority", "budget", "access", "recent"];
+
+/** Map labels shown by default at this influence or more (design mockup). */
+export const LABEL_THRESHOLD = 78;
+
+export function influenceLevel(score: number): Level {
+  return score >= 70 ? "High" : score >= 40 ? "Medium" : "Low";
+}
+
+/** §2.3: score, range ±(5 + 5 × missing factors) and level. Null when nothing is rated. */
+export function influenceScore(r: InfluenceRatings): Banded | null {
+  const rated = FACTORS.filter((k) => r[k] !== null);
+  if (rated.length === 0) return null;
+  const num = rated.reduce((s, k) => s + INFLUENCE_WEIGHTS[k] * (r[k] as number), 0);
+  const den = 3 * rated.reduce((s, k) => s + INFLUENCE_WEIGHTS[k], 0);
+  const score = Math.round((100 * num) / den);
+  const missing = FACTORS.length - rated.length;
+  const half = 5 + 5 * missing;
+  return {
+    score,
+    low: Math.max(0, score - half),
+    high: Math.min(100, score + half),
+    level: influenceLevel(score),
+    basedOn: { rated: rated.length, of: FACTORS.length },
+  };
+}
+
+/** §2.2: distinct neighbours over sourced edges only. 0 → 0, 1–2 → 1, 3–5 → 2, 6+ → 3. */
+export function centralityRating(stakeholderId: string, edges: Edge[]): Rating03 {
+  const neighbours = new Set<string>();
+  for (const e of edges) {
+    if (e.status !== "sourced" || e.sourceIds.length === 0) continue;
+    if (e.aId === stakeholderId) neighbours.add(e.bId);
+    else if (e.bId === stakeholderId) neighbours.add(e.aId);
+  }
+  const n = neighbours.size;
+  return n === 0 ? 0 : n <= 2 ? 1 : n <= 5 ? 2 : 3;
+}
+
+/** The newest sourced, rated fact for each Claude-rated factor. Unverified facts never count. */
+function ratedFacts(stakeholderId: string, facts: Fact[]): Partial<Record<RatedFactor, Fact>> {
+  const out: Partial<Record<RatedFactor, Fact>> = {};
+  for (const f of facts) {
+    if (f.stakeholderId !== stakeholderId) continue;
+    if (f.status !== "sourced" || f.sourceIds.length === 0 || f.rating === null) continue;
+    const field = f.field as RatedFactor;
+    if (!RATED.includes(field)) continue;
+    const prev = out[field];
+    if (!prev || f.createdAt > prev.createdAt) out[field] = f;
+  }
+  return out;
+}
+
+/**
+ * The five ratings for one stakeholder. With no sourced Claude-rated factor, every factor is
+ * null (centrality alone isn't evidence of influence), so there is no score.
+ */
+export function influenceRatings(stakeholderId: string, facts: Fact[], edges: Edge[]): InfluenceRatings {
+  const rf = ratedFacts(stakeholderId, facts);
+  const anyRated = RATED.some((k) => rf[k]);
+  return {
+    authority: rf.authority?.rating ?? null,
+    budget: rf.budget?.rating ?? null,
+    access: rf.access?.rating ?? null,
+    recent: rf.recent?.rating ?? null,
+    centrality: anyRated ? centralityRating(stakeholderId, edges) : null,
+  };
+}
+
+/** For SCORE-X: each factor's rating, weight and the sources it cites. */
+export function influenceBreakdown(stakeholderId: string, facts: Fact[], edges: Edge[]): FactorBreakdown[] {
+  const rf = ratedFacts(stakeholderId, facts);
+  const ratings = influenceRatings(stakeholderId, facts, edges);
+  return FACTORS.map((factor) => {
+    let sourceIds: string[] = [];
+    if (factor === "centrality") {
+      sourceIds = [
+        ...new Set(
+          edges
+            .filter((e) => e.status === "sourced" && (e.aId === stakeholderId || e.bId === stakeholderId))
+            .flatMap((e) => e.sourceIds),
+        ),
+      ];
+    } else {
+      sourceIds = rf[factor]?.sourceIds ?? [];
+    }
+    return { factor, weight: INFLUENCE_WEIGHTS[factor], rating: ratings[factor], sourceIds };
+  });
+}
+
+export function influenceFor(stakeholderId: string, facts: Fact[], edges: Edge[]): Banded | null {
+  return influenceScore(influenceRatings(stakeholderId, facts, edges));
+}

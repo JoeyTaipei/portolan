@@ -1,0 +1,17 @@
+[budget] task:pro: est $0.100 (running total $0.100)
+created trun_a92392881b3e40ddbc4e6f2ba8ad5794 status=queued
+17s status=running
+32s status=running
+48s status=running
+63s status=running
+79s status=running
+94s status=running
+110s status=running
+125s status=running
+141s status=running
+156s status=running
+172s status=running
+187s status=running
+203s status=completed
+[saved] scripts/spike/out/task-pro.json
+done in 203s, status=completed

@@ -1,7 +1,7 @@
 // Sample dossier from design/atlas-mockup.html (Taiwan UAS). Raw mockup shape, extracted unchanged.
 // Slice S0 maps it onto src/lib/types.ts; screens are built against it before the research engine exists.
 
-export const ATLAS_NODES = [
+export const PORTOLAN_NODES = [
   {
     "id": "g1",
     "short": "MND Armaments Bureau",
@@ -304,7 +304,7 @@ export const ATLAS_NODES = [
   }
 ] as const;
 
-export const ATLAS_EDGES = [
+export const PORTOLAN_EDGES = [
   [
     "g1",
     "g2"
@@ -419,7 +419,7 @@ export const ATLAS_EDGES = [
   ]
 ] as const;
 
-export const ATLAS_TEAM = [
+export const PORTOLAN_TEAM = [
   {
     "id": "tm_you",
     "short": "You",
@@ -470,7 +470,7 @@ export const ATLAS_TEAM = [
   }
 ] as const;
 
-export const ATLAS_TIES = [
+export const PORTOLAN_TIES = [
   {
     "m": "tm_mei",
     "org": "i1",
@@ -508,7 +508,7 @@ export const ATLAS_TIES = [
   }
 ] as const;
 
-export const ATLAS_CATS = {
+export const PORTOLAN_CATS = {
   "all": "All",
   "gov": "Government",
   "ind": "Industry",
@@ -517,7 +517,7 @@ export const ATLAS_CATS = {
   "evt": "Events"
 } as const;
 
-export const ATLAS_STANCE = {
+export const PORTOLAN_STANCE = {
   "sup": {
     "label": "SUPPORTIVE",
     "color": "#2B5A87",
@@ -540,10 +540,10 @@ export const ATLAS_STANCE = {
   }
 } as const;
 
-export const ATLAS_LEADS = {
+export const PORTOLAN_LEADS = {
   "inv": {
     "label": "Investors",
-    "note": "Atlas shows contact routes only. It does not broker investments or take success fees.",
+    "note": "Portolan shows contact routes only. It does not broker investments or take success fees.",
     "items": [
       {
         "id": "c1",
@@ -576,7 +576,7 @@ export const ATLAS_LEADS = {
   },
   "law": {
     "label": "Lawyers",
-    "note": "Matches are for introductions only. Atlas does not give legal advice.",
+    "note": "Matches are for introductions only. Portolan does not give legal advice.",
     "items": [
       {
         "id": "l1",
@@ -633,7 +633,7 @@ export const ATLAS_LEADS = {
   }
 } as const;
 
-export const ATLAS_TRACK = [
+export const PORTOLAN_TRACK = [
   {
     "id": "alliance",
     "name": "Drone industry alliance",
@@ -700,28 +700,28 @@ export const ATLAS_TRACK = [
   }
 ] as const;
 
-export const ATLAS_STAGE_LABEL = {
+export const PORTOLAN_STAGE_LABEL = {
   "found": "Found",
   "contacted": "Contacted",
   "met": "Met",
   "partner": "Partner"
 } as const;
 
-export const ATLAS_STAGE_BASE = {
+export const PORTOLAN_STAGE_BASE = {
   "found": 28,
   "contacted": 9,
   "met": 4,
   "partner": 1
 } as const;
 
-export const ATLAS_DOT = {
+export const PORTOLAN_DOT = {
   "sup": "#2B5A87",
   "neu": "#A39B8E",
   "res": "#D9783F",
   "evt": "#1C1B19"
 } as const;
 
-export const ATLAS_DOC_TYPES = [
+export const PORTOLAN_DOC_TYPES = [
   {
     "id": "note",
     "label": "Briefing note",

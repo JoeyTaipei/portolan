@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Atlas",
-    short_name: "Atlas",
+    name: "Portolan",
+    short_name: "Portolan",
     description: "Market entry intelligence: evidence-backed stakeholder maps and briefs.",
     start_url: "/",
     display: "standalone",

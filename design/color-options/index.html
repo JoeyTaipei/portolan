@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portolan color options</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&family=IBM+Plex+Sans+Condensed:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Bricolage+Grotesque:opsz,wght@12..96,400..700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F3F4F2;--ink:#17191C;--mut:#5C6168;--line:#D9DCDF}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121416;--ink:#E8EAEC;--mut:#9AA1A9;--line:#2C3136}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 system-ui,-apple-system,sans-serif;padding:32px 16px 64px}
+.wrap{max-width:1360px;margin:0 auto}
+h1{font-size:26px;margin:0 0 4px}
+.lead{color:var(--mut);margin:0 0 20px;max-width:760px}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+nav a{color:var(--ink);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:14px}
+nav a:hover{border-color:var(--ink)}
+section{margin-bottom:56px}
+.head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:16px}
+.head h2{margin:0;font-size:21px}
+.tag{font-size:12px;border:1px solid var(--line);border-radius:4px;padding:1px 8px;color:var(--mut)}
+.tag.rec{border-color:#C2187A;color:#C2187A}
+.desc{color:var(--mut);margin:0 0 16px;max-width:820px}
+.row{display:grid;grid-template-columns:300px minmax(0,1fr);gap:20px;align-items:start}
+.frame{border-radius:28px;overflow:hidden;border:1px solid var(--line)}
+.desk{border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+svg{display:block;width:100%;height:auto}
+.sw{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.sw span{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--mut)}
+.sw i{width:16px;height:16px;border-radius:3px;border:1px solid var(--line)}
+.note{font-size:13px;color:var(--mut);margin-top:24px}
+@media (max-width:900px){.row{grid-template-columns:minmax(0,1fr)}.frame{max-width:300px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Portolan: three color options</h1>
+<p class="lead">Same structure in all three (compass lines, stance shapes, a dashed route through the first three contacts, a next-step card with sources). Only color and type change. Phone at 390px, desktop at 1280px. All data is Sample data.</p>
+<nav><a href="#a">1 · Night watch</a><a href="#b">2 · Admiralty chart</a><a href="#c">3 · Signal flags</a></nav>
+<div id="out"></div>
+<p class="note">Agency names come from the sample dossier and the Parallel trial run. Scores, dates and source grades are placeholder values.</p>
+</div>
+<script>
+const P={
+ a:{name:'Night watch',desc:'An ink-blue chart at night. Brass rhumb lines for structure, teal and coral for stance, and signal magenta only for what you do next. Strongest demo impact; needs a separate light print style for the A4 report.',font:"'Archivo',sans-serif",wide:'125%',bg:'#0E1B2E',panel:'#16263D',ink:'#EAE4D3',mut:'#8C9AB0',line:'#2A3D5A',rose:'#C9A65A',sup:'#5FC7B8',opp:'#E8705A',neu:'#8C9AB0',act:'#FF3D8B',tile:'#16263D'},
+ b:{name:'Admiralty chart',rec:true,desc:'A real sea chart: white water, depth-band blues where deeper means more influence, ochre land, magenta notices and route. Colorful without being generic, prints well as A4, and reads well on a phone in daylight.',font:"'IBM Plex Sans Condensed',sans-serif",wide:'100%',bg:'#FBFCFA',panel:'#FFFFFF',ink:'#14233A',mut:'#5D6B7E',line:'#C9DCEB',rose:'#A33A6B',sup:'#1F6FB2',opp:'#B23B2E',neu:'#7A8798',act:'#C2187A',tile:'#E4F0F8',land:'#EAD58A',deep:['#E4F0F8','#BFDBEF','#93C1E3']},
+ c:{name:'Signal flags',desc:'Maritime code flags as the visual system: bold red, yellow and navy blocks say stance and priority. The most memorable of the three; flag patterns get busy once a map has 30+ stakeholders.',font:"'Bricolage Grotesque',sans-serif",wide:'100%',bg:'#F4F1E8',panel:'#FFFFFF',ink:'#101A3A',mut:'#5A6077',line:'#D8D2BF',rose:'#101A3A',sup:'#1747C9',opp:'#D7262E',neu:'#9A9AA6',act:'#F6C90E',tile:'#101A3A',flags:true}
+};
+const N=[
+ {x:100,y:118,l:'Ministry of National Defense',s:'MND',st:'opp',w:9,role:'Buyer · procurement',src:4,g:'A2'},
+ {x:62,y:92,l:'NCSIST',s:'NCSIST',st:'sup',w:8,role:'R&D · industry liaison',src:3,g:'A2'},
+ {x:142,y:84,l:'Legislative Yuan',s:'Leg. Yuan',st:'neu',w:7,role:'Budget · drone act',src:5,g:'B2'},
+ {x:48,y:150,l:'TEDIBOA',s:'TEDIBOA',st:'sup',w:6,role:'Industry alliance',src:2,g:'B3'},
+ {x:150,y:150,l:'Taiwania Capital',s:'Taiwania Cap.',st:'sup',w:5,role:'Investor',src:2,g:'B2'},
+ {x:110,y:70,l:'AIT',s:'AIT',st:'neu',w:5,role:'US policy channel',src:3,g:'A3'},
+ {x:78,y:178,l:'Civil Aeronautics Admin.',s:'CAA',st:'opp',w:4,role:'Airspace rules',src:1,g:'C3'}];
+const ROUTE=[1,2,0];
+const mono="'IBM Plex Mono',monospace";
+function shape(p,n,x,y,r){const c=p[n.st];
+ if(p.flags){return n.st==='sup'?`<rect x="${x-r}" y="${y-r}" width="${2*r}" height="${2*r}" fill="${p.sup}"/><rect x="${x-r/2.2}" y="${y-r/2.2}" width="${r/1.1}" height="${r/1.1}" fill="#fff"/>`:n.st==='opp'?`<rect x="${x-r}" y="${y-r}" width="${2*r}" height="${2*r}" fill="${p.opp}"/><line x1="${x-r}" y1="${y-r}" x2="${x+r}" y2="${y+r}" stroke="#fff" stroke-width="${r/3}"/>`:`<rect x="${x-r}" y="${y-r}" width="${2*r}" height="${r}" fill="${p.ink}"/><rect x="${x-r}" y="${y}" width="${2*r}" height="${r}" fill="#fff" stroke="${p.ink}" stroke-width=".6"/>`}
+ return n.st==='sup'?`<polygon points="${x},${y-r} ${x+r},${y+r*0.8} ${x-r},${y+r*0.8}" fill="${c}"/>`:n.st==='opp'?`<rect x="${x-r*0.8}" y="${y-r*0.8}" width="${r*1.6}" height="${r*1.6}" fill="${c}"/>`:`<circle cx="${x}" cy="${y}" r="${r*0.85}" fill="${p.bg}" stroke="${c}" stroke-width="1.4"/>`}
+function chart(p,k,ox,oy,sc,W,H,labels){let s=`<g transform="translate(${ox},${oy}) scale(${sc})">`;const cx=100,cy=120;
+ if(k==='b'){s+=`<rect x="${-ox/sc}" y="0" width="${W/sc}" height="${H/sc}" fill="${p.deep[0]}"/><circle cx="${cx}" cy="${cy}" r="80" fill="${p.deep[1]}"/><circle cx="${cx}" cy="${cy}" r="44" fill="${p.deep[2]}"/><path d="M-40 0 L60 0 C40 40 30 70 -40 96 Z" fill="${p.land}"/><path d="M240 160 C170 170 150 195 140 ${H/sc} L240 ${H/sc}Z" fill="${p.land}"/>`}
+ for(let a=0;a<16;a++){const r=a*Math.PI/8;s+=`<line x1="${cx}" y1="${cy}" x2="${(cx+Math.cos(r)*260).toFixed(1)}" y2="${(cy+Math.sin(r)*260).toFixed(1)}" stroke="${p.rose}" stroke-width="${a%4?0.3:0.6}" opacity="${a%4?0.5:0.9}"/>`}
+ s+=`<circle cx="${cx}" cy="${cy}" r="10" fill="none" stroke="${p.rose}" stroke-width=".6"/><path d="M${cx} ${cy-14} L${cx+3} ${cy} L${cx} ${cy+14} L${cx-3} ${cy}Z" fill="${p.rose}"/>`;
+ s+=`<polyline points="${ROUTE.map(i=>N[i].x+','+N[i].y).join(' ')}" fill="none" stroke="${p.act}" stroke-width="1.6" stroke-dasharray="4 3"/>`;
+ N.forEach((n,i)=>{const r=n.w*0.9;s+=shape(p,n,n.x,n.y,r);if(ROUTE.includes(i))s+=`<circle cx="${n.x}" cy="${n.y}" r="${r+4}" fill="none" stroke="${p.act}" stroke-width="1"/><text x="${n.x+r+4}" y="${n.y-r-2}" font-family="${mono}" font-size="5.5" fill="${p.act==='#F6C90E'?p.ink:p.act}">${ROUTE.indexOf(i)+1}</text>`;s+=`<text x="${n.x}" y="${n.y+r+9}" text-anchor="middle" font-family="${p.font}" font-size="6.5" fill="${p.ink}">${labels?n.s:n.s}</text>`});
+ return s+'</g>'}
+function tiles(p,k,x0,y,w,gap,big){const T=[['Entry readiness','55–70'],['Opposition','Low–med'],['Window to act','41 days']];let s='';
+ T.forEach((t,i)=>{const x=x0+i*(w+gap);const tb=k==='c'?(i===2?p.act:(i===1?p.opp:p.tile)):p.tile;const tc=k==='c'?(i===2?p.ink:'#FFFFFF'):p.ink;const ts=k==='c'?(i===2?p.ink:'#D9DEEC'):p.mut;const h=big?52:36;
+ s+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${k==='c'?0:6}" fill="${tb}" ${k==='b'?`stroke="${p.line}" stroke-width=".5"`:''}/><text x="${x+8}" y="${y+(big?17:12)}" font-family="${p.font}" font-size="${big?9:6.5}" fill="${ts}">${big?t[0]:t[0].split(' ')[0]}</text><text x="${x+8}" y="${y+(big?38:27)}" font-family="${p.font}" font-size="${big?17:10}" font-weight="600" fill="${tc}">${t[1]}</text>${big?`<text x="${x+w-8}" y="${y+38}" text-anchor="end" font-family="${mono}" font-size="8" fill="${ts}">${[5,4,3][i]} src</text>`:''}`});return s}
+function nextCard(p,k,x,y,w,h,big){const cb=k==='c'?p.tile:p.panel,ci=k==='c'?'#FFFFFF':p.ink,cm=k==='c'?'#C9CFE3':p.mut,f=big?1.3:1;
+ return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${k==='c'?0:8}" fill="${cb}" ${k==='b'?`stroke="${p.line}"`:''}/><rect x="${x}" y="${y}" width="4" height="${h}" fill="${p.act}"/><text x="${x+12}" y="${y+14*f}" font-family="${p.font}" font-size="${6.5*f}" fill="${cm}">NEXT STEP · 1 of 3</text><text x="${x+12}" y="${y+28*f}" font-family="${p.font}" font-size="${9.5*f}" font-weight="600" fill="${ci}">Request a briefing with</text><text x="${x+12}" y="${y+40*f}" font-family="${p.font}" font-size="${9.5*f}" font-weight="600" fill="${ci}">NCSIST industry liaison</text><text x="${x+12}" y="${y+54*f}" font-family="${mono}" font-size="${6.5*f}" fill="${cm}">3 sources · A2 · checked 30 Oct</text>`}
+function phone(k){const p=P[k],f=p.font;let s=`<svg viewBox="0 0 200 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${p.name}, phone"><rect width="200" height="420" fill="${p.bg}"/>`;
+ s+=`<text x="14" y="30" font-family="${f}" font-size="13" font-weight="600" fill="${p.ink}" style="font-stretch:${p.wide}">Portolan</text><text x="186" y="30" text-anchor="end" font-family="${mono}" font-size="7" fill="${p.mut}">SAMPLE DATA</text><text x="14" y="44" font-family="${f}" font-size="8" fill="${p.mut}">Taiwan · counter-UAS · dossier 01</text>`;
+ s+=tiles(p,k,14,54,54,4,false);
+ s+=`<svg x="0" y="96" width="200" height="210" viewBox="0 0 200 210" overflow="hidden">${chart(p,k,0,0,1,200,210)}</svg>`;
+ s+=nextCard(p,k,12,312,176,62,false);
+ s+=`<line x1="0" y1="388" x2="200" y2="388" stroke="${p.line}" stroke-width=".5"/>`;
+ ['Dossiers','Map','Tracker','Network','Docs'].forEach((t,i)=>{const x=20+i*40,on=i===1;s+=(on?`<rect x="${x-14}" y="388" width="28" height="2" fill="${k==='c'?p.opp:p.act}"/>`:'')+`<text x="${x}" y="406" text-anchor="middle" font-family="${f}" font-size="7" fill="${on?p.ink:p.mut}" font-weight="${on?600:400}">${t}</text>`});
+ return s+'</svg>'}
+function desk(k){const p=P[k],f=p.font,W=1280,H=760;let s=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${p.name}, desktop"><rect width="${W}" height="${H}" fill="${p.bg}"/>`;
+ s+=`<rect width="${W}" height="56" fill="${k==='c'?p.tile:p.panel}" ${k==='b'?`stroke="${p.line}"`:''}/><text x="28" y="36" font-family="${f}" font-size="22" font-weight="600" fill="${k==='c'?'#fff':p.ink}" style="font-stretch:${p.wide}">Portolan</text>`;
+ ['Dossiers','Map','Tracker','Network','Docs'].forEach((t,i)=>{const x=220+i*104,on=i===1,c=k==='c'?(on?'#fff':'#AEB6D0'):(on?p.ink:p.mut);s+=`<text x="${x}" y="35" font-family="${f}" font-size="14" font-weight="${on?600:400}" fill="${c}">${t}</text>`+(on?`<rect x="${x}" y="52" width="${t.length*8}" height="4" fill="${k==='c'?p.act:p.act}"/>`:'')});
+ s+=`<text x="${W-28}" y="35" text-anchor="end" font-family="${mono}" font-size="11" fill="${k==='c'?'#AEB6D0':p.mut}">SAMPLE DATA · Taiwan · counter-UAS</text>`;
+ s+=`<text x="28" y="96" font-family="${f}" font-size="12" fill="${p.mut}">Stakeholders · 7 of 38</text>`;
+ N.forEach((n,i)=>{const y=110+i*62,on=i===1;s+=`<rect x="20" y="${y}" width="260" height="54" rx="${k==='c'?0:6}" fill="${on?(k==='c'?p.panel:p.panel):'none'}" stroke="${on?p.act:p.line}" stroke-width="${on?1.5:0.6}"/>`+`<g transform="translate(40,${y+27})">${shape(p,n,0,0,7)}</g><text x="58" y="${y+23}" font-family="${f}" font-size="13" font-weight="600" fill="${p.ink}">${n.l}</text><text x="58" y="${y+41}" font-family="${f}" font-size="11" fill="${p.mut}">${n.role}</text><text x="268" y="${y+23}" text-anchor="end" font-family="${mono}" font-size="10" fill="${p.mut}">${n.src} src · ${n.g}</text>`+(ROUTE.includes(i)?`<text x="268" y="${y+41}" text-anchor="end" font-family="${mono}" font-size="10" fill="${p.act==='#F6C90E'?p.opp:p.act}">contact #${ROUTE.indexOf(i)+1}</text>`:'')});
+ s+=`<svg x="300" y="76" width="640" height="664" viewBox="0 0 640 664" overflow="hidden"><rect width="640" height="664" fill="${p.bg}"/>${chart(p,k,40,-40,3,640,664)}</svg><rect x="300" y="76" width="640" height="664" fill="none" stroke="${p.line}"/>`;
+ s+=tiles(p,k,960,76,96,8,true);
+ s+=nextCard(p,k,960,148,300,96,true);
+ const d=N[1];s+=`<rect x="960" y="260" width="300" height="480" rx="${k==='c'?0:8}" fill="${p.panel}" stroke="${p.line}"/><text x="980" y="292" font-family="${f}" font-size="18" font-weight="600" fill="${p.ink}">${d.l}</text><text x="980" y="314" font-family="${f}" font-size="12" fill="${p.mut}">${d.role} · supports you</text>`;
+ s+=`<text x="980" y="350" font-family="${f}" font-size="11" fill="${p.mut}">How likely they back a pilot</text><rect x="980" y="360" width="260" height="8" fill="${p.line}"/><rect x="${980+260*0.55}" y="360" width="${260*0.25}" height="8" fill="${p.sup}"/><text x="980" y="384" font-family="${mono}" font-size="10" fill="${p.mut}">likely · 55–80% · moderate confidence</text>`;
+ [['[1]','ncsist.org.tw · industry programme page','A2'],['[2]','cna.com.tw · drone act reading','A2'],['[3]','trade.gov · Taiwan UAS market note','B2']].forEach((r,i)=>{const y=420+i*52;s+=`<line x1="980" y1="${y-14}" x2="1240" y2="${y-14}" stroke="${p.line}"/><text x="980" y="${y+4}" font-family="${mono}" font-size="11" fill="${p.act==='#F6C90E'?p.opp:p.act}">${r[0]}</text><text x="1008" y="${y+4}" font-family="${f}" font-size="12" fill="${p.ink}">${r[1]}</text><text x="1240" y="${y+4}" text-anchor="end" font-family="${mono}" font-size="10" fill="${p.mut}">${r[2]}</text><text x="1008" y="${y+22}" font-family="${f}" font-size="11" fill="${p.mut}">checked 30 Oct 2026</text>`});
+ s+=`<rect x="980" y="590" width="260" height="40" rx="${k==='c'?0:6}" fill="${p.act}"/><text x="1110" y="615" text-anchor="middle" font-family="${f}" font-size="13" font-weight="600" fill="${k==='c'||k==='b'?(k==='c'?p.ink:'#fff'):'#fff'}">Add to tracker</text>`;
+ return s+'</svg>'}
+const out=document.getElementById('out');
+Object.keys(P).forEach((k,i)=>{const p=P[k];const sw=[['Base',p.bg],['Support',p.sup],['Oppose',p.opp],['Action',p.act],['Lines',p.rose]].map(([n,c])=>`<span><i style="background:${c}"></i>${n}</span>`).join('');
+ out.insertAdjacentHTML('beforeend',`<section id="${k}"><div class="head"><h2>${i+1} · ${p.name}</h2>${p.rec?'<span class="tag rec">Recommended</span>':''}<span class="tag">${p.font.split(',')[0].replace(/'/g,'')}</span></div><p class="desc">${p.desc}</p><div class="row"><div><div class="frame">${phone(k)}</div><div class="sw">${sw}</div></div><div class="desk">${desk(k)}</div></div></section>`)});
+</script>
+</body>
+</html>

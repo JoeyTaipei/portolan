@@ -1,0 +1,633 @@
+{
+  "wall_s": 414,
+  "run": {
+    "findall_id": "findall_2f937a48caa14210894258bc00f36811",
+    "status": {
+      "status": "completed",
+      "is_active": false,
+      "metrics": {
+        "generated_candidates_count": 14,
+        "matched_candidates_count": 8
+      },
+      "termination_reason": "match_limit_met"
+    },
+    "generator": "base",
+    "metadata": {
+      "query": "events",
+      "spike": "0001"
+    },
+    "created_at": "2026-10-30T04:16:11.649249Z",
+    "modified_at": "2026-10-30T04:22:51.437863Z"
+  },
+  "result": {
+    "run": {
+      "findall_id": "findall_2f937a48caa14210894258bc00f36811",
+      "status": {
+        "status": "completed",
+        "is_active": false,
+        "metrics": {
+          "generated_candidates_count": 14,
+          "matched_candidates_count": 8
+        },
+        "termination_reason": "match_limit_met"
+      },
+      "generator": "base",
+      "metadata": {
+        "query": "events",
+        "spike": "0001"
+      },
+      "created_at": "2026-10-30T04:16:11.649249Z",
+      "modified_at": "2026-10-30T04:22:51.437863Z"
+    },
+    "candidates": [
+      {
+        "candidate_id": "candidate_0e5ae5e9-4616-4bfe-b3ff-57b5352d04b3",
+        "name": "Global Conference on UAV Technologies, Smart Drones & Aerospace Innovation (GCUTSAI) — Taipei, Taiwan, October 24–25, 2026",
+        "url": "https://www.conferencealert.com/eventdetail/2621809",
+        "description": "The listing describes the Global Conference on UAV Technologies, Smart Drones & Aerospace Innovation as a Scienceglobe-organized conference in Taipei, Taiwan, dated October 24–25, 2026. Its stated subject matter makes it relevant to the request for Taiwan events on drones and aerospace. The listing labels the event “Organizer-submitted.”",
+        "match_status": "matched",
+        "output": {
+          "dates_2026_2027": {
+            "type": "match_condition",
+            "value": "2026-10-24 to 2026-10-25 (held)",
+            "is_matched": true
+          },
+          "drone_defense_topic": {
+            "type": "match_condition",
+            "value": "Focus: UAV technologies, smart drones, and aerospace innovation. No separate tracks or pavilions are enumerated in the cited description.",
+            "is_matched": true
+          },
+          "in_taiwan": {
+            "type": "match_condition",
+            "value": "Taiwan (TW)",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "dates_2026_2027",
+            "citations": [
+              {
+                "title": "scienceglobe.org | Home",
+                "url": "http://www.scienceglobe.org/Conference/30656/GCUTSAI",
+                "excerpts": [
+                  "(GCUTSAI) will be held in **Taipei city,Taiwan** on **24th Oct-25th Oct 2026** ."
+                ]
+              }
+            ],
+            "reasoning": "The event page gives the dates as October 24–25, 2026. Since those dates are before the stated current date of October 30, 2026, the edition is classified as held.",
+            "confidence": "medium"
+          },
+          {
+            "field": "drone_defense_topic",
+            "citations": [
+              {
+                "title": "scienceglobe.org | Home",
+                "url": "http://www.scienceglobe.org/Conference/30656/GCUTSAI",
+                "excerpts": [
+                  "Global Conference on UAV Technologies, Smart Drones & Aerospace Innovation(GCUTSAI) * * ScienceGlobe - **Global Conference on UAV Technologies, Smart Drones & Aerospace Innovation(GCUTSAI)** is a prestigious event organizedwith a motivation to provide an excellent international platform for the academicians, researchers, engineers,industrial participants and budding students around the world to SHARE their research findings with the global experts."
+                ]
+              }
+            ],
+            "reasoning": "The event name identifies UAV technologies, smart drones, and aerospace innovation as its subject. The description states its purpose, but does not enumerate distinct tracks or pavilions.",
+            "confidence": "medium"
+          },
+          {
+            "field": "in_taiwan",
+            "citations": [
+              {
+                "title": "scienceglobe.org | Home",
+                "url": "http://www.scienceglobe.org/Conference/30656/GCUTSAI",
+                "excerpts": [
+                  "(GCUTSAI) will be held in **Taipei city,Taiwan** on **24th Oct-25th Oct 2026** ."
+                ]
+              }
+            ],
+            "reasoning": "The event page states that the event will be held in Taipei City, Taiwan.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_1fc38909-a49b-435f-9fe1-c1a6c015d841",
+        "name": "2026 Taiwan-U.S. Defense Industry Forum — May 28, 2026, Taipei, Taiwan",
+        "url": "https://www.us-taiwan.org/events/2026-taiwan-us-defense-industry-forum",
+        "description": "A defense-focused forum co-hosted by the U.S.-Taiwan Business Council and TAITRA, held at the Taipei World Trade Center on May 28, 2026. Its agenda covered U.S.-Taiwan defense co-production and co-development; contemporaneous coverage also linked the forum to discussion of Taiwan’s drone acquisitions. It is a strong match for the defense-related part of the stated event scope.",
+        "match_status": "matched",
+        "output": {
+          "dates_2026_2027": {
+            "type": "match_condition",
+            "value": "2026-05-28 (held)",
+            "is_matched": true
+          },
+          "drone_defense_topic": {
+            "type": "match_condition",
+            "value": "Program/theme: “U.S.-Taiwan Partnerships: Prospects for Defense Co-Production and Co-Development,” focused on defense co-production and co-development.",
+            "is_matched": true
+          },
+          "in_taiwan": {
+            "type": "match_condition",
+            "value": "Taiwan (TW)",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "dates_2026_2027",
+            "citations": [
+              {
+                "title": "2026 Taiwan-U.S. Defense Industry Forum",
+                "url": "https://www.us-taiwan.org/events/2026-taiwan-us-defense-industry-forum",
+                "excerpts": [
+                  "_**May 28, 2026 2:30 pm – 4:30 pm (GMT +8) Taipei, Taiwan**_"
+                ]
+              }
+            ],
+            "reasoning": "The event page gives the date as May 28, 2026. Since that date precedes the stated current date of October 30, 2026, the edition is held.",
+            "confidence": "high"
+          },
+          {
+            "field": "drone_defense_topic",
+            "citations": [
+              {
+                "title": "臺美國防產業論壇",
+                "url": "https://events.taiwantrade.com/Defense2026",
+                "excerpts": [
+                  "|**15:0** **0** **\\-** **1** **6:15** |**U.S.-Taiwan Partnerships: Prospects for Defense Co-Production and Co-Development** 臺美夥伴關係:國防產製與研發的共同展望"
+                ]
+              }
+            ],
+            "reasoning": "The official agenda names a program on U.S.-Taiwan defense co-production and co-development, directly establishing a defense focus.",
+            "confidence": "high"
+          },
+          {
+            "field": "in_taiwan",
+            "citations": [
+              {
+                "title": "2026 Taiwan-U.S. Defense Industry Forum",
+                "url": "https://www.us-taiwan.org/events/2026-taiwan-us-defense-industry-forum",
+                "excerpts": [
+                  "_**May 28, 2026 2:30 pm – 4:30 pm (GMT +8) Taipei, Taiwan**_"
+                ]
+              }
+            ],
+            "reasoning": "The event page identifies Taipei, Taiwan as the location, so the event is held in Taiwan.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_25fa2256-ac2b-48b4-80b1-0ff331f52234",
+        "name": "2026 Aerospace and Defense Strategic Forum — Taipei, Taiwan, October 7, 2026",
+        "url": "https://allevents.in/taipei/2026%E5%85%A8%E7%90%83%E9%98%B2%E8%A1%9B%E6%96%B0%E5%B1%80%EF%BC%9A%E8%88%AA%E5%A4%AA%E6%9A%A8%E5%9C%8B%E9%98%B2%E7%94%A2%E6%A5%AD%E6%88%B0%E7%95%A5%E8%AB%96%E5%A3%87-2026-defense-frontier-aerospace-and-defense-strategic-forum/200030760603746",
+        "description": "A TAITRA-hosted aerospace and defense forum held in Taipei on October 7, 2026, where defense-industry executives discussed autonomous capabilities.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_29e1666c-4ea0-4d34-8ef0-3a3b0c199070",
+        "name": "DSET 2026 Annual Forum: National Strategic Summit on Supply Chain Resilience — June 6, 2026, Taipei",
+        "url": "https://dset.tw/en/event-news-en/481-4",
+        "description": "The DSET annual forum took place on June 6, 2026, at the Shangri-La Far Eastern in Taipei. Its supply-chain resilience agenda included cooperation on non-red drone supply chains, making it relevant to the requested Taiwan events on drones, defense, or aerospace.",
+        "match_status": "matched",
+        "output": {
+          "dates_2026_2027": {
+            "type": "match_condition",
+            "value": "2026-06-06 (held)",
+            "is_matched": true
+          },
+          "drone_defense_topic": {
+            "type": "match_condition",
+            "value": "Supply-chain resilience: cooperation on non-red drone supply chains, alongside semiconductors, AI, robotics, and energy security.",
+            "is_matched": true
+          },
+          "in_taiwan": {
+            "type": "match_condition",
+            "value": "Taiwan (TW)",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "dates_2026_2027",
+            "citations": [
+              {
+                "title": "【Coming Soon On 6 June】DSET 2026 Annual Forum: National Strategic Summit on Supply Chain Resilience - Research Institute for Democracy, Society and Emerging Technology",
+                "url": "https://dset.tw/en/event-news-en/481-4",
+                "excerpts": [
+                  "Date| Saturday, 6 June 2026 Time| 09:30 AM – 6:00 PM (Registration opens at 09:00) Venue| 3F, Far Eastern Ballroom, Shangri-La Far Eastern, Taipei Format| Free in-person event."
+                ]
+              }
+            ],
+            "reasoning": "The event information gives the date as Saturday, 6 June 2026. As that date is in the past relative to the stated current date, the edition is marked held.",
+            "confidence": "medium"
+          },
+          {
+            "field": "drone_defense_topic",
+            "citations": [
+              {
+                "title": "【Coming Soon On 6 June】DSET 2026 Annual Forum: National Strategic Summit on Supply Chain Resilience - Research Institute for Democracy, Society and Emerging Technology",
+                "url": "https://dset.tw/en/event-news-en/481-4",
+                "excerpts": [
+                  "The Research Institute for Democracy, Society and Emerging Technology (DSET) will hold its Annual Forum on 6 June 2026, bringing together international experts and representatives from Taiwan's government, industry, and academia to discuss cooperation between Taiwan and international partners on semiconductors, AI, robotics, energy security, and non-red drone supply chains."
+                ]
+              }
+            ],
+            "reasoning": "The event description identifies non-red drone supply chains as one of the forum’s cooperation topics, indicating a drone-related focus.",
+            "confidence": "high"
+          },
+          {
+            "field": "in_taiwan",
+            "citations": [
+              {
+                "title": "【Coming Soon On 6 June】DSET 2026 Annual Forum: National Strategic Summit on Supply Chain Resilience - Research Institute for Democracy, Society and Emerging Technology",
+                "url": "https://dset.tw/en/event-news-en/481-4",
+                "excerpts": [
+                  "Date| Saturday, 6 June 2026 Time| 09:30 AM – 6:00 PM (Registration opens at 09:00) Venue| 3F, Far Eastern Ballroom, Shangri-La Far Eastern, Taipei Format| Free in-person event."
+                ]
+              }
+            ],
+            "reasoning": "The event information locates the forum at Shangri-La Far Eastern in Taipei, Taiwan.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_4bd735f2-9866-4a22-9c3d-309626ff97bf",
+        "name": "Taiwan International Assembly of Space Science, Technology, and Industry (TASTI 2026), November 8–11, 2026, Tainan, Taiwan",
+        "url": "https://tasti2026.conf.tw/site/default.aspx?sid=1691&lang=en",
+        "description": "The closest identifiable event match for “Space” is TASTI 2026, the Taiwan International Assembly of Space Science, Technology, and Industry. It is scheduled for November 8–11, 2026, at the International Convention Center in Tainan, Taiwan, and is focused on the space community. “Space” alone is a generic label rather than the event’s full official name.",
+        "match_status": "matched",
+        "output": {
+          "dates_2026_2027": {
+            "type": "match_condition",
+            "value": "2026-11-08 to 2026-11-11 (scheduled)",
+            "is_matched": true
+          },
+          "drone_defense_topic": {
+            "type": "match_condition",
+            "value": "Space/aerospace focus: the 15th Nano-Satellite Symposium+ and 9th Asia-Oceania Space Weather Alliance Workshop. The stated theme, “Trusted in Space, Resilient on Earth,” emphasizes trusted partnerships, resilient supply chains, innovation, and peaceful exploration and utilization of space. No specific drone or counter-drone program is identified.",
+            "is_matched": true
+          },
+          "in_taiwan": {
+            "type": "match_condition",
+            "value": "Taiwan (TW)",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "dates_2026_2027",
+            "citations": [
+              {
+                "title": "TASTI 2026台灣太空國際年會暨產業博覽會",
+                "url": "https://tasti2026.conf.tw/site/default.aspx?lang=en&sid=1691",
+                "excerpts": [
+                  "(last verified: 2026-10-30) | | TAIWAN International Assembly of Space Science, Technology, and Industry | | | 15 th Nano-Satellite Symposium+ | | | 9 th Asia-Oceania Space Weather Alliance Workshop | **NOV.08 - 11, 2026** International Convention Center Tainan, Taiwan [Registration ›](https://tasti2026.conf.tw/site/mypage53.aspx?pid=127&lang=en&sid=1691) 214 Days : 07 ..."
+                ]
+              }
+            ],
+            "reasoning": "The event listing gives November 8–11, 2026, establishing a scheduled 2026 edition.",
+            "confidence": "high"
+          },
+          {
+            "field": "drone_defense_topic",
+            "citations": [
+              {
+                "title": "TASTI 2026台灣太空國際年會暨產業博覽會",
+                "url": "https://tasti2026.conf.tw/site/default.aspx?lang=en&sid=1691",
+                "excerpts": [
+                  "(last verified: 2026-10-30) | | TAIWAN International Assembly of Space Science, Technology, and Industry | | | 15 th Nano-Satellite Symposium+ | | | 9 th Asia-Oceania Space Weather Alliance Workshop | **NOV.08 - 11, 2026** International Convention Center Tainan, Taiwan [Registration ›](https://tasti2026.conf.tw/site/mypage53.aspx?pid=127&lang=en&sid=1691) 214 Days : 07 ...",
+                  "Together, under the theme \"Trusted in Space, Resilient on Earth,\" we unite the global space community to advance trusted partnerships, resilient supply chains, and transformative innovation. As Taiwan strengthens its contribution to the international space ecosystem, we invite you to exchange ideas, forge meaningful collaborations, inspire new possibilities, and shape a secure, sustainable, and prosperous future for all through the peaceful exploration and utilization of space."
+                ]
+              }
+            ],
+            "reasoning": "The event listing identifies a Nano-Satellite Symposium and a Space Weather Alliance Workshop, while the official theme describes trusted partnerships, resilient supply chains, and peaceful exploration and utilization of space. This supports treating the event as space/aerospace-focused; the cited program descriptions do not identify a specific drone or counter-drone program.",
+            "confidence": "medium"
+          },
+          {
+            "field": "in_taiwan",
+            "citations": [
+              {
+                "title": "TASTI 2026台灣太空國際年會暨產業博覽會",
+                "url": "https://tasti2026.conf.tw/site/default.aspx?lang=en&sid=1691",
+                "excerpts": [
+                  "(last verified: 2026-10-30) | | TAIWAN International Assembly of Space Science, Technology, and Industry | | | 15 th Nano-Satellite Symposium+ | | | 9 th Asia-Oceania Space Weather Alliance Workshop | **NOV.08 - 11, 2026** International Convention Center Tainan, Taiwan [Registration ›](https://tasti2026.conf.tw/site/mypage53.aspx?pid=127&lang=en&sid=1691) 214 Days : 07 ..."
+                ]
+              }
+            ],
+            "reasoning": "The same event listing places the event at the International Convention Center in Tainan, Taiwan.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_612f0dba-2065-467c-9a46-7435cfaa3e9d",
+        "name": "Leading 2026 Taichung UAV Industry and Overseas Business Opportunities Forum",
+        "url": "https://www.taichung.gov.tw/8868/8872/9962/3312258",
+        "description": "A Taichung forum focused on the UAV industry and overseas business opportunities, held on July 2, 2026, at the Taichung City Hall 4F Assembly Hall. It was organized by the Taichung City Government and addressed drones and unmanned systems, matching the Taiwan 2026–2027 event scope.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_8788447e-3c09-4087-9445-fa1de51a2946",
+        "name": "Global Conference on UAV Technologies, Smart Drones & Aerospace Innovation (GCUTSAI) — 24–25 October 2026, Taipei, Taiwan",
+        "url": "https://www.scienceglobe.org/Conference/30656/GCUTSAI/",
+        "description": "The entity is the Global Conference on UAV Technologies, Smart Drones & Aerospace Innovation (GCUTSAI), listed for 24–25 October 2026 in Taipei, Taiwan. Its focus on UAV technologies and smart drones makes it a strong match for the requested Taiwan drone and aerospace events.",
+        "match_status": "matched",
+        "output": {
+          "dates_2026_2027": {
+            "type": "match_condition",
+            "value": "2026-10-24 to 2026-10-25 (held)",
+            "is_matched": true
+          },
+          "drone_defense_topic": {
+            "type": "match_condition",
+            "value": "No individually named tracks, pavilions, or dedicated zones are listed. The stated conference focus/theme is “UAV Technologies, Smart Drones & Aerospace Innovation.”",
+            "is_matched": true
+          },
+          "in_taiwan": {
+            "type": "match_condition",
+            "value": "Taiwan (TW)",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "dates_2026_2027",
+            "citations": [
+              {
+                "title": "scienceglobe.org | Home",
+                "url": "https://www.scienceglobe.org/Conference/30656/GCUTSAI/",
+                "excerpts": [
+                  "(GCUTSAI) will be held in **Taipei city,Taiwan** on **24th Oct-25th Oct 2026** ."
+                ]
+              }
+            ],
+            "reasoning": "The event page gives the conference dates as 24–25 October 2026. Since those dates had passed by the stated current date of 2026-10-30, the edition is classified as held.",
+            "confidence": "high"
+          },
+          {
+            "field": "drone_defense_topic",
+            "citations": [
+              {
+                "title": "scienceglobe.org | Home",
+                "url": "https://www.scienceglobe.org/Conference/30656/GCUTSAI/",
+                "excerpts": [
+                  "Global Conference on UAV Technologies, Smart Drones & Aerospace Innovation Global Conference on UAV Technologies, Smart Drones & Aerospace Innovation(GCUTSAI) * * ScienceGlobe - **Global Conference on UAV Technologies, Smart Drones & Aerospace Innovation(GCUTSAI)** is a prestigious event organizedwith a motivation to provide an excellent international platform for the academicians, researchers, engineers,industrial participants and budding students around the world to SHARE their research findings with the global experts. (GCUTSAI) will be held in **Taipei city,Taiwan** on **24th Oct-25th Oct 2026** . * * The key intention of GCUTSAI 2026 is to provide opportunity for the global participants to share their ideas and experience in person with their peers expected to join from different parts on the world. In addition this gathering will help the delegates to establish research or business relations as well as to find international linkage for future collaborations in their career path. We hope that GCUTSAI 2026 outcome will lead to significant contributions to the knowledge base in these up-to-date scientific fields in scope."
+                ]
+              }
+            ],
+            "reasoning": "The event’s title identifies UAV technologies, smart drones, and aerospace innovation as its focus. The event page does not name separate tracks, pavilions, or dedicated zones, so the value reports the stated focus rather than inventing specific program subdivisions.",
+            "confidence": "medium"
+          },
+          {
+            "field": "in_taiwan",
+            "citations": [
+              {
+                "title": "scienceglobe.org | Home",
+                "url": "https://www.scienceglobe.org/Conference/30656/GCUTSAI/",
+                "excerpts": [
+                  "24th Oct 2026 Taipei city,Taiwan"
+                ]
+              }
+            ],
+            "reasoning": "The event listing specifies Taipei city, Taiwan, so the country is Taiwan.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_914b571a-c0cc-48ba-bec8-49989bf029f3",
+        "name": "Taiwan – Conference – International Market Trends",
+        "url": "",
+        "description": "I could not verify an event officially titled “Taiwan – Conference – International Market Trends.” The closest verified match to the Taiwan drone and aerospace event scope is the Global Conference on UAV Technologies, Smart Drones & Aerospace Innovation (GCUTSAI), listed for Taipei on 24 October 2026. That is a different event title, so it should not be treated as the same entity.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_9157b978-9f90-409e-b1d7-266ad3b00409",
+        "name": "2026 1st UAV Business Matchmaking Conference",
+        "url": "https://www.uvaitw.com/en/events",
+        "description": "The best match for “Changhua” is the 2026 1st UAV Business Matchmaking Conference, held March 20, 2026, at Chienkuo Technology University in Changhua. The Taiwan Unmanned Vehicle Alliance describes it as a UAV supply-chain matchmaking event, supported by Changhua City Office, with live demonstrations by NCSIST Aerospace Division.",
+        "match_status": "matched",
+        "output": {
+          "dates_2026_2027": {
+            "type": "match_condition",
+            "value": "2026-03-20 (held)",
+            "is_matched": true
+          },
+          "drone_defense_topic": {
+            "type": "match_condition",
+            "value": "UAV live demonstrations by NCSIST Aerospace Division and matchmaking among Taiwan supply-chain companies; NCSIST sought partners certified to ISO 27001. This indicates a drone-focused program; no separate tracks or pavilions are listed.",
+            "is_matched": true
+          },
+          "in_taiwan": {
+            "type": "match_condition",
+            "value": "Taiwan (TW)",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "dates_2026_2027",
+            "citations": [
+              {
+                "title": "UAV Events & Exhibitions | Taiwan Unmanned Vehicle Alliance (UVAI)",
+                "url": "https://www.uvaitw.com/en/events",
+                "excerpts": [
+                  "2026 1st UAV Business Matchmaking Conference Organized by the Taiwan Unmanned Vehicle Alliance and supported by the Changhua City Office, the event featured live UAV demonstrations by NCSIST Aerospace Division and facilitated matchmaking among Taiwan's quality supply chain companies. NCSIST sought supply chain partners certified to ISO 27001 information security standards. March 20, 2026 Changhua | Chienkuo Technology University Registration Closed"
+                ]
+              }
+            ],
+            "reasoning": "The event listing names the conference and gives March 20, 2026, in Changhua; registration is listed as closed. The date is in the past as of 2026-10-30, so the edition is held.",
+            "confidence": "medium"
+          },
+          {
+            "field": "drone_defense_topic",
+            "citations": [
+              {
+                "title": "UAV Events & Exhibitions | Taiwan Unmanned Vehicle Alliance (UVAI)",
+                "url": "https://www.uvaitw.com/en/events",
+                "excerpts": [
+                  "2026 1st UAV Business Matchmaking Conference Organized by the Taiwan Unmanned Vehicle Alliance and supported by the Changhua City Office, the event featured live UAV demonstrations by NCSIST Aerospace Division and facilitated matchmaking among Taiwan's quality supply chain companies. NCSIST sought supply chain partners certified to ISO 27001 information security standards."
+                ]
+              }
+            ],
+            "reasoning": "The event is identified as the 2026 1st UAV Business Matchmaking Conference. Its description specifies live UAV demonstrations, supply-chain matchmaking, and ISO 27001-certified partner requirements, which support a drone-related focus.",
+            "confidence": "high"
+          },
+          {
+            "field": "in_taiwan",
+            "citations": [
+              {
+                "title": "UAV Events & Exhibitions | Taiwan Unmanned Vehicle Alliance (UVAI)",
+                "url": "https://www.uvaitw.com/en/events",
+                "excerpts": [
+                  "Organized by the Taiwan Unmanned Vehicle Alliance and supported by the Changhua City Office, the event featured live UAV demonstrations by NCSIST Aerospace Division and facilitated matchmaking among Taiwan's quality supply chain companies. NCSIST sought supply chain partners certified to ISO 27001 information security standards. March 20, 2026 Changhua | Chienkuo Technology University"
+                ]
+              }
+            ],
+            "reasoning": "The listing says the event was supported by Changhua City Office, took place in Changhua at Chienkuo Technology University, and involved Taiwan's supply-chain companies; together these locate it in Taiwan.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_9981ab5f-9369-47ba-9935-9ee32270b32e",
+        "name": "Leading 2026 | Taichung UAV Industry and Overseas Business Opportunities Forum (領航2026 | 台中無人載具產業與海外商機論壇) — July 2, 2026",
+        "url": "https://www.taichung.gov.tw/8868/8872/9962/3305444",
+        "description": "A 2026 Taichung forum on the unmanned-vehicle industry and overseas business opportunities, held July 2 at the Taichung City Government Building’s 4th-floor assembly hall. It was organized with the American Institute in Taiwan and focused on international markets, supply-chain cooperation, and applications for unmanned vehicles.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_ab42093c-0718-45a9-bfc5-1e62d41bcacd",
+        "name": "2026 Taiwan Drone International Forum & Global UAV Academy Inauguration — October 30, 2026, Taipei, Taiwan",
+        "url": "https://www.accupass.com/event/2610050148301866850792",
+        "description": "The closest match is a drone-focused conference in Taipei: the 2026 Taiwan Drone International Forum & Global UAV Academy Inauguration, scheduled for October 30, 2026, at Shangri-La Far Eastern, Taipei. Its focus and format align closely with the “Taiwan – Conference – Drones” event identifier.",
+        "match_status": "matched",
+        "output": {
+          "dates_2026_2027": {
+            "type": "match_condition",
+            "value": "2026-10-30 (held)",
+            "is_matched": true
+          },
+          "drone_defense_topic": {
+            "type": "match_condition",
+            "value": "Forum theme: “Taiwan: Asian hub for the democratic drone supply chain.” Focus areas include global non-red drone supply chains, industry cooperation, and innovative applications. No separate counter-drone or defense track is identified.",
+            "is_matched": true
+          },
+          "in_taiwan": {
+            "type": "match_condition",
+            "value": "Taiwan (TW)",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "dates_2026_2027",
+            "citations": [
+              {
+                "title": "台灣無人機國際學院今啟動 蕭美琴揭民主供應鏈3大支柱 - 自由軍武頻道",
+                "url": "https://def.ltn.com.tw/article/breakingnews/5623625",
+                "excerpts": [
+                  "[加入Google首選](https://www.google.com/preferences/source?q=ltn.com.tw)\n\n# 台灣無人機國際學院今啟動 蕭美琴揭民主供應鏈3大支柱\n\n2026/10/30 11:55   [](https://def.ltn.com.tw/#)\n\n[加入Google首選](https://www.google.com/preferences/source?q=ltn.com.tw)\n\n副總統蕭美琴（右五）、外交部長林佳龍（左四）、財團法人無人機國際學院董事長李漢銘（右四）等人30日出席台灣無人機國際論壇暨無人機國際學院開幕活動。（記者羅沛德攝） 副總統蕭美琴（右五）、外交部長林佳龍（左四）、財團法人無人機國際學院董事長李漢銘（右四）等人30日出席台灣無人機國際論壇暨無人機國際學院開幕活動。（記者羅沛德攝）  \n〔記者方瑋立／台北報導〕由外交部指導、財團法人無人機國際學院（GUAVA）與台灣國防產業發展協會（TW-DIDA）合辦的「2026台灣無人機國際論壇暨無人機國際學院開幕活動」今（30）日在台北登場。副總統蕭美琴致詞時表示，台灣今年上半年無人機出口產值已超越去年全年總額，未來將以「100%非紅可信賴供應鏈」、「邊緣AI與軟體定義創新」及「國際夥伴關係與無人機外交」3大支柱，鞏固台灣作為亞洲民主無人機供應鏈中心的地位。\n\n今日包括國安會諮委李育杰、國防部副部長徐斯儉、捷克前眾議院議長艾達莫娃（Markéta Pekarová Adamová）及美、日、烏、波等多國代表均出席與會。\n\n蕭美琴指出，台灣雖較晚切入無人系統領域，但憑藉半導體領先地位、精密工程與先進製造能力迅速趕上。在總統賴清德願景下，政府將無人系統視為國家最高戰略優先事項，結合國防政策與產業藍圖打造世界級「無人機國家隊」，強化自我防衛與戰略嚇阻，並透過連結安全需求、民間創新與國際合作達成量產規模。"
+                ]
+              }
+            ],
+            "reasoning": "The report dated October 30, 2026 says the forum and academy inauguration took place in Taipei that day, supporting the date and the status “held.”",
+            "confidence": "medium"
+          },
+          {
+            "field": "drone_defense_topic",
+            "citations": [
+              {
+                "title": "accupass.com",
+                "url": "https://www.accupass.com/event/2610050413258917329900",
+                "excerpts": [
+                  "「2026台灣無人機國際論壇暨無人機國際學院開幕活動」將於2026年10月30日(星期五)假台北遠東香格里拉飯店舉行。本次活動以「台灣:無人機民主供應鏈亞洲中心」為論壇主題,邀集政府、國內外無人機產業公協會、企業及學研機構代表,共同就全球非紅無人機供應鏈、產業合作及創新應用等議題"
+                ]
+              }
+            ],
+            "reasoning": "The event description names its forum theme as Taiwan serving as an Asian hub for the democratic drone supply chain and lists global non-red drone supply chains, industry cooperation, and innovative applications as discussion topics. It does not identify a separate counter-drone or defense track.",
+            "confidence": "medium"
+          },
+          {
+            "field": "in_taiwan",
+            "citations": [
+              {
+                "title": "2026 台灣無人機國際論壇暨無人機國際學院開幕活動 2026 Taiwan Drone...",
+                "url": "https://www.accupass.com/event/2610050148301866850792",
+                "excerpts": [
+                  "(last verified: 2026-10-30) 「2026台灣無人機國際論壇暨無人機國際學院開幕活動」將於2026年10月30日(星期五)假台北遠東香格里拉飯店舉行。 The \"2026 Taiwan Drone International Forum & Global UAV Academy Inauguration\" will take place on Friday, October 30, 2026, at Shangri-La Far Eastern, Taipei."
+                ]
+              }
+            ],
+            "reasoning": "The event listing gives the venue as Shangri-La Far Eastern in Taipei, identifying the event location as Taiwan.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_cd40620e-4ba6-40d6-bee9-077520eba610",
+        "name": "Taipei Aerospace & Defense Technology Exhibition (TADTE) 2027 — September 23–25, 2027, Taipei, Taiwan",
+        "url": "https://www.tadte.com.tw/en/menu/6E0B04FB4400C35AD0636733C6861689/info.html",
+        "description": "Taipei Aerospace & Defense Technology Exhibition (TADTE) is a trade exhibition scheduled for September 23–25, 2027, at Taipei Nangang Exhibition Center Hall 1 (TaiNEX 1), Taipei. Its official exhibit areas include defense, aerospace, and unmanned systems, making it a strong match for the requested Taiwan events.",
+        "match_status": "matched",
+        "output": {
+          "dates_2026_2027": {
+            "type": "match_condition",
+            "value": "2027-09-23 to 2027-09-25 (scheduled)",
+            "is_matched": true
+          },
+          "drone_defense_topic": {
+            "type": "match_condition",
+            "value": "Defense Industry & Technology; Aerospace Industry & Technology; Space Industry & Technology; Unmanned Systems; Unmanned Systems Applications and Supply Chain; Military Supplies and Training Equipment. The official exhibit areas indicate defense, aerospace, and unmanned-systems focus; no separate counter-drone track is listed.",
+            "is_matched": true
+          },
+          "in_taiwan": {
+            "type": "match_condition",
+            "value": "Taiwan (TW)",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "dates_2026_2027",
+            "citations": [
+              {
+                "title": "Taipei Aerospace & Defense Technology Exhibition-Fact Sheet",
+                "url": "https://www.tadte.com.tw/en/menu/6E0B04FB4400C35AD0636733C6861689/info.html",
+                "excerpts": [
+                  "|Dates & Hours |#### SEP. 23-25, 2027 9:00 a.m. - 5:00 p.m. |"
+                ]
+              }
+            ],
+            "reasoning": "The official fact sheet gives the exhibition dates as September 23–25, 2027, establishing a scheduled 2027 edition.",
+            "confidence": "high"
+          },
+          {
+            "field": "drone_defense_topic",
+            "citations": [
+              {
+                "title": "Taipei Aerospace & Defense Technology Exhibition-Fact Sheet",
+                "url": "https://www.tadte.com.tw/en/menu/6E0B04FB4400C35AD0636733C6861689/info.html",
+                "excerpts": [
+                  "|Exhibit Areas |* Defense Industry & Technology Aerospace Industry & Technology Space Industry & Technology Unmanned Systems Unmanned Systems Applications and Supply Chain Military Supplies and Training Equipment"
+                ]
+              }
+            ],
+            "reasoning": "The official fact sheet lists Defense Industry & Technology, Aerospace Industry & Technology, Space Industry & Technology, Unmanned Systems, Unmanned Systems Applications and Supply Chain, and Military Supplies and Training Equipment as exhibit areas. These directly establish the event’s defense, aerospace, and unmanned-systems focus.",
+            "confidence": "high"
+          },
+          {
+            "field": "in_taiwan",
+            "citations": [
+              {
+                "title": "Taipei Aerospace & Defense Technology Exhibition-Fact Sheet",
+                "url": "https://www.tadte.com.tw/en/menu/6E0B04FB4400C35AD0636733C6861689/info.html",
+                "excerpts": [
+                  "|Venue |Taipei Nangang Exhibition Center Hall 1 (TaiNEX1) Address: No.1, Jingmao 2nd Rd., Nangang District, Taipei City 11568, Taiwan |"
+                ]
+              }
+            ],
+            "reasoning": "The official venue entry names Taipei Nangang Exhibition Center in Taipei City, Taiwan, confirming that the event is held in Taiwan.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_d08f80df-63a5-4567-9dcf-6d0b3cf325e7",
+        "name": "DSET 2026 Forum Energy Panel──Taiwan Energy Resilience Dialogue: Examining U.S.-Japan-Taiwan Energy Security Cooperation through Taiwan Strait Wargames and the Ukraine Experience (June 6, 2026; Taipei, Taiwan)",
+        "url": "https://dset.tw/en/event-news-en/605-2",
+        "description": "“Energy Security” refers to the energy-resilience panel of the DSET 2026 Annual Forum, titled “National Strategic Summit on Supply Chain Resilience,” held June 6, 2026, in Taipei. The panel addressed Taiwan’s energy security and resilience under potential blockade or quarantine scenarios. The wider forum also covered drone supply chains, but this panel itself was about energy security rather than drones, counter-drone systems, or aerospace.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_ef064a5e-ebeb-49c4-a563-de18d984e560",
+        "name": "2026 Defense Frontier: A&D Strategic Forum — October 7, 2026, Taipei, Taiwan",
+        "url": "https://www.accupass.com/event/2607221450121597406006",
+        "description": "A TAITRA-hosted aerospace and defense industry strategic forum held in Taipei on October 7, 2026. It addressed unmanned systems, emerging technologies, and international supply-chain cooperation, making it a strong match for the Taiwan defense/aerospace events intent.",
+        "match_status": "generated"
+      }
+    ],
+    "last_event_id": "65f0726359b8f"
+  }
+}

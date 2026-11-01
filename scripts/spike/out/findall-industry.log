@@ -1,0 +1,21 @@
+[budget] findall:industry:base:15: est $0.700 (running total $1.900)
+created findall_2f937a48caa1421082c8dfd1417c8af0
+1s queued generated=0 matched=0
+22s running generated=2 matched=0
+42s running generated=17 matched=0
+63s running generated=31 matched=0
+84s running generated=38 matched=0
+104s running generated=38 matched=1
+125s running generated=39 matched=1
+146s running generated=40 matched=1
+166s running generated=40 matched=2
+187s running generated=42 matched=2
+208s running generated=43 matched=4
+228s running generated=44 matched=5
+249s running generated=45 matched=7
+270s running generated=48 matched=8
+290s running generated=50 matched=8
+311s running generated=56 matched=10
+331s running generated=62 matched=13
+352s completed generated=62 matched=15
+[saved] scripts/spike/out/findall-industry-base.json

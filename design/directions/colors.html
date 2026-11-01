@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Portolan 配色三選一</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* Neutral on purpose so it does not favour a palette. */
+:root{--bg:#F6F6F4;--paper:#FFFFFF;--ink:#1D1E20;--ink2:#5D6168;--rule:#DCDDDA;--pick:#0B6E4F}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.65 'Noto Sans TC','PingFang TC',system-ui,sans-serif;overflow-x:hidden}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.wrap{max-width:1360px;margin:0 auto;padding:32px 20px 64px}
+header.top{max-width:780px;margin-bottom:26px;display:flex;flex-direction:column;gap:8px}
+header.top h1{margin:0;font-size:30px;line-height:1.25;font-weight:900}
+header.top p{margin:0;color:var(--ink2)}
+code{font-size:.9em;background:#EEEEEC;padding:0 4px}
+.cmp{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.dir{background:var(--paper);border:1px solid var(--rule);display:flex;flex-direction:column}
+.dir.pick{border:2px solid var(--pick)}
+.dir-h{padding:14px 16px 10px;border-bottom:1px solid var(--rule)}
+.dir-h .n{margin:0;font-size:12.5px;color:var(--ink2)}
+.dir-h h2{margin:2px 0;font-size:24px;line-height:1.2;font-weight:900}
+.dir-h p{margin:0;font-size:14.5px}
+.badge{display:inline-block;margin-left:6px;font-size:12px;font-weight:700;color:#fff;background:var(--pick);padding:1px 8px;vertical-align:4px}
+.prev{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 16px;background:#EEEEEC;border-bottom:1px solid var(--rule)}
+.ph{position:relative;aspect-ratio:390/844;overflow:hidden;border:1px solid var(--rule);background:#fff}
+.ph iframe{position:absolute;top:0;left:0;width:390px;height:844px;border:0;transform-origin:0 0;pointer-events:none}
+.ph a{position:absolute;inset:0}
+.ph span{position:absolute;left:0;bottom:0;background:rgba(0,0,0,.65);color:#fff;font-size:11.5px;padding:1px 6px}
+.links{display:flex;flex-wrap:wrap;gap:6px;padding:10px 16px;border-bottom:1px solid var(--rule)}
+.links a{font-size:13.5px;padding:4px 9px;border:1px solid var(--rule);text-decoration:none;background:#fff}
+.links a:hover{border-color:var(--ink)}
+.sec{padding:12px 16px;border-bottom:1px solid var(--rule)}
+.sec:last-child{border-bottom:0}
+.sec h3{margin:0 0 6px;font-size:13px;font-weight:700;color:var(--ink2)}
+.sec p,.sec li{margin:0;font-size:14px;line-height:1.6}
+.sec ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:3px}
+.sw{display:flex;flex-wrap:wrap;gap:6px 10px}
+.sw span{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--ink2)}
+.sw i{width:22px;height:22px;border:1px solid rgba(0,0,0,.15);display:inline-block}
+.ck{list-style:none!important;padding:0!important}
+.ck li{display:grid;grid-template-columns:22px 1fr;font-size:13.5px}
+.ck .y::before{content:"✓";color:var(--pick);font-weight:700}
+.ck .p::before{content:"△";color:#9A6A00;font-weight:700}
+.rec{margin-top:26px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px}
+.box{background:var(--paper);border:1px solid var(--rule);padding:18px 20px}
+.box.pick{border:2px solid var(--pick)}
+.box h2{margin:0 0 8px;font-size:21px;font-weight:900}
+.box h3{margin:14px 0 4px;font-size:15px}
+.box ol,.box ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.note{margin-top:12px;font-size:13.5px;color:var(--ink2)}
+@media (max-width:1100px){.cmp{grid-template-columns:minmax(0,1fr)}.prev{max-width:520px}}
+@media (max-width:720px){.rec{grid-template-columns:minmax(0,1fr)}header.top h1{font-size:25px}}
+
+.decided{margin:0 0 18px;padding:12px 16px;border:2px solid var(--ink);background:var(--paper);font-size:15px;line-height:1.5}.decided b{background:#FFE14A;padding:0 4px}
+.steps{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 18px}
+.steps a{display:flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--rule);background:var(--paper);text-decoration:none;font-size:14.5px}
+.steps a b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ink2);color:#fff;font-size:12px}
+.steps a[aria-current=page]{border:2px solid var(--ink)}.steps a[aria-current=page] b{background:var(--ink)}
+.steps .dev{margin-left:auto;display:flex;border:1px solid var(--rule);background:var(--paper)}
+.steps .dev button{min-height:38px;padding:0 14px;border:0;background:none;font:inherit;font-size:14px;cursor:pointer}
+.steps .dev button[aria-pressed=true]{background:var(--ink);color:#fff}
+.steps .note2{width:100%;margin:0;font-size:13px;color:var(--ink2)}
+.desk .prev{grid-template-columns:1fr}
+.desk .ph{aspect-ratio:1280/800}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="decided" role="status"><b>已選定：Admiralty chart</b>（11/1）。規格寫在 <code>design/direction.md</code>，範例畫面在 <a href="color-admiralty/01-home.html">color-admiralty/</a>。手機版詳情要用底部面板還是放在地圖下方，還沒決定。這頁留著當紀錄。</p>
+  <nav class="steps" aria-label="Design choices"><a href="directions.html"><b>1</b>選方向（4 個）</a><a href="colors.html" aria-current="page"><b>2</b>選配色（3 個，都是 Sounding 方向）</a><div class="dev" role="group" aria-label="Preview size"><button type="button" data-dev="phone" aria-pressed="true">手機預覽</button><button type="button" data-dev="desk" aria-pressed="false">電腦預覽</button></div><p class="note2">每個畫面都會自動配合螢幕：在電腦上打開是多欄的電腦版（1280px），在手機上是手機版（390px）。上面的切換只改這頁的縮圖。</p></nav>
+  <header class="top">
+    <h1>Portolan 配色三選一（都是 Sounding 的結構）</h1>
+    <p>三個版本的版面、地圖、元件完全一樣：羅盤線、立場形狀、虛線連起先聯絡的三個、下一步卡片附來源數和等級章，加上 Estimate 的 ICD 機率尺、A1/B2 等級章和聯絡人塗黑條。只有顏色、字體和立場記號不同。資料是 <code>src/fixtures/taiwan-uas.ts</code>，每頁標 Sample data。</p>
+    <p>每個版本都有 <code>direction.md</code> 草稿（token、字級、間距、圓角、立場編碼、電腦版面、該做和不該做），選定的那份可以直接改名成 <code>design/direction.md</code>。四個原始方向的比較在 <a href="directions.html">第 1 步：選方向</a>。</p>
+  </header>
+
+  <div class="cmp">
+    <article class="dir" aria-labelledby="c1">
+      <div class="dir-h"><p class="n">配色 1</p><h2 id="c1">Night watch</h2><p>夜間的墨藍海圖。黃銅畫結構，青綠和珊瑚紅表示立場，洋紅只出現在「下一步」。報告自動換成淺色列印版。</p></div>
+      <div class="prev"><div class="ph"><iframe src="color-night-watch/01-home.html" title="Night watch 首頁" loading="lazy" tabindex="-1"></iframe><a href="color-night-watch/01-home.html" aria-label="開 Night watch 首頁"></a><span>首頁</span></div><div class="ph"><iframe src="color-night-watch/02-map.html" title="Night watch 地圖" loading="lazy" tabindex="-1"></iframe><a href="color-night-watch/02-map.html" aria-label="開 Night watch 地圖"></a><span>地圖</span></div></div>
+      <div class="links"><a href="color-night-watch/01-home.html">01 首頁</a><a href="color-night-watch/02-map.html">02 地圖</a><a href="color-night-watch/05-report.html">05 A4 報告（淺色）</a><a href="color-night-watch/direction.md">direction.md</a><a href="color-night-watch/02-map.html?layout=sheet">手機：面板</a><a href="color-night-watch/02-map.html?layout=below">手機：地圖下方（設計稿）</a><a href="color-night-watch/02-map.html?state=loading">載入中</a><a href="color-night-watch/02-map.html?state=empty">空資料</a><a href="color-night-watch/02-map.html?state=error">錯誤</a><a href="color-night-watch/01-home.html?state=error">達到每日上限</a></div>
+      <div class="sec"><h3>配色和字體</h3><div class="sw"><span><i style="background:#0E1B2E"></i>墨藍底</span><span><i style="background:#C9A65A"></i>黃銅</span><span><i style="background:#5FC7B8"></i>支持</span><span><i style="background:#E8705A"></i>反對</span><span><i style="background:#FF3D8B"></i>下一步</span></div><p style="margin-top:6px">Archivo（寬 125% 品牌字、窄體標籤、斜體數字）</p></div>
+      <div class="sec"><h3>立場記號</h3><p>浮標形狀：三角 = 支持、方塊 = 反對、空心圓 = 中立、菱形 = 事件。</p></div>
+      <div class="sec"><h3>優點</h3><ul><li>demo 第一眼最有氣勢，黃銅羅盤在深底上最漂亮</li><li>洋紅只有一種意思，「下一步」最好找</li><li>報告已經做好淺色版，列印不浪費墨</li></ul></div>
+      <div class="sec"><h3>缺點</h3><ul><li>要維護兩組顏色（螢幕深色、列印淺色），每個新畫面都要兩邊檢查</li><li>分享連結在手機白天打開偏暗</li><li>深底 + 亮色接近 2026 年常見的 AI 深色風，要靠黃銅和浮標撐住個性</li></ul></div>
+      <div class="sec"><h3>generic-risks 檢查</h3><ul class="ck"><li class="y">不是米色 + 赤陶、紫色漸層、shadcn 灰卡片、置中 hero</li><li class="y">沒有佔位字；聯絡人姓名用塗黑條</li><li class="y">分數用區間 + ICD 用語，來源有等級章</li><li class="y">每個利害關係人都有下一步</li><li class="y">載入中、空資料、錯誤三種狀態都有畫（用上面的連結預覽）</li></ul></div>
+    </article>
+
+    <article class="dir pick" aria-labelledby="c2">
+      <div class="dir-h"><p class="n">配色 2</p><h2 id="c2">Admiralty chart <span class="badge">推薦</span></h2><p>真正的海圖：白色水面、赭黃陸地，藍色深度帶表示影響力（越深越大），洋紅標路線和提醒，紅色表示反對。</p></div>
+      <div class="prev"><div class="ph"><iframe src="color-admiralty/01-home.html" title="Admiralty chart 首頁" loading="lazy" tabindex="-1"></iframe><a href="color-admiralty/01-home.html" aria-label="開 Admiralty chart 首頁"></a><span>首頁</span></div><div class="ph"><iframe src="color-admiralty/02-map.html" title="Admiralty chart 地圖" loading="lazy" tabindex="-1"></iframe><a href="color-admiralty/02-map.html" aria-label="開 Admiralty chart 地圖"></a><span>地圖</span></div></div>
+      <div class="links"><a href="color-admiralty/01-home.html">01 首頁</a><a href="color-admiralty/02-map.html">02 地圖</a><a href="color-admiralty/05-report.html">05 A4 報告</a><a href="color-admiralty/direction.md">direction.md</a><a href="color-admiralty/02-map.html?layout=sheet">手機：面板</a><a href="color-admiralty/02-map.html?layout=below">手機：地圖下方（設計稿）</a><a href="color-admiralty/02-map.html?state=loading">載入中</a><a href="color-admiralty/02-map.html?state=empty">空資料</a><a href="color-admiralty/02-map.html?state=error">錯誤</a><a href="color-admiralty/01-home.html?state=error">達到每日上限</a></div>
+      <div class="sec"><h3>配色和字體</h3><div class="sw"><span><i style="background:#FCFDFB"></i>海圖白</span><span><i style="background:#EAD58A"></i>赭黃陸地</span><span><i style="background:#2F6FAE"></i>深度藍</span><span><i style="background:#0F6E5A"></i>支持</span><span><i style="background:#B23B2E"></i>反對</span><span><i style="background:#C2187A"></i>路線、提醒</span></div><p style="margin-top:6px">IBM Plex Sans Condensed（數字用斜體，像水深數字）</p></div>
+      <div class="sec"><h3>立場記號</h3><p>浮標形狀同上。另外每個節點下方的海床有一個水深圓點：藍越深、圓越大，影響力越高。</p></div>
+      <div class="sec"><h3>優點</h3><ul><li>顏色最多也最有意義：每個顏色都對應一件事，不是裝飾</li><li>一組顏色同時用在螢幕、手機白天和 A4 列印，維護最省</li><li>深度帶讓影響力有第二種編碼，3D 地圖不只是好看</li><li>最像真的海圖，和「Portolan」這個名字最一致</li></ul></div>
+      <div class="sec"><h3>缺點</h3><ul><li>洋紅（路線）和紅色（反對）都偏紅，要靠形狀分；直接看色塊時會猶豫一下</li><li>赭黃用太多會滑向暖色米色風，所以只能出現在海圖的陸地上</li><li>demo 的第一眼沒有 Night watch 那麼震撼</li></ul></div>
+      <div class="sec"><h3>generic-risks 檢查</h3><ul class="ck"><li class="y">不是米色 + 赤陶、紫色漸層、shadcn 灰卡片、置中 hero</li><li class="y">沒有佔位字；聯絡人姓名用塗黑條</li><li class="y">分數用區間 + ICD 用語，來源有等級章</li><li class="y">每個利害關係人都有下一步</li><li class="y">載入中、空資料、錯誤三種狀態都有畫（用上面的連結預覽）</li></ul></div>
+    </article>
+
+    <article class="dir" aria-labelledby="c3">
+      <div class="dir-h"><p class="n">配色 3</p><h2 id="c3">Signal flags</h2><p>國際信號旗：海軍藍、信號紅、旗黃的平面方塊。立場是旗子圖案；首頁用真正的信號旗拼出 PORTOLAN。</p></div>
+      <div class="prev"><div class="ph"><iframe src="color-signal-flags/01-home.html" title="Signal flags 首頁" loading="lazy" tabindex="-1"></iframe><a href="color-signal-flags/01-home.html" aria-label="開 Signal flags 首頁"></a><span>首頁</span></div><div class="ph"><iframe src="color-signal-flags/02-map.html" title="Signal flags 地圖" loading="lazy" tabindex="-1"></iframe><a href="color-signal-flags/02-map.html" aria-label="開 Signal flags 地圖"></a><span>地圖</span></div></div>
+      <div class="links"><a href="color-signal-flags/01-home.html">01 首頁</a><a href="color-signal-flags/02-map.html">02 地圖</a><a href="color-signal-flags/05-report.html">05 A4 報告</a><a href="color-signal-flags/direction.md">direction.md</a><a href="color-signal-flags/02-map.html?layout=sheet">手機：面板</a><a href="color-signal-flags/02-map.html?layout=below">手機：地圖下方（設計稿）</a><a href="color-signal-flags/02-map.html?state=loading">載入中</a><a href="color-signal-flags/02-map.html?state=empty">空資料</a><a href="color-signal-flags/02-map.html?state=error">錯誤</a><a href="color-signal-flags/01-home.html?state=error">達到每日上限</a></div>
+      <div class="sec"><h3>配色和字體</h3><div class="sw"><span><i style="background:#101A3A"></i>海軍藍</span><span><i style="background:#1747C9"></i>支持</span><span><i style="background:#D7262E"></i>反對</span><span><i style="background:#F6C90E"></i>先聯絡、提醒</span><span><i style="background:#FFFFFF"></i>白</span></div><p style="margin-top:6px">Anybody（品牌字 150% 寬 900 字重；標籤 82% 窄體）</p></div>
+      <div class="sec"><h3>立場記號</h3><p>藍底白心 = 支持、紅底白 X = 反對、藍白棋盤 = 中立、黃菱形 = 事件；先聯絡的三個旁邊插紅黃 O 旗。</p></div>
+      <div class="sec"><h3>優點</h3><ul><li>最好記：信號旗拼出的品牌字，一看就知道是 Portolan</li><li>立場用圖案編碼，黑白列印和色盲都分得出</li><li>方角、平面、高對比，手機上很清楚</li></ul></div>
+      <div class="sec"><h3>缺點</h3><ul><li>節點多（30 個以上）時旗子會很花，需要只畫重要的</li><li>黃色不能寫字，只能當底色，元件規則比較多</li><li>寬字體 Anybody 佔空間，A4 報告要壓窄才放得下</li></ul></div>
+      <div class="sec"><h3>generic-risks 檢查</h3><ul class="ck"><li class="y">不是米色 + 赤陶、紫色漸層、shadcn 灰卡片、置中 hero</li><li class="y">沒有佔位字；聯絡人姓名用塗黑條</li><li class="y">分數用區間 + ICD 用語，來源有等級章</li><li class="y">每個利害關係人都有下一步</li><li class="y">載入中、空資料、錯誤三種狀態都有畫（用上面的連結預覽）</li></ul></div>
+    </article>
+  </div>
+
+  <section class="rec" aria-labelledby="rh">
+    <div class="box pick">
+      <h2 id="rh">推薦：Admiralty chart</h2>
+      <ol>
+        <li><b>顏色變多，但每個都有意思。</b>你要更多顏色；Admiralty 的赭黃、深度藍、洋紅、紅、綠各自對應陸地、影響力、行動、反對、支持，不是加來好看的。</li>
+        <li><b>一組顏色走到底。</b>網頁、手機白天打開分享連結、A4 報告列印都用同一組 token。Night watch 要兩組，在 11/3 前多一份維護成本。</li>
+        <li><b>3D 地圖多了一層資訊。</b>節點下方的水深圓點讓「誰最有影響力」轉動時也看得出來，回應 generic-risks 第 5 段「地圖要回答先找誰」。</li>
+        <li><b>最像海圖，和名字最一致。</b>Portolan 本來就是海圖，Admiralty 是現代海圖的直系後代。</li>
+      </ol>
+      <h3>可以混進來的</h3>
+      <ul><li>Signal flags 首頁的信號旗品牌列：可以當 Admiralty 的 logo 列或載入畫面，但地圖上的立場仍用浮標形狀。</li><li>Night watch 可以留到 YC 之後當深色模式（token 已經分好，只要再加一組）。</li></ul>
+    </div>
+    <div class="box">
+      <h2>選了以後</h2>
+      <ul><li>把 <code>color-&lt;選的&gt;/direction.md</code> 改名成 <code>design/direction.md</code>，S0 照它把 token 放進 Tailwind 主題和 <code>src/app/layout.tsx</code> 的字體。</li><li>空資料和錯誤畫面在 S0 用同一組 token 補畫。</li><li>ICD 用語和支持度的對應（例：支持度 ≥ +50 → likely）目前是示意，要等 <code>docs/scoring.md</code> 定案。</li></ul>
+      <p class="note">所有頁面是靜態示意，按鈕有回饋但不送資料。來源 [1]–[6] 的等級章、查證日期和分數區間是範例值。客戶名 Skyward Robotics 是設計稿表單裡的虛構公司。</p>
+    </div>
+  </section>
+  <section class="box" style="margin-top:14px" aria-labelledby="up-h">
+    <h2 id="up-h">10/31 改版：向知名產品借的五個做法</h2>
+    <p>三個配色共用同一個版面，所以這五點三個都有。</p>
+    <ol>
+      <li><b>手機地圖的詳情改成可拉的底部面板（Apple Maps 的地點卡）。</b>原本點節點後要往下捲很遠才看到詳情；現在面板從地圖下方滑出，有三個高度：收合時顯示「先聯絡的三個」，點節點升到一半，拉到頂看全部。拖把手或點它切換，鍵盤可用上下鍵。</li>
+      <li><b>詳情面板的動作鈕固定在底部（Felt 的面板結構：標題、可捲內容、固定頁尾）。</b>「View evidence」和「Add to tracker」捲到哪裡都看得到。</li>
+      <li><b>找人（Linear 的 ⌘K）。</b>地圖左欄（手機在地圖上方）有「Find a stakeholder」；⌘K 或 / 開啟，上下鍵選、Enter 跳到該節點，Esc 取消選取，← → 轉動地圖。找不到時會建議換個關鍵字。</li>
+      <li><b>聚焦時說清楚顯示了什麼（Kumu 的 focus 計數）。</b>選取節點後，地圖下方提示改成「NCC：顯示 2 個直接關係，按 Esc 或再點一次恢復全部」。</li>
+      <li><b>載入中、空資料、錯誤三種狀態（Palantir Blueprint 的 NonIdealState：圖示、標題、一句原因、一兩個動作）。</b>補上 generic-risks 檢查清單唯一沒過的一項。載入中會一條條列出找到的來源，不是只有轉圈；首頁的錯誤狀態用「達到每日研究上限」這個真實情況。</li>
+    </ol>
+    <p class="note"><b>兩種手機版面都做了，請創辦人選：</b>手機地圖頁最上方有「Details layout」切換（Sheet over map / Below map），或用上面每個配色的「手機：面板」「手機：地圖下方（設計稿）」連結。面板版地圖和詳情同時看得到；設計稿版照 design/screens/02-map.png，詳情在地圖下方要往下捲。選好後刪掉另一種和切換鈕。參考：<a href="https://help.felt.com/getting-started/tour-the-interface">Felt interface tour</a>、<a href="https://developers.felt.com/js-sdk-api-reference/ui/uipanel">Felt UI panel</a>、<a href="https://donnywals.com/presenting-a-bottom-sheet-in-uikit-with-uisheetpresentationcontroller">UISheetPresentationController detents</a>、<a href="https://blakecrosley.com/guides/design/linear">Linear design guide</a>、<a href="https://cascadeinstitute.org/?p=822">Kumu focus mode</a>、<a href="https://blog.palantir.com/scaling-product-design-with-blueprint-25492827bb4a">Scaling product design with Blueprint</a>。</p>
+  </section>
+</div>
+<script>
+/* Phone or desktop thumbnails; the real pages adapt to whatever screen opens them */
+(function(){var desk=false;
+function fit(){document.querySelectorAll('.ph').forEach(function(b){var f=b.querySelector('iframe');var w=desk?1280:390,h=desk?800:844;f.style.width=w+'px';f.style.height=h+'px';f.style.transformOrigin='0 0';f.style.transform='scale('+(b.clientWidth/w)+')';});}
+document.querySelectorAll('[data-dev]').forEach(function(btn){btn.addEventListener('click',function(){desk=btn.getAttribute('data-dev')==='desk';document.body.classList.toggle('desk',desk);document.querySelectorAll('[data-dev]').forEach(function(x){x.setAttribute('aria-pressed',x===btn);});fit();});});
+window.addEventListener('resize',fit);fit();})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Portolan 設計方向比較</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* Deliberately neutral so it does not favour any direction. */
+:root{--bg:#F6F6F4;--paper:#FFFFFF;--ink:#1D1E20;--ink2:#5D6168;--rule:#DCDDDA;--pick:#0B6E4F}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.65 'Noto Sans TC','PingFang TC',system-ui,sans-serif;overflow-x:hidden}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.wrap{max-width:1360px;margin:0 auto;padding:32px 20px 64px}
+header.top{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;max-width:760px;margin-bottom:28px}
+header.top h1{margin:0;font-size:30px;line-height:1.25;font-weight:900}
+header.top p{margin:0;color:var(--ink2)}
+.how{font-size:14px;color:var(--ink2)}
+.how b{color:var(--ink)}
+.cmp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.dir{background:var(--paper);border:1px solid var(--rule);display:flex;flex-direction:column}
+.dir.pick{border:2px solid var(--pick)}
+.dir-h{padding:14px 16px 10px;border-bottom:1px solid var(--rule)}
+.dir-h .n{margin:0;font-size:12.5px;color:var(--ink2)}
+.dir-h h2{margin:2px 0 2px;font-size:24px;line-height:1.2;font-weight:900}
+.dir-h .idea{margin:0;font-size:14.5px;line-height:1.55}
+.badge{display:inline-block;margin-left:6px;font-size:12px;font-weight:700;color:#fff;background:var(--pick);padding:1px 8px;vertical-align:4px}
+.prev{display:flex;gap:10px;padding:12px 16px;border-bottom:1px solid var(--rule);background:#EEEEEC;overflow:hidden}
+.ph{flex:0 0 auto;width:156px;height:338px;overflow:hidden;border:1px solid var(--rule);background:#fff;position:relative}
+.ph iframe{width:390px;height:844px;border:0;transform:scale(.4);transform-origin:0 0;pointer-events:none}
+.ph a{position:absolute;inset:0}
+.links{display:flex;flex-direction:column;gap:6px;font-size:14px;min-width:0}
+.links a{display:block;padding:6px 8px;background:#fff;border:1px solid var(--rule);text-decoration:none;line-height:1.35}
+.links a:hover{border-color:var(--ink)}
+.links small{display:block;color:var(--ink2);font-size:12px}
+.sec{padding:12px 16px;border-bottom:1px solid var(--rule)}
+.sec:last-child{border-bottom:0}
+.sec h3{margin:0 0 6px;font-size:13px;font-weight:700;color:var(--ink2)}
+.sw{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px}
+.sw span{width:30px;height:30px;border:1px solid rgba(0,0,0,.12);position:relative}
+.sw span[title]:hover::after{content:attr(title);position:absolute;top:32px;left:0;font-size:11px;background:#fff;border:1px solid var(--rule);padding:0 4px;white-space:nowrap;z-index:2}
+.sec p,.sec li{margin:0;font-size:14px;line-height:1.6}
+.sec ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:3px}
+.fonts{font-size:14px}
+.ck{list-style:none!important;padding:0!important}
+.ck li{display:grid;grid-template-columns:22px 1fr;font-size:13.5px}
+.ck .y::before{content:"✓";color:var(--pick);font-weight:700}
+.ck .p::before{content:"△";color:#9A6A00;font-weight:700}
+.rec{margin-top:28px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px}
+.box{background:var(--paper);border:1px solid var(--rule);padding:18px 20px}
+.box h2{margin:0 0 8px;font-size:21px;font-weight:900}
+.box h3{margin:14px 0 4px;font-size:15px}
+.box p,.box li{font-size:15px}
+.box ol,.box ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.pickbox{border:2px solid var(--pick)}
+.note{margin-top:14px;font-size:13.5px;color:var(--ink2)}
+code{font-size:.9em;background:#EEEEEC;padding:0 4px}
+@media (max-width:1180px){.cmp{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:720px){.cmp{grid-template-columns:minmax(0,1fr)}.rec{grid-template-columns:minmax(0,1fr)}header.top h1{font-size:25px}.prev{flex-direction:column}.ph{width:100%;height:300px}.ph iframe{transform:scale(.88)}}
+
+.decided{margin:0 0 18px;padding:12px 16px;border:2px solid var(--ink);background:var(--paper);font-size:15px;line-height:1.5}.decided b{background:#FFE14A;padding:0 4px}
+.steps{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 18px}
+.steps a{display:flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid var(--rule);background:var(--paper);text-decoration:none;font-size:14.5px}
+.steps a b{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ink2);color:#fff;font-size:12px}
+.steps a[aria-current=page]{border:2px solid var(--ink)}.steps a[aria-current=page] b{background:var(--ink)}
+.steps .dev{margin-left:auto;display:flex;border:1px solid var(--rule);background:var(--paper)}
+.steps .dev button{min-height:38px;padding:0 14px;border:0;background:none;font:inherit;font-size:14px;cursor:pointer}
+.steps .dev button[aria-pressed=true]{background:var(--ink);color:#fff}
+.steps .note2{width:100%;margin:0;font-size:13px;color:var(--ink2)}
+.ph{width:156px;height:auto;aspect-ratio:390/844}
+.ph iframe{position:absolute;top:0;left:0;border:0;pointer-events:none}
+.desk .prev{flex-direction:column}
+.desk .ph{width:100%;aspect-ratio:1280/800}
+@media (max-width:720px){.ph{width:100%;height:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="decided" role="status"><b>已選定：Admiralty chart</b>（11/1）。用 Sounding 的結構，加上 Estimate 的可信度元件。規格寫在 <code>design/direction.md</code>，範例畫面在 <a href="color-admiralty/01-home.html">color-admiralty/</a>。下面的比較留著當紀錄。</p>
+  <nav class="steps" aria-label="Design choices"><a href="directions.html" aria-current="page"><b>1</b>選方向（4 個）</a><a href="colors.html"><b>2</b>選配色（3 個，都是 Sounding 方向）</a><div class="dev" role="group" aria-label="Preview size"><button type="button" data-dev="phone" aria-pressed="true">手機預覽</button><button type="button" data-dev="desk" aria-pressed="false">電腦預覽</button></div><p class="note2">每個畫面都會自動配合螢幕：在電腦上打開是多欄的電腦版（1280px），在手機上是手機版（390px）。上面的切換只改這頁的縮圖。</p></nav>
+  <header class="top">
+    <h1>Portolan 設計方向：四選一</h1>
+    <p>四個方向都用同一份範例資料（<code>src/fixtures/taiwan-uas.ts</code>，每頁標 Sample data），各做 01 首頁、02 地圖、05 A4 報告。首頁和地圖都能在手機 390px 和電腦 1280px 看；地圖照設計稿的 <code>project()</code> 做 SVG 偽 3D，可拖曳旋轉、切 Power Matrix、開團隊人脈、點節點看來源和下一步。</p>
+    <p class="how"><b>下一步：</b>選好方向後到 <a href="colors.html">第 2 步：選配色</a>（三個配色版本都建立在推薦的 Sounding 方向上）。<b>怎麼看：</b>點下面的頁面連結，用瀏覽器縮放或開發者工具切手機寬度。報告頁按 ⌘P 可以直接存成 A4 PDF。可以混搭，例如「Sounding 的地圖 + Estimate 的報告」。</p>
+  </header>
+
+  <div class="cmp">
+    <!-- Sounding -->
+    <article class="dir pick" aria-labelledby="d1">
+      <div class="dir-h"><p class="n">方向 1 · 製圖</p><h2 id="d1">Sounding <span class="badge">推薦</span></h2><p class="idea">把 dossier 畫成一張現代航海圖：羅盤線、海岸線上垂直寫的港名、浮標形狀代表立場、洋紅色標出要你行動的東西。</p></div>
+      <div class="prev"><div class="ph"><iframe src="sounding/01-home.html" title="Sounding 首頁預覽" loading="lazy" tabindex="-1"></iframe><a href="sounding/01-home.html" aria-label="開 Sounding 首頁"></a></div>
+        <div class="links"><a href="sounding/01-home.html">01 首頁<small>電腦版有台灣海圖</small></a><a href="sounding/02-map.html">02 地圖<small>地面羅盤 + 建議航線</small></a><a href="sounding/05-report.html">05 A4 報告<small>海圖圖框</small></a></div></div>
+      <div class="sec"><h3>配色</h3><div class="sw"><span style="background:#F3F7F7" title="海圖白 #F3F7F7"></span><span style="background:#C9E2E8" title="淺灘藍 #C9E2E8"></span><span style="background:#0E2531" title="墨 #0E2531"></span><span style="background:#A8136A" title="海圖洋紅 #A8136A"></span><span style="background:#1B7649" title="綠浮標 #1B7649"></span><span style="background:#BF2E2A" title="紅浮標 #BF2E2A"></span></div><p>海圖白底、墨色字；唯一的訊號色是航海圖的洋紅（燈塔、注意事項用的顏色）。</p></div>
+      <div class="sec"><h3>字體</h3><p class="fonts">只用 <b>Archivo</b> 一個家族，靠寬度軸變化：標題用最寬的 125%，標籤用 72–80% 窄體，數字用斜體（像海圖的水深數字）。</p></div>
+      <div class="sec"><h3>優點</h3><ul><li>和「Portolan」這個名字完全對上，品牌最一致，一眼就記得</li><li>立場用浮標形狀（三角、方塊、圓）而不只靠顏色，色盲也看得懂</li><li>地圖是整個產品的主角：建議先找的三個人連成一條虛線航線</li><li>淺色、印出來好看，報告和網頁同一個語言</li></ul></div>
+      <div class="sec"><h3>缺點</h3><ul><li>航海比喻用太多會變成主題樂園；介面文字要保持白話</li><li>台灣海圖只能放有地址的 4 個利害關係人，其他沒有位置</li><li>洋紅色在暗處或投影機上要再確認對比</li></ul></div>
+      <div class="sec"><h3>generic-risks 檢查</h3><ul class="ck"><li class="y">不是米色 + 赤陶、紫色漸層、shadcn 灰卡片、置中 hero</li><li class="y">沒有 [CLIENT]、[DATE]；查不到的日期寫 date unverified</li><li class="y">分數用區間（65–80），每個說法有 [n] 來源和 Admiralty 等級</li><li class="y">每個利害關係人都有下一步</li><li class="p">有表單錯誤、重新整理中、研究進度；完整的空資料和錯誤頁還沒畫</li></ul></div>
+    </article>
+
+    <!-- Estimate -->
+    <article class="dir" aria-labelledby="d2">
+      <div class="dir-h"><p class="n">方向 2 · 編輯印刷</p><h2 id="d2">Estimate</h2><p class="idea">情報簡報本：ICD 203 可能性用語加機率尺、Admiralty 來源等級、編號段落、螢光筆標重點，私人聯絡人名字用塗黑條。</p></div>
+      <div class="prev"><div class="ph"><iframe src="estimate/01-home.html" title="Estimate 首頁預覽" loading="lazy" tabindex="-1"></iframe><a href="estimate/01-home.html" aria-label="開 Estimate 首頁"></a></div>
+        <div class="links"><a href="estimate/01-home.html">01 首頁<small>電腦版右側是活頁夾分頁</small></a><a href="estimate/02-map.html">02 地圖<small>Exhibit 圖表樣式</small></a><a href="estimate/05-report.html">05 A4 報告<small>Key judgments + 機率尺</small></a></div></div>
+      <div class="sec"><h3>配色</h3><div class="sw"><span style="background:#E2E5E8" title="桌面灰 #E2E5E8"></span><span style="background:#FFFFFF" title="紙白 #FFFFFF"></span><span style="background:#1A1C20" title="墨 #1A1C20"></span><span style="background:#565B62" title="次要字 #565B62"></span><span style="background:#FFE14A" title="螢光黃 #FFE14A"></span></div><p>黑白為主，只有一個螢光黃：被標起來的就是要做的事。立場用實心、空心、斜線，不用顏色。</p></div>
+      <div class="sec"><h3>字體</h3><p class="fonts"><b>Public Sans</b>（美國政府 USWDS 的字體）寫內文和標題，<b>Courier Prime</b> 打字機字體寫檔案資訊、來源編號和等級。</p></div>
+      <div class="sec"><h3>優點</h3><ul><li>對前官員、分析師、律師最有說服力：看起來就是他們每天讀的簡報</li><li>可信度設計最完整：機率尺、A1/B2 等級、信心度和可能性分開寫</li><li>塗黑條把「人脈名字只屬於這個團隊」變成看得見的設計</li><li>A4 報告四個方向裡最好</li></ul></div>
+      <div class="sec"><h3>缺點</h3><ul><li>黑白很嚴肅，YC demo 的第一眼不夠「產品感」</li><li>地圖只靠黑白和斜線，節點多時比較難分</li><li>容易滑向「報紙細線 + 方角」這個 2026 年常見風格，要靠螢光筆和機率尺撐住個性</li></ul></div>
+      <div class="sec"><h3>generic-risks 檢查</h3><ul class="ck"><li class="y">不是米色 + 赤陶、紫色漸層、shadcn 灰卡片、置中 hero</li><li class="y">沒有佔位字；聯絡人名字用塗黑條，不是 [Name]</li><li class="y">ICD 用語 + 數字區間，信心度另外寫</li><li class="y">每個利害關係人都有下一步</li><li class="p">有表單錯誤、重新整理中、研究進度；完整的空資料和錯誤頁還沒畫</li></ul></div>
+    </article>
+
+    <!-- Watchfloor -->
+    <article class="dir" aria-labelledby="d3">
+      <div class="dir-h"><p class="n">方向 3 · 深色分析工具</p><h2 id="d3">Watchfloor</h2><p class="idea">值班室的分析工作站：高密度面板、指令列、功能鍵分頁，琥珀色只給要行動的東西，地圖、表格、詳情互相連動。</p></div>
+      <div class="prev"><div class="ph"><iframe src="watchfloor/01-home.html" title="Watchfloor 首頁預覽" loading="lazy" tabindex="-1"></iframe><a href="watchfloor/01-home.html" aria-label="開 Watchfloor 首頁"></a></div>
+        <div class="links"><a href="watchfloor/01-home.html">01 首頁<small>電腦版有即時小地圖、指令列</small></a><a href="watchfloor/02-map.html">02 地圖<small>點表格列也會選節點</small></a><a href="watchfloor/05-report.html">05 A4 報告<small>白底列印版</small></a></div></div>
+      <div class="sec"><h3>配色</h3><div class="sw"><span style="background:#0F171E" title="底 #0F171E"></span><span style="background:#151F28" title="面板 #151F28"></span><span style="background:#D5DDE5" title="字 #D5DDE5"></span><span style="background:#FFB020" title="琥珀 #FFB020"></span><span style="background:#3FC1A5" title="支持 #3FC1A5"></span><span style="background:#F2685E" title="反對 #F2685E"></span></div><p>深藍灰面板；顏色只有意義：琥珀 = 先做、青綠 = 支持、珊瑚紅 = 反對。</p></div>
+      <div class="sec"><h3>字體</h3><p class="fonts"><b>Barlow Semi Condensed</b> 寫介面，<b>JetBrains Mono</b> 寫所有數字和代號，數字對齊。</p></div>
+      <div class="sec"><h3>優點</h3><ul><li>資訊密度最高：首頁一屏看到 dossier、建議聯絡人、pipeline、提醒、地圖</li><li>看起來像「真的工具」，最不像 ChatGPT 包一層</li><li>指令列可以直接輸入 MAP 或利害關係人名字</li></ul></div>
+      <div class="sec"><h3>缺點</h3><ul><li>深底 + 單一亮色是 2026 年另一個常見 AI 風格；Palantir、Bloomberg 也長這樣，不容易被記住是 Portolan</li><li>BD 和創辦人在手機上打開分享連結時太硬</li><li>網頁和列印要維護兩套配色</li></ul></div>
+      <div class="sec"><h3>generic-risks 檢查</h3><ul class="ck"><li class="y">不是米色 + 赤陶、紫色漸層、shadcn 灰卡片、置中 hero</li><li class="y">沒有佔位字</li><li class="y">每個分數旁邊有來源數，只有 2 個來源的標 thin</li><li class="y">每個利害關係人都有下一步</li><li class="p">有表單錯誤、重新整理中、研究進度；完整的空資料和錯誤頁還沒畫</li></ul></div>
+    </article>
+
+    <!-- Relief -->
+    <article class="dir" aria-labelledby="d4">
+      <div class="dir-h"><p class="n">方向 4 · 保留設計稿結構</p><h2 id="d4">Relief</h2><p class="idea">版面和設計稿一模一樣，只換成瑞士地形圖的配色和字體；地圖上每個節點立在等高線上，高度就是影響力。</p></div>
+      <div class="prev"><div class="ph"><iframe src="relief/01-home.html" title="Relief 首頁預覽" loading="lazy" tabindex="-1"></iframe><a href="relief/01-home.html" aria-label="開 Relief 首頁"></a></div>
+        <div class="links"><a href="relief/01-home.html">01 首頁<small>和設計稿同一個順序</small></a><a href="relief/02-map.html">02 地圖<small>高度 = 影響力</small></a><a href="relief/05-report.html">05 A4 報告<small>設計稿版面</small></a></div></div>
+      <div class="sec"><h3>配色</h3><div class="sw"><span style="background:#FFFFFF" title="紙白 #FFFFFF"></span><span style="background:#F1F4F2" title="地形灰 #F1F4F2"></span><span style="background:#C3CEC8" title="等高線 #C3CEC8"></span><span style="background:#1B2220" title="墨 #1B2220"></span><span style="background:#1F6FB2" title="湖藍 #1F6FB2"></span><span style="background:#2F7A4A" title="森林綠 #2F7A4A"></span><span style="background:#D52B1E" title="瑞士紅 #D52B1E"></span></div><p>白底、淡等高線；湖藍用在按鈕和建議，綠、灰、紅代表立場。</p></div>
+      <div class="sec"><h3>字體</h3><p class="fonts">只用 <b>Schibsted Grotesk</b>，粗體標題、表格數字等寬。</p></div>
+      <div class="sec"><h3>優點</h3><ul><li>改動最少：設計稿的 8 個畫面可以直接照做，S0 之後最快</li><li>「高度 = 影響力」讓 3D 不再是花招，看一眼就知道誰最高</li><li>最友善、最好讀，手機上最舒服</li></ul></div>
+      <div class="sec"><h3>缺點</h3><ul><li>四個裡最不特別：圓角白卡片離 SaaS 預設樣子不遠</li><li>個性主要靠等高線背景，拿掉就和一般 App 一樣</li><li>可信度設計（等級、區間）比 Estimate 弱</li></ul></div>
+      <div class="sec"><h3>generic-risks 檢查</h3><ul class="ck"><li class="y">不是米色 + 赤陶、紫色漸層、置中 hero</li><li class="p">卡片圓角一致，接近 shadcn 卡片，要靠等高線區分</li><li class="y">沒有佔位字；分數有來源數和等級</li><li class="y">每個利害關係人都有下一步</li><li class="p">有表單錯誤、重新整理中、研究進度；完整的空資料和錯誤頁還沒畫</li></ul></div>
+    </article>
+  </div>
+
+  <section class="rec" aria-labelledby="rec-h">
+    <div class="box pickbox">
+      <h2 id="rec-h">推薦：Sounding 為主，加上 Estimate 的可信度元件</h2>
+      <ol>
+        <li><b>名字和畫面是同一件事。</b>Portolan 就是航海圖。用海圖語言，品牌不用解釋，YC 合夥人看一次就記得；另外三個方向換個名字也能用。</li>
+        <li><b>地圖是主角，而 Sounding 的地圖最會回答「先找誰」。</b>建議的三個聯絡人連成一條航線，立場用浮標形狀，點了就有來源和下一步，這正是 generic-risks 第 5 段要的。</li>
+        <li><b>淺色、可列印、手機好讀。</b>分享連結和 A4 報告常在手機上打開，Watchfloor 在這裡最吃虧。</li>
+        <li><b>可信度要借 Estimate 的。</b>Sounding 本身的來源呈現只到「[n] + 等級」，不夠讓專家信服。把 Estimate 的 ICD 機率尺、A1/B2 等級章、聯絡人塗黑條放進 Sounding 的詳情面板和 A4 報告。</li>
+      </ol>
+      <h3>選了以後要注意</h3>
+      <ul>
+        <li>航海用語只放在畫面上；按鈕和說明照白話寫（例如「依序聯絡這三個」，不寫「航線規劃」）。</li>
+        <li>電腦版首頁的台灣海圖只放有地址的利害關係人，沒地址的不硬放。</li>
+        <li>空資料、錯誤、研究進度三種狀態在 S0 補畫。</li>
+      </ul>
+    </div>
+    <div class="box">
+      <h2>其他組合</h2>
+      <ul>
+        <li><b>求快：</b>Relief。設計稿直接照做，最省時間；代價是看起來最普通。</li>
+        <li><b>主打專家市場：</b>Estimate 全套。適合以「專家審稿的會前簡報」為主要賣點時。</li>
+        <li><b>主打 demo 的震撼感：</b>Watchfloor 的電腦版 + Sounding 的手機版和報告。要維護兩套樣式，不建議在 11/3 前做。</li>
+      </ul>
+      <p class="note">所有頁面是靜態示意，不連後端；按鈕有回饋但不送資料。範例資料裡設計稿留下的 [Name]、[DATE] 已改成「聯絡人職稱」和「date unverified」，沒有編造新的人名或日期。來源 [1]–[6] 的 Admiralty 等級和查證日期、分數區間是示意用的範例值，正式的算法等 docs/scoring.md。客戶名 Skyward Robotics 是設計稿表單範例裡的虛構公司。</p>
+    </div>
+  </section>
+</div>
+<script>
+/* Phone or desktop thumbnails; the real pages adapt to whatever screen opens them */
+(function(){var desk=false;
+function fit(){document.querySelectorAll('.ph').forEach(function(b){var f=b.querySelector('iframe');var w=desk?1280:390,h=desk?800:844;f.style.width=w+'px';f.style.height=h+'px';f.style.transformOrigin='0 0';f.style.transform='scale('+(b.clientWidth/w)+')';});}
+document.querySelectorAll('[data-dev]').forEach(function(btn){btn.addEventListener('click',function(){desk=btn.getAttribute('data-dev')==='desk';document.body.classList.toggle('desk',desk);document.querySelectorAll('[data-dev]').forEach(function(x){x.setAttribute('aria-pressed',x===btn);});fit();});});
+window.addEventListener('resize',fit);fit();})();
+</script>
+</body>
+</html>

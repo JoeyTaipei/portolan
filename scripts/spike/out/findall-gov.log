@@ -1,0 +1,18 @@
+[budget] findall:gov:base:15: est $0.700 (running total $1.200)
+created findall_2f937a48caa142109994d7426548f57d
+1s queued generated=0 matched=0
+22s running generated=0 matched=0
+43s running generated=0 matched=0
+63s running generated=0 matched=0
+84s running generated=0 matched=0
+104s running generated=0 matched=0
+126s running generated=1 matched=0
+146s running generated=4 matched=1
+168s running generated=6 matched=2
+188s running generated=11 matched=5
+209s running generated=12 matched=6
+229s running generated=16 matched=8
+250s running generated=17 matched=9
+271s running generated=20 matched=11
+291s completed generated=21 matched=15
+[saved] scripts/spike/out/findall-gov-base.json

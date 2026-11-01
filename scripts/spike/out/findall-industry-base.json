@@ -1,0 +1,2808 @@
+{
+  "wall_s": 352,
+  "run": {
+    "findall_id": "findall_2f937a48caa1421082c8dfd1417c8af0",
+    "status": {
+      "status": "completed",
+      "is_active": false,
+      "metrics": {
+        "generated_candidates_count": 62,
+        "matched_candidates_count": 15
+      },
+      "termination_reason": "match_limit_met"
+    },
+    "generator": "base",
+    "metadata": {
+      "query": "industry",
+      "spike": "0001"
+    },
+    "created_at": "2026-10-30T04:16:02.641275Z",
+    "modified_at": "2026-10-30T04:21:41.905635Z"
+  },
+  "result": {
+    "run": {
+      "findall_id": "findall_2f937a48caa1421082c8dfd1417c8af0",
+      "status": {
+        "status": "completed",
+        "is_active": false,
+        "metrics": {
+          "generated_candidates_count": 62,
+          "matched_candidates_count": 15
+        },
+        "termination_reason": "match_limit_met"
+      },
+      "generator": "base",
+      "metadata": {
+        "query": "industry",
+        "spike": "0001"
+      },
+      "created_at": "2026-10-30T04:16:02.641275Z",
+      "modified_at": "2026-10-30T04:21:41.905635Z"
+    },
+    "candidates": [
+      {
+        "candidate_id": "candidate_03b03bbb-2a37-448d-b212-b30c43c69385",
+        "name": "Taiwan SHENGGAOXIONGSHIFENGXUNSHIYE Co., ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-shenggaoxiongshifengxunshiye-co.-ltd.",
+        "description": "Taiwan SHENGGAOXIONGSHIFENGXUNSHIYE Co., ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "taiwantrade.com",
+                "url": "https://www.taiwantrade.com/suppliers/detail.html?companyid=66156",
+                "excerpts": [
+                  "FENG XUN INDUSTRIAL CO., LTD.\nFENG XUN INDUSTRIAL CO., LTD. is Electrical & Electronics supplier in Taiwan. Get contact Information of FENG XUN INDUSTRIAL CO., LTD. from taiwantrade.com.\nFENG XUN INDUSTRIAL CO., LTD.\nFENG XUN INDUSTRIAL CO., LTD. is Electrical & Electronics supplier in Taiwan. Electric Bicycle 250W 48V 12A DC Brushless Motor. Office Address 80243 13F\nFENG XUN INDUSTRIAL CO., LTD.\nContact Information Company Fax Number +886-7-7351883 Office Address 80243 13F.-4, No.115, Yongle St., Lingya District, Kaohsiung City 802, Taiwan (R.O.C.)"
+                ]
+              },
+              {
+                "title": "鋒訊實業有限公司 - alltwcompany.com",
+                "url": "https://alltwcompany.com/nd-C-28281760-%E9%8B%92%E8%A8%8A%E5%AF%A6%E6%A5%AD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8.html",
+                "excerpts": [
+                  "鋒訊實業有限公司位於高雄市苓雅區，營業登記地址:高雄市苓雅區永樂街115號13樓之4，鋒訊實業有限公司的統一編號:28281760，營業稅籍分類屬於電子器材、電子設備批發，鋒訊實業有限公司的負責人是林欣永，資本額:1,000,000元，商業司營業登記狀態:核准設立"
+                ]
+              }
+            ],
+            "reasoning": "The available profiles describe a Kaohsiung electrical and electronics supplier and an electronics-equipment wholesaler, respectively. Neither asserts that the entity makes, integrates, or supplies drones, counter-drone systems, drone components, or defense radar/RF/electro-optical sensors, nor that it is an industry association. No qualifying 2024-or-later source was found.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "taiwantrade.com",
+                "url": "https://www.taiwantrade.com/suppliers/detail.html?companyid=66156",
+                "excerpts": [
+                  "FENG XUN INDUSTRIAL CO., LTD.\nFENG XUN INDUSTRIAL CO., LTD. is Electrical & Electronics supplier in Taiwan. Get contact Information of FENG XUN INDUSTRIAL CO., LTD. from taiwantrade.com.\nFENG XUN INDUSTRIAL CO., LTD.\nFENG XUN INDUSTRIAL CO., LTD. is Electrical & Electronics supplier in Taiwan. Electric Bicycle 250W 48V 12A DC Brushless Motor. Office Address 80243 13F\nFENG XUN INDUSTRIAL CO., LTD.\nContact Information Company Fax Number +886-7-7351883 Office Address 80243 13F.-4, No.115, Yongle St., Lingya District, Kaohsiung City 802, Taiwan (R.O.C.)"
+                ]
+              }
+            ],
+            "reasoning": "The FENG XUN Industrial listing gives an office address in Kaohsiung City, Taiwan, supporting Taiwan as the entity's headquarters country; this aligns with the entity's listed Kaohsiung headquarters.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_06d2744d-3bb4-4123-bd7d-18bbf990c463",
+        "name": "Taiwan Excellence Drone International Business Opportunities Alliance (TEDIBOA)",
+        "url": "https://www.tediboa.com.tw/en/",
+        "description": "A Taiwan Ministry of Economic Affairs-launched industry alliance, chaired by the Aerospace Industrial Development Corporation (AIDC), that brings together Taiwan’s drone-sector players. Its stated aims include strengthening the drone supply chain, supporting technology collaboration, and helping domestic companies access international markets. Its official site lists a contact address in Taipei.",
+        "match_status": "matched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "2026-07-27 — TEDIBOA’s official news item reports its agreement with the UK’s ADS Group to establish cooperation in drone-industry R&D and marketing. This supports classifying TEDIBOA as an industry association for drones. Source: https://www.tediboa.com.tw/News/Article/16125",
+            "is_matched": true
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "TEDIBOA - 台灣卓越無人機海外商機聯盟",
+                "url": "https://www.tediboa.com.tw/News",
+                "excerpts": [
+                  "載入中...\n\n### NEWS\n\n1. 首頁\n2. 最新消息\n\n圖片來源：雷虎科技\n\n#### NEWS\n\n# 最新消息\n\n提供聯盟最新消息、商機等資訊\n\nImage\n\n2026-07-27\n\n台英無人機產業首度合作 法茵堡航展正式展開產業交流\n\n「台灣卓越無人機海外商機聯盟」(TEDIBOA)，上週(7/20-7/26)前往英國參加世界三大航展之一的「法茵堡航展」，並於7/23與英國國防產業協會(ADS Group)簽署合作備忘錄，台灣與英國\n\n了解更多\n\nImage\n\n2026-06-04\n\n台灣卓越無人機聯盟登日本最大展 台灣館爭取海外商機\n\n「台灣卓越無人機海外商機聯盟」(TEDIBOA)，本週在經濟部及外交部帶領下，以「台灣館」陣容前進日本千葉幕張展覽館，參與為期三日(6/3-6/5)的2026日本無人機展(Japan Drone 20\n\n了解更多\n\nImage\n\n2026-05-15\n\n台灣最大規模無人機國家隊赴美參展，攜手布局全球「非紅供應鏈」\n\n今年全球無人機產業年度盛事「國際無人載具系統展」（AUVSI XPONENTIAL）於美國工業重鎮底特律盛大登場。在全球地緣政治情勢持續升溫、無人機技術已被視為重要戰略資源之際，台灣今年展現前所未有的\n\n了解更多\n\nImage\n\n2026-03-26\n\n無人機聯盟赴德參展 台灣館展示「非紅」實力"
+                ]
+              },
+              {
+                "title": "TEDIBOA - 台灣卓越無人機海外商機聯盟",
+                "url": "https://www.tediboa.com.tw/News/Article/16125",
+                "excerpts": [
+                  "台英無人機產業首度合作 法茵堡航展正式展開產業交流 「台灣卓越無人機海外商機聯盟」(TEDIBOA)，上週(7/20-7/26)前往英國參加世界三大航展之一的「法茵堡航展」，並於7/23與英國國防產業協會(ADS Group)簽署合作備忘錄，台灣與英國雙邊無人機產業，首度展開正式交流。儀式由漢翔公司總經理莊秀美代表聯盟，與英國國防產業協會執行長克雷文(Kevin Craven)，在駐英國代表處姚金祥大使與ADS國際事務處處長瑪里安努(Julie Marionneau)見證下完成簽署。 根據合作協議，台灣與英國將在無人機的研發與行銷上建立產業交流平台，參與彼此的國際業務拓展計畫，並進一步探索其它合作可能性。其核心目的，就是為了推動實質合作與雙邊投資，全面提升台灣與英國在無人機技術及全球競爭力。儀式完成後，雙邊業者隨即進行深度商務洽談，跨國商機布局就此展開。",
+                  "關於台灣卓越無人機海外商機聯盟(TEDIBOA) 聯盟在經濟部指導下，由金屬工業研究發展中心結合漢翔公司共同推動，現由漢翔董事長曹進平擔任聯盟主席，金屬中心負責聯盟推動平台運作，包括聯盟行政作業、會員服務、國際合作推動、海外市場拓展、產業交流媒合及跨部會協調等，整合國內無人機產業能量，串聯政府、法人及產業資源，協助聯盟深化國際合作、拓展海外商機，持續打造台灣可信賴無人機供應鏈。 聯盟自成立以來，始終致力打造值得信賴的供應鏈體系，貫徹「聚焦產業合作，放眼全球市場」的明確目標。目前，聯盟已與歐、美、亞共9個國家、15個無人機組織締結盟友。今年上半年更已密集前往德國、美國及日本等地，與當地業者組織洽商，展現拓展全球商機的強烈企圖心。"
+                ]
+              }
+            ],
+            "reasoning": "The official news listing dates the item 2026-07-27. The linked official article describes TEDIBOA’s drone-industry cooperation agreement and identifies TEDIBOA as an alliance that coordinates Taiwan’s drone industry and supply chain. This is evidence for the industry-association-for-drones category.",
+            "confidence": "high"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "TEDIBOA - Taiwan Excellence Drone International Business Opportunities Alliance",
+                "url": "https://www.tediboa.com.tw/en/About",
+                "excerpts": [
+                  "Contact Information 4 F.-A, No. 99, Sec. 2, Ren'ai Rd., Zhongzheng Dist., Taipei City 106085, Taiwan (R.O.C.) [Mr.Lee leems@mail.mirdc.org.tw](mailto:leems@mail.mirdc.org.tw) [\\+886-2-27556157 #22](tel:+886-2-27556157) [Ms.Kuos eva11@mail.mirdc.org.tw](mailto:eva11@mail.mirdc.org.tw) [\\+886-7-3517161 #6203](tel:+886-7-3517161)"
+                ]
+              }
+            ],
+            "reasoning": "The alliance’s official contact information lists an address in Taipei City, Taiwan. This supports Taiwan-based status; the cited page presents it as a contact address rather than explicitly labeling it as headquarters.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_0fe11c09-49ef-4d00-9dc0-3c3a6b8fab58",
+        "name": "Taiwan SHIXUN XITONG Co., Ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-shixun-xitong-co.-ltd.",
+        "description": "Taiwan SHIXUN XITONG Co., Ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Shixun 士訊科技有限公司 | Kaohsiung  | Facebook",
+                "url": "https://www.facebook.com/shixuntech/",
+                "excerpts": [
+                  "[Photos](https://www.facebook.com/shixuntech/photos) [Videos](https://www.facebook.com/shixuntech/videos)\n\n[Shixun 士訊科技有限公司](https://www.facebook.com/shixuntech)\n\n## Intro\n\n高雄在地的弱電工程公司，服務項目有：  \n✅ 監視器安裝  \n✅ 智慧門禁系統  \n✅ 汽車車牌辨識系統  \n✅ 弱電箱整理  \n✅ 拉線服務  \n✅ 網路佈放  \n✅ 電視安裝  \n✅ 電腦裝修  \n✅ 弱電案場支援  \n  \n若您是企業窗口，需要工班支援或案場估價也可以聯繫我們❤️  \n👉聯絡電話：073600615"
+                ]
+              }
+            ],
+            "reasoning": "The cited Shixun listing describes low-voltage services, including surveillance-camera installation, but does not state that the entity makes, integrates, or supplies drones, counter-drone systems, or defense radar/RF/electro-optical sensors. It is not a qualifying 2024-or-later source and does not establish that the listing is the same entity, so no qualifying source is identified.",
+            "confidence": "low"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "Contact Us - 詮欣股份有限公司",
+                "url": "https://www.coxoc.com.tw/en/contact/",
+                "excerpts": [
+                  "7F-2, No.188, Sec. 3, Datong Rd., Xizhi Dist., New Taipei City221, Taiwan(R.O.C.)\n\n##### TEL\n\n886-2-8647-1251\n\n##### FAX\n\n886-2-8647-1842  \n886-2-8647-2962\n\n[](mailto:service@coxoc.com.tw)"
+                ]
+              }
+            ],
+            "reasoning": "The entity’s location information places its headquarters in Taipei County and gives Taiwan in the address. The cited address record identifies No.188, Sec. 3, Datong Road, Xizhi as New Taipei City, Taiwan (R.O.C.), supporting TW geographically; that record names a different firm, so it is corroborative rather than direct proof of the entity’s identity.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_15bed496-b479-45ae-b6fa-05f23f296bcd",
+        "name": "Carbon-Based Technology Inc.",
+        "url": "https://www.uaver.com/",
+        "description": "Carbon-Based Technology Inc. is a Taichung-based Taiwanese manufacturer of composite UAV structures and airframes, and its company profile describes military-grade large-UAV airframes. Its strongest evidenced fit for a foreign counter-drone sensor startup is as a potential UAV airframe, manufacturing, or integration partner or supplier; the available information does not establish it as a counter-drone sensor provider.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_1bbcf713-7929-41c0-a18f-e1952dc31671",
+        "name": "Taiwan DASITE Co., ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-dasite-co.-ltd.",
+        "description": "Taiwan DASITE Co., ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA — no 2024-or-later public source in the evidence states that Taiwan DASITE Co., Ltd. makes, integrates, or supplies the listed products, or is a drone or defense industry association.",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Taiwan DASITE Co., ltd. | LinkedIn",
+                "url": "https://www.linkedin.com/company/taiwan-dasite-co.-ltd.",
+                "excerpts": [
+                  "Taiwan DASITE Co., ltd. About us Headquarters Taipei Locations 4 DUAN 197 HAO 3 LOUZHI 4, NANJING, TAIPEI, TAIWAN Taipei, CN [Get directions](https://www.bing.com/maps?where=4+DUAN+197+HAO+3+LOUZHI+4%2C+NANJING%2C+TAIPEI%2C+TAIWAN+Taipei+CN&trk=org-locations_url)"
+                ]
+              }
+            ],
+            "reasoning": "The profile identifies the entity as Taiwan DASITE Co., Ltd., but its displayed About section contains no business or product description; the remaining cited profile text gives location information, not evidence of an in-scope drone or defense activity. The evidence therefore does not establish a qualifying 2024-or-later source or a match.",
+            "confidence": "low"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "Taiwan DASITE Co., ltd. | LinkedIn",
+                "url": "https://www.linkedin.com/company/taiwan-dasite-co.-ltd.",
+                "excerpts": [
+                  "Headquarters Taipei Locations 4 DUAN 197 HAO 3 LOUZHI 4, NANJING, TAIPEI, TAIWAN Taipei, CN [Get directions](https://www.bing.com/maps?where=4+DUAN+197+HAO+3+LOUZHI+4%2C+NANJING%2C+TAIPEI%2C+TAIWAN+Taipei+CN&trk=org-locations_url)"
+                ]
+              }
+            ],
+            "reasoning": "The profile states “Headquarters Taipei” and gives a location ending “TAIPEI, TAIWAN,” supporting Taiwan as the headquarters country. The directions text also displays “Taipei, CN,” so the country determination relies on the explicit headquarters and location wording.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_1c862d58-3388-499b-a4b2-53a913013145",
+        "name": "Taiwan NAIPIN International Co., Ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-naipin-international-co.-ltd.",
+        "description": "Taiwan NAIPIN International Co., Ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "耐品國際企業社-台灣國貿資料網",
+                "url": "https://g.twincn.com/item.aspx?no=82741538",
+                "excerpts": [
+                  "耐品國際企業社,統編:82741538,進口資格:有,出口資格:有,電話:07-3869923,英文名稱:Naipin International Company,地址:高雄市三民區寶獅里克武路7號,英文地址:No. 7, Kewu Rd., Baoshi Vil., Sanmin Dist., Kaohsiung City 80764, Taiwan (R.O.C.)"
+                ]
+              }
+            ],
+            "reasoning": "The directory entry identifies Naipin International Company and gives import/export eligibility and an address, but does not state that it makes, integrates, or supplies any specified drone or defense product, or that it is an industry association. No qualifying 2024-or-later public source was found.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "耐品國際企業社-台灣國貿資料網",
+                "url": "https://g.twincn.com/item.aspx?no=82741538",
+                "excerpts": [
+                  "耐品國際企業社,統編:82741538,進口資格:有,出口資格:有,電話:07-3869923,英文名稱:Naipin International Company,地址:高雄市三民區寶獅里克武路7號,英文地址:No. 7, Kewu Rd., Baoshi Vil., Sanmin Dist., Kaohsiung City 80764, Taiwan (R.O.C.)"
+                ]
+              }
+            ],
+            "reasoning": "The business-directory entry gives the company's address in Kaohsiung City, Taiwan (R.O.C.), supporting Taiwan as its headquarters country.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_2363fd00-e0f4-4d77-b6cc-f5a9c792e6d4",
+        "name": "DronesVision Inc.",
+        "url": "https://dronesvision.com/",
+        "description": "DronesVision Inc. is a Taiwanese UAV and counter-drone systems company that says it researches, develops, and manufactures these systems. Its products include the SKYNET ADS anti-drone system, making it relevant as a potential supplier, integrator, or competitor for a counter-drone sensor startup. The company’s official contact page lists an address in Keelung City, Taiwan—not New Taipei.",
+        "match_status": "matched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "2026-03-24 — DronesVision company profile (https://dronesvision.com/download/dronesvision-company-profile.pdf): records DronesVision launching ADG-7 and ADG 7 MK-II; the profile identifies its business as drone and anti-drone solutions. Claimed activity: makes/launches counter-drone systems.",
+            "is_matched": true
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "dronesvision-company-profile",
+                "url": "https://dronesvision.com/download/dronesvision-company-profile.pdf",
+                "excerpts": [
+                  "# Drone and Anti-Drone Solutions\n\n# COMPANY HISTORY\n\n# **2010 2014 2016 2018**\n\n# ‣ **DronesVision Inc.**\n\n# was established in 2010. First ever in Asia online web store specializing in drone parts.\n\n# ‣ R/D\n\n# SKYNET **An4- drone System**\n\n# ‣ Launched\n\n# **SKYNET ADS** & Long Endurance Scout Drone **TR-2**\n\n# ‣ The development of\n\n# the weaponized drone **AR-1** was started.",
+                  "# ‣Launched transporHng drone **DR-40**\n\n# ‣Launched **Revolver** **860 Drone**\n\n# **2024 2025**\n\n# ‣ Launched **ADG-7**\n\n# **ADG 7 MK-II**\n\n# ‣ Developed and\n\n# Launched **Sling 51™ Drone**\n\n# COMPANY HISTORY\n\n# _Hand-held Anti-Drone Jammer_\n\n# SKYNET ADS\n\n## Product weight Operation time\n\n## 4 kg 90 mins (all channels on, depending on battery capacity)\n\n# SPECIFICATION"
+                ]
+              }
+            ],
+            "reasoning": "The official company profile is dated 2026-03-24. It identifies DronesVision's portfolio as drone and anti-drone solutions, then records launches of ADG-7 and ADG 7 MK-II in its company history. This supports making counter-drone systems.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "Contact us | DronesVision",
+                "url": "https://dronesvision.com/contact-us",
+                "excerpts": [
+                  "Thank you for your cooperation.\n\n#### Contact Support\n\n**Service Hours**  \nMonday to Friday : 09:00 am to 18:00 pm (GMT +08:00)\n\n**Official Mailbox**\n\ninfo@dronesvision.com  \n**(Please complete the Official Statement and Information Chart above before sending your questions or emails)**\n\n**Company Phone Number**\n\n\\+886-929-376637\n\n#### Company Location\n\nTaiwan Headquarter\n\nDronesVision, inc.\n\n2F., No. 175, Yi 2nd Rd., Zhongzheng Dist.,\n\nKeelung City 202002, Taiwan\n\n2F., No. 175, Yi 2nd Rd., Zhongzheng Dist., Keelung City 202002, Taiwan\n\n* [Home](https://dronesvision.com/)\n* [About DronesVision](https://dronesvision.com/company-history/)\n* [News Center](https://dronesvision.com/news-center/)\n* [Certificate of Merit](https://dronesvision.com/certificate-of-merit/)"
+                ]
+              },
+              {
+                "title": "Contact us - DronesVision",
+                "url": "https://dronesvision.net/contact-us",
+                "excerpts": [
+                  "2F., No. 175, Yi 2nd Rd., Zhongzheng Dist., Keelung City 202001, Taiwan"
+                ]
+              }
+            ],
+            "reasoning": "DronesVision's official contact information explicitly labels its location as “Taiwan Headquarter” and gives a Keelung City, Taiwan address. The official contact page also lists a Taiwan address, supporting TW as the headquarters country.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_25d90bdf-e5a1-49b0-acb3-af5dc1cf8ed3",
+        "name": "Roboen Technologies Limited",
+        "url": "https://www.roboen.com/",
+        "description": "Roboen Technologies Limited is a Taichung-based Taiwanese electronic engineering and product-development company serving robotics, navigation, and IoT industries. Its services include hardware and PCB design, firmware and software development, prototyping, and electronic component sourcing. A company directory also describes it as providing drone-industry engineering, including DSP, FPGA, and RF communications expertise, which makes it a potential engineering or supply-chain partner. The available information does not identify it as a counter-drone system vendor or defense-sensor producer.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_2cc80f24-a701-4e57-a28b-5fd2e52bebcf",
+        "name": "AAEON Technology Inc.",
+        "url": "https://www.aaeon.com/en/about/company-profile",
+        "description": "AAEON Technology Inc. is a New Taipei-based designer and manufacturer of embedded and industrial computing platforms. Its products are promoted for drone applications, including custom sensor and camera integration; in a documented customer project, an AAEON EPIC-TGH7 board was selected as central hardware for a counter-UAV system requiring sensor hosting and data processing. This makes AAEON a relevant potential embedded-computing supplier or technical partner for a counter-drone startup.",
+        "match_status": "matched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "https://www.findtheneedle.co.uk/companies/fortec-united-kingdom/news/redefining-airspace-security-with-aaeon — 2025-10-14: identifies AAEON EPIC boards as used in a counter-UAV project, supporting that AAEON supplies embedded computing components for counter-drone systems.",
+            "is_matched": true
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Redefining Airspace Security with AAEON News From FORTEC UK",
+                "url": "https://www.findtheneedle.co.uk/companies/fortec-united-kingdom/news/redefining-airspace-security-with-aaeon",
+                "excerpts": [
+                  "[# Redefining Airspace Security with AAEON](https://www.fortec.uk/blog/Redefining-Airspace-Security-with-AAEON)\n\n14-10-2025\n\nRedefining Airspace Security with AAEON",
+                  "EPIC Boards featuring 11th Generation Intel® Core™/Xeon® Processors was utilised in a C-UAV (Counter-Unmanned Aerial Vehicle) system project.\n\n**Overview**"
+                ]
+              }
+            ],
+            "reasoning": "The dated source identifies the item as a case study about AAEON and states that an AAEON EPIC board was utilized in a counter-UAV system project. This supports classifying AAEON as supplying an embedded computing component for a counter-drone system.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "Worldwide office",
+                "url": "https://www.aaeon.com/en/article/list/worldwide_office",
+                "excerpts": [
+                  "Taiwan Headquarters / R&D Center **Headquarters** **Tel:** 886-2-8919-1234 **Fax:** 886-2-8919-1056 **Address:** 6F., No. 28, Baogao Rd., Xindian Dist., New Taipei City 231029, Taiwan R.O.C."
+                ]
+              }
+            ],
+            "reasoning": "AAEON’s official office listing labels this location its Taiwan headquarters and gives an address in New Taipei City, Taiwan; this supports the country code TW.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_2e60116a-ffea-44d6-afef-e74f2b7591f0",
+        "name": "Taiwan DONGFENG RICHAN Co., ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-dongfeng-richan-co.-ltd.",
+        "description": "Taiwan DONGFENG RICHAN Co., ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "聯繫我們-尼桑行有限公司",
+                "url": "https://www.x-trail.com.tw/contact.php",
+                "excerpts": [
+                  "## 聯絡我們\n\n#### 針對台灣的NISSAN車款供應車身外觀正廠零配件\n\n* Home\n* Contact\n\n## 聯絡東風日產\n\n### 聯絡資訊 CONTACT INFORMATION\n\n**Address:**\n\n東風日產有限公司  \n臺北市文山區  \n羅斯福路五段97巷9號1樓\n\n* **電話:** \\+886-2-8663-3388\n* **Email:** [yitung5358@gmail.com](mailto:yitung5358@gmail.com)\n* **網站:** [www.x-trail.com.tw](http://www.x-trail.com.tw)\n\n### 營業時間 BUSINESS HOURS\n\n|星期一: |09:00-18:00 |\n| --- | --- |\n|星期二: |09:00-18:00 |\n|星期三: |09:00-18:00 |\n|星期四: |09:00-18:00 |\n|星期五: |09:00-18:00 |\n|星期六: |公休日 |\n|星期日: |公休日 |\n\n### 詢價基本資料\n\n重新讀取驗證碼\n\nscroll up\n\n#### 關於我們 About us\n\n東風日產有限公司是銷售NISSAN系列車輛之零部件及改裝件的公司，本網站提供NISSAN 2015年款式T32 X-TRAIL全車系零件與配件的供應，滿足您的需求並提供您最佳的解決方案，舒適，安全，科技，影音設備等，讓您的X-TRAIL成為全家的歡樂天地。\n\n_東風日產有限公司 / NISSAN 配件專家_\n\n#### 聯絡我們 Contact us\n\n* **公司名稱:** 東風日產有限公司\n* **連絡電話:** \\+886-2-8663-3388\n* **傳真號碼:** \\+886-2-8663-1155\n* **連絡地址:** 東風日產有限公司  \n  臺北市文山區  \n  羅斯福路五段97巷9號1樓\n* **Email:** [yitung5358@gmail.com](mailto:yitung5358@gmail.com)\n\n#### 產品系列 Porducts\n\n* [外觀配件](https://www.x-trail.com.tw/product.php?t=4)"
+                ]
+              }
+            ],
+            "reasoning": "The company’s page describes it as selling and supplying Nissan vehicle parts and accessories. It does not state that the company makes, integrates, or supplies drones, counter-drone systems, drone components, or defense radar/RF/electro-optical sensors. No qualifying 2024-or-later source was found, so the value is NA.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "東風日產有限公司",
+                "url": "https://www.findcompany.com.tw/%E6%9D%B1%E9%A2%A8%E6%97%A5%E7%94%A2%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8",
+                "excerpts": [
+                  "加入收藏 複製連結\n\n1,287\n\n## 公司資料\n\n|統編 |28085628  |\n| --- | --- |\n|公司狀態 |核准設立 |\n|公司名稱 |東風日產有限公司  |\n|公司英文名稱 |DONG FENG NISSAN LTD.  |\n| |\n|資本總額(元) |3,000,000 |\n|負責人 |曹寶貴  |\n|登記地址 |[看地圖](https://maps.google.com.tw/maps?q=臺北市文山區羅斯福路5段97巷9號) 臺北市文山區羅斯福路5段97巷9號 [郵遞區號查詢](https://zipcode.tw/臺北市文山區羅斯福路5段97巷9號) \n\nNo. 9, Ln. 97, Sec.",
+                  "立即認證並透過 AI 建立形象官網 →](https://www.findcompany.com.tw/company/getweb?utm_source=detail&utm_medium=p5_official_site&utm_campaign=ai_website&tax=28085628) |\n|設立日期 |2006-01-25 |\n|最後核准變更日期 |2011-01-04 |",
+                  "|公司英文名稱 |DONG FENG NISSAN LTD. |\n|公司英文地址 |No. 9, Ln. 97, Sec. 5, Roosevelt Rd., Wenshan Dist., Taipei City 11681, Taiwan (R.O.C.) |\n|登記電話 |02-29342122 |登記傳真號碼 |02-29309326 |\n|進口資格 |有 |\n|出口資格 |有 |\n\n|原始登記日期 |20060208 |\n| --- | --- |\n|核發日期 |20210812 |\n|公司英文名稱 |DONG FENG NISSAN LTD. |\n|公司英文地址 |No. 9, Ln. 97, Sec. 5, Roosevelt Rd., Wenshan Dist., Taipei City 11681, Taiwan (R.O.C.) |"
+                ]
+              }
+            ],
+            "reasoning": "The company directory identifies DONG FENG NISSAN LTD. and gives its registered English address as Taipei City, Taiwan (R.O.C.), supporting Taiwan as the country for the entity’s headquarters.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_2ef4b3e2-7c4a-4663-a268-e6f8d292253b",
+        "name": "Taiwan Drone Association",
+        "url": "https://www.linkedin.com/company/taiwandrone",
+        "description": "Taiwan Drone Association | 34 followers on LinkedIn.",
+        "match_status": "matched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "https://taiwandrones.org/ (2026-09-18): industry association for drones. The Taiwan Drone Association identifies itself as an association promoting Taiwan’s drone industry.",
+            "is_matched": true
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "台灣無人機協會 | Taiwan Drone Association",
+                "url": "http://taiwandrones.org/",
+                "excerpts": [
+                  "台灣無人機協會（Taiwan Drone Association, TDA）成立於民國102年， 致力於整合國內無人機產業資源，推動技術創新與應用發展，建構完整的產業生態系。 協會匯聚國內產官學研各界力量，透過技術交流、標準制定、人才培育及國際合作等方式， 協助會員廠商提升競爭力，共同開創台灣無人機產業新局。",
+                  "2026-09-18 無人機隔海送藥 佳世達集團辦到了 時間從半天變20分鐘 「5G AI Pharmacy + Drone－偏鄉無人機配送與智慧藥局遠距照護創新計畫」獲國家發展委員會經費支持，由明基健康生活統籌AI整合方案，攜手丁丁藥局、亞旭電腦、台灣無人機協會、全家便利商店、陽明交通大學及臺北科技大學等夥伴，整合AI、5G通訊、醫療通路與無人機應用。"
+                ]
+              }
+            ],
+            "reasoning": "The association’s official site names Taiwan Drone Association (TDA) and describes its role in developing Taiwan’s drone industry. Its latest dated news item shown on the site is dated 2026-09-18 and identifies the association as a partner in a drone-application project. This supports the industry-association category for drones.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "台灣無人機協會 | Taiwan Drone Association",
+                "url": "http://taiwandrones.org/",
+                "excerpts": [
+                  "聯絡資訊 tda-service@taiwandrone.org.tw \\+886-910-159-990 桃園市中壢區高鐵南路二段267號11樓"
+                ]
+              }
+            ],
+            "reasoning": "The entity attributes place the association’s headquarters in Taipei, Taiwan. Its official site also lists a contact address in Taoyuan, Taiwan, supporting country code TW.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_376dfc36-33ad-4a7c-b44f-4c69e1ff312d",
+        "name": "Taiwan QIAOTAICHONGWUQIYE Co., ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-qiaotaichongwuqiye-co.-ltd.",
+        "description": "Taiwan QIAOTAICHONGWUQIYE Co., ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Taiwan Chews Time Co.,Ltd - Taiwan Manufacturer, Taiwan Supplier, Taiwan Exporter",
+                "url": "https://www.petsglobal.com/website/36902/ComProfile.html",
+                "excerpts": [
+                  "We are one of the most experienced and professional pet treats manufacturers in Taiwan, our company founded in 2008.  \nThe company Chews Time dedicates to formulate recipe and produce desserts for your beloved pets. By using top quality materials, our five production lines provide safe, healthy and most tasty pet desserts including chews bones, dessert bars, dried products, and pet hot dog.  \nWe are your best choice to purchase.  \n  \nGuaranteed all made in Taiwan.  \nOEM/ODM service available.  \n  \nIf you are interested in our products, please feel free to contact us.\n\nCompany Info\n\n|Basic Information |\n| --- | --- |\n|Company Name: |Taiwan Chews Time Co.,Ltd |\n|Business Type: |Manufacturer"
+                ]
+              },
+              {
+                "title": "TAIWAN CHEWS TIME CO., LTD.",
+                "url": "https://www.findcompany.com.tw/index.php/en/TAIWAN%20CHEWS%20TIME%20CO.,%20LTD.",
+                "excerpts": [
+                  "2024-03-29 Company Name： 喬泰寵物用品企業有限公司 Registered address： 高雄市梓官區大舍西路20號1樓 Company Representative： 陳傑琳 Amount of Capital (NT$)： 3,600,000 2023-08-28 Company Name： 喬泰寵物用品企業有限公司 Registered address： 高雄市梓官區大舍西路20號1樓"
+                ]
+              }
+            ],
+            "reasoning": "The company profile describes manufacture of pet treats and OEM/ODM services, not drones, counter-drone systems, drone components, or defense radar/RF/electro-optical sensors. The 2024 registration record identifies the company and its registered address but makes no claim in those categories. No qualifying 2024-or-later source was found.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "TAIWAN CHEWS TIME CO., LTD.",
+                "url": "https://www.findcompany.com.tw/index.php/en/TAIWAN%20CHEWS%20TIME%20CO.,%20LTD.",
+                "excerpts": [
+                  "2024-03-29 Company Name： 喬泰寵物用品企業有限公司 Registered address： 高雄市梓官區大舍西路20號1樓 Company Representative： 陳傑琳 Amount of Capital (NT$)： 3,600,000 2023-08-28 Company Name： 喬泰寵物用品企業有限公司 Registered address： 高雄市梓官區大舍西路20號1樓"
+                ]
+              },
+              {
+                "title": "TAIWAN CHEWS TIME CO.,LTD",
+                "url": "http://www.fijin.com/TAIWAN-CHEWS-TIME-COLTD-ctw722622",
+                "excerpts": [
+                  "[Home](http://www.fijin.com/) » [Guest](http://www.fijin.com/user/Guest/) » TAIWAN CHEWS TIME CO.,LTD  \n  \n# TAIWAN CHEWS TIME CO.,LTD\n\n|Business category 1 |[Pet Food](http://www.fijin.com/companies/Pet-Food/Taiwan-TW) |\n| --- | --- |\n|City ( of main office ) |Taipei, TW, Taiwan |\n|Address |No. 202, Yongrong 1st St. , Renwu Shiang, |\n|Phones |886-7-3758437 |\n|Fax |886-7-3758792 |\n|Web site |[www.jielin688.com.tw](http://www.jielin688.com.tw/) |\n|About |We are the products that Taiwan produce. Take natural material as the core.  \nWe have specialized pet food to study the group. Pet snacks for many years develop experience. We adhere to. Speciality. Fine. Safe. Hygiene. It is a principle. And is developing the newest products which are catering to the market constantly. Regard achieve and customer&;s win-win as the final purpose."
+                ]
+              }
+            ],
+            "reasoning": "The 2024 company record gives a registered address in Kaohsiung for 喬泰寵物用品企業有限公司. The company listing identifies Taiwan Chews Time as having its main office in Taiwan and gives the matching jielin688.com.tw website. Together, these support Taiwan as the entity’s headquarters country.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_389923a2-4ca5-4f52-8d3b-ba5027dd60f0",
+        "name": "Advantech Co., Ltd.",
+        "url": "https://www.advantech.com/en-us/about/historyandmilestones",
+        "description": "Advantech Co., Ltd. is a Taipei-based AIoT and embedded-computing company with a clear fit as a potential supplier or integration partner: it offers an AI companion and mission computer for autonomous UAVs, including sensor connectivity and onboard perception capabilities, and says its Taiwan manufacturing center is positioned to support defense and drone applications. The available evidence supports relevance to the drone and defense-electronics ecosystem, but does not establish that Advantech itself supplies counter-drone sensors or complete counter-drone systems.",
+        "match_status": "matched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "https://www.advantech.com/en-us/resources/news/asr-d501-grand-launch (2026-09-29): integrates a drone component—an AI companion and mission computer for autonomous UAVs, with sensor connectivity and flight-controller interfaces.",
+            "is_matched": true
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Advantech Launches ASR-D501 AI Companion Computer for Autono - Advantech",
+                "url": "https://www.advantech.com/en-us/resources/news/asr-d501-grand-launch",
+                "excerpts": [
+                  "Compact, power-efficient platform combines edge AI, multi-sensor perception, flight-controller connectivity, and integrated robotics software for next-generation UAV development Taipei, Taiwan, September 29, 2026 - Advantech, a global leader in AIoT and Edge Computing, today announced the ASR-D501, a compact AI companion and mission computer designed to accelerate the development of autonomous unmanned aerial vehicles (UAVs). Powered by the Qualcomm® QCS6490, the ASR-D501 delivers up to 12 TOPS of AI performance within a sub-10W power envelope, while integrating multi-camera vision, sensor connectivity, flight-controller interfaces, wireless expansion, and the Advantech Robotic Suite for Drone."
+                ]
+              }
+            ],
+            "reasoning": "The 2026-09-29 announcement describes Advantech's ASR-D501 as an AI companion and mission computer for autonomous UAV development and says it integrates sensor connectivity and flight-controller interfaces. This supports classifying the product as a drone component.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "Operational Performance and Corporate Governance Structure - ESG",
+                "url": "https://esg.advantech.com/en-us/operation-and-governance/corporate-operations-and-governance",
+                "excerpts": [
+                  "# Operational Performance and Corporate Governance Structure\n\n## Company Profile\n\nSince its establishment in 1983, Advantech has focused on the global IIoT field, providing corporate customers with a full range of services such as software and hardware system integration, customized design services, and global technical support. And the vision of the corporate brand of “Enabling an intelligent planet”.\n\n  \nAdvantech is a Taiwan listed company and has been listed on the Taiwan Stock Exchange since 1999 (TWSE: 2395); Headquartered in Neihu Science Park, Taipei, Taiwan, our business base spans 27 countries in Europe, America, Asia, and other regions. Our three major manufacturing centers are located in Linkou (Taiwan), Kunshan (China), and Fukuoka (Japan). Furthermore, we have built four logistics management centers and 21 local service centers to provide global customers with real-time and comprehensive integrated services via a complete service system."
+                ]
+              }
+            ],
+            "reasoning": "Advantech's company profile explicitly states that it is headquartered in Neihu Science Park, Taipei, Taiwan, supporting the country code TW.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_395cb009-31b8-4230-b3d6-02e35a295c92",
+        "name": "Taiwan FUSHUNLIANXINGSHIYE Co., ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-fushunlianxingshiye-co.-ltd.",
+        "description": "Taiwan FUSHUNLIANXINGSHIYE Co., ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Taiwan FUSHUNLIANXINGSHIYE Co., ltd. | LinkedIn",
+                "url": "https://www.linkedin.com/company/taiwan-fushunlianxingshiye-co.-ltd.",
+                "excerpts": [
+                  "Taiwan FUSHUNLIANXINGSHIYE Co., ltd. About us Headquarters Taipei Locations TAIPEI XIANBAN QIAOZHUANG JINGLU, TAIPEI, TAIWAN"
+                ]
+              }
+            ],
+            "reasoning": "The profile identifies the company and shows an “About us” heading, but provides no claim that it makes, integrates, or supplies the specified products, or is a relevant industry association. No qualifying 2024-or-later source is identified in the evidence, so the requested source is NA.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "Taiwan FUSHUNLIANXINGSHIYE Co., ltd. | LinkedIn",
+                "url": "https://www.linkedin.com/company/taiwan-fushunlianxingshiye-co.-ltd.",
+                "excerpts": [
+                  "Headquarters Taipei Locations TAIPEI XIANBAN QIAOZHUANG JINGLU, TAIPEI, TAIWAN"
+                ]
+              }
+            ],
+            "reasoning": "The profile lists the headquarters as Taipei and its location as Taipei, Taiwan, supporting Taiwan as the headquarters country (TW).",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_3bca41a3-5be7-46fb-bd2d-7a671e46db16",
+        "name": "Hang Jian Technology Co., Ltd. (航見科技股份有限公司)",
+        "url": "https://www.hjuavs.com/",
+        "description": "Hang Jian Technology Co., Ltd. (航見科技股份有限公司), also branded HJUAVS, is a Taiwan-based UAV systems company established in 2015. Its profile describes integrated drone platforms, software and components, with applications including national defense—making it relevant as a potential UAV integrator, supplier or adjacent competitor. The available descriptions focus on UAV systems rather than specifically identifying it as a counter-drone sensor specialist. An August 2026 news report described a military-drone procurement investigation involving allegations about components and origin documentation; those are reported allegations, not a finding of guilt.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_3d320611-eb16-45c9-812c-51aec45a4b7e",
+        "name": "Taiwan XINLIGANGTIEQIYE Co., ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-xinligangtieqiye-co.-ltd.",
+        "description": "Taiwan XINLIGANGTIEQIYE Co., ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "BUENO STEEL COMPANY LTD., Daliao District, TW - Infobel",
+                "url": "https://www.infobel.com/en/taiwan/bueno_steel_company_ltd/daliao_district/TW100354450-077877001/businessdetails.aspx",
+                "excerpts": [
+                  "BUENO STEEL COMPANY LTD. No ratings 33 Chaoliao Road Lane 168 831 Daliao District Kaohsiung City - Taiwan Display phone Industrial Equipment And Supplies Plastic Covering Of Metals"
+                ]
+              },
+              {
+                "title": "炘立企業有限公司地址: 高雄市大寮區潮寮路168巷33號",
+                "url": "https://ji.zhupiter.com/p-607977-%E7%82%98%E7%AB%8B%E4%BC%81%E6%A5%AD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8.html",
+                "excerpts": [
+                  "炘立企業有限公司 的簡介 炘立企業有限公司地址:高雄市大寮區潮寮路168巷33號，分類:高雄鋼鐵製品，電話:07-787-7001，營業時間：8:00 ~ 17:30 特色: 「產品多樣化、快速交貨、創造客戶價值」的經營理念，並為客戶提供更好的品質及完善的服務。 商品項目: 貼皮鋼板、彩紋鋼板、彩妝鋼板、鍍鋅鋼板/卷"
+                ]
+              }
+            ],
+            "reasoning": "The dated listing for the stated address describes industrial equipment and supplies and metal covering; another listing at that address describes steel-sheet products. Neither asserts that the entity makes, integrates, or supplies any of the specified drone or defense products, or that it is a drone or defense industry association.",
+            "confidence": "low"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "BUENO STEEL COMPANY LTD., Daliao District, TW - Infobel",
+                "url": "https://www.infobel.com/en/taiwan/bueno_steel_company_ltd/daliao_district/TW100354450-077877001/businessdetails.aspx",
+                "excerpts": [
+                  "BUENO STEEL COMPANY LTD. No ratings 33 Chaoliao Road Lane 168 831 Daliao District Kaohsiung City - Taiwan Display phone Industrial Equipment And Supplies Plastic Covering Of Metals"
+                ]
+              }
+            ],
+            "reasoning": "The listed address is identified as 33 Chaoliao Road Lane 168, Daliao District, Kaohsiung City, Taiwan. This supports Taiwan as the country for the entity’s stated Kaohsiung headquarters location.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_41cf03a2-cb6d-4f51-b6e6-cd0a87ca44fa",
+        "name": "Taiwan SHENGANXUN Co., ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-shenganxun-co.-ltd.",
+        "description": "Taiwan SHENGANXUN Co., ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "SHENG XUN TECHNOLOGY LIMITED Company Profile | Taoyuan City ...",
+                "url": "https://www.dnb.com/business-directory/company-profiles.sheng_xun_technology_limited.4709ae8a6092cb587de7dec4d770ffbf.html",
+                "excerpts": [
+                  "Find company research, competitor information, contact details & financial data for SHENG XUN TECHNOLOGY LIMITED of Taoyuan City, Taoyuan. Get the latest business insights from Dun & Bradstreet."
+                ]
+              }
+            ],
+            "reasoning": "No 2024-or-later source in the evidence identifies Taiwan SHENGANXUN Co., Ltd. as making, integrating, or supplying the listed drone, counter-drone, or defense sensor products, or as a relevant industry association. The cited directory result is for the differently named SHENG XUN TECHNOLOGY LIMITED and does not establish a qualifying activity for the entity being evaluated.",
+            "confidence": "low"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "\n\tTaoyuan City Government-Luzhu District\n",
+                "url": "https://eng.tycg.gov.tw/cp.aspx?n=961",
+                "excerpts": [
+                  "**Luzhu District: The Nation's Door**\n\nThe place was originally named \"Luzhucuo\", referring as the reed house because it was covered with wild reeds that people used for building houses. On December 25, 2014, Luzhu City was renamed as LuzhuDistrict of Taoyuan City. Currently, there are over 169,936 people living there, and most of them are of Fujianese origin.\n\n/001/Upload/20/relpic/8187/192/29268ab7-e2ac-4b36-8e49-b6b6b68b3af0.jpg\n\nNankan Village in Luzhu District was the earliest area in Taoyuan to be developed.",
+                  "Address:No.1, Xianfu Rd.,Taoyuan Dist., Taoyuan City 330206, Taiwan (R.O.C.)  \nTEL:886-3-3322101  \nBest view with 1024\\*768 pixel resolutions.\n\nLast Updated\n\n2026-09-21\n\nBrowsing people\n\n..\n\nTop"
+                ]
+              }
+            ],
+            "reasoning": "The entity's listed headquarters location is Luzhu, Taoyuan, Taiwan. The cited Taoyuan City Government page identifies Luzhu as a district of Taoyuan and gives a Taoyuan City address in Taiwan, supporting the country code TW.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_445e3b1a-23e8-4921-a90f-f1fc378331e4",
+        "name": "Thunder Tiger Corporation (雷虎科技股份有限公司)",
+        "url": "https://www.thundertiger.com/",
+        "description": "Thunder Tiger Corporation (雷虎科技股份有限公司) is a Taichung-based Taiwanese company whose TTROBOTIX division develops unmanned aerial and other vehicle systems, including platforms intended for defense use. That makes it a relevant adjacent platform or integration prospect for a counter-drone sensor startup, though the cited company profiles do not establish it as a counter-drone sensor specialist.",
+        "match_status": "matched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "2026-10-14 — AeroVironment’s press release identifies Thunder Tiger as a developer and manufacturer of unmanned systems and says the parties will explore potential UAS co-production. Claimed activity/category: makes (manufactures) unmanned systems; UAS are also identified.",
+            "is_matched": true
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "AV and Thunder Tiger Sign MOU to Explore Uncrewed Systems Integration and Co-Production in Taiwan | AeroVironment, Inc.",
+                "url": "https://investor.avinc.com/news-releases/news-release-details/av-and-thunder-tiger-sign-mou-explore-uncrewed-systems",
+                "excerpts": [
+                  "October 14, 2026 at 12:30 PM EDT [PDF Version](https://investor.avinc.com/node/21511/pdf) _Collaboration will explore integration of AV capabilities with Thunder Tiger platforms, potential UAS co-production and future technology development._ ARLINGTON, Va. --(BUSINESS WIRE)--Oct. 14, 2026-- AeroVironment, Inc. (“AV”) (NASDAQ: AVAV), a global defense technology leader, and Thunder Tiger Corp., a Taiwan -based developer and manufacturer of unmanned systems, today announced a memorandum of understanding to explore collaboration on uncrewed systems integration, potential unmanned aircraft systems (UAS) localization and co-production and future capability co-development in Taiwan . This press release features multimedia. View the full release here: https://www.businesswire.com/news/home/20261014415128/en/ The agreement establishes a framework for evaluating multiple areas of cooperation, including the potential integration of select AV Switchblade Family of Systems configurations with Thunder Tiger’s unmanned surface and ground platforms. The companies will also explore opportunities to leverage Taiwan’s industrial capacity to support future unmanned aircraft co-production and co-development."
+                ]
+              },
+              {
+                "title": "TSE Code:××××",
+                "url": "https://ttg.thundertiger.com/stock/file/year_report/114E.pdf",
+                "excerpts": [
+                  "Since its establishment, the Company has focused on the manufacturing, research and development, and sales of radio-controlled models and unmanned systems, becoming the world’s first publicly listed enterprise with this core business. ... In the unmanned systems segment, our R&D achievements continue to break new ground and expand into international markets. The Company’s self-developed Overkill FPV loitering munition drone series has officially received the Blue UAS Cleared certification from the U.S."
+                ]
+              }
+            ],
+            "reasoning": "The October 14, 2026 AeroVironment release describes Thunder Tiger as a developer and manufacturer of unmanned systems and discusses potential UAS co-production. The company’s annual report additionally says its business includes manufacturing unmanned systems and identifies its self-developed Overkill FPV loitering-munition drone. Together these support a positive match.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "TSE Code:××××",
+                "url": "https://ttg.thundertiger.com/stock/file/year_report/114E.pdf",
+                "excerpts": [
+                  "**Headquarters, Branches and Plant** Headquarters Address: No.7, Industrial Park 6th Rd., Xitun Dist., Taichung City, Taiwan Tel: 886-4-23591616 Fax: 886-4-23591902"
+                ]
+              }
+            ],
+            "reasoning": "Thunder Tiger’s annual report explicitly lists its headquarters address in Taichung City, Taiwan, supporting the TW country code.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_44d67f45-8082-40c1-8b20-f188a2b6378e",
+        "name": "Taiwan YAPU Co., ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-yapu-co.-ltd.",
+        "description": "Taiwan YAPU Co., ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Taiwan YAPU Co., ltd. | LinkedIn",
+                "url": "https://www.linkedin.com/company/taiwan-yapu-co.-ltd.",
+                "excerpts": [
+                  "Taiwan YAPU Co., ltd. [Report this company](https://www.linkedin.com/uas/login?fromSignIn=true&session_redirect=https%3A%2F%2Fcn.linkedin.com%2Fcompany%2Ftaiwan-yapu-co.-ltd.&trk=top-card_ellipsis-menu-semaphore-sign-in-redirect&guestReportContentType=COMPANY&_f=guest-reporting) About us Headquarters Taoyuan County"
+                ]
+              }
+            ],
+            "reasoning": "The profile identifies the exact company but provides only an About us heading and its headquarters location, without stating that it makes, integrates, or supplies qualifying drone or defense products. No qualifying 2024-or-later source for this company was found, so the requested source value is NA.",
+            "confidence": "low"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "Taiwan YAPU Co., ltd. | LinkedIn",
+                "url": "https://www.linkedin.com/company/taiwan-yapu-co.-ltd.",
+                "excerpts": [
+                  "Headquarters Taoyuan County Locations TAOYUAN COUNTY, TAIWAN"
+                ]
+              }
+            ],
+            "reasoning": "The profile lists the headquarters as Taoyuan County and explicitly identifies a location as “TAOYUAN COUNTY, TAIWAN,” supporting TW. The same profile also lists “Taoyuan County, CN,” which conflicts with that designation, so the Taiwan classification is supported but not unambiguous.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_48652379-d315-463a-a3b3-59a27bd3a82d",
+        "name": "Taiwan Taipei XIANYUSHANGQIYE Co., ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-taipei-xianyushangqiye-co.-ltd.",
+        "description": "Taiwan Taipei XIANYUSHANGQIYE Co., ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA — no 2024-or-later public source found stating that the entity makes, integrates, or supplies drones, counter-drone systems, drone components, or defense radar/RF/electro-optical sensors, or that it is a drone or defense industry association.",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Taiwan Taipei XIANYUSHANGQIYE Co., ltd. | LinkedIn",
+                "url": "https://www.linkedin.com/company/taiwan-taipei-xianyushangqiye-co.-ltd.",
+                "excerpts": [
+                  "About us Industry Mining Company size 11-50 employees Headquarters Taipei County"
+                ]
+              }
+            ],
+            "reasoning": "The entity’s public profile has an “About us” heading but provides no description there; it identifies the industry as Mining. This profile does not state that the entity makes, integrates, or supplies any of the specified products, or that it is an industry association. No qualifying 2024-or-later claim is established.",
+            "confidence": "low"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "Taiwan Taipei XIANYUSHANGQIYE Co., ltd. | LinkedIn",
+                "url": "https://www.linkedin.com/company/taiwan-taipei-xianyushangqiye-co.-ltd.",
+                "excerpts": [
+                  "Industry Mining Company size 11-50 employees Headquarters Taipei County Locations 379 XIANG 31 HAO 5 LOU, JINMEN STREET, BANQIAO, TAIPEI COUNTY, TAIWAN"
+                ]
+              }
+            ],
+            "reasoning": "The profile lists the headquarters as Taipei County and gives its location as Banqiao, Taipei County, Taiwan. The stated location supports Taiwan as the headquarters country.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_5325ae7d-cce2-47a2-bdef-df04b9b1a600",
+        "name": "Taiwan Taipei LIDE Data Co., Ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-taipei-lide-data-co.-ltd.",
+        "description": "Taiwan Taipei LIDE Data Co., Ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Taiwan Taipei LIDE Data Co., Ltd. Overview - SignalHire",
+                "url": "https://www.signalhire.com/companies/taiwan-taipei-lide-data-co-ltd",
+                "excerpts": [
+                  "Taiwan Taipei LIDE Data Co., Ltd. is a mining & metals company based out of 12F, NO.81 TAYOU ROAD, TAIPEI, TAIWAN, Taipei, China."
+                ]
+              },
+              {
+                "title": "Taiwan Taipei LIDE Data Co., Ltd. - 12F, No.81 TAYOU Road ...",
+                "url": "https://www.cybo.com/CN-biz/taiwan-taipei-lide-data-co-ltd_1R",
+                "excerpts": [
+                  "About Taiwan Taipei LIDE Data Co., Ltd. is located in Tai'an. Taiwan Taipei LIDE Data Co., Ltd. is working in Retail of textiles activities. You can contact the company at 02 2762 0805. You can find more information about Taiwan Taipei LIDE Data Co., Ltd. at www.ginohandydata.cn. You can contact the company by email at senk@handydata.com. Zhensheng Pan is associated with the company."
+                ]
+              }
+            ],
+            "reasoning": "The entity-matched public profiles describe the company as mining and metals and as working in retail textiles. They do not provide 2024-or-later evidence that it makes, integrates, or supplies the specified drone or defense products, or that it is a drone or defense industry association; therefore the requested qualifying source is NA and it is not matched.",
+            "confidence": "low"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "Taiwan Taipei LIDE Data Co., Ltd. Overview - SignalHire",
+                "url": "https://www.signalhire.com/companies/taiwan-taipei-lide-data-co-ltd",
+                "excerpts": [
+                  "Taiwan Taipei LIDE Data Co., Ltd. is a mining & metals company based out of 12F, NO.81 TAYOU ROAD, TAIPEI, TAIWAN, Taipei, China."
+                ]
+              }
+            ],
+            "reasoning": "The profile identifies the entity and gives its base address as Taipei, Taiwan, supporting Taiwan as the headquarters country despite the inconsistent trailing location label.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_53ed3e4c-fbba-4677-8d4b-8d904c77cf26",
+        "name": "Taiwan WANQUAN Industry Co., ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-wanquan-industry-co.-ltd.",
+        "description": "Taiwan WANQUAN Industry Co., ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Taiwan WANQUAN Industry Co., ltd. | LinkedIn",
+                "url": "https://www.linkedin.com/company/taiwan-wanquan-industry-co.-ltd.",
+                "excerpts": [
+                  "Taiwan WANQUAN Industry Co., ltd. About us Headquarters Taipei Locations TAIPEI, TAIWAN Taipei, CN [Get directions](https://www.bing.com/maps?where=TAIPEI%2C+TAIWAN+Taipei+CN&trk=org-locations_url)"
+                ]
+              }
+            ],
+            "reasoning": "The company profile identifies the entity but provides no description or claim that it makes, integrates, or supplies drones, counter-drone systems, drone components, or defense radar/RF/electro-optical sensors. No qualifying 2024-or-later evidence for those activities or an industry-association role was found, so the value is NA and the entity does not match.",
+            "confidence": "low"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "Taiwan WANQUAN Industry Co., ltd. | LinkedIn",
+                "url": "https://www.linkedin.com/company/taiwan-wanquan-industry-co.-ltd.",
+                "excerpts": [
+                  "Headquarters Taipei Locations TAIPEI, TAIWAN Taipei, CN [Get directions](https://www.bing.com/maps?where=TAIPEI%2C+TAIWAN+Taipei+CN&trk=org-locations_url)"
+                ]
+              }
+            ],
+            "reasoning": "The profile lists the headquarters as Taipei and its location as “TAIPEI, TAIWAN,” supporting Taiwan as the headquarters country. The accompanying map label includes “CN,” so the country identification is not entirely consistent.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_55a825c3-8732-4739-b9a9-77f6237bf1ef",
+        "name": "JC TECHNOLOGY INC.",
+        "url": "https://www.jctech.tw/en/company",
+        "description": "JC TECHNOLOGY INC., known as JC Tech, is a Taipei-based Taiwanese UAV systems integrator founded in 2001. Its drone and UAV integration business makes it relevant to the requested industry; in 2026, it announced exclusive Taiwan agency rights for a partner’s Counter-UAS radar products and an agreement for local ODM production.",
+        "match_status": "matched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "https://www.jctech.tw/en/blog/detail/22 — 2026-07-07: JC Tech is described as a Taiwanese UAV system integrator and is reported to have secured exclusive Taiwan agency rights for AI AESA Counter-UAS radar products. Claim: integrates UAV systems; holds exclusive agency rights for defense Counter-UAS radar.",
+            "is_matched": true
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "JC Tech Secures Exclusive Taiwan Agency Rights for Counter-UAS Radar, Building Low-Altitude Defense Capabilities-JC-TECH UAV/UAS Turnkey Solutions Integrator",
+                "url": "https://www.jctech.tw/en/blog/detail/22",
+                "excerpts": [
+                  "As demand for low-altitude defense continues to rise rapidly, Taiwanese UAV system integrator JC Tech announced today that it has signed a strategic cooperation agreement with an internationally renowned defense radar company, securing exclusive agency rights in Taiwan for its Artificial Intelligence Active Electronically Scanned Array (AI AESA) Counter-Unmanned Aircraft System (Counter-UAS, C-UAS) radar products."
+                ]
+              }
+            ],
+            "reasoning": "The company source dated July 7, 2026 identifies JC Tech as a Taiwanese UAV system integrator and states that it obtained exclusive Taiwan agency rights for AI AESA Counter-UAS radar products. This directly supports the match through UAV integration and its Counter-UAS radar business.",
+            "confidence": "high"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "Company-JC-TECH UAV/UAS Turnkey Solutions Integrator",
+                "url": "https://www.jctech.tw/en/company",
+                "excerpts": [
+                  "Headquartered in Taipei's Neihu Science Park with an R&D and testing center in Yilan Science Park, **JCTECH is the first company in Taiwan to achieve fully Made-in-Taiwan (MIT) production of complete UAVs.** Several of our models have also obtained top-tier cybersecurity certifications, ensuring maximum reliability and safety."
+                ]
+              }
+            ],
+            "reasoning": "The company page states that JCTECH is headquartered in Taipei, Taiwan; therefore its headquarters country code is TW.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_58247df1-8a98-43d9-b78e-e9af8c2d29be",
+        "name": "TAIWAN UAV 智飛科技",
+        "url": "https://www.linkedin.com/company/taiwanuav",
+        "description": "TAIWAN UAV 智飛科技 | 139 followers on LinkedIn. **BRAND NEW ENGLISH WEBSITE LAUNCHING SOON**\n\nFounded in 2005 by Dr. Wu Chang-huei (吳昌暉), a Stanford PhD in Aerospace Engineering, TAIWAN UAV is the longest established professional UAV design and manufacturing company in Taiwan. \n\nSpecialising in advanced solutions for both commercial and military applications, the company brings 20 years of experience in innovation, research, development and comprehensive flight testing.",
+        "match_status": "matched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "2026-09-04 — BattlePolicy, https://www.battlepolicy.com/taiwan-uav-corporation/: says Taiwan UAV builds ship-deck-launched VTOL reconnaissance drones (makes drones).",
+            "is_matched": true
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Taiwan UAV Corporation — Company Profile | BattlePolicy",
+                "url": "https://www.battlepolicy.com/taiwan-uav-corporation/",
+                "excerpts": [
+                  "Company Dossier\n\n# Taiwan UAV Corporation\n\nTaipei's Taiwan UAV Corporation (智飛科技) builds ship-deck-launched VTOL reconnaissance drones on a fully indigenous, China-free flight-control stack — a shipborne-UAV winner in Taiwan's military drone program, built for Strait maritime ISR.\n\n**BattlePolicy Research** · Updated 4 Sep 2026 · 5 min read"
+                ]
+              }
+            ],
+            "reasoning": "The source identifies Taiwan UAV Corporation (智飛科技) and states that it builds VTOL reconnaissance drones, directly supporting a match for making drones.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "linkedin.com",
+                "url": "https://linkedin.com/company/taiwanuav",
+                "excerpts": [
+                  "* name: TAIWAN UAV 智飛科技\n * description\n   - Founded in 2005 by Dr. Wu Chang-huei (吳昌暉), a Stanford PhD in Aerospace Engineering, TAIWAN UAV is Taiwan’s longest-established professional UAV design and manufacturing company.\n\nThe company provides systems for military and national security applications. With 21 years of experience, TAIWAN UAV focuses on engineering, research, development, manufacturing, and flight testing.\n\nIn 2024, TAIWAN UAV was awarded a contract with the Taiwanese Navy for 96 maritime surveillance drones based on its VTOL UAV platform.\n * employee count: 5\n * founded year: 2005\n * follower count: 192\n * linkedin url: https://www.linkedin.com/company/taiwanuav\n * country iso: TW\n * country name: Taiwan\n * locality: Taipei, Taipei City\n * type: Privately Held\n * size: 10\n * postal code: 10542\n * street address: 170 Minchuan East Road, Section 3, Taipei, Taiwan\n * region: Taipei City\n\n# Inferred Location\n * latitude: 25.0384\n * longitude: 121.564\n * locationstr: Taipei,"
+                ]
+              },
+              {
+                "title": "TAIWAN UAV CO., LTD.",
+                "url": "https://www.findcompany.com.tw/index.php/en/%E6%99%BA%E9%A3%9B%E7%A7%91%E6%8A%80%E8%82%A1%E4%BB%BD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8",
+                "excerpts": [
+                  "12 F., No. 170, Sec. 3, Minquan E. Rd., Songshan Dist., Taipei City 105603, Taiwan (R.O.C.)"
+                ]
+              }
+            ],
+            "reasoning": "The company profile identifies TAIWAN UAV and gives its country as Taiwan and locality as Taipei. The company-address listing also gives a Taipei, Taiwan address, supporting the Taiwan headquarters classification.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_5a5805b5-0856-4eec-bf24-74fbb601f832",
+        "name": "Taiwan XIZHI TAIDING Co., ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-xizhi-taiding-co.-ltd.",
+        "description": "Taiwan XIZHI TAIDING Co., ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Taiwan XIZHI TAIDING Co., ltd. - Hsien XIZHI QIEDONG LU 212 ...",
+                "url": "https://yellowpages-zh.cybo.com/TW-biz/taiwan-xizhi-taiding-co-ltd",
+                "excerpts": [
+                  "關於 Taiwan XIZHI TAIDING Co., ltd.位於臺北市。 Taiwan XIZHI TAIDING Co., ltd.正在從事購物中心活動。 你可以撥打 02 8648 9631 聯絡該公司。 Anson Mu與該公司關聯。 ... 類別：專賣店的其他家用設備的零售. ISIC代碼：475."
+                ]
+              }
+            ],
+            "reasoning": "The listing for Taiwan XIZHI TAIDING describes shopping-centre activity and retail of household equipment. It does not state that the company makes, integrates, or supplies drones, counter-drone systems, drone components, or defense sensors, nor that it is an industry association. No qualifying 2024-or-later source was found, so the requested source value is NA.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "Taiwan XIZHI TAIDING Co., ltd.的James WU - Cybo",
+                "url": "https://yellowpages-zh.cybo.com/TW-%E8%81%AF%E7%B5%A1%E4%BA%BA/taiwan-xizhi-taiding-co-ltd/James+WU",
+                "excerpts": [
+                  "企業資訊 Taiwan XIZHI TAIDING Co., ltd. Hsien XIZHI QIEDONG LU 212 HAO, Taipei, Taiwan · 臺北市"
+                ]
+              }
+            ],
+            "reasoning": "The listing identifies the named company and gives its location as Taipei, Taiwan, supporting TW as the headquarters country.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_5e2e155f-e1f1-467b-9773-68c60a93dc22",
+        "name": "Taiwan Taipei BEIYUSUJIAOGONGYE Co., Ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-taipei-beiyusujiaogongye-co.-ltd.",
+        "description": "Taiwan Taipei BEIYUSUJIAOGONGYE Co., Ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Taiwan Taipei BEIYUSUJIAOGONGYE Co., Ltd. | 22967239 | 臺北市",
+                "url": "https://www.suoyouyewu.com/taiwan-taipei-beiyusujiaogongye-co-ltd",
+                "excerpts": [
+                  "Taiwan Taipei BEIYUSUJIAOGONGYE Co., Ltd. 在哪裡？ Taiwan Taipei BEIYUSUJIAOGONGYE Co., Ltd. 位於 Taishan mountain XIANGFENG JIANGLU 86 XIANG 18-2 HAO 1 LOU, Taipei, Taiwan, 臺北市, 243。"
+                ]
+              }
+            ],
+            "reasoning": "The company-specific listing identifies Taiwan Taipei BEIYUSUJIAOGONGYE Co., Ltd. and gives its location, but makes no claim that it makes, integrates, or supplies drones, counter-drone systems, drone components, or defense sensors, and does not identify it as an industry association. No qualifying 2024-or-later source for this entity was found, so the requested source is NA and the entity is not matched.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "Taiwan Taipei BEIYUSUJIAOGONGYE Co., Ltd. | 22967239 | 臺北市",
+                "url": "https://www.suoyouyewu.com/taiwan-taipei-beiyusujiaogongye-co-ltd",
+                "excerpts": [
+                  "Taiwan Taipei BEIYUSUJIAOGONGYE Co., Ltd. 在哪裡？ Taiwan Taipei BEIYUSUJIAOGONGYE Co., Ltd. 位於 Taishan mountain XIANGFENG JIANGLU 86 XIANG 18-2 HAO 1 LOU, Taipei, Taiwan, 臺北市, 243。"
+                ]
+              }
+            ],
+            "reasoning": "The company-specific listing places the entity at an address in Taipei, Taiwan, consistent with the provided Taipei headquarters information; the headquarters country is therefore Taiwan (TW).",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_63df6381-d67a-474c-9879-e75f30ca5450",
+        "name": "Taiwan JIELI Technology co., ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-jieli-technology-co.-ltd.",
+        "description": "Taiwan JIELI Technology co., ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Jielin Technology",
+                "url": "https://platform.tracxn.com/a/d/company/59054425e4b01732a719f312/jielin%20technology?utm_source=parallel&utm_medium=ai#a:about",
+                "excerpts": [
+                  "With a focus on autonomous development of image core technologies, Also offers an AI parallel processor (MAPP) platform for next-generation smart home applications, which can implement neural networks. deep learning, vector processing.\n * stage: Public\n * geoRelevance: false\n\n# GeoServed\n * isGlobal: false\n\n# AllGeoServed\n\n## Country\n   - name: Taiwan\n\n# EditorRating\n * rating: 3"
+                ]
+              },
+              {
+                "title": "傑立科技 JZTEK｜精密量測儀器代理・光學量測/安規測試/環境設備",
+                "url": "https://jztek.com.tw/",
+                "excerpts": [
+                  "跳至主要內容\n\n### 傑立儀器\n\n# 專業精密量測儀器解決方案\n\n專注於光學儀器、安規測試、環境實驗設備。提供從選型諮詢、儀器銷售到售後維修的一站式服務。\n\n[瀏覽所有產品](https://jztek.com.tw/product/)\n\n聯絡我們\n\n#### 專注細節 /精準測量\n\n## 專業光學儀器代理 / 實驗室解決方案​\n\nProfessional Optical Instruments\n\n聯繫我們\n\n## 500+\n\n合作企業客戶 / 服務學術單位\n\n## 20+\n\n年專業經驗\n\n## 50+\n\n代理國際品牌\n\n## 1520+\n\n儀器販售後好評\n\n#### 安全、迅速、穩定\n\n## 重點商品\n\n[查看全部](https://jztek.com.tw/product/)",
+                  "專為精密專業燈泡 符合IEC 台灣及國際標準報告 。提供非接觸式的高精度量測，確保產品外觀與結構完美無瑕。\n\n[eec esa](https://jztek.com.tw/product-category/iec-cns-electrical-safety/electrical-safety-analyzers/)\n\n### [安規與材料測試](https://jztek.com.tw/product-category/iec-cns-electrical-safety/electrical-safety-analyzers/)\n\n符合 IEC/UL 國際標準。提供耐壓 (Hi-Pot)、絕緣阻抗及接地電阻測試，協助您的產品通過嚴格安規認證，順利行銷全球。\n\nusb電源供應器自動檢測系統 結果\n\n### 環境實驗設備\n\n模擬高低溫、高濕度等極端環境。透過可靠度測試 (Reliability Test) 提前篩選潛在不良品，確保產品在惡劣環境下仍能穩定運作。"
+                ]
+              }
+            ],
+            "reasoning": "The Jielin Technology description lists image-processing ICs and an AI processor for smart-home applications (doc 41). The similarly named Taiwan company’s description focuses on precision-measurement equipment and optical instruments (doc 47). Neither states that this entity makes, integrates, or supplies the qualifying drone or defense products, or that it is a drone or defense association. No qualifying 2024-or-later source was identified.",
+            "confidence": "low"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "Jielin Technology",
+                "url": "https://platform.tracxn.com/a/d/company/59054425e4b01732a719f312/jielin%20technology?utm_source=parallel&utm_medium=ai#a:about",
+                "excerpts": [
+                  "* id: 59054425e4b01732a719f312\n * name: Jielin Technology\n * logo\n   - https://tracxn-data-image.s3.amazonaws.com/logo/company/jeilin_com_tw_418a6010-5ab1-4e18-a9d7-7df55f0ee4a4\n * tracxnUrl\n   - https://platform.tracxn.com/a/d/company/59054425e4b01732a719f312/jielin%20technology?utm_source=parallel&utm_medium=ai:about\n * foundedYear: 1992",
+                  "With a focus on autonomous development of image core technologies, Also offers an AI parallel processor (MAPP) platform for next-generation smart home applications, which can implement neural networks. deep learning, vector processing.\n * stage: Public\n * geoRelevance: false\n\n# GeoServed\n * isGlobal: false\n\n# AllGeoServed\n\n## Country\n   - name: Taiwan\n\n# EditorRating\n * rating: 3",
+                  "* hours: 1\n * day: 30\n * month: 4\n * year: 2017\n\n# LastUpdatedDate\n * seconds: 53\n * minutes: 10\n * hours: 23\n * day: 15\n * month: 10\n * year: 2026\n\n# Website\n   - url: https://www.jeilin.com.tw"
+                ]
+              }
+            ],
+            "reasoning": "The Jielin Technology company record identifies Taiwan as its country (doc 41); together with the entity’s Taipei, Taiwan headquarters listing, this supports TW.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_68117326-d9c6-43b4-8a7b-4a8d4dcab7ab",
+        "name": "Taiwan XINXINXINGUANGDIAN Co., ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-xinxinxinguangdian-co.-ltd.",
+        "description": "Taiwan XINXINXINGUANGDIAN Co., ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Taiwan XINXINXINGUANGDIAN Co., ltd. | LinkedIn",
+                "url": "https://www.linkedin.com/company/taiwan-xinxinxinguangdian-co.-ltd.",
+                "excerpts": [
+                  "About us Company size 11-50 employees Headquarters Taipei Locations 1090 HAO, ZHONGZHENG ROAD, TAIPEI, TAIWAN"
+                ]
+              }
+            ],
+            "reasoning": "The profile's About Us section provides no business description or qualifying drone, counter-drone, component, or defense-sensor activity; the remaining cited information gives only company size and location. No qualifying 2024-or-later public source was found for this entity.",
+            "confidence": "low"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "Taiwan XINXINXINGUANGDIAN Co., ltd. | LinkedIn",
+                "url": "https://www.linkedin.com/company/taiwan-xinxinxinguangdian-co.-ltd.",
+                "excerpts": [
+                  "Company size 11-50 employees Headquarters Taipei Locations 1090 HAO, ZHONGZHENG ROAD, TAIPEI, TAIWAN"
+                ]
+              }
+            ],
+            "reasoning": "The profile identifies Taipei as the headquarters and gives the location as Taipei, Taiwan, supporting Taiwan as the headquarters country. The separate location label appends CN, so the country determination relies on the explicit geographic address.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_6ea88359-4c14-4401-8320-c59448a52a33",
+        "name": "Taiwan BAOLU DIANZI Co., Ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-baolu-dianzi-co.-ltd.",
+        "description": "Taiwan BAOLU DIANZI Co., Ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA — no qualifying public source dated 2024 or later was identified stating that the entity makes, integrates, or supplies drones, counter-drone systems, drone components, or defense radar/RF/electro-optical sensors, or is a drone/defense industry association.",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "BAORUH Product Catalog",
+                "url": "https://www.baoruh.com/catalog-en.html",
+                "excerpts": [
+                  "SINCE 1980 · Kaohsiung, Taiwan\n\nAbout BAORUH — smarter city vision\n\nFeatures\n\nIntegrity · Expertise · Innovation\n\n# Hardware,  \nfirmware,  \nbackend  \none team",
+                  "High-performance integrated products at lower cost.\n\nIn addition, BAORUH provides a robust back-end server so customers can track any specific vehicle in their fleet in real time.",
+                  "Baoruh Electronic Co., Ltd. www.baoruh.com\n\nProduct Catalog\n\nBAORUH Company Overview\n\nSINCE 1980 · Kaohsiung, Taiwan",
+                  "Goose-yellow chassis, 7-inch 1000-nit touch, NFC + QR + EMV, 4G/GPS + Wi-Fi, and CAN-Bus integration — purpose-built for the last mile.\n\nBR-85V\n\n01 /\n\n#### Ultra-compact design"
+                ]
+              }
+            ],
+            "reasoning": "The official product catalog describes integrated vehicle/fleet products and a last-mile product. It does not state that the entity makes, integrates, or supplies any of the specified drone or defense products. No qualifying 2024-or-later source was identified, so the requested value is NA and the entity does not match this criterion.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "關於寶錄 — 寶錄電子 BAORUH",
+                "url": "https://www.baoruh.com/about.html",
+                "excerpts": [
+                  "BAORUH Electronic Co., Ltd. was founded in 1980 and is headquartered in Kaohsiung, Taiwan. We help customers worldwide develop innovative, customised, ruggedised on-board embedded devices for automotive, public transit, and fleet management."
+                ]
+              }
+            ],
+            "reasoning": "The company’s about page explicitly says BAORUH Electronic Co., Ltd. is headquartered in Kaohsiung, Taiwan. This supports Taiwan as the headquarters country; the supplied website identifies the entity with this company.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_71717494-737e-4fd8-a153-818aae0a7548",
+        "name": "AiSeed Inc.",
+        "url": "https://www.aiseedtech.com/",
+        "description": "AiSeed Inc. is a Taipei-based company focused on AI-enabled small UAVs for military surveillance, public safety, and industrial inspection. It is relevant as a potential drone-platform partner in the defense ecosystem; the available information identifies it primarily as a drone provider, not specifically as a counter-drone sensor company.",
+        "match_status": "matched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "https://www.tadte.com.tw/en/exhibitor/C353D596A7A16FF357C15FDFA6EA29A4/info.html?cate=Unmanned%20Vehicles&cr=11&lt=data&vt=show-area — 2025-07-24 (modified). The exhibitor listing identifies an “Autonomous AI Surveillance Drone” as a product, indicating it supplies drones.",
+            "is_matched": true
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Taipei Aerospace & Defense Technology Exhibition-Exhibitor Info.-AISEED INC.",
+                "url": "https://www.tadte.com.tw/en/exhibitor/C353D596A7A16FF357C15FDFA6EA29A4/info.html?cate=Unmanned%20Vehicles&cr=11&lt=data&vt=show-area",
+                "excerpts": [
+                  "Online Date: 2025/03/19 Modify Date: 2025/07/24 AISEED INC. Taipei Nangang Exhibition Center, Hall 1 (TaiNEX 1) Unmanned Vehicles I0715a [https://www.aiseedtech.com](https://www.aiseedtech.com/) Brand Name . Products Autonomous AI Survaillence Drone"
+                ]
+              }
+            ],
+            "reasoning": "The exhibitor entry gives its modified date as 2025/07/24 and lists “Autonomous AI Survaillence Drone” under Products for AISEED INC. This is 2024-or-later public evidence of a drone product, supporting a supplier/product-listing match.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "FINDIT",
+                "url": "https://findit.sme.gov.tw/en/Startup/T1pLdkd6OVhVYmVQTW9tQ2tWdzhqZz09/Basic",
+                "excerpts": [
+                  "AiSeed Inc. is a Taipei‑based startup that specializes in edge AI–powered unmanned aerial vehicle (UAV) solutions."
+                ]
+              }
+            ],
+            "reasoning": "The company description calls AiSeed Inc. a Taipei-based startup. Taipei is in Taiwan, supporting the country code TW.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_750228f8-24c5-42e5-9791-bf2d40f9cedc",
+        "name": "Taiwan Aerospace Industry Association",
+        "url": "https://www.taia.org.tw/enn/index.asp",
+        "description": "The Taiwan Aerospace Industry Association (TAIA) is Taiwan’s aerospace-industry association, working to support member manufacturers and industry development. It is also a co-organizer of the Taipei Aerospace & Defense Technology Exhibition, whose scope includes unmanned systems and their supply chain. That makes it a relevant industry-networking contact for a foreign counter-drone sensor startup, though the cited information does not identify it as a sensor supplier or counter-drone system integrator.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_7af57da7-4962-4850-be69-e1c55073034d",
+        "name": "Taiwan MINSHENG Technology co., ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-minsheng-technology-co.-ltd.",
+        "description": "Taiwan MINSHENG Technology co., ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Arka Ray Wibawa - work hard | LinkedIn",
+                "url": "https://tw.linkedin.com/in/arka-ray-wibawa-454aa9310",
+                "excerpts": [
+                  "work hard · 工作經歷：Taiwan MINSHENG Technology co., ltd. · 地點：台灣。上 LinkedIn 查看Arka Ray Wibawa的個人檔案，LinkedIn 是擁有 10 億會員的專業社群。"
+                ]
+              },
+              {
+                "title": "Taiwan to Acquire Over 100,000 Unmanned Aerial Systems | Al Defaiya",
+                "url": "https://www.defaiya.com/news/Defense%20News/Asia/2025/08/03/taiwan-to-acquire-over-100-000-unmanned-aerial-systems",
+                "excerpts": [
+                  "Century Minsheng, another major player in Taiwan’s UAS sector, announced it is expanding production with an eye on"
+                ]
+              }
+            ],
+            "reasoning": "The profile entry names Taiwan MINSHENG Technology as an employer but does not claim it makes, integrates, or supplies the specified products. The 2025 drone-industry reference is about Century Minsheng, not the exact entity named here. No qualifying 2024-or-later source for Taiwan MINSHENG Technology was found.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "Arka Ray Wibawa - work hard | LinkedIn",
+                "url": "https://tw.linkedin.com/in/arka-ray-wibawa-454aa9310",
+                "excerpts": [
+                  "work hard · 工作經歷：Taiwan MINSHENG Technology co., ltd. · 地點：台灣。上 LinkedIn 查看Arka Ray Wibawa的個人檔案，LinkedIn 是擁有 10 億會員的專業社群。"
+                ]
+              }
+            ],
+            "reasoning": "The profile text associates the named company with a person whose location is Taiwan. Together with the entity listing's Taipei headquarters, this supports Taiwan as the headquarters country (TW).",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_7cc952ed-51b8-4d34-9322-9c9ade4a6531",
+        "name": "Taiwan TIHUA Co., ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-tihua-co.-ltd.",
+        "description": "Taiwan TIHUA Co., ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Taiwan TIHUA Co., ltd. | LinkedIn",
+                "url": "https://www.linkedin.com/company/taiwan-tihua-co.-ltd.",
+                "excerpts": [
+                  "About us Headquarters Taipei County Locations TAIPEI XIANXIN ZHUANGZHONG GANGLU 620 XIANG 5 HAO 1F, TAIPEI COUNTY, TAIWAN"
+                ]
+              }
+            ],
+            "reasoning": "The company profile identifies the entity but provides no description of its products or activities. No qualifying 2024-or-later evidence was found that it makes, integrates, or supplies the listed drone or defense products, or is an industry association.",
+            "confidence": "low"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "Taiwan TIHUA Co., ltd. | LinkedIn",
+                "url": "https://www.linkedin.com/company/taiwan-tihua-co.-ltd.",
+                "excerpts": [
+                  "Headquarters Taipei County Locations TAIPEI XIANXIN ZHUANGZHONG GANGLU 620 XIANG 5 HAO 1F, TAIPEI COUNTY, TAIWAN"
+                ]
+              }
+            ],
+            "reasoning": "The profile lists Taipei County as the headquarters and gives a location address ending in Taiwan, supporting Taiwan (TW) as the headquarters country.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_7cedfcd2-93a2-46fc-8bc6-4dcae412b59d",
+        "name": "Aerospace Industrial Development Corporation (AIDC)",
+        "url": "https://www.aidc.com.tw/en/",
+        "description": "A Taiwanese aerospace and defense company headquartered in Taichung. Its defense business includes drone manufacturing and maintenance, and AIDC says it developed a counter-drone system integrating radars, lasers, and jammers. Its UAV activity also includes a shipborne-drone contract and integration work with Shield AI.",
+        "match_status": "matched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "Integrates UAVs: the official AIDC investor presentation dated 2026-08-20 (https://doc.twse.com.tw/nas/STR/263420260820E001.pdf) describes AIDC's successful Coast Guard shipborne-drone bid with Shield AI and its aircraft design, manufacturing, and integration role. AIDC's 2025-09-24 investor presentation (https://www.aidc.com.tw/Content/File/20250924_%E6%B3%95%E8%AA%AA%E6%9C%83_%E8%8B%B1final.pdf) also says it independently developed a counter-drone system integrating active/passive radars, lasers, and jammers.",
+            "is_matched": true
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "PowerPoint 簡報",
+                "url": "https://doc.twse.com.tw/nas/STR/263420260820E001.pdf",
+                "excerpts": [
+                  "Aerospace Industrial Development Corporation August 20, 2026",
+                  "Winning the Coast Guard Shipborne Drone Contract, Expanding Drone Business Portfolio** The winning bid was submitted by AIDC in partnership with Shield AI, featuring the V-BAT vertical takeoff and landing (VTOL) UAV.** **2. AIDC have partnered with Shield AI through an MOU and V-BAT cooperation agreement, combining their autonomous flight software with our aircraft design, manufacturing, and integration expertise to create a complete ecosystem for advanced unmanned"
+                ]
+              },
+              {
+                "title": "PowerPoint 簡報",
+                "url": "https://www.aidc.com.tw/Content/File/20250924_%E6%B3%95%E8%AA%AA%E6%9C%83_%E8%8B%B1final.pdf",
+                "excerpts": [
+                  "AIDC independently developed a drone countermeasure system that integrates multiple equipment such as active/passive radars, lasers, and jammers. It has the capabilities of detecting drones’locations, identifying types, acquiring images, countermeasures, and tracking."
+                ]
+              }
+            ],
+            "reasoning": "The official AIDC investor presentation dated August 20, 2026 describes a Coast Guard shipborne-drone contract with Shield AI and AIDC's aircraft design, manufacturing, and integration expertise. The September 24, 2025 AIDC presentation explicitly states that it independently developed a counter-drone system integrating active/passive radars, lasers, and jammers. These support the UAV integration and counter-drone system claims.",
+            "confidence": "high"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": " Aerospace Industrial Development Corporation (AIDC) in Taiwan",
+                "url": "https://www.aidc.com.tw/en/about/contactus",
+                "excerpts": [
+                  "Address：407803 No.1, Hanxiang Road, Xitun District, Taichung City 407803, Taiwan (R.O.C.) Tel：+8864-27020001"
+                ]
+              }
+            ],
+            "reasoning": "AIDC's official contact page identifies its corporate headquarters address as being in Taichung City, Taiwan, supporting the country code TW.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_80d973f9-ecda-490c-b678-ccf938297c09",
+        "name": "Taiwan National Drone Industry Association (TNDIA)",
+        "url": "https://tndia.tw/en",
+        "description": "The Taiwan National Drone Industry Association (TNDIA) is an industry association connecting companies in the Asia Drone Innovation Park in Chiayi County, Taiwan. Its stated network includes drone manufacturers, component suppliers, and service providers, and it promotes drone and unmanned-vehicle applications. This makes it relevant to the Taiwan drone-industry ecosystem described in the query; its official page identifies Chiayi County, not Tainan, as its location.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_840b6a04-6bde-4ab5-9093-4280aec1a720",
+        "name": "Jorjin Technologies Inc.",
+        "url": "https://www.jorjin.com/",
+        "description": "Jorjin Technologies Inc. is a Taiwan-based technology company located in Xizhi, New Taipei City. It develops AR/XR smart glasses and wireless and sensing modules, including 60-GHz mmWave radar; its AR products also have defense-sector applications. These capabilities make it a plausible adjacent supplier or integration partner in defense electronics and sensing for a counter-drone startup. Its published product descriptions center on AR/XR and modules, however, and do not establish a dedicated drone or counter-UAS product or direct counter-drone competition.",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "JRJN | Partner profile | TI.com",
+                "url": "http://ti360.org/jrjn.html",
+                "excerpts": [
+                  "#### [JRJN-3P-MT5C01-02R1](https://www.ti.com/tool/JRJN-3P-MT5C01-02R1) — MT5C01-02R1 is a 60GHz mmWave radar sensor module based on IWRL6432W device\n\nMT5C01-02R1 is a 60GHz mmWave sensor AoM module which combines TI’s industrial IWRL6432 single-chip radar technology with Jorjin’s advanced antenna design capabilities."
+                ]
+              },
+              {
+                "title": "Basemark and Jorjin Forge Strategic Alliance to Revolutionize Industrial AR with Cutting-Edge Smart Glasses Solutions - Basemark",
+                "url": "https://www.basemark.com/news/basemark-and-jorjin-forge-strategic-alliance-to-revolutionize-industrial-ar-with-cutting-edge-smart-glasses-solutions",
+                "excerpts": [
+                  "Jorjin's military- and industrial-grade smart glasses boast a proven track record, actively deployed in critical sectors like defense, law enforcement, and healthcare."
+                ]
+              }
+            ],
+            "reasoning": "The 2025-10-04 partner profile describes Jorjin's 60GHz mmWave radar sensor module, but does not identify it as a defense sensor or drone-related product. The 2025 Basemark source describes defense use of Jorjin's smart glasses, not drones, counter-drone systems, drone components, or defense radar/RF/electro-optical sensors. These sources do not establish a qualifying 2024-or-later claim, so the value is NA and the entity is not matched.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "Binocular Display AR Glasses Product | Jorjin 佐臻股份有限公司",
+                "url": "https://www.jorjin.com/products/c9t2",
+                "excerpts": [
+                  "JORJIN TECHNOLOGIES INC. 17F, No 239, Sec. 1, Datong Rd. Xizhi Dist., New Taipei City 22161, Taiwan"
+                ]
+              },
+              {
+                "title": "Member",
+                "url": "https://www.qualcomm.com/support/partner/member-directory/member.a156f000008c5zTAAQ",
+                "excerpts": [
+                  "Jorjin Technologies Inc. was founded in 1998 in Taipei, Taiwan."
+                ]
+              }
+            ],
+            "reasoning": "Jorjin's official product page gives its New Taipei City, Taiwan address, and the Qualcomm partner profile places the company in Taipei, Taiwan. This supports Taiwan as the company's country.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_8dfb4540-462a-407e-8464-bc82812a87e6",
+        "name": "Taiwan DEXINXIANGJIAOGONGYE Co., Ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-dexinxiangjiaogongye-co.-ltd.",
+        "description": "Taiwan DEXINXIANGJIAOGONGYE Co., Ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "德欣橡膠工業股份有限公司 · 吳秀英 · 新竹縣芎林鄉華龍村鹿寮坑172-1號",
+                "url": "https://opengovtw.com/ban/22793835",
+                "excerpts": [
+                  "#### 德欣橡膠工業股份有限公司\n\n* 1\\. 基本資料\n* 2\\. 營業地址\n* 3\\. 代表負責人\n* 4\\. 同類公司商號\n* 5\\. 資料集信息\n\n# 德欣橡膠工業股份有限公司\n\n**地址:** 新竹縣芎林鄉華龍村鹿寮坑172-1號\n\n_德欣橡膠工業股份有限公司_ 統一編號為 _22793835_ . 代表負責人為 吳秀英.\n\n搜尋\n\n[](https://twitter.com/share?ref_src=twsrc%5Etfw)\n\n* * *\n\n## 基本資料\n\n|統一編號 |22793835 |\n| --- | --- |\n|登記機關 |經濟部中部辦公室 |\n|公司名稱 |德欣橡膠工業股份有限公司 |\n|公司所在地 |新竹縣芎林鄉華龍村鹿寮坑172-1號 |\n|公司狀況 |解散 |\n|資本總額(元) |30,000,000 |\n|實收資本額(元) |30,000,000 |\n|核准設立日期 |1988-03-16 |\n|最後核准變更日期 |2018-12-05 |\n|公司狀況日期 |2019-06-19 |\n|公司狀況文號 |經授中字 第10833373640號 |\n\n### 董監事名單\n\n|序號 |職稱 |姓名 |所代表法人 |出資額 |\n| --- | --- | --- | --- | --- |\n|0004 |監察人 |邱坤淵 | |415,259 |\n\n### 所營事業資料\n\n[C801060](https://opengovtw.com/ban?category=C801060) 合成橡膠製造業 [C801100](https://opengovtw.com/ban?category=C801100)",
+                  "### 工廠登記資料\n\n|工廠名稱 |工廠地址 |負責人 |\n| --- | --- | --- |\n|[德欣橡膠工業股份有限公司芎林廠](https://opengovtw.com/factory/99700610) |新竹縣芎林鄉華龍村鹿寮坑１７２－１號 |吳婕吟 |\n\n## 財政部營業稅籍資料\n\n|營業人名稱 |德欣橡膠工業股份有限公司 |\n| --- | --- |"
+                ]
+              }
+            ],
+            "reasoning": "The Hsinchu County company record identifies 德欣橡膠工業股份有限公司 as a rubber-industry business and records its status as dissolved in 2019. It does not provide a qualifying 2024-or-later source asserting that the entity makes, integrates, or supplies drones, counter-drone systems, drone components, or defense sensors, nor that it is an industry association. No such source is established, so the value is NA and the match is no.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "德欣橡膠工業股份有限公司 · 吳秀英 · 新竹縣芎林鄉華龍村鹿寮坑172-1號",
+                "url": "https://opengovtw.com/ban/22793835",
+                "excerpts": [
+                  "#### 德欣橡膠工業股份有限公司\n\n* 1\\. 基本資料\n* 2\\. 營業地址\n* 3\\. 代表負責人\n* 4\\. 同類公司商號\n* 5\\. 資料集信息\n\n# 德欣橡膠工業股份有限公司\n\n**地址:** 新竹縣芎林鄉華龍村鹿寮坑172-1號\n\n_德欣橡膠工業股份有限公司_ 統一編號為 _22793835_ . 代表負責人為 吳秀英.\n\n搜尋\n\n[](https://twitter.com/share?ref_src=twsrc%5Etfw)\n\n* * *\n\n## 基本資料\n\n|統一編號 |22793835 |\n| --- | --- |\n|登記機關 |經濟部中部辦公室 |\n|公司名稱 |德欣橡膠工業股份有限公司 |\n|公司所在地 |新竹縣芎林鄉華龍村鹿寮坑172-1號 |\n|公司狀況 |解散 |\n|資本總額(元) |30,000,000 |\n|實收資本額(元) |30,000,000 |\n|核准設立日期 |1988-03-16 |\n|最後核准變更日期 |2018-12-05 |\n|公司狀況日期 |2019-06-19 |\n|公司狀況文號 |經授中字 第10833373640號 |\n\n### 董監事名單\n\n|序號 |職稱 |姓名 |所代表法人 |出資額 |\n| --- | --- | --- | --- | --- |\n|0004 |監察人 |邱坤淵 | |415,259 |\n\n### 所營事業資料\n\n[C801060](https://opengovtw.com/ban?category=C801060) 合成橡膠製造業 [C801100](https://opengovtw.com/ban?category=C801100)",
+                  "### 工廠登記資料\n\n|工廠名稱 |工廠地址 |負責人 |\n| --- | --- | --- |\n|[德欣橡膠工業股份有限公司芎林廠](https://opengovtw.com/factory/99700610) |新竹縣芎林鄉華龍村鹿寮坑１７２－１號 |吳婕吟 |\n\n## 財政部營業稅籍資料\n\n|營業人名稱 |德欣橡膠工業股份有限公司 |\n| --- | --- |"
+                ]
+              }
+            ],
+            "reasoning": "The company record names 德欣橡膠工業股份有限公司 and gives its registered company location in Hsinchu County. This supports Taiwan as the entity’s headquarters country.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_8e732351-a973-4a3d-9311-9375c62550aa",
+        "name": "IEI Integration Corp.",
+        "url": "https://www.ieiworld.com/en/about/company-information.php",
+        "description": "IEI Integration Corp. is a New Taipei-based industrial computing and systems company whose products serve national-defense and security applications, and it provides ODM services. That makes it a plausible defense-electronics or computing supplier/integration partner for a counter-drone sensor startup, though the cited company information does not specifically identify it as a drone or counter-drone systems provider.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_91af9721-4b71-4a1c-9576-f5d01fdca481",
+        "name": "Taiwan SHENGTAOYUANXIAN.AJIN.JIESONGFUWU",
+        "url": "https://www.linkedin.com/company/taiwan-shengtaoyuanxian.ajin.jiesongfuwu",
+        "description": "Taiwan SHENGTAOYUANXIAN.AJIN.JIESONGFUWU |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "chanwenlin Gharry Car Rental LTD. at Website Informer",
+                "url": "https://website.informer.com/chanwenlin+Gharry+Car+Rental+LTD..html",
+                "excerpts": [
+                  "Address No.190, Shangxing Rd., Luzhu Township, Taoyuan County 338 Taoyuan,338,TWTaoyuan, TWTW Phone +886.033239637 Email ajin.gharry@yahoo.com.tw"
+                ]
+              }
+            ],
+            "reasoning": "The address-linked listing identifies the location and an Ajin contact, but does not state that the entity makes, integrates, or supplies drones, counter-drone systems, drone components, or defense sensors. No qualifying 2024-or-later public source was identified.",
+            "confidence": "low"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "桃園市蘆竹區上興路190號 - 找找 3+3郵遞區號",
+                "url": "https://twzipcode.com/zipcode-3223578-%E6%A1%83%E5%9C%92%E5%B8%82%E8%98%86%E7%AB%B9%E5%8D%80%E4%B8%AD%E8%88%88%E9%87%8C%E4%B8%8A%E8%88%88%E8%B7%AF190%E8%99%9F.html",
+                "excerpts": [
+                  "地址, 桃園市蘆竹區上興路190號. 郵遞區號, 338024. 地址英文翻譯, No. 190, Shangxing Rd., Luzhu Dist., Taoyuan City 338024, Taiwan (R.O.C.)."
+                ]
+              }
+            ],
+            "reasoning": "The address at Shangxing Road in Taoyuan is explicitly identified as being in Taiwan, supporting a Taiwan country code for the entity’s stated Taoyuan location.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_9395de56-6a76-47f1-a9d8-fd07eab7f661",
+        "name": "TAIWAN Taipei DINGHUI QIYE Co., ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-taipei-dinghui-qiye-co.-ltd.",
+        "description": "TAIWAN Taipei DINGHUI QIYE Co., ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Big Brand - Overview, News & Competitors | ZoomInfo.com",
+                "url": "https://www.zoominfo.com/c/big-brand-co-ltd/353595684",
+                "excerpts": [
+                  "Since 1990, Big Brand has grown to include designing and producing products for Promotions Supplies. 1998 marks the year we began our R & D into the designing of Neoprene cooler/thermo (Koolie Koozie) product range.",
+                  "View Big Brand (www.kooliekoozie.com) location in Taipei, Taiwan , revenue, industry and description. Find related and similar companies as well as employees by title and much more."
+                ]
+              }
+            ],
+            "reasoning": "The public listing connects Big Brand with kooliekoozie.com and describes promotional supplies and the Koolie Koozie neoprene cooler range. It does not assert that the entity makes, integrates, or supplies any qualifying drone or defense-electronics product. No 2024-or-later qualifying source is identified, so the requested source value is NA.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "Big Brand - Overview, News & Competitors | ZoomInfo.com",
+                "url": "https://www.zoominfo.com/c/big-brand-co-ltd/353595684",
+                "excerpts": [
+                  "View Big Brand (www.kooliekoozie.com) location in Taipei, Taiwan , revenue, industry and description. Find related and similar companies as well as employees by title and much more."
+                ]
+              },
+              {
+                "title": "Koolie Koozie & It's a cool thing - 商標資訊",
+                "url": "https://www.findcompany.com.tw/trademark/01061637_091038411",
+                "excerpts": [
+                  "Find Company Logo [公司登記查詢中心](https://www.findcompany.com.tw/)\n\n查詢\n\n登入 免費宣傳您的公司\n\n \n\n# Koolie Koozie & It's a cool thing\n\n## 商標資訊\n\n|商標圖檔1945493\n\n資料來源：經濟部智慧財產局公開資料 | | | |\n| --- | --- | --- | --- |\n|商標權人 |[鼎卉企業有限公司](https://www.findcompany.com.tw/search/%E9%BC%8E%E5%8D%89%E4%BC%81%E6%A5%AD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8)  \nBIG BRAND CO LTD |登記地址 |臺北市文山區汀州路4段37號2樓 |\n|商標權人 |[鼎卉企業有限公司](https://www.findcompany.com.tw/search/%E9%BC%8E%E5%8D%89%E4%BC%81%E6%A5%AD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8)  \nBIG BRAND CO LTD | | |\n|登記地址 |臺北市文山區汀州路4段37號2樓 | | |\n|商標名稱 |Koolie Koozie & It's a cool thing |商標樣態 |平面 |\n|商標種類 |商標 |圖樣顏色 |彩色 |\n|申請案號 |091038411 |申請日期 |2002-09-12 |\n|註冊編號 |01061637 |註冊日期 |2003-10-16 |\n|註冊公告日期 |2003-11-16"
+                ]
+              }
+            ],
+            "reasoning": "The public listing places Big Brand, associated with kooliekoozie.com, in Taipei, Taiwan. The trademark record also identifies Big Brand Co Ltd as the Koolie Koozie rights holder and gives a Taipei address. This supports Taiwan (TW) as the entity's headquarters country.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_9bae078a-b222-4a9a-bd4b-2be42181dd9e",
+        "name": "Taiwan QIANRUI Model Co., Ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-qianrui-model-co.-ltd.",
+        "description": "Taiwan QIANRUI Model Co., Ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "10 Taiwan Drone Manufacturers You Should Know in 2026",
+                "url": "https://www.taiwandrones.com/news/10-taiwan-drone-manufacturers-you-should-know-in-2026",
+                "excerpts": [
+                  "It profiles ten Taiwanese drone **manufacturers:** companies that design and produce finished UAV platforms."
+                ]
+              }
+            ],
+            "reasoning": "The 2026 article passage describes Taiwanese drone manufacturers generally but does not identify Taiwan QIANRUI Model Co., Ltd. or attribute drones, counter-drone systems, drone components, defense sensors, or industry-association status to it. No qualifying 2024-or-later source is established for this entity.",
+            "confidence": "low"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "義興公園臭豆腐-總店 - No. 2號, Alley 24, Lane 177, Xinxing Rd, Pi...",
+                "url": "https://www.cybo.com/TW-biz/%E7%BE%A9%E8%88%88%E5%85%AC%E5%9C%92%E8%87%AD%E8%B1%86%E8%85%90-%E7%B8%BD%E5%BA%97",
+                "excerpts": [
+                  "No. 2號, Alley 24, Lane 177, Xinxing Rd, Pingzhen District, Taoyuan City, Taiwan 324 Pingzhen District, Taiwan Province, Taiwan $ Delis 0Like Add Photos Write Review Edit Hours 11:00 AM – 6:00 PM Every day11:00 AM – 6:00 PM Phone 0989 455 846 +1 0913 580 138 Address No. 2號, Alley 24, Lane 177, Xinxing Rd, Pingzhen District, Taoyuan City"
+                ]
+              }
+            ],
+            "reasoning": "The entity’s headquarters is identified as Pingjhen; the cited address listing places Pingzhen in Taoyuan City, Taiwan. This supports Taiwan as the headquarters country.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_9d155db6-c0eb-47b6-9066-7cf0ddf92a3c",
+        "name": "ALIGN Corporation Limited",
+        "url": "https://www.align.com.tw/index.php/en",
+        "description": "ALIGN Corporation Limited (亞拓科技) is a Taichung-based manufacturer that develops UAVs, including agricultural drones, and describes work spanning UAV components through complete aircraft. It is relevant to the wider drone industry and could be a potential drone-platform or manufacturing partner, but the available evidence does not establish it as a counter-drone sensor or counter-drone systems provider.",
+        "match_status": "matched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "Taipei Aerospace & Defense Technology Exhibition exhibitor profile (modified 2025-07-08): states ALIGN independently researches, designs, and manufactures high-performance UAVs (drones).",
+            "is_matched": true
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Taipei Aerospace & Defense Technology Exhibition-Exhibitor Info.-ALIGN CORPORATION LIMITED",
+                "url": "https://www.tadte.com.tw/en/exhibitor/375CB80A65387E4157C15FDFA6EA29A4/info.html",
+                "excerpts": [
+                  "ALIGN Corporation Ltd. has been dedicated to the independent research, design, and manufacturing of high-performance UAVs and smart lawn mowers since its establishment, with an unwavering commitment to \"Designed and Made in Taiwan.\" This ensures exceptional quality, precision, and reliability in every product we deliver.",
+                  "Online Date: 2025/03/28 Modify Date: 2025/07/08"
+                ]
+              }
+            ],
+            "reasoning": "The exhibitor profile says ALIGN is dedicated to independent research, design, and manufacturing of high-performance UAVs. The same profile lists its online date and modification date; the stated modification date is 2025-07-08.",
+            "confidence": "high"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "ALIGN CORPORATION LIMITED",
+                "url": "https://www.align.com.tw/index.php/en",
+                "excerpts": [
+                  "ALIGN Corporation Limited is located in the Fengyuan District of Taichung City, Taiwan."
+                ]
+              }
+            ],
+            "reasoning": "ALIGN’s official company page locates it in Taichung City, Taiwan, supporting Taiwan as its headquarters country.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_a3c703f3-b6a2-4fcc-bf24-fcc660367a53",
+        "name": "MiTAC Advance Technology Corp.",
+        "url": "https://www.mitacmat.com/eng",
+        "description": "MiTAC Advance Technology Corp. is a Taiwanese technology systems integrator with UAV experience; its company material says it has undertaken National Coast Guard UAV projects since 2017. In 2026, it announced a partnership with WhiteFox to manufacture, integrate, and deploy counter-drone systems, making it directly relevant as a potential integrator or partner. The supplied “Hsinchu” locator is not corroborated by its official group listing, which gives a Taipei address.",
+        "match_status": "matched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "https://www.unmannedairspace.info/counter-uas-systems-and-policies/whitefox-and-mitac-partner-to-develop-c-uas-solutions-for-taiwan (2026-02; exact publication day unavailable): states MiTAC jointly manufactures, integrates, and deploys counter-drone systems.",
+            "is_matched": true
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "WhiteFox and MiTAC partner to develop C-UAS solutions for Taiwan - Unmanned airspace",
+                "url": "https://www.unmannedairspace.info/counter-uas-systems-and-policies/whitefox-and-mitac-partner-to-develop-c-uas-solutions-for-taiwan",
+                "excerpts": [
+                  "WhiteFox Defense Technologies and MiTAC Advance Technology Corp, a Taiwan-based technology systems integration company, have announced a long-term strategic partnership to jointly manufacture, integrate, and deploy next-generation counter-drone systems in support of the Taiwan Ministry of Defense and other national security stakeholders."
+                ]
+              },
+              {
+                "title": "10 Taiwan Drone Manufacturers You Should Know in 2026",
+                "url": "https://www.taiwandrones.com/news/10-taiwan-drone-manufacturers-you-should-know-in-2026",
+                "excerpts": [
+                  "In February 2026, MiTAC Advance Technology signed an [exclusive long-term partnership with US-based WhiteFox Defense Technologies](https://www.unmannedairspace.info/counter-uas-systems-and-policies/whitefox-and-mitac-partner-to-develop-c-uas-solutions-for-taiwan/) to jointly manufacture, integrate, and deploy WhiteFox's DroneFox RF counter-drone system for the Taiwan Ministry of Defense and other national security stakeholders."
+                ]
+              }
+            ],
+            "reasoning": "The partnership announcement describes MiTAC as jointly manufacturing, integrating, and deploying counter-drone systems. The accompanying source identifies the partnership as signed in February 2026.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "WhiteFox and MiTAC partner to develop C-UAS solutions for Taiwan - Unmanned airspace",
+                "url": "https://www.unmannedairspace.info/counter-uas-systems-and-policies/whitefox-and-mitac-partner-to-develop-c-uas-solutions-for-taiwan",
+                "excerpts": [
+                  "WhiteFox Defense Technologies and MiTAC Advance Technology Corp, a Taiwan-based technology systems integration company, have announced a long-term strategic partnership to jointly manufacture, integrate, and deploy next-generation counter-drone systems in support of the Taiwan Ministry of Defense and other national security stakeholders."
+                ]
+              },
+              {
+                "title": "MiTAC Group - 神通資訊科技股份有限公司",
+                "url": "https://www.mitac.com.tw/en/about-mitac/mitac-group",
+                "excerpts": [
+                  "[6F, No. 187, Sec. 2, Tiding Blvd.Neihu Dist., Taipei City 114, Taiwan (R.O.C)](http://maps.google.com.tw/maps?q=114%E5%8F%B0%E5%8C%97%E5%B8%82%E5%85%A7%E6%B9%96%E5%8D%80%E5%A0%A4%E9%A0%82%E5%A4%A7%E9%81%93%E4%BA%8C%E6%AE%B5187%E8%99%9F8%E6%A8%93)"
+                ]
+              }
+            ],
+            "reasoning": "The partnership source identifies MiTAC Advance Technology as Taiwan-based, and the MiTAC group listing gives the company’s address in Taipei City, Taiwan. Together, these support Taiwan as its headquarters country.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_b3392d9b-f31d-4669-ad3e-59de581bc651",
+        "name": "Taiwan RUIGUAN Co., Ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-ruiguan-co.-ltd.",
+        "description": "Taiwan RUIGUAN Co., Ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Taiwan RUIGUAN Co., Ltd. Financial Overview, Employee Count ...",
+                "url": "https://www.apollo.io/companies/Taiwan-RUIGUAN-Co---Ltd-/667a92fe09018600019dcb2e",
+                "excerpts": [
+                  "View Taiwan RUIGUAN Co., Ltd. location in Taiwan, revenue, competitors and contact information. Find and reach Taiwan RUIGUAN Co., Ltd.'s employees by department, seniority, title, and much more."
+                ]
+              }
+            ],
+            "reasoning": "The profile identifies Taiwan RUIGUAN Co., Ltd. but only describes its location and employee information; it does not state that the company makes, integrates, or supplies any qualifying drone or defense product. No qualifying 2024-or-later source is evidenced here, so the requested source is NA.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "Taiwan RUIGUAN Co., Ltd. Financial Overview, Employee Count ...",
+                "url": "https://www.apollo.io/companies/Taiwan-RUIGUAN-Co---Ltd-/667a92fe09018600019dcb2e",
+                "excerpts": [
+                  "View Taiwan RUIGUAN Co., Ltd. location in Taiwan, revenue, competitors and contact information. Find and reach Taiwan RUIGUAN Co., Ltd.'s employees by department, seniority, title, and much more."
+                ]
+              }
+            ],
+            "reasoning": "The profile identifies Taiwan RUIGUAN Co., Ltd. as located in Taiwan, consistent with the supplied Taoyuan County headquarters information. The headquarters country is therefore Taiwan (TW).",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_b344d195-b213-42a8-ba73-5581d192d7b5",
+        "name": "Tron Future Tech Inc.",
+        "url": "https://www.tronfuture.com/",
+        "description": "Tron Future Tech Inc. is a Taiwanese technology company founded in 2018 that develops AESA radar and counter-unmanned aircraft systems (C-UAS). Its counter-drone focus makes it directly relevant to a foreign counter-drone sensor startup as a potential competitor, partner, or integrator. The available evidence supports its Taiwan identity but does not establish Taoyuan as its location.",
+        "match_status": "matched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "https://www.taipeitimes.com/News/taiwan/archives/2026/07/15/2003860773 (2026-07-15): reports that Tron Future was contracted to develop fixed-location, ground-based anti-drone systems; this supports developing/making counter-drone systems.",
+            "is_matched": true
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Military drone contract faces axe - Taipei Times",
+                "url": "https://www.taipeitimes.com/News/taiwan/archives/2026/07/15/2003860773",
+                "excerpts": [
+                  "(last verified: 2026-09-30) All Front Page Taiwan News Business Editorial & Opinion Sports World News Features Bilingual Pages GO Home Taiwan News Wed, Jul 15, 2026 page3 Military drone contract faces axe A NT$987.81 million (US$30.7 million) contract for fixed drone countermeasure systems failed to meet standards and the Ministry of National Defense is seeking arbitration to annul the contract, a military source said yesterday. Tron Future was awarded a contract to develop 26 fixed-location, ground-based anti-drone systems that could accurately detect low-flying targets as small as 10cm2 at a range of at least 6km, and be able to disrupt its signal and bring it down at a range of 4km, said the source, who commented on condition of anonymity."
+                ]
+              }
+            ],
+            "reasoning": "The dated article identifies the report as published on July 15, 2026, and says Tron Future was awarded a contract to develop fixed-location, ground-based anti-drone systems. This supports the counter-drone systems category and the claim that it develops them.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "News-Tron Future completes Series A round, targets rapidly growing global counter-drone demand",
+                "url": "https://www.taiwaniacapital.com/en/news/category/news/2024/news240523",
+                "excerpts": [
+                  "Tron Future completes Series A round, targets rapidly growing global counter-drone demand May 23, 2024 Share: **[Tron Future Tech](https://taiwania.soez.com.tw/en/portfolios/category/tron_future_tech) ,** a Taiwanese startup founded in 2018, has emerged to be a prominent leader in Taiwan's low Earth orbit (LEO) satellite and Counter-Unmanned Aircraft Systems (C-UAS) markets."
+                ]
+              }
+            ],
+            "reasoning": "The source describes Tron Future as a Taiwanese startup and places its C-UAS activity in Taiwan, supporting Taiwan as the entity's country. The source identifies it as Taiwanese but does not explicitly state a headquarters address.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_b3f31e7c-1c99-4653-b2a5-a7df8dc4b897",
+        "name": "ADLINK Technology, Inc.",
+        "url": "http://www.adlinktech.com/",
+        "description": "ADLINK Technology, Inc. is a Taiwan-based embedded and edge-computing company with rugged defense platforms. Its materials describe computing solutions supporting radar, cameras, and other fast sensors, and military-specific platforms for radar, UAVs, ground vehicles, and electronic warfare. This makes it a strong potential defense-electronics supplier or integration partner for a counter-drone sensor startup. ADLINK’s current official headquarters listing is in Taoyuan; “New Taipei” matches an older company release that listed its headquarters in Zhonghe.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_b57fffd9-808e-45be-a142-276ddd846077",
+        "name": "Taiwan Taipei TINGYU SHIYE Co., ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-taipei-tingyu-shiye-co.-ltd.",
+        "description": "Taiwan Taipei TINGYU SHIYE Co., ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "CN",
+            "is_matched": false
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Taiwan Taipei TINGYU SHIYE Co., ltd. | LinkedIn",
+                "url": "https://www.linkedin.com/company/taiwan-taipei-tingyu-shiye-co.-ltd.",
+                "excerpts": [
+                  "Taiwan Taipei TINGYU SHIYE Co., ltd. About us Company size 2-10 employees Headquarters Taipei Locations TAIPEI, TAIWAN Taipei, CN [Get directions](https://www.bing.com/maps?where=TAIPEI%2C+TAIWAN+Taipei+CN&trk=org-locations_url)"
+                ]
+              }
+            ],
+            "reasoning": "The exact company profile identifies the entity but shows only an “About us” heading, company size, headquarters, and location details; it makes no claim about drones, counter-drone systems, drone components, defense sensors, or being an industry association. No qualifying 2024-or-later source was identified, so the value is NA and the entity does not match.",
+            "confidence": "low"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "Taiwan Taipei TINGYU SHIYE Co., ltd. | LinkedIn",
+                "url": "https://www.linkedin.com/company/taiwan-taipei-tingyu-shiye-co.-ltd.",
+                "excerpts": [
+                  "Company size 2-10 employees Headquarters Taipei Locations TAIPEI, TAIWAN Taipei, CN [Get directions](https://www.bing.com/maps?where=TAIPEI%2C+TAIWAN+Taipei+CN&trk=org-locations_url)"
+                ]
+              }
+            ],
+            "reasoning": "The profile names Taipei as the headquarters, but its location details include both “TAIPEI, TAIWAN” and “Taipei, CN.” The entity’s structured country code is CN, and the profile also labels the location “Taipei, CN”; therefore the best-supported headquarters country code is CN, not Taiwan.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_b6232cf6-c99b-4803-bcf6-772320cdd29d",
+        "name": "GEOSAT Aerospace & Technology Inc.",
+        "url": "https://www.geosat.com.tw/TW/about-us-overview.aspx",
+        "description": "GEOSAT Aerospace & Technology Inc. (經緯航太科技股份有限公司) is a Taiwan-based, vertically integrated UAV company with drone R&D, manufacturing, operations, and data-analysis capabilities. It is strongly relevant to a counter-drone startup: in 2023, it signed an agreement to manufacture Fortunio Japan’s DDD counter-UAV detection and disabling system in Taiwan. The “Chiayi” qualifier is not its official headquarters location: the company lists its headquarters in Tainan, although it is also listed in an Asia UAV AI Innovation R&D Center directory.",
+        "match_status": "matched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "https://focustaiwan.tw/business/202610280017 (2026-10-28) — identifies GEOSAT as a “drone maker,” asserting that it makes drones.",
+            "is_matched": true
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "\n\tDrone supply chains key to wartime endurance: AerosoarX chairman - Focus Taiwan\n",
+                "url": "https://focustaiwan.tw/business/202610280017",
+                "excerpts": [
+                  "Reflecting on his earlier experience at drone maker Geosat Aerospace & Technology, Lo recalled taking pride in doing nearly 80 percent of the development in-house."
+                ]
+              }
+            ],
+            "reasoning": "The cited 2026-10-28 source describes GEOSAT Aerospace & Technology as a “drone maker,” which supports the claim that it makes drones and meets the 2024-or-later evidence requirement.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "GEOSAT Aerospace & Technology Corporate Headquarters, Office Locations and Addresses | Craft.co",
+                "url": "https://craft.co/geosat-aerospace-technology/locations",
+                "excerpts": [
+                  "[](https://craft.co/geosat-aerospace-technology)\n\n# [GEOSAT Aerospace & Technology Headquarters and Office Locations](https://craft.co/geosat-aerospace-technology)\n\nHeader placeholder lorem ipsum dolor sit amet, consectetur adipiscing elit.\n\n[Button CTA](https://craft.co/)\n\nbanner\n\nGEOSAT Aerospace & Technology is headquartered in Tainan, 12th Floor, No. 253, Section 3, Dongmen Rd, East District, Taiwan, and has 4 office locations.\n\n## Locations\n\n|Country |City |Address |\n| --- | --- | --- |\n|Taiwan |Tainan |12th Floor, No. 253, Section 3, Dongmen Rd, East District HQ |\n|Taiwan |Taichung |1st Floor, No. 30, Keya Rd, Daya District |\n|Taiwan |Taichung |3rd Floor, No. 43, Keya Road |\n|Taiwan |Taipei |10th Floor, No. 306, Section 4, Xinyi Road |\n\n## Footer menu\n\n[](https://craft.co/)"
+                ]
+              }
+            ],
+            "reasoning": "The source states that GEOSAT is headquartered in Tainan and gives its headquarters address in Taiwan, supporting the country code TW.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_b8722982-e4d2-4098-995a-4573f215a471",
+        "name": "Air Asia Company Limited (AACL)",
+        "url": "https://www.airasia.com.tw/index.php?lang=en&temp=intro",
+        "description": "Air Asia Company Limited (AACL) is a Taiwan aerospace company focused on commercial and military aircraft maintenance, repair and overhaul. Its official annual report also documents UAV assembly and maintenance capabilities and plans to pursue UAV-related work, making it a potential aviation or UAV integration and maintenance partner. The company is located in Tainan, not Taoyuan. The available evidence does not identify it as a specialist in counter-drone sensors or defense electronics.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_bb94dbb5-0a4b-48fe-8060-c2ee85606e23",
+        "name": "Taiwan QIXING SHIYE Co., Ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-qixing-shiye-co.-ltd.",
+        "description": "Taiwan QIXING SHIYE Co., Ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA — no qualifying public source from 2024 or later was found.",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Taiwan QIXING SHIYE Co., Ltd. - 2 DUAN 374 HAO 7F-8 ... - Cybo",
+                "url": "https://www.cybo.com/TW-biz/taiwan-qixing-shiye-co-ltd",
+                "excerpts": [
+                  "About Taiwan QIXING SHIYE Co., Ltd. is located in Taipei. Taiwan QIXING SHIYE Co., Ltd. is working in Shopping, Hardware stores activities. You can contact the company at 02 2711 7656. You can find more information about Taiwan QIXING SHIYE Co., Ltd. at www.pails.com.tw. You can contact the company by email at hdpepail@ms26.hinet.net. John Ho is associated with the company."
+                ]
+              },
+              {
+                "title": "*UN Pails, Plastic pails, Paint Pails, Lubricant Pails, Plastic buckets",
+                "url": "http://www.pails.com.tw/",
+                "excerpts": [
+                  "Easy to open, easy to use, easy to close!_**](http://http://www.pails.com.tw/Product-200513114410.html)\n\nHdpe Star Enterprise Co., Ltd.- Plastic Pails Specialist\n\n#### Hdpe Star Enterprise Co., Ltd.- Plastic Pails Specialist\n\nHdpe Star Enterprise is Taiwan's largest plastic pail manufacturer, often referred to as the \"Pail King\". We are also into plastic injection molding, experienced in the used of various engineering plastics for molding products with stringent requirements. To expend our markets, we are interested in dealing with customers around the world. Our guaranteed quality and competitive pricing will, we believe, ensure a satisfactory cooperation."
+                ]
+              }
+            ],
+            "reasoning": "The business listing identifies Taiwan QIXING SHIYE Co., Ltd. as operating in hardware stores and links to pails.com.tw. The linked company site describes plastic pails and injection molding, not drones, counter-drone systems, drone components, or defense sensors. These sources do not establish a qualifying 2024-or-later business claim.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "John Ho - Manager at Taiwan QIXING SHIYE Co., Ltd. - Cybo",
+                "url": "https://www.cybo.com/TW-contact/taiwan-qixing-shiye-co-ltd/John+Ho",
+                "excerpts": [
+                  "Business Info Taiwan QIXING SHIYE Co., Ltd. 2 DUAN 374 HAO 7F-8, BADE Road, Taipei, Taiwan · Taipei"
+                ]
+              },
+              {
+                "title": "*UN Pails, Plastic pails, Paint Pails, Lubricant Pails, Plastic buckets",
+                "url": "http://www.pails.com.tw/",
+                "excerpts": [
+                  "Address: [7F-8, 374 Pateh Rd., Sec. 2, Taipei, Taiwan](https://www.google.com.tw/maps/search/7F-8,+374+Pateh+Rd.,+Sec.+2,+Taipei,+Taiwan/data=!3m1!4b1?entry=ttu)  \nTEL: 886-2-27117656    FAX: 886-2-27117659  \nEmail: hdpepail@ms26.hinet.net"
+                ]
+              }
+            ],
+            "reasoning": "The business listing names Taiwan QIXING SHIYE Co., Ltd. and gives its location as Taipei, Taiwan. The company site's contact address also places the business in Taipei, Taiwan, supporting TW as its headquarters country.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_bee9cf1c-5f8b-4918-945e-745f653272b7",
+        "name": "Bridge Components",
+        "url": "https://bridgecomponents.com/",
+        "description": "Bridge Components is a Taichung-based Taiwanese manufacturer of active and passive RF and microwave equipment for telecommunications and signal enhancement. Its official site also identifies anti-drone as an application, making it a plausible RF-component supplier or partner for a counter-drone startup. The available description does not establish it as an integrated counter-drone sensor or system maker.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_c1612546-80b4-4d1b-9e39-161490021855",
+        "name": "Evergreen Aviation Technologies Corporation (EGAT)",
+        "url": "https://www.egat.com.tw/en",
+        "description": "Evergreen Aviation Technologies Corporation (EGAT) is a Taiwan-based aircraft maintenance provider and a joint venture between Evergreen Group’s EVA Air and General Electric since 1998. Its stated focus is aircraft maintenance for airline partners, not drones, counter-drone systems, or defense electronics and sensors, so it is a weak, indirect fit for the stated partner search. Although the input includes “Tainan,” EGAT’s official site lists its address in Taoyuan City.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_c8ce1144-5686-4fac-9619-6343e34e959e",
+        "name": "Taiwan DEJUN Co., Ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-dejun-co.-ltd.",
+        "description": "Taiwan DEJUN Co., Ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [],
+            "reasoning": "No retrieved evidence identifies this exact entity as making, integrating, or supplying drones, counter-drone systems, drone components, or defense radar/RF/electro-optical sensors, or as an industry association. Therefore, no qualifying 2024-or-later source was found.",
+            "confidence": "low"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [],
+            "reasoning": "The entity attributes give the address as “2F, NO.153 PUXIN ROAD, TAOYUAN, TAIWAN” and headquarters as Taoyuan, supporting TW. The separate country_code value CN conflicts with the explicit Taiwan address.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_cb87fcf7-63ba-4fd2-bf83-2b7b93975dc0",
+        "name": "Taiwan AMY FUSHI Co., Ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-amy-fushi-co.-ltd.",
+        "description": "Taiwan AMY FUSHI Co., Ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA — no 2024-or-later public source in the available evidence states that Taiwan AMY FUSHI Co., Ltd. makes, integrates, or supplies drones, counter-drone systems, drone components, or defense radar/RF/electro-optical sensors, or that it is a drone or defense industry association.",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Taiwan AMY FUSHI Co., Ltd. | LinkedIn",
+                "url": "https://linkedin.com/company/taiwan-amy-fushi-co.-ltd.",
+                "excerpts": [
+                  "Taiwan AMY FUSHI Co., Ltd.’s cover photo Taiwan AMY FUSHI Co., Ltd. Follow Report this company About us Company size 2-10 employees Headquarters Taipei Locations 2 DUAN 69 HAO 1 LOU, TONGHE WEST STREET, TAIPEI, TAIWAN Taipei, 103, CN Get directions LinkedIn © 2025"
+                ]
+              }
+            ],
+            "reasoning": "The public company profile identifies Taiwan AMY FUSHI and lists company size, Taipei headquarters, and location, but does not state that it makes, integrates, or supplies any of the qualifying drone or defense products, or that it is an industry association. No qualifying 2024-or-later claim is evidenced, so the business match is no and the source value is NA.",
+            "confidence": "low"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "Taiwan AMY FUSHI Co., Ltd. | LinkedIn",
+                "url": "https://linkedin.com/company/taiwan-amy-fushi-co.-ltd.",
+                "excerpts": [
+                  "About us Company size 2-10 employees Headquarters Taipei Locations 2 DUAN 69 HAO 1 LOU, TONGHE WEST STREET, TAIPEI, TAIWAN"
+                ]
+              }
+            ],
+            "reasoning": "The profile identifies the company's headquarters as Taipei and gives its location as Taipei, Taiwan, supporting Taiwan as the headquarters country (ISO code TW).",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_d3518d3c-1d6a-45dc-87c2-389febb102ba",
+        "name": "TAIWAN DUMO Technology Co., Ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-dumo-technology-co.-ltd.",
+        "description": "TAIWAN DUMO Technology Co., Ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "TAIWAN DUMO Technology Co., Ltd. | LinkedIn",
+                "url": "https://www.linkedin.com/company/taiwan-dumo-technology-co.-ltd.",
+                "excerpts": [
+                  "Industry Industrial Machinery Manufacturing"
+                ]
+              }
+            ],
+            "reasoning": "The company profile identifies the entity as being in industrial machinery manufacturing, but does not state that it makes, integrates, or supplies drones, counter-drone systems, drone components, or defense radar/RF/electro-optical sensors. No qualifying 2024-or-later source was established, so the value is NA and the entity is not matched.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "TAIWAN DUMO Technology Co., Ltd. | LinkedIn",
+                "url": "https://www.linkedin.com/company/taiwan-dumo-technology-co.-ltd.",
+                "excerpts": [
+                  "Industry Industrial Machinery Manufacturing Headquarters Kaohsiung County Locations GANGSHAN ZHENBEN GONGDONG YILU 3 HAO, KAOHSIUNG COUNTY, TAIWAN"
+                ]
+              }
+            ],
+            "reasoning": "The profile identifies Kaohsiung County as the headquarters and gives the company location as an address in Taiwan, supporting the headquarters country code TW.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_e276733e-b79b-4535-b9ec-acce5275736b",
+        "name": "Taiwan YONGZAO Co., ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-yongzao-co.-ltd.",
+        "description": "Taiwan YONGZAO Co., ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "MACHINE PARTS_LICORNE SEWING MACHINE PARTS-YEONGTZAW ...",
+                "url": "http://www.ytai.com.tw/en/category.php?id=30",
+                "excerpts": [
+                  "PARTS FOR CUTTER MACHINE YT-90C 3.5\" ROUND BLADE CUTTING MACHINE YT-90 4.25\" ROUND BLADE CUTTING MACHINE YT-110 2\" MINI BLADE CUTTER YT-100K 5\" STRAIGHT CUTTER KM TYPE YT-150U 2\" MINI BLADE CUTTER WITH HADLE YT-100KL 6\"-10\" STRAIGHT KNIFE CUTTER YT-200U CLOTH DRILL YT-201L BAND KNIFE CUTTING MACHINE YTB-700A 4\" ROUND BLADE CUTTING MACHINE YT-280"
+                ]
+              }
+            ],
+            "reasoning": "The company product listing describes sewing-machine parts and cutting machines. The available company-specific evidence does not provide a public source from 2024 or later asserting that it makes, integrates, or supplies drones, counter-drone systems, drone components, or defense sensors, nor that it is an industry association.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "Contact Us - YEONG TZAW ASSOCIATES INC. | Taiwan Electronic Hand Tools Exporter - Contact - YEONG TZAW ASSOCIATES INC.",
+                "url": "https://www.ectools.com.tw/contact/8",
+                "excerpts": [
+                  "ADD 9F., No.659, Zhongzheng Rd., Xinzhuang Dist., New Taipei City 24257, Taiwan"
+                ]
+              }
+            ],
+            "reasoning": "The company contact page gives an address in Xinzhuang District, New Taipei City, and explicitly identifies the address as being in Taiwan. This supports Taiwan as the country of its headquarters.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_e60356ec-3ba8-4a0d-8857-c8a6a37061a1",
+        "name": "Taiwan SHENGJINZHANGUOJI Co., ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-shengjinzhanguoji-co.-ltd.",
+        "description": "Taiwan SHENGJINZHANGUOJI Co., ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Nation is consolidating its drone resources - Taipei Times",
+                "url": "https://www.taipeitimes.com/News/taiwan/archives/2024/12/16/2003828581",
+                "excerpts": [
+                  "Taiwan is bringing together dozens of drone companies to forge a drone production supply hub capable of making its mark in global markets, Aerospace Industrial Development Corp (AIDC) president Ma Wan-june (馬萬鈞) said.\n  \n  Ma was referring to the Taiwan Excellence Drone International Business Opportunities Alliance, a Ministry of Economic Affairs-supported Taiwanese drone supply chain alliance led by AIDC. The ministry has a 35 percent stake.\n  \n  The alliance is comprised of about 50 drone-related companies including AIDC, aircraft maintenance services provider Air Asia Co, drone brand Thunder Tiger Corp, Coretronic Intelligent Robotics Corp, Geosat Aerospace & Technology,",
+                  "That would be instrumental in supporting a strong supply chain capable of rolling out fuselages, power systems, flight controls, GPS antenna modules, camera lens modules, radar, uncrewed aircraft system integration, drone ground control stations, software, and assembly and testing services, he said."
+                ]
+              }
+            ],
+            "reasoning": "The 2024 report discusses Taiwan's drone companies and supply-chain capabilities, but does not identify Taiwan SHENGJINZHANGUOJI Co., Ltd. as making, integrating, or supplying drones, counter-drone systems, drone components, or defense sensors. No qualifying entity-specific 2024-or-later source was found.",
+            "confidence": "low"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "YAO SHENG METALS CO., LTD.",
+                "url": "https://www.findcompany.com.tw/en/YAO%20SHENG%20METALS%20CO.,%20LTD.",
+                "excerpts": [
+                  "|Import Qualification |No | | |\n|Export Qualification |No | | |\n\n|Original Registration Date |20140428 | |\n| --- | --- | --- |\n|Date of Last Change |20220802 | |\n|Company Name in English |YAO SHENG METALS CO., LTD. | |\n|Business Address in English |1 F., No. 233, Shuiyuan Rd., Sanmin Dist., Kaohsiung City 80766, Taiwan (R.O.C.) | |\n|Telephone |07-3747217 | |\n|Import Qualification |No | |"
+                ]
+              }
+            ],
+            "reasoning": "The entity attributes place the headquarters in Kaohsiung, Taiwan. The cited business record identifies Shuiyuan Road 233 in Kaohsiung City, Taiwan, supporting TW as the headquarters country.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_e6eaca09-dd7d-4dd9-9e0b-accf2e60e6bd",
+        "name": "Taiwan YILIDE Technology Co., Ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-yilide-technology-co.-ltd.",
+        "description": "Taiwan YILIDE Technology Co., Ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA — No 2024-or-later public source was found stating that the entity makes, integrates, or supplies the specified drone or defense products, or is a drone/defense industry association.",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Taiwan YILIDE Technology Co., Ltd. | LinkedIn",
+                "url": "https://www.linkedin.com/company/taiwan-yilide-technology-co.-ltd.",
+                "excerpts": [
+                  "About us Industry Mining"
+                ]
+              }
+            ],
+            "reasoning": "The exact entity’s public profile identifies its industry as Mining but does not state that it makes, integrates, or supplies any of the specified drone or defense products, or that it is an industry association. No qualifying 2024-or-later source was found, so the evidence does not support a match.",
+            "confidence": "low"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "Taiwan YILIDE Technology Co., Ltd. | LinkedIn",
+                "url": "https://www.linkedin.com/company/taiwan-yilide-technology-co.-ltd.",
+                "excerpts": [
+                  "Industry Mining Headquarters Taipei Locations 6# ZHI 2, NO.172 CHANGCHUN ROAD, TAIPEI, TAIWAN"
+                ]
+              }
+            ],
+            "reasoning": "The profile lists Taipei as the headquarters and gives a Taipei location address ending in Taiwan, supporting Taiwan (TW) as the headquarters country.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_e8503548-49d6-4c5a-bc9d-fda8ec12933a",
+        "name": "Taiwan DONGFANGDIAN Co., Ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-dongfangdian-co.-ltd.",
+        "description": "Taiwan DONGFANGDIAN Co., Ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Taiwan DONGFANGDIAN Co., Ltd. | LinkedIn",
+                "url": "https://www.linkedin.com/company/taiwan-dongfangdian-co.-ltd.",
+                "excerpts": [
+                  "About us Company size 11-50 employees Headquarters Taoyuan Locations 116 HAO, SHUIBIANYI ROAD, TAOYUAN, TAIWAN"
+                ]
+              }
+            ],
+            "reasoning": "The profile identifies Taiwan DONGFANGDIAN Co., Ltd. and gives its headquarters and address, but provides no business description or claim that it makes, integrates, or supplies drones, counter-drone systems, drone components, or defense sensors. No qualifying 2024-or-later public source for this entity was found.",
+            "confidence": "low"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "Taiwan DONGFANGDIAN Co., Ltd. | LinkedIn",
+                "url": "https://www.linkedin.com/company/taiwan-dongfangdian-co.-ltd.",
+                "excerpts": [
+                  "Company size 11-50 employees Headquarters Taoyuan Locations 116 HAO, SHUIBIANYI ROAD, TAOYUAN, TAIWAN"
+                ]
+              }
+            ],
+            "reasoning": "The profile identifies Taoyuan as the company's headquarters and gives its address as Taoyuan, Taiwan, supporting Taiwan as the headquarters country.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_f4ebb73a-72ad-4dd5-a5bb-1e1913ddf69c",
+        "name": "Taiwan NANJI SHIYE Co., Ltd.",
+        "url": "https://www.linkedin.com/company/taiwan-nanji-shiye-co.-ltd.",
+        "description": "Taiwan NANJI SHIYE Co., Ltd. |",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "Taiwan NANJI SHIYE - Overview, News & Competitors - ZoomInfo",
+                "url": "https://www.zoominfo.com/c/taiwan-nanji-shiye-co-ltd/561924337",
+                "excerpts": [
+                  "Taiwan NANJI SHIYE Co. Ltd is a company that operates in the Information Technology and Services industry. It employs 251-500 people and has $10M-$25M of revenue."
+                ]
+              },
+              {
+                "title": "ABOUT-Tectran Corporation",
+                "url": "https://www.tectrancorp.net/company",
+                "excerpts": [
+                  "2F, No. 29, Zhongtai Rd., Zhongli Dist., Taoyuan City 320003, Taiwan"
+                ]
+              }
+            ],
+            "reasoning": "The company directory describes Taiwan NANJI SHIYE as operating in information technology and services, and the Tectran-branded company page provides a Taoyuan address. Neither source asserts that the entity makes, integrates, or supplies drones, counter-drone systems, drone components, or defense radar/RF/electro-optical sensors. No qualifying 2024-or-later source is evidenced here, so the best-supported result is NA and no match.",
+            "confidence": "low"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "ABOUT-Tectran Corporation",
+                "url": "https://www.tectrancorp.net/company",
+                "excerpts": [
+                  "2F, No. 29, Zhongtai Rd., Zhongli Dist., Taoyuan City 320003, Taiwan"
+                ]
+              }
+            ],
+            "reasoning": "The Tectran-branded company page gives an address in Taoyuan City, Taiwan, supporting Taiwan as the headquarters country for the entity identified with this company information.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_f7f74c84-b051-4bf6-9ae5-bff7ed02cbfc",
+        "name": "Coretronic Intelligent Robotics Corporation (CIRC)",
+        "url": "https://www.coretronic-robotics.com/",
+        "description": "Coretronic Intelligent Robotics Corporation (CIRC), a Coretronic subsidiary, develops and manufactures commercial and security drones and offers ODM/JDM services. Its work in intelligent surveillance and reconnaissance, along with reported defense contracts for sensor payloads and military-grade commercial drones, makes it a plausible adjacent supplier or integration partner for a counter-drone sensor startup. The available descriptions do not establish CIRC as a maker of counter-UAS detection or defeat systems. The official location listing gives an address in Hsinchu Science Park, Hsinchu City; the “Zhunan” location in the entity label is not corroborated there.",
+        "match_status": "matched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "https://www.scmp.com/news/china/military/article/3369929/us-firm-make-battle-tested-drones-taiwan-boosting-supply-chain-resilience (2026-10-06): reports that CIRC is working with Aevex Aerospace to produce Vandal and Onyx drones locally; category: drones, makes jointly.",
+            "is_matched": true
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "US firm to make battle-tested drones in Taiwan, boosting supply chain resilience | South China Morning Post",
+                "url": "https://www.scmp.com/news/china/military/article/3369929/us-firm-make-battle-tested-drones-taiwan-boosting-supply-chain-resilience",
+                "excerpts": [
+                  "California-based defence technology company Aevex Aerospace is working with Taiwan’s Coretronic Intelligent Robotics Corporation (CIRC) to produce its Vandal and Onyx drones locally, combining lessons drawn from the [war in Ukraine](https://www.scmp.com/topics/ukraine-war?module=inline&pgtype=article) with the island’s electronics and manufacturing capabilities.\n\nBoth aircraft have been tested under combat conditions in Ukraine, where intensive electronic warfare has helped shape their development, according to Aevex executives.\n\nVandal, the smaller of the two, is designed for intelligence, surveillance and reconnaissance missions, as well as electronic warfare and precision strikes."
+                ]
+              }
+            ],
+            "reasoning": "The dated source identifies CIRC and says it is working with Aevex to produce two named drones locally, supporting the claim that the company makes drones jointly.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "CIRC中光電智能機器人 – Autonomous, Drone, Solutions",
+                "url": "https://www.coretronic-robotics.com/contact",
+                "excerpts": [
+                  "* [](https://www.youtube.com/channel/UCRc42DTKSmapMAP7_4lJzWA)\n\n[](https://www.coretronic-robotics.com/index)\n\n# **Contact Us**\n\n  \n#### **Coretronic Intelligent Robotics Corporation**\n\n###### Headquarters(Taiwan)\n\nNo. 11, Li Hsing Rd., Science Park, Hsinchu, Taiwan, 30078, R.O.C.  \nPhone: +886-3-5772000  \nCustomer Service Website: https://cssupport.coretronic.com/eServiceLogin/  \nEmail(Drone): service.drone@coretronic-robotics.com  \nEmail(AMR):service.amr@coretronic-robotics.com\n\n  \n# [](http://maps.google.com/maps?f=q&hl=zh-TW&geocode=&q=1%20Bourne%20End%20Mills,%20Hemel%20Hempstead,%20Hertfordshire,%20HP1%202UJ,%20United%20Kingdom)\n\n###### European Office\n\n1 Bourne End Mills, Hemel Hempstead, Hertfordshire, HP1 2UJ, United Kingdom  \nPhone: +44 (0)-1923-691-883  \nEmail: eu.circ@coretronic-robotics.com"
+                ]
+              }
+            ],
+            "reasoning": "CIRC’s official contact page labels its headquarters as being in Taiwan and gives its Hsinchu address, supporting the country code TW.",
+            "confidence": "high"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_f9c44c9a-10ef-4a0a-b646-e05d4fd5d57f",
+        "name": "YKK TAIWAN CO., LTD.",
+        "url": "https://www.linkedin.com/company/ykk-taiwan-co.-ltd.",
+        "description": "YKK TAIWAN CO., LTD. | 29 followers on LinkedIn.",
+        "match_status": "unmatched",
+        "output": {
+          "drone_business": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          },
+          "taiwan_based": {
+            "type": "match_condition",
+            "value": "TW",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "drone_business",
+            "citations": [
+              {
+                "title": "YKK TAIWAN.,LTD.",
+                "url": "https://www.ykktaiwan.com.tw/eprofile.html",
+                "excerpts": [
+                  "[Location](https://www.ykktaiwan.com.tw/elocation.html) | [Certification](https://www.ykktaiwan.com.tw/ecertification.html) |\n\n| |YKK TAIWAN CO., LTD. , established in 1966, is one of the subsidiaries of YKK Corporation. Our company is mainly engaged in the FASTENING PRODUCTS manufacturing industry, and has numbers of customers all over the world. We are well known for manufacturing FASTENERS, PLASTIC PARTS, SNAP & BUTTON, etc.  \n  \nTo demonstrate YKK's commitment to new product development, we have set up Research & Development Center in 2002. This move not only enhances the power of development to satisfy the ever-growing needs of our customers, but also again establishes YKK Taiwan as one of the most important development and production centers within YKK Group worldwide.  \n  \nWith the headquarters in Taipei, YKK Taiwan also has branches in Taichung, Tainan, and factories in Chungli."
+                ]
+              }
+            ],
+            "reasoning": "YKK Taiwan’s official company profile describes its business as manufacturing fasteners, plastic parts, snaps, and buttons. No 2024-or-later public source was found stating that this entity makes, integrates, or supplies the specified drone or defense products, or that it is a drone or defense industry association; therefore the requested source value is NA and it does not match.",
+            "confidence": "medium"
+          },
+          {
+            "field": "taiwan_based",
+            "citations": [
+              {
+                "title": "YKK TAIWAN.,LTD.",
+                "url": "https://www.ykktaiwan.com.tw/eprofile.html",
+                "excerpts": [
+                  "[Location](https://www.ykktaiwan.com.tw/elocation.html) | [Certification](https://www.ykktaiwan.com.tw/ecertification.html) |\n\n| |YKK TAIWAN CO., LTD. , established in 1966, is one of the subsidiaries of YKK Corporation. Our company is mainly engaged in the FASTENING PRODUCTS manufacturing industry, and has numbers of customers all over the world. We are well known for manufacturing FASTENERS, PLASTIC PARTS, SNAP & BUTTON, etc.",
+                  "This move not only enhances the power of development to satisfy the ever-growing needs of our customers, but also again establishes YKK Taiwan as one of the most important development and production centers within YKK Group worldwide.  \n  \nWith the headquarters in Taipei, YKK Taiwan also has branches in Taichung, Tainan, and factories in Chungli. We have got the certifications of ISO9001, ISO14001, and Oeko-Tex、Bluesign issued by Japan Authority."
+                ]
+              }
+            ],
+            "reasoning": "The official YKK Taiwan profile identifies the company as YKK Taiwan and states that its headquarters are in Taipei. This supports Taiwan as the headquarters country.",
+            "confidence": "medium"
+          }
+        ]
+      }
+    ],
+    "last_event_id": "65f072211fa8f"
+  }
+}

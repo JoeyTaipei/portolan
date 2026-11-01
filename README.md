@@ -1,4 +1,4 @@
-# Atlas
+# Portolan
 
 Market entry intelligence: evidence-backed stakeholder maps, strategy briefs and a one-page A4 report.
 

@@ -1,0 +1,24 @@
+[budget] findall:events:base:8: est $0.490 (running total $3.430)
+created findall_2f937a48caa14210894258bc00f36811
+1s queued generated=0 matched=0
+22s running generated=0 matched=0
+42s running generated=0 matched=0
+63s running generated=0 matched=0
+83s running generated=1 matched=0
+105s running generated=1 matched=0
+125s running generated=1 matched=1
+146s running generated=2 matched=1
+166s running generated=2 matched=1
+187s running generated=2 matched=1
+208s running generated=2 matched=2
+228s running generated=2 matched=2
+249s running generated=2 matched=2
+269s running generated=2 matched=2
+290s running generated=3 matched=2
+310s running generated=4 matched=2
+331s running generated=4 matched=2
+352s running generated=8 matched=4
+372s running generated=10 matched=5
+393s running generated=12 matched=5
+414s completed generated=14 matched=8
+[saved] scripts/spike/out/findall-events-base.json

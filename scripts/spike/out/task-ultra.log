@@ -1,0 +1,36 @@
+[budget] task:ultra: est $0.300 (running total $0.400)
+created trun_a92392881b3e40ddb7c04bcb730d3a44 status=queued
+16s status=running
+32s status=running
+47s status=running
+63s status=running
+78s status=running
+94s status=running
+109s status=running
+125s status=running
+140s status=running
+156s status=running
+171s status=running
+187s status=running
+202s status=running
+218s status=running
+233s status=running
+249s status=running
+264s status=running
+280s status=running
+295s status=running
+311s status=running
+326s status=running
+342s status=running
+357s status=running
+373s status=running
+388s status=running
+404s status=running
+419s status=running
+435s status=running
+450s status=running
+466s status=running
+481s status=running
+497s status=completed
+[saved] scripts/spike/out/task-ultra.json
+done in 497s, status=completed

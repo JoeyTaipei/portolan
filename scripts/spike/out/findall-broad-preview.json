@@ -1,0 +1,693 @@
+{
+  "wall_s": 187,
+  "run": {
+    "findall_id": "findall_2f937a48caa142109c45514c3d8a413d",
+    "status": {
+      "status": "completed",
+      "is_active": false,
+      "metrics": {
+        "generated_candidates_count": 13,
+        "matched_candidates_count": 1
+      },
+      "termination_reason": "match_limit_met"
+    },
+    "generator": "preview",
+    "metadata": {
+      "spike": "0001"
+    },
+    "created_at": "2026-10-30T04:10:35.716932Z",
+    "modified_at": "2026-10-30T04:13:33.265613Z"
+  },
+  "result": {
+    "run": {
+      "findall_id": "findall_2f937a48caa142109c45514c3d8a413d",
+      "status": {
+        "status": "completed",
+        "is_active": false,
+        "metrics": {
+          "generated_candidates_count": 13,
+          "matched_candidates_count": 1
+        },
+        "termination_reason": "match_limit_met"
+      },
+      "generator": "preview",
+      "metadata": {
+        "spike": "0001"
+      },
+      "created_at": "2026-10-30T04:10:35.716932Z",
+      "modified_at": "2026-10-30T04:13:33.265613Z"
+    },
+    "candidates": [
+      {
+        "candidate_id": "candidate_01bcbb26-8c29-468a-ab02-02137af4e1da",
+        "name": "Instek Digital",
+        "url": "https://www.linkedin.com/company/instekdigitalsecurity",
+        "description": "Instek Digital is a video surveillance business unit of Good Will Instrument Co., Ltd. and focus on the development of high quality digital surveillance solutions. The company inherited over 20-years of surveillance experience. Instek Digital has the luxury of a strong financial background supported by Good Will Instrument Co., Ltd. – has over 42-years of electronics R&D and manufacturing experience. And Good Will Instrument Co., Ltd. is also listed on the Taiwan Stock Exchange Corporation.",
+        "match_status": "unmatched",
+        "output": {
+          "taiwan_presence": {
+            "type": "match_condition",
+            "value": "Primary base country: TW; office: Tucheng District, New Taipei City, TW; active programme locations: NA; events: NA.",
+            "is_matched": true
+          },
+          "uas_defense_role": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          }
+        },
+        "basis": [
+          {
+            "field": "taiwan_presence",
+            "citations": [
+              {
+                "title": "Get in Touch - Instek Digital",
+                "url": "https://www.instekdigital.com/id/contact.html",
+                "excerpts": [
+                  "Get in Touch - Instek Digital\nOur state-of-the-art video surveillance solution. Leave us a message or give us a call and we'll be in touch soon.\nGet in Touch - Instek Digital\nLeave us a message or give us a call. Select a department you like to contact Sales. Office & Post Address No. 7-1 Zhongxing Road Tucheng District New Taipei\nGet in Touch\nLeave us a message or give us a call and we'll be in touch soon. Office & Post Address No. 7-1 Zhongxing Road Tucheng District New Taipei City 236 Taiwan +886\nGet in Touch\nLike to get in touch with someone who can tell you more about Instek Digital? Or are you interested in our state-of-the-art video surveillance solution"
+                ]
+              },
+              {
+                "title": "Instek Digital",
+                "url": "https://www.linkedin.com/company/instek-digital",
+                "excerpts": [
+                  "* name: Instek Digital\n * description\n   - Instek Digital is the video surveillance business unit of Good Will Instrument Co., Ltd. and focus on the development of high quality digital surveillance solutions. The company inherited over 20-years of surveillance experience."
+                ]
+              }
+            ],
+            "reasoning": "Instek Digital’s official contact page lists its office and postal address in Tucheng District, New Taipei City, Taiwan. Its company profile also identifies Taiwan as its country and Tucheng District, New Taipei City as its locality. These support a Taiwan base and the stated office location; no active programme or event location is identified in these sources.",
+            "confidence": "medium"
+          },
+          {
+            "field": "uas_defense_role",
+            "citations": [
+              {
+                "title": "Instek Digital | VMS with a Personal Touch",
+                "url": "https://instekdigital.com/id/",
+                "excerpts": [
+                  "## Video Surveillance with a\n\n# Personal Touch\n\n### Instek Digital portfolio includes central management, video monitoring, VMS, video recording, archiving, storage, local display, video intelligence and indoor positioning.",
+                  "Instek Digital plays a key role in delivery top-notch video surveillance solutions.\n\n[Read more](https://instekdigital.com/banking.html)\n\n## Vertical Markets\n\n# City Surveillance",
+                  "# About Us\n\nInstek Digital is a video surveillance business unit of Good Will Instrument Co., Ltd. and focus on the development of high quality digital surveillance solutions. The company inherited over 20-years of surveillance experience. Instek Digital has the luxury of a strong financial background supported by Good Will Instrument Co., Ltd. – has over 42-years of electronics R&D and manufacturing experience."
+                ]
+              }
+            ],
+            "reasoning": "Instek Digital’s official website describes its portfolio and business as video-surveillance solutions. The available public evidence does not document Instek Digital carrying out a specified drone, counter-drone, or defense-technology activity in Taiwan from 2024 onward, so no qualifying source or excerpt can be provided.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_07b63434-465b-4c8d-a764-f16be0f6d8d9",
+        "name": "SGS TAIWAN LIMITED",
+        "url": "https://www.linkedin.com/company/sgs-taiwan-limited",
+        "description": "",
+        "match_status": "matched",
+        "output": {
+          "taiwan_presence": {
+            "type": "match_condition",
+            "value": "Primary base country: TW. Primary operation center: New Taipei City, New Taipei City, TW. Other office locations identified: Taipei, Taipei City, TW; Keelung, Keelung City, TW; Kaohsiung, Kaohsiung City, TW. Active programme locations: NA. Event locations: NA.",
+            "is_matched": true
+          },
+          "uas_defense_role": {
+            "type": "match_condition",
+            "value": "Source: SGS Taiwan, “UAV Electromagnetic Compatibility (EMC) Testing: The Invisible Guardian of Flight Safety” (2025-06-10), https://www.sgs.com.tw:8082/en/news-media-resources-content/page?id=1683. Organization: SGS Taiwan (SGS EMC Lab). Excerpt: “Different testing modes and parameters are applied for drones under 2 kilograms and those over 2 kilograms.” The source documents drone testing in Taiwan.",
+            "is_matched": true
+          }
+        },
+        "basis": [
+          {
+            "field": "taiwan_presence",
+            "citations": [
+              {
+                "title": "SGS Taiwan Ltd. - AmCham Taiwan",
+                "url": "https://member.amcham.com.tw/directory/sgs-taiwan-ltd",
+                "excerpts": [
+                  "台灣檢驗科技股份有限公司\n\n**Tel:** 2299-3939  \n  \n**Fax:** 2299-7859\n\n**Address:**  \n136-1 Wugong Rd., New Taipei Industrial Park,Wugu District, New Taipei City, Taiwan, 24803  \n新北市新北產業園區五工路136-1號",
+                  "**Website:** [www.sgs.tw](http://www.sgs.tw/)\n\n## Company Description:",
+                  "### SGS Taiwan\n\nSGS in Taiwan was officially affiliated to the SGS Group in 1952. Today we have more than 3,000 employees and a nationwide network of offices and more than 17 laboratories across the",
+                  "Through our operation center in the New Taipei Industrial Park, we are supported by offices and laboratories at Keelung, Baili, Suao, Hualien, Nankang, Neihu, Taoyuan, Zhongli, Hsinchu, Taichung, Mailao, Dounan, Tainan, Pingtung and in Kaohsiung located at the Nanzih Export Processing Zone."
+                ]
+              },
+              {
+                "title": "SGS In Taiwan - SGS Taiwan",
+                "url": "https://www.sgs.com.tw/en/our-company/sgs-taiwan",
+                "excerpts": [
+                  "|\n| --- | --- | --- |\n\n|taiwan map |Taiwan Distribution\n\nSGS Group established SGS International Services SA, Taiwan Branch in 1952, and set up branches in Taipei, Keelung and Kaohsiung. In order to meet the needs of domestic industrial upgrading and internationalization. SGS Taiwan Ltd. was established in 1991 to cope with the expansion of professional testing and technical services. In 2016, SGS CCSRF was merged into SGS Taiwan., Ltd."
+                ]
+              }
+            ],
+            "reasoning": "The SGS Taiwan directory lists its address in New Taipei City, Taiwan, and identifies its operation center in New Taipei Industrial Park. The SGS Taiwan company page identifies branches in Taipei, Keelung, and Kaohsiung. These sources support a Taiwan base and the listed office locations; they do not identify an active programme location or event location for this organization.",
+            "confidence": "medium"
+          },
+          {
+            "field": "uas_defense_role",
+            "citations": [
+              {
+                "title": "UAV Electromagnetic Compatibility (EMC) Testing: The ...",
+                "url": "https://www.sgs.com.tw:8082/en/news-media-resources-content/page?id=1683",
+                "excerpts": [
+                  "Professional Testing Based on UAV Category SGS EMC Lab is one of the primary BSMI-accredited Lab, and also CAA-recognized testing laboratory for UAVs. Different testing modes and parameters are applied for drones under 2 kilograms and those over 2 kilograms. At the same time, SGS supports international standards such as CE and FCC, helping products enter global markets with confidence."
+                ]
+              },
+              {
+                "title": "SGS In Taiwan - SGS Taiwan",
+                "url": "https://www.sgs.com.tw/en/our-company/sgs-taiwan",
+                "excerpts": [
+                  "SGS Taiwan Ltd. was established in 1991 to cope with the expansion of professional testing and technical services."
+                ]
+              }
+            ],
+            "reasoning": "The 2025-06-10 SGS Taiwan article says the SGS EMC Lab applies different testing modes and parameters to drones, directly documenting testing activity on the specified technology. SGS Taiwan’s company page identifies SGS Taiwan Ltd. as its Taiwan-based testing-services organization, supporting the Taiwan location.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_15a15701-b602-4c46-81c0-8838d34ea2ea",
+        "name": "NEW DEANTRONICS TAIWAN LTD.",
+        "url": "https://www.linkedin.com/company/new-deantronics-taiwan-ltd.",
+        "description": "",
+        "match_status": "unmatched",
+        "output": {
+          "taiwan_presence": {
+            "type": "match_condition",
+            "value": "Headquarters country: TW; locations: Tucheng, New Taipei City, TW (headquarters); Lucao Township, Chiayi County, TW (facility); NA, Nevada, US (facility; city not stated); active programme locations: NA; event locations: NA.",
+            "is_matched": true
+          },
+          "uas_defense_role": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          }
+        },
+        "basis": [
+          {
+            "field": "taiwan_presence",
+            "citations": [
+              {
+                "title": "About Us-New Deantronics Taiwan Ltd.",
+                "url": "https://www.newdean.com.tw/en/about/60",
+                "excerpts": [
+                  "To meet customer needs, New Deantronics continues to strengthen its global operations. Our corporate headquarters is located in Tucheng, New Taipei City, Taiwan, with additional facilities in Chiayi, southern Taiwan, and Nevada, USA. The Chiayi facility houses an internationally standard-certified ethylene oxide (EO) sterilization center, providing full control over the manufacturing and",
+                  "## Global Footprint\n\nHeadquartered in New Taipei City, Taiwan,\n\nNew Deantronics supports global operations through manufacturing facilities in Chiayi, Taiwan, and Nevada, USA.\n\n2023\n\nTAIPEI, TAIWAN\n\n### New Deantronics Taiwan Ltd.\n\n[](https://maps.app.goo.gl/qAgyVTaK234kGW6T9)\n\n12F., No. 51, Sec. 4, Zhongyang Rd.,  \nTucheng Dist., New Taipei City 236,  \nTaiwan\n\n[](tel:+886 \\(2\\) 2268 1726)\n\nTEL:\n\n\\+886 (2) 2268 1726\n\nFAX:\n\n\\+886 (2) 2268 3800\n\n[](mailto:info@newdean.com.tw)\n\nEMAIL:\n\ninfo@newdean.com.tw\n\nCHIAYI, TAIWAN\n\n### New Deantronics Taiwan Ltd.-Chiayi"
+                ]
+              },
+              {
+                "title": "Contact Us-New Deantronics Taiwan Ltd.",
+                "url": "http://www.newdean.com.tw/ND/ViewEn/AboutUs/CantactUs.aspx",
+                "excerpts": [
+                  "[Venture Capital](http://www.formed.com.tw/)\n\n[HOME](https://www.newdean.com.tw/en/ \"New Deantronics Taiwan Ltd.\") [Contact Us](https://www.newdean.com.tw/en/contact/ \"Contact Us\")\n\nContact Us\n\nTAIPEI, TAIWAN\n\n### New Deantronics Taiwan Ltd.\n\n[](https://maps.app.goo.gl/qAgyVTaK234kGW6T9)\n\n12F., No. 51, Sec. 4, Zhongyang Rd.,  \nTucheng Dist., New Taipei City 236,  \nTaiwan\n\n[](tel:+886 \\(2\\) 2268 1726)\n\nTEL:\n\n\\+886 (2) 2268 1726\n\nFAX:\n\n\\+886 (2) 2268 3800\n\n[](mailto:info@newdean.com.tw)\n\nEMAIL:\n\ninfo@newdean.com.tw\n\nCHIAYI, TAIWAN\n\n### New Deantronics Taiwan Ltd.-Chiayi\n\n[](https://maps.app.goo.gl/njNXbgabWmGnpw1dA)\n\nNo.16, Machouhou Yuancyu 1st Rd.,  \nLucao Township, Chiayi County 611,  \nTaiwan"
+                ]
+              }
+            ],
+            "reasoning": "The company’s official page states that its corporate headquarters is in Tucheng, New Taipei City, Taiwan, and names additional facilities in Chiayi and Nevada, USA. Its contact information gives the Chiayi facility address in Lucao Township, Chiayi County. This establishes a Taiwan headquarters and facility; the Nevada facility’s city is not specified in the cited source.",
+            "confidence": "medium"
+          },
+          {
+            "field": "uas_defense_role",
+            "citations": [
+              {
+                "title": "\n        FINDIT\n    ",
+                "url": "https://findit.sme.gov.tw/en/Startup/YS9PSVBIMDhQeVMxODk0M0ZxRFRmZz09/Basic",
+                "excerpts": [
+                  "## Database\n\n1. ::: [Home](https://findit.sme.gov.tw/)\n2. Database\n3. [Startups](https://findit.sme.gov.tw/en/Startup)\n4. NEW DEANTRONICS TAIWAN LTD.\n\n### Startups\n\nNEW DEANTRONICS TAIWAN LTD.\n\n#### NEW DEANTRONICS TAIWAN LTD.\n\nUpdate：2026/10/12\n\nIndustries\n\n[Health Care](https://findit.sme.gov.tw/en/Startup?MainCatIDs=24) [Manufacturing](https://findit.sme.gov.tw/en/Startup?SubCatIDs=485)",
+                  "They provide full‑spectrum medical device solu\n\nFounded Year\n\n2016\n\nUnified Business No.\n\n65445701\n\nStatus\n\nActive\n\nNumber of Employees\n\n950\n\nTotal Paid-in\nCapital\n\n500,000,000 (NT$)\n\nLocation of Company\n\nTaiwan\n, New Taipei City\n\nWebsite\n\n[Open a new window to go to the website](https://www.newdean.com.tw/ND/ViewEN/Index.aspx \"Open a new window\")"
+                ]
+              },
+              {
+                "title": "Development & Manufacturing Capabilities-New Deantronics Taiwan Ltd.",
+                "url": "https://www.newdean.com.tw/en/manufacture",
+                "excerpts": [
+                  "New Deantronics Taiwan Ltd.\n\n[HOME](https://www.newdean.com.tw/en/ \"New Deantronics Taiwan Ltd.\") Expertise [Development & Manufacturing Capabilities](https://www.newdean.com.tw/en/manufacture/ \"Development & Manufacturing Capabilities\")\n\n# Development  \n& Manufacturing Capabilities\n\n## Our Capabilities\n\nWe are committed and focused on excellence in quality and service to meet global customer expectations. We are a total-solution provider for Design, Development, and Manufacturing (DDM), and support medical regulatory applications, direct shipping to customer warehouses, Vendor-Managed Inventory (VMI), and various customized services to fulfill customer needs."
+                ]
+              }
+            ],
+            "reasoning": "The 2026 company-directory entry identifies NEW DEANTRONICS TAIWAN LTD. in health care and manufacturing and describes medical-device solutions; the company’s capabilities page likewise describes design, development, and manufacturing services. These sources do not document a qualifying 2024-or-later activity involving drones, counter-drone systems, or defense technology in Taiwan, so the requested evidence value is NA.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_1f5ce39a-8f47-4a60-9ee7-eb47e0966754",
+        "name": "Brita Taiwan Co. Ltd.",
+        "url": "https://www.linkedin.com/company/brita-taiwan-co.-ltd.",
+        "description": "",
+        "match_status": "unmatched",
+        "output": {
+          "taiwan_presence": {
+            "type": "match_condition",
+            "value": "Primary headquarters country: TW; office location: New Taipei City, New Taipei City, TW; active programme locations: NA.",
+            "is_matched": true
+          },
+          "uas_defense_role": {
+            "type": "match_condition",
+            "value": "NA — no public evidence found that BRITA Taiwan Co. Ltd. has, since 2024, bought, regulated, funded, tested, built, supplied, advised on, legislated on, or hosted events about drones, counter-drone systems, or defense technology in Taiwan.",
+            "is_matched": false
+          }
+        },
+        "basis": [
+          {
+            "field": "taiwan_presence",
+            "citations": [
+              {
+                "title": "Membership – EUROPEAN CHAMBER OF COMMERCE TAIWAN",
+                "url": "https://www.ecct.com.tw/membership?compId=3905",
+                "excerpts": [
+                  "* \n\nTop\n\n### Membership\n\n[Home](https://www.ecct.com.tw/) / Membership\n\ncompany logo\n\n##### BRITA Taiwan Co., Ltd.\n\n###### 台灣碧然德有限公司\n\n|Headquarter Address： |3F, No.205, Sec.3, Bexin Rd., Xindian Dist., New Taipei CIty 231 |\n| --- | --- |\n| |新北市231新店區北新路三段205號3樓 |\n|Regional： |Taipei City/New Taipei City |\n|Telephone： |\\+886-2-7705-1157 |\n|Business Type： |Consumer Goods |\n|Company Nationality： |Germany |\n|Website： |<https://www.brita.tw/> |\n\n##### Company Profile："
+                ]
+              },
+              {
+                "title": "BRITA 台灣經銷商據點",
+                "url": "https://www.brita.tw/BRITA-News/All-Brita-Dealer",
+                "excerpts": [
+                  "[服務信箱：TW10\\_sales@brita.net](mailto:TW10_sales@brita.net)\n\n電話: 0800-811-157 (免付費專線，限市話) / 02-2911-1157\n\n公司地址：231新北市新店區北新路三段205號3樓  \n服務時間：週一至週五 - 早上9:00 至 下午6:00\n\n* * *\n\n商用專業濾水器\n\n對商用專業濾水器有疑問嗎？\n\n[info@freser.com.tw](mailto:info@freser.com.tw)\n\n* * *\n\nFreser 興日光股份有限公司\n\n臺北市大同區承德路2段96號1樓\n\n* * *\n\n搜尋 BRITA 零售商\n\n註冊您的產品\n\n* * *\n\nBRITA 在社群媒體上"
+                ]
+              }
+            ],
+            "reasoning": "The chamber membership record identifies BRITA Taiwan Co., Ltd. and lists its headquarter address in Xindian District, New Taipei City. BRITA Taiwan’s own site also lists its company address in New Taipei City, supporting Taiwan presence and the stated office location. No active programme location is documented in these sources.",
+            "confidence": "medium"
+          },
+          {
+            "field": "uas_defense_role",
+            "citations": [
+              {
+                "title": "BRITA濾水器與淨水器、家用濾水器推薦：多樣淨水產品 | BRITA",
+                "url": "https://www.brita.tw/",
+                "excerpts": [
+                  "[PURITY C](https://www.brita.tw/professional-filters) [PURITY](https://www.brita.tw/professional-filters) [Aqua 濾水箱解決方案](https://www.brita.tw/professional-filters)\n* 開飲機與瞬熱系列\n  \n  開飲機與瞬熱系列",
+                  "## BRITA 台灣品牌大使\n\n我的狀態我決定 我的好水我決定\n\n[了解更多](https://www.brita.tw/Experience-BRITA/DoDoMen)\n\n## 永續芯旅程 濾芯回收計畫\n\n[了解更多](https://www.brita.tw/BRITA-News/Filter-recycling)\n\n## Cube小濾方\n\n瞬熱溫控滅菌開飲機",
+                  "## 了解BRITA美味好水\n\n[## BRITA 品牌故事 50年來的濾水壺故事](https://www.brita.tw/experience-brita/history)\n\n讓您的員工喝到清新好水!\n\n[BRITA 的感官實驗室](https://www.brita.tw/experience-brita/sensory-lab)",
+                  "[立即加入好友](https://brita.lineapik.tw/st/O8MqoF)\n\n* * *\n\n家用產品與安裝服務\n\n關於產品與安裝服務的問題?\n\n[服務信箱：TW10\\_sales@brita.net](mailto:TW10_sales@brita.net)\n\n電話: 0800-811-157 (免付費專線，限市話) / 02-2911-1157\n\n公司地址：231新北市新店區北新路三段205號3樓  \n服務時間：週一至週五 - 早上9:00 至 下午6:00\n\n* * *\n\n商用專業濾水器\n\n對商用專業濾水器有疑問嗎？\n\n[info@freser.com.tw](mailto:info@freser.com.tw)\n\n* * *\n\nFreser 興日光股份有限公司\n\n臺北市大同區承德路2段96號1樓\n\n* * *",
+                  "[立即聯絡](mailto:sales@brita.tw)  \n© BRITA Taiwan 台灣碧然德"
+                ]
+              }
+            ],
+            "reasoning": "BRITA Taiwan’s official site describes water-filtration products and gives the company’s Taiwan contact details, but this source does not document any qualifying drone, counter-drone, or defense-technology activity. No qualifying public evidence was found, so the value is NA and the entity is not matched.",
+            "confidence": "low"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_4b20b596-f82a-4b2f-a334-afd58b621db4",
+        "name": "Varitron Engineering (Taiwan) Co., Ltd",
+        "url": "https://www.linkedin.com/company/varitron-engineering-taiwan-co-ltd",
+        "description": "The team at Varitron is united on continuing to build upon our reputation for excellence and unsurpassed engineering and flexible approach to drive innovation.\r\n\r\nVaritron is the power transmission manufacturing company that helps machines to come to alive. For more than half of a century we have been challenging speed to help embed excellence motion into the machines and bring factory to live. That means reliable and durable products from Varitron is needed for our customers to improve performa...",
+        "match_status": "unmatched",
+        "output": {
+          "taiwan_presence": {
+            "type": "match_condition",
+            "value": "Primary base country: TW. Office/factory locations: Wugu District, New Taipei City, TW (head office/main factory, No. 45, Lane 171, Sec. 1, Chung Shin Road); Wugu District, New Taipei City, TW (Wuku Factory, Mingyi Road). Active programme locations: NA.",
+            "is_matched": true
+          },
+          "uas_defense_role": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          }
+        },
+        "basis": [
+          {
+            "field": "taiwan_presence",
+            "citations": [
+              {
+                "title": "Contact Varitron-email,inquiry,telephone,contact us, address of Varitron Gearbox",
+                "url": "http://c-var.com/contact.asp",
+                "excerpts": [
+                  "Head Office / Main Factory :\n\n* Tel ： \\+886-2-2988-9598\n* Fax ： \\+886-2-2985-0998\n* Add ： No.45, Lane 171, Sec.1, Chung Shin Road, Wuku District, New Taipei City, Taiwan\n* Email ： [sales@c-var.com](mailto:sales@c-var.com)\n\nWuku Factory :\n\n* Tel ： \\+886-2-2988-9598\n* Fax ： \\+886-2-2985-0998\n* Add ： Mingyi Road, Wuku District, New Taipei City, Taiwan\n\nGo TO Top\n\nGlobal\n\nSales Network\n\nTaiwan sales team\n\n* Email： [sales@c-var.com](mailto:sales@c-var.com)\n\nAsia sales team\n\n* Email： [sales3@varitron.com.tw](mailto:sales3@varitron.com.tw)\n\nAmerica sales team\n\n* Email： [sales@varitron.com.tw](mailto:sales@varitron.com.tw)\n\nAfrica sales team"
+                ]
+              }
+            ],
+            "reasoning": "The company’s contact page labels its New Taipei City address as the head office/main factory and lists a separate Wuku factory in New Taipei City, Taiwan. This supports a Taiwan base and the listed Taiwan company locations.",
+            "confidence": "high"
+          },
+          {
+            "field": "uas_defense_role",
+            "citations": [
+              {
+                "title": "\nAbout Varitron-Gear motor,precision planetary gearbox, speed reducer,cyclo drive manufacturer\n",
+                "url": "https://www.c-var.com/about.asp",
+                "excerpts": [
+                  "Pioneer towards 50 years Varitron started from a gear reducer factory in Taiwan to a global manufacturing excellence cooperation in cyclo drive, gear motor, precise planetary, gearbox and other power transmission parts.",
+                  "Sophisticated speed reducer and reliable gear box designfor industry is our promise.\n\nIn Varitron we provide advance engineering solutions for highly precise gearbox to durable quality transmission drive."
+                ]
+              }
+            ],
+            "reasoning": "Varitron’s company description characterizes its business as gear reducers, gear motors, gearboxes, and power-transmission parts. It does not document a qualifying activity involving drones, counter-drone systems, or defense technology in Taiwan, so no matching public evidence was identified.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_7ebb997b-403e-462b-b621-dd60bea0b772",
+        "name": "StackRack",
+        "url": "https://www.linkedin.com/company/stackrack",
+        "description": "StackRack is pioneering a next generation defense electronics maker. We are the leading mission critical computer solution provider of secure processing systems designed & made in Taiwan. To reach top-level specification, our solutions pass high level standards such as MIL-STD-810G and EN50155 with remarkable techniques, stabilizing our unique position in defense industry.",
+        "match_status": "generated"
+      },
+      {
+        "candidate_id": "candidate_82c20834-1924-479a-bb49-ae053057a89e",
+        "name": "Bio-Defense Corporation",
+        "url": "https://www.linkedin.com/company/bio-defense-corporation",
+        "description": "We focus on helping Foreign Partners navigate political waters of Taiwan's procurement programs and win tenders.\n\nWe are most experienced in helping our partner by helping the tender clients form the best tender requirements for their purposes, and pushing for the budget they need to get approved. \n\nWe are small enough to connect with the tender clients on a more personal level than larger enterprises are willing to, but also large enough to have had solid past performances. We also have an hist...",
+        "match_status": "unmatched",
+        "output": {
+          "taiwan_presence": {
+            "type": "match_condition",
+            "value": "Headquarters country: TW; office location: New Taipei, New Taipei City, TW; active programme locations: NA.",
+            "is_matched": true
+          },
+          "uas_defense_role": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          }
+        },
+        "basis": [
+          {
+            "field": "taiwan_presence",
+            "citations": [
+              {
+                "title": "BIO DEFENSE CO., LTD.",
+                "url": "https://www.findcompany.com.tw/en/BIO%20DEFENSE%20CO.,%20LTD.",
+                "excerpts": [
+                  "|Unified Business No. / Tax ID |12852829  |\n| --- | --- |\n|Company Status |核准設立 |\n|Company Name |BIO DEFENSE CO., LTD.  |\n|Company Name in English |BIO DEFENSE CO., LTD.  |",
+                  "|Amount of Capital(NT$) |5,000,000 |\n|Company Representative |林勇明  |\n|Registered address |[看地圖](https://maps.google.com.tw/maps?q=%E6%96%B0%E5%8C%97%E5%B8%82%E6%B7%A1%E6%B0%B4%E5%8D%80%E4%B8%AD%E6%AD%A3%E6%9D%B1%E8%B7%AF2%E6%AE%B529%E4%B9%8B3%E8%99%9F22%E6%A8%93) 22 F., No. 29-3, Sec. 2, Zhongzheng E. Rd., Tamsui Dist., New Taipei City 25170, Taiwan (R.O.C.)"
+                ]
+              },
+              {
+                "title": "BIOSENSOR CORP.",
+                "url": "https://biosensorcorp.com/",
+                "excerpts": [
+                  "**TAIWAN HEADQUARTERS**\n\nEMAIL: [tw@biosensorcorp.com](mailto:support@biosensorcorp.com)\n\nPHONE: +886-228083960\n\nADDRESS: 22F, 29-3, Chung Jeng E. Rd. New Taipei, Taiwan\n\nzh_TW 繁體中文"
+                ]
+              }
+            ],
+            "reasoning": "The company registry identifies BIO DEFENSE CO., LTD. and gives its registered address in New Taipei City, Taiwan. The company website labels its Taiwan headquarters and gives the same New Taipei address, supporting Taiwan as the headquarters country and New Taipei as an office location. No active programme location is identified in these sources.",
+            "confidence": "medium"
+          },
+          {
+            "field": "uas_defense_role",
+            "citations": [
+              {
+                "title": "BIOSENSOR CORP.",
+                "url": "https://biosensorcorp.com/",
+                "excerpts": [
+                  "2. Breath\n\n##### DEFENSE\n\nMainly focused on CBRNE Defense, but in recent years has expanded to Fire Control Systems, Night / Thermal Vision, Light Weapons, Unmanned Systems, Military Communications, and Force Protection Barrier Systems.\n\n3. Rescue\n\n##### PUBLIC HEALTH\n\nOur medical products used to be heavily focused in Vaccines and Antitoxins, but have since expanded into Respirators, NBC Detectors, Decontamination Systems, and PCR/Immunoassay."
+                ]
+              }
+            ],
+            "reasoning": "The company website describes defense offerings that include unmanned systems, but this source does not provide a 2024-or-later date. No located source establishes a qualifying dated activity by Bio-Defense Corporation, so the requested dated public evidence was not found.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_a3443155-48a7-42c6-aecc-a88fafb06fd1",
+        "name": "EupFin Technology Co., Ltd",
+        "url": "https://www.linkedin.com/company/eupfin-technology-co.-ltd",
+        "description": "EupFin Technology Co., Ltd is a company based out of New Taipei City, New Taipei City, Taiwan.",
+        "match_status": "unmatched",
+        "output": {
+          "taiwan_presence": {
+            "type": "match_condition",
+            "value": "Primary base/headquarters: TW. Taiwan offices: Zhonghe, New Taipei City, TW (headquarters); Zhubei, Hsinchu County, TW; Wuri, Taichung City, TW; Gushan, Kaohsiung City, TW. Active programme locations: NA.",
+            "is_matched": true
+          },
+          "uas_defense_role": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          }
+        },
+        "basis": [
+          {
+            "field": "taiwan_presence",
+            "citations": [
+              {
+                "title": "Global Presence | EUP FLEET MANAGEMENT SYSTEM \"FAST SERVICE, LIFETIME WARRANTY\"",
+                "url": "https://www.eupfin.com.my/global-presence",
+                "excerpts": [
+                  "Taiwan Vietnam Thailand Malaysia Indonesia Headquarters Văn phòng Đài Loan 弋揚科技股份有限公司 新北市中和區中山路二段351號 8樓",
+                  "弋揚科技竹區辦公室 弋揚科技竹區辦公室 新竹縣竹北市台元街38號4樓之9 [](https://maps.app.goo.gl/ZHZ21DEPm81Uoq467) 03 6573-239 Service Locations 弋揚科技中區辦公室 弋揚科技中區辦公室 台中市烏日區三榮路一段399號 1樓 [](https://maps.app.goo.gl/B6AiPXEytoTEQb2a6) 04 2338-0321 Service Locations 弋揚科技南區辦公室 弋揚科技南區辦公室 高雄市鼓山區大順一路439號4樓 之2"
+                ]
+              }
+            ],
+            "reasoning": "The company’s global-presence page lists Taiwan and labels the New Taipei address as its headquarters (doc 84, segments 5–13). It also lists service offices in Zhubei, Wuri, and Gushan (doc 84, segments 18–30). The page identifies office locations rather than separate active programme locations, so those are recorded as NA.",
+            "confidence": "high"
+          },
+          {
+            "field": "uas_defense_role",
+            "citations": [
+              {
+                "title": "企業簡介 - 弋揚科技-衛星犬智慧運輸整體解決方案提供者-「服務快速，安全守護」",
+                "url": "https://www.eup.com.tw/about",
+                "excerpts": [
+                  "「弋」 是古時候「箭」尾端的羽毛，它可以讓「箭」 飛得更高、更遠 ，讓我們成為您事業的推手。 弋揚科技股份有限公司(Eupfin Technology Co., Ltd.）成立於 2004 年，專注於智慧運輸管理技術的研發與應用，並於 2008 年成立旗下車隊管理品牌 「衛星犬(EUP)」。多年來，我們秉持穩健踏實的實力與創新精神，現已成為台灣市佔率第一的車隊管理系統服務商。 我們將車隊管理系統延伸整合安全管理應用，結合最新AI、物聯網（IoT）技術，將車輛動態與駕駛行為數據彙整於單一平台，協助企業全面掌握營運狀況，提升管理效率與行車安全。 至今，我們已成功輔助全球超過兩萬五千家企業、二十五萬台車輛數位轉型。期許在未來嶄新的AI世紀，成為車隊領域中的典範企業，共同邁向智慧運輸的永續未來。"
+                ]
+              },
+              {
+                "title": "China Taiwan Eupfin Technology Co., Ltd Company Export Data | CIC Trade Data Pro",
+                "url": "https://data.cic-tp.com/sample-data/china-taiwan/export-data/company/eupfin-technology-co.,-ltd",
+                "excerpts": [
+                  "Voltage 9-24V, current 2A, Manufacturer: EUPFIN TECHNOLOGY CO., LTD, 100% brand new#&TW\n\nCHINA TAIWAN\n\nVIETNAM\n\nTWTPE\n\nVNHAN\n\n\\*\\*\\*\n\n\\*\\*\\*\n\n\\*\\*\\*\n\n2024-06-06"
+                ]
+              }
+            ],
+            "reasoning": "EupFin’s official company description identifies its work as intelligent transport management and fleet-management services, not a listed drone, counter-drone, or defense activity (doc 82). A 2024 export record names communications equipment, but does not document a qualifying UAS or defense activity in Taiwan (doc 54). No public source meeting the requested activity, technology, location, and date criteria was found.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_baba92ae-aaa4-4a66-8171-d8c96553fad0",
+        "name": "Taiwan Ningn Shar Electronic Co. LTD",
+        "url": "https://www.linkedin.com/company/taiwan-ningn-shar-electronic-co-ltd",
+        "description": "The company was established in 1989 with public works tenders (surveillance systems, fiber optic networks, parking lot access control, and toll system projects) as its main business direction. At present, the service targets are the Ministry of National Defense, the Ministry of Foreign Affairs, the Taiwan Railway, and other units that are public institutions. The company takes responsibility, service, and innovation as its business philosophy to assist customers in establishing high-quality moni...",
+        "match_status": "unmatched",
+        "output": {
+          "taiwan_presence": {
+            "type": "match_condition",
+            "value": "Primary base/headquarters country: TW; office locations: New Taipei City, New Taipei City, TW; active programme locations: NA.",
+            "is_matched": true
+          },
+          "uas_defense_role": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          }
+        },
+        "basis": [
+          {
+            "field": "taiwan_presence",
+            "citations": [
+              {
+                "title": "TAIWAN-NINGN SHAR ELECTRONIC CO., LTD. in New Taipei City",
+                "url": "https://www.infobel.com/en/taiwan/taiwan_ningn_shar_electronic_co_ltd/new_taipei_city/TW100183171-022927901/businessdetails.aspx",
+                "excerpts": [
+                  "Infobel Taiwan Electrician New Taipei City TAIWAN-NINGN SHAR ELECTRONIC CO., LTD."
+                ]
+              }
+            ],
+            "reasoning": "The listing identifies the named company in Taiwan and places it in New Taipei City, supporting Taiwan (TW) as its base country and New Taipei City as its location. No active programme location is identified.",
+            "confidence": "medium"
+          },
+          {
+            "field": "uas_defense_role",
+            "citations": [
+              {
+                "title": "Fiche d'Identité Société : TAIWAN-NINGN SHAR ELECTRONIC CO ...",
+                "url": "https://www.charika.ma/societe-internationale-taiwan-ningn-shar-electronic-co-ltd-NBXmmDy",
+                "excerpts": [
+                  "Taiwan-ningn shar electronic co., ltd. 5f, 55, tzu yu st., New Taipei City (New Taipei)"
+                ]
+              },
+              {
+                "title": "TAIWAN-NINGN SHAR ELECTRONIC CO., LTD. in New Taipei City",
+                "url": "https://www.infobel.com/en/taiwan/taiwan_ningn_shar_electronic_co_ltd/new_taipei_city/TW100183171-022927901/businessdetails.aspx",
+                "excerpts": [
+                  "Infobel Taiwan Electrician New Taipei City TAIWAN-NINGN SHAR ELECTRONIC CO., LTD."
+                ]
+              }
+            ],
+            "reasoning": "The company-specific listings identify Taiwan Ningn Shar Electronic and give its New Taipei City location, but do not document any activity involving drones, counter-drone systems, or defense technology. They therefore do not provide the required evidence of a qualifying activity in Taiwan from 2024 or later.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_bad13c05-329b-4eb8-87e7-958bdbbceac9",
+        "name": "Taiwan Construction Research Institute",
+        "url": "https://www.linkedin.com/company/taiwan-construction-research-institute",
+        "description": "Taiwan Construction Research Institute (TCRI) is a non-profit organization that aims to promote and encourage related researches on construction technology and management. Established by RSEA Engineering Corporation (former RSEA), National Taiwan University and National Taiwan University of Science and Technology in May of 1981, the Institute was further expanded, regulated and became Taiwan Construction Research Institute in 1996. Responding to the competitive international construction market,...",
+        "match_status": "unmatched",
+        "output": {
+          "taiwan_presence": {
+            "type": "match_condition",
+            "value": "Primary base/headquarters country: TW; office location: Xindian District, New Taipei City, TW; active programme locations: NA.",
+            "is_matched": true
+          },
+          "uas_defense_role": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          }
+        },
+        "basis": [
+          {
+            "field": "taiwan_presence",
+            "citations": [
+              {
+                "title": "歡迎來到財團法人台灣營建研究院 - tcri.org.tw",
+                "url": "https://www.tcri.org.tw/tcriWeb/DispActivity.aspx?id=102",
+                "excerpts": [
+                  "地址 : 231新北市新店區中興路二段190號11樓 電話 : 886-2-89195000 傳真 : 886-2-2911-3541 Email : tcrims1@tcri.org.tw 版權所有©2011 財團法人"
+                ]
+              }
+            ],
+            "reasoning": "Taiwan Construction Research Institute's official website gives its address in Xindian District, New Taipei City, Taiwan. This supports a Taiwan office/base and a yes match; no other active programme location was identified.",
+            "confidence": "medium"
+          },
+          {
+            "field": "uas_defense_role",
+            "citations": [
+              {
+                "title": "歡迎來到財團法人台灣營建研究院 - tcri.org.tw",
+                "url": "https://www.tcri.org.tw/tcriweb/cnr_build/build495.htm",
+                "excerpts": [
+                  "為因應極端氣候衝擊，提升社會抗災韌性，結合人工智慧深度學習之橋梁安全檢測以及遙測影像應用於災害監測的科學發展，已為防災減災帶來更精準的評估，《每月專題／智慧化橋梁檢測與大範圍災損評估》報導無人機UAV應用於橋梁自動化巡檢及邊坡大規模災"
+                ]
+              }
+            ],
+            "reasoning": "The institute-specific UAV reference describes bridge inspection and disaster monitoring, not drones, counter-drone systems, or defense technology. No public evidence was found documenting a qualifying activity by Taiwan Construction Research Institute in Taiwan from 2024 or later, so the requested source and excerpt are NA and the entity is not matched.",
+            "confidence": "low"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_cf2e1f32-aeb2-4f50-9bbe-b5d7dc91dbff",
+        "name": "Black Duck Co.,Ltd.",
+        "url": "https://www.linkedin.com/company/black-duck-co-ltd",
+        "description": "Black Duck Co.,Ltd is a comprehensive private group focusing on research,design,manufacturing and marketing.Located in Taipei,Taiwan.\n\nWe have four subsidiaries and an office for Research and Development. We,Black Duck Co.,Ltd,have our own core technology,capacity of deliverable production,efficient management research team,advanced machine equipment and environmental management.\n\nWe are always providing quality products and efficient service outlined in our business objectives,”Quality,Innovati...",
+        "match_status": "unmatched",
+        "output": {
+          "taiwan_presence": {
+            "type": "match_condition",
+            "value": "Primary base/headquarters country: TW. Listed Taiwan location: Taishan, New Taipei City, TW (R&D, manufacturing, sales, and service). The company also lists Taipei, Taiwan, and locations in Kunshan and Dongguan, China. Active programme locations: NA.",
+            "is_matched": true
+          },
+          "uas_defense_role": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          }
+        },
+        "basis": [
+          {
+            "field": "taiwan_presence",
+            "citations": [
+              {
+                "title": "About us - Black Duck 崴灝國際有限公司",
+                "url": "https://black-duck.com.tw/about-us/",
+                "excerpts": [
+                  "* CONTACT US\n\n[](https://black-duck.com.tw)\n\n中\n\nEN\n\n# ABOUT US\n\nBlack Duck Co.,Ltd is a comprehensive private group focusing on research,design,manufacturing and marketing.Located in Taipei,Taiwan.\n\nWe have four subsidiaries and an office for Research and Development. We,Black Duck Co.,Ltd,have our own core technology,capacity of deliverable production,efficient management research team,advanced machine equipment and enviromental management.\n\nWe are always providing quality products and efficient service outlined in our business objectives,”Quality,Innovation,Honesty,Focus”.",
+                  "work ethics are our common goals.\n\n## LOCATIONS\n\n### Kunshan, CHINA\n\nSales, Service\n\nLED products design,Silicone rubber manufacturing,Die cutting,Industrial lubricants,Adhensive,Heat dispersing materials.\n\n### TAISHAN, TAIWAN\n\nR&D,Manufacturing,Sales,Service\n\nMold design & manufacturing,CNC,Plastic molding and Metal stamping…etc.\n\n### Dongguan, CHINA\n\nSales, Service"
+                ]
+              },
+              {
+                "title": "Black Duck Co Ltd",
+                "url": "https://www.linkedin.com/company/black-duck-co-ltd",
+                "excerpts": [
+                  "* name: Black Duck Co.,Ltd.\n * description\n   - Black Duck Co.,Ltd is a comprehensive private group focusing on research,design,manufacturing and marketing.Located in Taipei,Taiwan.\n\nWe have four subsidiaries and an office for Research and Development. We,Black Duck Co.,Ltd,have our own core technology,capacity of deliverable production,efficient management research team,advanced machine equipment and environmental management.\n\nWe are always providing quality products and efficient service outlined in our business objectives,”Quality,Innovation,Honesty,Focus”.\n\nStay united,innovation and \nwork ethics are our common goals.\n * website: https://blackduck.com.tw/about-us/\n * employee count: 3\n * founded year: 2016\n * follower count: 13\n * linkedin url: https://www.linkedin.com/company/black-duck-co-ltd\n * country iso: TW\n * country name: Taiwan\n * locality: New Taipei City, Taiwan\n * type: Partnership\n * size: 10\n * company headline\n   - providing quality products and efficient service"
+                ]
+              }
+            ],
+            "reasoning": "The company’s official site says it is located in Taipei, Taiwan, and lists Taishan, Taiwan, for R&D, manufacturing, sales, and service. The company profile identifies Taiwan as the country and New Taipei City as its locality. Together these establish a Taiwan base and a Taiwan operating location.",
+            "confidence": "high"
+          },
+          {
+            "field": "uas_defense_role",
+            "citations": [
+              {
+                "title": "About us - Black Duck 崴灝國際有限公司",
+                "url": "https://black-duck.com.tw/about-us/",
+                "excerpts": [
+                  "* CONTACT US\n\n[](https://black-duck.com.tw)\n\n中\n\nEN\n\n# ABOUT US\n\nBlack Duck Co.,Ltd is a comprehensive private group focusing on research,design,manufacturing and marketing.Located in Taipei,Taiwan.\n\nWe have four subsidiaries and an office for Research and Development. We,Black Duck Co.,Ltd,have our own core technology,capacity of deliverable production,efficient management research team,advanced machine equipment and enviromental management.\n\nWe are always providing quality products and efficient service outlined in our business objectives,”Quality,Innovation,Honesty,Focus”.",
+                  "work ethics are our common goals.\n\n## LOCATIONS\n\n### Kunshan, CHINA\n\nSales, Service\n\nLED products design,Silicone rubber manufacturing,Die cutting,Industrial lubricants,Adhensive,Heat dispersing materials.\n\n### TAISHAN, TAIWAN\n\nR&D,Manufacturing,Sales,Service\n\nMold design & manufacturing,CNC,Plastic molding and Metal stamping…etc.\n\n### Dongguan, CHINA\n\nSales, Service"
+                ]
+              }
+            ],
+            "reasoning": "Black Duck Co.,Ltd.’s official description discusses general research, design, manufacturing, and marketing, and lists Taishan activities, but does not identify drones, counter-drone systems, or defense technology. This does not document any qualifying activity in Taiwan from 2024 or later, so there is no public evidence supporting a match.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_db662c49-21a5-4a4f-b51d-5e3aa9d5679a",
+        "name": "Hibertek International Limited",
+        "url": "https://www.linkedin.com/company/hibertek",
+        "description": "hibertek is a company based out of 6th , 21F, New Taipei City, New Taipei City, Taiwan.",
+        "match_status": "unmatched",
+        "output": {
+          "taiwan_presence": {
+            "type": "match_condition",
+            "value": "Primary base: TW; offices: New Taipei City, New Taipei City, TW; Shenzhen, NA, CN; Dongguan, NA, CN; active programme locations: NA.",
+            "is_matched": true
+          },
+          "uas_defense_role": {
+            "type": "match_condition",
+            "value": "NA",
+            "is_matched": false
+          }
+        },
+        "basis": [
+          {
+            "field": "taiwan_presence",
+            "citations": [
+              {
+                "title": "Hibertek｜Customized All-In-One PC-About Hibertek",
+                "url": "https://www.hibertek.com/en/about",
+                "excerpts": [
+                  "## About Hibertek\n\n### Leading the All-In-One Computer Design\n\nHibertek is a customized All-In-One PC system solution provider for system integrators, computer component distributors, custom PC builders, governments, corporates, local brands, and IOT, POS, IPC builders. Based in Taiwan with years of experience, we have delivered our innovation to 300+ partners globally.",
+                  "Hibertek was established in 2013\n2. Hibertek is a number one Local ODM All-in-One PC designer and delivered products to more than 58 countries worldwide and shared the innovation with more than 200 partners from different countries\n3. Hibertek has 3 offices located in Taiwan and China, and 2 contract professional factories\n\n### Contact Us\n\n* Addr\n  \n  Rm.6, 21F., No.5, Sec.3, New Taipei Blvd., Xinzhuang Dist., New Taipei City 24250, Taiwan R.O.C.\n* Tel\n  \n  \\+886-2-77160806\n* E-mail\n  \n  [sales@hibertek.com](mailto:sales@hibertek.com)"
+                ]
+              },
+              {
+                "title": "Hibertek｜Customized All-In-One PC-Be Hibertek's Partner",
+                "url": "https://www.hibertek.com/en/distributor",
+                "excerpts": [
+                  "## Contact Us NOW!\n\nHibertek is dedicated to providing the best products and services.  \nIf you have any questions, please don’t hesitate to contact us.\n\nName _\\*_\n\nTitle _\\*_\n\nMail _\\*_\n\nCompany\n\nPhone\n\nCompany Website\n\nMessage\n\nSend\n\n* Taiwan Office\n* Shenzhen Office\n* DongguanOffice\n\nRm.6, 21F., No.5, Sec.3, New Taipei Blvd., Xinzhuang Dist., New Taipei Citye\n\nShenzhen\n\nDongguan\n\n### We are looking for worldwide partners to work with\n\n* Local Computer System Integrator\n* Custom-Build Computer Service Provider\n* Small-Medium Computer Component Distributor\n* Government Tender Service Provider\n\nHibertek Marketing Materials Support\n\n* Work with our partners to do local Youtube and Forum Marketing\n* High-Resolution Product Pictures",
+                  "Rm.6, 21F., No.5, Sec.3, New Taipei Blvd., Xinzhuang Dist., New Taipei City 24250, Taiwan R.O.C.\n* Tel\n  \n  \\+886-2-77160806\n* E-mail\n  \n  [sales@hibertek.com](mailto:sales@hibertek.com)"
+                ]
+              }
+            ],
+            "reasoning": "Hibertek’s official About page says it is based in Taiwan, identifies its Taiwan office address in Xinzhuang District, New Taipei City, and states it has offices in Taiwan and China. Its official partner page lists Taiwan, Shenzhen, and Dongguan offices and gives the New Taipei City address. No active-programme location is documented in these sources.",
+            "confidence": "medium"
+          },
+          {
+            "field": "uas_defense_role",
+            "citations": [
+              {
+                "title": "Hibertek｜Customized All-In-One PC-About Hibertek",
+                "url": "https://www.hibertek.com/en/about",
+                "excerpts": [
+                  "## About Hibertek\n\n### Leading the All-In-One Computer Design\n\nHibertek is a customized All-In-One PC system solution provider for system integrators, computer component distributors, custom PC builders, governments, corporates, local brands, and IOT, POS, IPC builders. Based in Taiwan with years of experience, we have delivered our innovation to 300+ partners globally. Our mission is to deliver the best quality and cutting-edge designed products to our customers, helping them build their own local brands and expand their business worldwide.\n\n#### What Hibertek Do\n\nUnderstand our brand mission and story.\n\nWhat Hibertek Do\n\nOur goal is to help end-users:\n\n* Build their own All-In-One Computer instead of buying a fixed specification from the global brands",
+                  "2. Hibertek is a number one Local ODM All-in-One PC designer and delivered products to more than 58 countries worldwide and shared the innovation with more than 200 partners from different countries"
+                ]
+              }
+            ],
+            "reasoning": "Hibertek’s official About page describes it as a customized all-in-one computer system provider and discusses computer products and partners. The cited company description does not document activity involving drones, counter-drone systems, or defense technology, so no qualifying public evidence was found.",
+            "confidence": "medium"
+          }
+        ]
+      },
+      {
+        "candidate_id": "candidate_de31db69-e41c-435c-aa91-9e3d5c9ba312",
+        "name": "TAIWAN PCB TECHVEST CO., LTD.",
+        "url": "https://www.linkedin.com/company/taiwan-pcb-techvest-co.-ltd.",
+        "description": "",
+        "match_status": "generated"
+      }
+    ],
+    "last_event_id": "65f0704fb19cf"
+  }
+}

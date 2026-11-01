@@ -1,0 +1,12 @@
+[budget] task-enrich:task-ultra:core:x38: est $0.950 (running total $6.290)
+created 38 runs
+39s pending=38
+64s pending=34
+88s pending=25
+110s pending=13
+129s pending=5
+145s pending=3
+161s pending=1
+177s pending=1
+193s pending=0
+[saved] scripts/spike/out/task-ultra-enriched-core.json

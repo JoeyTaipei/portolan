@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Portolan · Watchfloor · Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* Watchfloor — a dense analyst workstation. Slate panels, amber only for what needs action,
+   teal/coral/grey only for stance. Function keys for navigation, mono figures everywhere. */
+:root{
+  --bg:#0F171E; --panel:#151F28; --panel2:#1B2733; --line:#2A3947; --line2:#3A4C5C;
+  --text:#D5DDE5; --dim:#8494A2; --amber:#FFB020; --amber-d:#3A2C0E;
+  --sup:#3FC1A5; --neu:#8E9BA7; --res:#F2685E;
+  --ui:'Barlow Semi Condensed',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+figure{margin:0}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--ui);font-size:15px;line-height:1.4;overflow-x:hidden}
+a{color:var(--amber)}
+:focus-visible{outline:2px solid var(--amber);outline-offset:1px}
+.mono{font-family:var(--mono)}
+.status{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--line);background:#0B1218;font:600 12px var(--mono)}
+.status .wm{color:var(--amber);font-weight:700;letter-spacing:.12em;text-decoration:none}
+.status .plan{border:1px solid var(--amber);color:var(--amber);padding:0 5px}
+.status .sp{flex:1}
+.status .sample{background:var(--amber);color:#111;padding:1px 6px;font-weight:700}
+.status .clock{color:var(--dim)}
+.panel{background:var(--panel);border:1px solid var(--line);display:flex;flex-direction:column;min-width:0}
+.ph{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:32px;padding:0 10px;border-bottom:1px solid var(--line);background:var(--panel2);font:600 11.5px var(--mono);color:var(--dim);letter-spacing:.06em}
+.ph b{color:var(--text);font-weight:600}
+.pb{padding:10px}
+.fkeys{position:fixed;left:0;right:0;bottom:0;z-index:50;display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border-top:1px solid var(--line2);padding-bottom:env(safe-area-inset-bottom)}
+.fkeys a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-height:54px;background:#0B1218;color:var(--dim);text-decoration:none;font:600 12.5px var(--ui)}
+.fkeys .k{font:700 10.5px var(--mono);color:var(--dim);border:1px solid var(--line2);padding:0 4px}
+.fkeys a[aria-current=page]{color:var(--amber);background:var(--panel)}
+.fkeys a[aria-current=page] .k{background:var(--amber);color:#111;border-color:var(--amber)}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid var(--line2);border-radius:2px;background:var(--panel2);color:var(--text);font:600 14.5px var(--ui);text-decoration:none;cursor:pointer;letter-spacing:.02em}
+.btn:hover{border-color:var(--amber)}
+.btn-main{background:var(--amber);border-color:var(--amber);color:#111}
+.btn-main:hover{background:#FFC24D}
+.btn-main:disabled{background:var(--amber-d);color:var(--amber);cursor:progress}
+.btn-s{min-height:34px;font-size:13px;padding:0 10px}
+.icon-btn{flex:0 0 auto;width:44px;min-height:44px;display:grid;place-items:center;border:1px solid var(--line2);border-radius:2px;background:var(--panel2);color:var(--text);cursor:pointer}
+.icon-btn:hover{border-color:var(--amber)}
+.icon-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8}
+.icon-btn[aria-busy=true]{color:var(--amber)}.icon-btn[aria-busy=true] svg{animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.t{width:100%;border-collapse:collapse;font:12.5px var(--mono)}
+.t th{text-align:left;font-weight:600;color:var(--dim);padding:5px 8px;border-bottom:1px solid var(--line);font-size:11px;letter-spacing:.05em}
+.t td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+.t .r{text-align:right}
+.t tr:hover td{background:var(--panel2)}
+.st-sup{color:var(--sup)}.st-neu{color:var(--neu)}.st-res{color:var(--res)}.st-evt{color:var(--amber)}
+.bar{display:inline-block;height:6px;background:var(--line2);vertical-align:1px;width:60px;position:relative}
+.bar i{position:absolute;inset:0 auto 0 0;background:var(--text)}
+@media (min-width:1024px){
+  .fkeys{position:static;display:flex;gap:1px;background:none;border:0}
+  .fkeys a{flex-direction:row;gap:6px;min-height:34px;padding:0 12px;background:none;font-size:13px}
+  .fkeys a[aria-current=page]{background:var(--panel2)}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<style>
+.pm-svg{display:block;width:100%;height:100%}
+.pm-label{font:600 10.5px var(--mono);fill:var(--text);paint-order:stroke;stroke:var(--panel);stroke-width:3.5px;stroke-linejoin:round;pointer-events:none}
+.pm-node{cursor:pointer;transition:opacity .2s}.pm-node.is-dim{opacity:.14}.pm-node.is-hidden{display:none}
+.n-sup{fill:var(--sup)}.n-res{fill:var(--res)}.n-neu{fill:var(--panel);stroke:var(--neu);stroke-width:1.8}.n-evt{fill:var(--panel);stroke:var(--amber);stroke-width:1.8}
+.pm-node.is-sel .n{stroke:#fff;stroke-width:2.5}
+.brk{fill:none;stroke:var(--amber);stroke-width:1.6;display:none}.brk-n{font:700 10px var(--mono);fill:var(--amber);display:none}
+.pm-node.is-rec .brk,.pm-node.is-rec .brk-n{display:inline}
+.pm-edge{stroke:#5B6E80;stroke-width:1}.pm-edge.hot{stroke:var(--amber);stroke-width:1.8}
+.pm-tie{stroke:#fff;stroke-dasharray:4 3}
+.tm-c{fill:var(--bg);stroke:#fff;stroke-width:1.6}.pm-pending .tm-c{stroke-dasharray:3 2;stroke:var(--dim)}
+.tm-i{font:700 6.5px var(--mono);fill:#fff;text-anchor:middle}
+.g-ring{fill:none;stroke:var(--line2);stroke-width:1}.g-ax{stroke:var(--line2);stroke-width:1;stroke-dasharray:2 3}
+.g-grid{stroke:var(--line);stroke-width:1}.q-line{stroke:var(--line2);stroke-width:1.2}
+.q-lab{font:700 10.5px var(--mono);fill:var(--dim);letter-spacing:.06em}.q-lab.res{fill:var(--res)}.q-lab.sup{fill:var(--sup)}
+.q-ax{font:10px var(--mono);fill:var(--dim)}
+</style>
+<style>
+.grid{display:flex;flex-direction:column;gap:8px;padding:8px 8px 76px}
+.hd{padding:4px 2px}
+.hd h1{margin:0;font-size:23px;font-weight:700;line-height:1.1}
+.hd p{margin:2px 0 0;font:12px var(--mono);color:var(--dim)}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line)}
+.seg button{min-height:42px;border:0;background:var(--panel);color:var(--dim);font:600 12.5px var(--mono);letter-spacing:.04em;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--amber);color:#111}
+.team-t{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;min-height:50px;padding:6px 10px;border:1px solid var(--line);background:var(--panel);color:var(--text);font:inherit;text-align:left;cursor:pointer}
+.team-t b{display:block;font-size:14.5px;font-weight:600}.team-t small{font:11.5px var(--mono);color:var(--dim)}
+.led{flex:0 0 auto;font:700 11px var(--mono);padding:3px 7px;border:1px solid var(--line2);color:var(--dim)}
+.led::after{content:"OFF"}
+.team-t[aria-pressed=true]{border-color:#fff}.team-t[aria-pressed=true] .led{background:#fff;color:#111;border-color:#fff}.team-t[aria-pressed=true] .led::after{content:"ON"}
+.chips{display:flex;gap:1px;overflow-x:auto;scrollbar-width:none;background:var(--line);border:1px solid var(--line)}
+.chips button{flex:1 0 auto;min-height:38px;padding:0 10px;border:0;background:var(--panel);color:var(--dim);font:600 12px var(--mono);cursor:pointer}
+.chips button[aria-pressed=true]{background:var(--panel2);color:var(--amber);box-shadow:inset 0 -2px 0 var(--amber)}
+.stagep{position:relative}
+.stage{position:relative;height:340px;touch-action:pan-y;cursor:grab;background:radial-gradient(circle at 50% 45%,#182531,var(--panel) 70%)}
+.hint{position:absolute;left:10px;bottom:8px;font:11px var(--mono);color:var(--dim);pointer-events:none}
+.ctrl{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px;border-top:1px solid var(--line)}
+.icon-btn[data-paused=true] .i-pause{display:none}.icon-btn[data-paused=false] .i-play{display:none}
+.legend{display:flex;flex-wrap:wrap;gap:4px 10px;font:11px var(--mono);color:var(--dim);margin:0 0 0 6px;padding:0;list-style:none}
+.legend li{display:flex;align-items:center;gap:4px}.legend svg{width:12px;height:12px;overflow:visible}
+.recs{list-style:none;margin:0;padding:0}
+.ins-rec{display:flex;gap:10px;width:100%;padding:8px 10px;border:0;border-bottom:1px solid var(--line);background:none;color:var(--text);font:inherit;text-align:left;cursor:pointer}
+.ins-rec:hover,.ins-rec[aria-current=true]{background:var(--panel2)}
+.ins-rec-n{font:700 13px var(--mono);color:var(--amber);width:16px}
+.ins-rec-body{display:flex;flex-direction:column;font:12px var(--mono);color:var(--dim)}.ins-rec-body b{font:600 14px var(--ui);color:var(--text)}
+.inspector{padding:10px;min-height:120px}
+.ins-idle{margin:0;font-size:14px;color:var(--dim)}.ins-idle b{color:var(--text)}
+.ins-head{display:flex;justify-content:space-between;font:600 11.5px var(--mono);color:var(--dim);letter-spacing:.05em}
+.ins-stance{display:flex;align-items:center;gap:5px}.ins-stance svg{width:11px;height:11px;overflow:visible}
+.ins-sup{color:var(--sup)}.ins-neu{color:var(--neu)}.ins-res{color:var(--res)}.ins-evt{color:var(--amber)}
+.ins-name{margin:6px 0 2px;font-size:20px;font-weight:700;line-height:1.15}
+.ins-role{margin:0 0 10px;font-size:14px;color:var(--dim)}
+.ins-h{margin:12px 0 4px;font:600 11px var(--mono);color:var(--dim);letter-spacing:.06em;text-transform:uppercase}
+.ins-action{margin:0;font-size:15px;font-weight:600;color:var(--amber)}
+.kv{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.kv div{background:var(--bg);padding:6px 8px}.kv b{display:block;font:600 18px var(--mono)}.kv span{font:10.5px var(--mono);color:var(--dim)}
+.ins-cites{margin:0;padding:0;list-style:none;font:12px var(--mono);display:flex;flex-direction:column;gap:3px}
+.ins-cite-n{color:var(--amber)}.ins-cite-d{color:var(--dim)}
+.ins-grade{border:1px solid var(--line2);padding:0 4px;color:var(--text);font-weight:700}
+.ins-cites-none{margin:0;font:12px var(--mono);color:var(--dim)}
+.ins-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.ins-btn{flex:1 1 auto;min-height:42px;padding:0 12px;border:1px solid var(--line2);border-radius:2px;font:600 14px var(--ui);cursor:pointer}
+.ins-btn-main{background:var(--amber);border-color:var(--amber);color:#111}.ins-btn-ghost{background:var(--panel2);color:var(--text)}
+.ins-btn[data-done]{background:var(--sup);border-color:var(--sup);color:#111}
+.ins-team{margin-top:12px;border-top:1px dashed #fff;padding-top:2px}
+.ins-ties{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;font-size:14px}
+.ins-ties li{display:flex;flex-direction:column;gap:3px}
+.ins-redact{display:none}
+.ins-how{font:11.5px var(--mono);color:var(--dim)}.ins-dots{color:#fff}
+.ins-path{margin:0 0 8px;font:12.5px var(--mono)}
+.ins-draft-text{white-space:pre-wrap;font:12.5px/1.55 var(--mono);background:var(--bg);border:1px solid var(--line2);padding:8px;margin:0}
+.tbl{max-height:none}
+.t td.n{font:600 13.5px var(--ui);cursor:pointer}
+.t tr[data-pick]{cursor:pointer}
+.t tr[aria-current=true] td{background:var(--amber-d)}
+.teamlist{list-style:none;margin:0;padding:0}
+.teamlist button{display:grid;grid-template-columns:30px 1fr auto;gap:8px;align-items:center;width:100%;min-height:44px;padding:0 10px;border:0;border-bottom:1px solid var(--line);background:none;color:var(--text);font:inherit;text-align:left;cursor:pointer}
+.av{width:26px;height:26px;border:1.5px solid #fff;display:grid;place-items:center;font:700 10px var(--mono)}.av.pending{border-style:dashed;border-color:var(--dim);color:var(--dim)}
+.tl-n{font-weight:600;font-size:14px}.tl-r{display:block;font:11px var(--mono);color:var(--dim)}.tl-s{font:11px var(--mono);color:var(--dim)}
+.up{display:flex;gap:6px;padding:8px 10px}.up .btn{flex:1}
+@media (min-width:1024px){
+  .grid{display:grid;grid-template-columns:280px minmax(0,1fr) 380px;gap:8px;padding:8px;height:calc(100vh - 41px)}
+  .col{display:flex;flex-direction:column;gap:8px;min-height:0;overflow:auto}
+  .col>*{flex-shrink:0}
+  .stagep{flex:1;flex-shrink:1;min-height:0}.stage{flex:1;height:auto}
+  .chips{flex-wrap:wrap}
+}
+@media (max-width:1023px){.col{display:contents}.hd{order:1}.seg{order:2}.team-t{order:3}.stagep{order:4}.chips{order:5}.p-ins{order:6}#teamblk{order:7}.p-rec{order:8}.p-tbl{order:9}}
+</style>
+</head>
+<body>
+<header class="status">
+  <a class="wm" href="01-home.html">PORTOLAN</a><span class="plan">PRO</span>
+  <nav class="fkeys" aria-label="Main">
+    <a href="01-home.html"><span class="k">F1</span>Dossiers</a>
+    <a href="02-map.html" aria-current="page"><span class="k">F2</span>Map</a>
+    <a href="#tracker"><span class="k">F3</span>Tracker</a>
+    <a href="#network"><span class="k">F4</span>Network</a>
+    <a href="05-report.html"><span class="k">F5</span>Docs</a>
+  </nav>
+  <span class="sp"></span><span class="sample">SAMPLE DATA</span>
+</header>
+<main class="grid">
+  <div class="col">
+    <div class="hd"><h1>Taiwan UAS Defense Grid</h1><p>20 OF 48 STAKEHOLDERS SHOWN · SIZE = INFLUENCE</p></div>
+    <div class="seg" role="group" aria-label="View"><button type="button" data-map-view="3d">3D INFLUENCE</button><button type="button" data-map-view="mx">POWER MATRIX</button></div>
+    <button type="button" class="team-t" data-map-team><span><b>Your team's connections</b><small id="team-sub">Show who already knows someone</small></span><span class="led" aria-hidden="true"></span></button>
+    <div class="chips" role="group" aria-label="Filter by category"><button type="button" data-map-filter="all">ALL</button><button type="button" data-map-filter="gov">GOV</button><button type="button" data-map-filter="ind">IND</button><button type="button" data-map-filter="cap">CAP</button><button type="button" data-map-filter="leg">LEGAL</button><button type="button" data-map-filter="evt">EVENTS</button></div>
+    <section class="panel p-rec" aria-labelledby="rc-h"><div class="ph"><span id="rc-h"><b>CONTACT FIRST</b> IN ORDER</span></div><ol class="recs" id="rec"></ol></section>
+    <section class="panel" id="teamblk" hidden aria-labelledby="tm-h"><div class="ph"><span id="tm-h"><b>YOUR TEAM</b> 3/4 CONNECTED</span></div><ul class="teamlist" id="teamlist"></ul>
+      <div class="up"><button type="button" class="btn btn-s" data-up>Upload LinkedIn export</button><button type="button" class="btn btn-s" data-up>Connect contacts</button></div></section>
+  </div>
+  <div class="col">
+    <section class="panel stagep" aria-label="Stakeholder map">
+      <div class="ph"><span><b>MAP</b> <span id="viewlab">3D INFLUENCE</span></span><span id="hint2">DRAG TO ROTATE · TAP A NODE</span></div>
+      <div class="stage" id="stage"></div>
+      <div class="ctrl">
+        <button type="button" class="icon-btn" data-map-rotate="-0.35" aria-label="Rotate left"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.6"/><path d="M4 4v5h5"/></svg></button>
+        <button type="button" class="icon-btn" data-map-pause aria-label="Pause rotation"><svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5v14M15 5v14"/></svg><svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5l12 7-12 7z"/></svg></button>
+        <button type="button" class="icon-btn" data-map-rotate="0.35" aria-label="Rotate right"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/></svg></button>
+        <ul class="legend" id="legend"></ul>
+      </div>
+    </section>
+  </div>
+  <div class="col">
+    <section class="panel p-ins" aria-labelledby="in-h"><div class="ph"><span id="in-h"><b>INSPECTOR</b></span><span>SOURCES GRADED A–F / 1–6</span></div><div class="inspector" id="ins" aria-live="polite"></div></section>
+    <section class="panel p-tbl" aria-labelledby="tb-h"><div class="ph"><span id="tb-h"><b>ALL STAKEHOLDERS</b> 20</span><span>BY INFLUENCE</span></div>
+      <table class="t"><thead><tr><th>NAME</th><th class="r">INFL</th><th class="r">SUP</th><th class="r">SRC</th></tr></thead><tbody id="tbl"></tbody></table></section>
+  </div>
+</main>
+<script>
+/* Sample data from src/fixtures/taiwan-uas.ts (Taiwan UAS). Placeholders in the fixture
+   ([Name], [DATE]) are shown as the contact's role and "date unverified", never as brackets. */
+var P = window.P || {};
+P.NODES = [
+  { id:'g1', short:'MND Armaments Bureau', name:'Ministry of National Defense — Armaments Bureau', role:'Runs defense procurement tenders; sets qualification rules for drone suppliers.', cat:'gov', st:'sup', infl:92, sup:62, src:14, action:'Request a pre-tender capability briefing; lead with supply-chain provenance.', x:-0.55, y:-0.35, z:0.25, cites:[1,2] },
+  { id:'g2', short:'NCSIST', name:'National Chung-Shan Institute of Science & Technology', role:'Defense R&D institute; runs testing and certification for UAS payloads.', cat:'gov', st:'neu', infl:85, sup:8, src:11, action:'Propose a joint field test on the 5.1 GHz detection gap.', x:-0.75, y:-0.05, z:-0.15, cites:[3] },
+  { id:'g3', short:'MOEA Industrial Dev.', name:'MOEA — Industrial Development Administration', role:'Funds local manufacturing and supply-chain subsidies.', cat:'gov', st:'sup', infl:74, sup:48, src:9, action:'Apply for co-financing once a local assembly partner is signed.', x:-0.3, y:-0.7, z:-0.1 },
+  { id:'g4', short:'Civil Aeronautics Admin.', name:'Civil Aeronautics Administration', role:'Registers drones and sets operating rules for civilian airspace.', cat:'gov', st:'neu', infl:58, sup:0, src:6, action:'Confirm dual-use registration path before any public demo.', x:-0.9, y:-0.45, z:0.4 },
+  { id:'g5', short:'NCC', name:'National Communications Commission', role:'Approves radio-frequency use for sensors and datalinks.', cat:'gov', st:'res', infl:61, sup:-34, src:5, action:'File spectrum pre-consultation early; approvals are backlogged.', x:-0.6, y:0.2, z:0.6, cites:[6] },
+  { id:'g6', short:'Defense Committee', name:'Legislative Yuan — Foreign Affairs & National Defense Committee', role:'Reviews defense budgets and procurement amendments.', cat:'gov', st:'sup', infl:80, sup:40, src:8, action:'Brief two co-sponsors before the committee review.', x:-0.2, y:-0.25, z:0.75, cites:[4] },
+  { id:'i1', short:'Drone Industry Alliance', name:'Drone industry alliance (TEDIBOA)', role:'260+ member companies; coordinates the "non-red" supply chain.', cat:'ind', st:'sup', infl:70, sup:55, src:7, action:'Join as associate member; fastest route to local partners.', x:0.45, y:-0.35, z:-0.35 },
+  { id:'i2', short:'State aerospace prime', name:'State-linked aerospace prime contractor', role:'Likely system integrator for large government drone contracts.', cat:'ind', st:'neu', infl:78, sup:12, src:6, action:'Position as a subsystem supplier, not a competitor.', x:0.15, y:-0.6, z:0.3, cites:[5] },
+  { id:'i3', short:'Listed drone OEM', name:'Listed drone OEM, Taichung', role:'Incumbent local manufacturer; competes for the same tenders.', cat:'ind', st:'res', infl:66, sup:-52, src:5, action:'Avoid head-on bids; explore a component licensing deal.', x:0.8, y:-0.1, z:0.15 },
+  { id:'i4', short:'Tier-1 telecom', name:'Tier-1 telecom operator', role:'Owns secure network infrastructure; potential datalink partner.', cat:'ind', st:'neu', infl:63, sup:5, src:4, action:'Test datalink compatibility before proposing partnership.', x:0.6, y:0.15, z:0.6 },
+  { id:'i5', short:'Taoyuan suppliers', name:'Component supplier cluster, Taoyuan', role:'Motors, batteries and frames; needed for local-content rules.', cat:'ind', st:'sup', infl:45, sup:38, src:3, action:'Shortlist two suppliers to meet local-content thresholds.', x:0.7, y:-0.5, z:-0.6 },
+  { id:'c1', short:'Kestrel Dual-Use Fund', name:'Kestrel Dual-Use Fund (fictional)', role:'Venture fund focused on dual-use hardware in Asia.', cat:'cap', st:'sup', infl:52, sup:60, src:3, action:'Share the dossier summary; ask for intros to portfolio integrators.', x:0.2, y:0.6, z:0.35 },
+  { id:'c2', short:'Harbor Lane FO', name:'Harbor Lane Family Office (fictional)', role:'Family office; invests $250k–$2M in industrial tech.', cat:'cap', st:'sup', infl:40, sup:45, src:2, action:'Approach after the first government pilot is confirmed.', x:0.45, y:0.75, z:0 },
+  { id:'c3', short:'Angel syndicate', name:'Angel syndicate, 14 members', role:'Individual investors; tickets of $2k–$50k.', cat:'cap', st:'neu', infl:30, sup:10, src:2, action:'Low priority until a local entity is set up.', x:-0.05, y:0.85, z:-0.2 },
+  { id:'c4', short:'National Dev. Fund', name:'National Development Fund', role:'Government co-investment vehicle for strategic industries.', cat:'cap', st:'neu', infl:68, sup:15, src:5, action:'Co-investment requires a Taiwan entity; plan for month 6.', x:-0.25, y:0.5, z:0.15 },
+  { id:'l1', short:'Cross-border counsel', name:'Independent counsel, cross-border VC', role:'Matches foreign startups with local investors; handles entity setup.', cat:'leg', st:'sup', infl:35, sup:50, src:2, action:'Book a scoping call on entity structure and investor intros.', x:-0.55, y:0.65, z:-0.45 },
+  { id:'l2', short:'Export-control firm', name:'Taipei law firm, export controls', role:'Advises on defense export licences and end-user checks.', cat:'leg', st:'neu', infl:48, sup:20, src:4, action:'Confirm export-licence needs before shipping demo units.', x:-0.85, y:0.35, z:-0.6 },
+  { id:'e1', short:'TADTE 2027', name:'Taipei Aerospace & Defense Technology Exhibition', role:'Sep 23–25, 2027, Taipei Nangang Hall 1. 9 mapped stakeholders expected.', cat:'evt', st:'evt', infl:70, sup:30, src:3, action:'Reserve a partner-booth slot; schedule 5 meetings in advance.', x:0.15, y:-0.1, z:-0.8 },
+  { id:'e2', short:'Drone ecosystem summit', name:'Drone ecosystem summit (date unverified)', role:'Industry-alliance event; investors and integrators attend.', cat:'evt', st:'evt', infl:50, sup:25, src:2, action:'Apply for the startup pitch track.', x:0.5, y:0.45, z:-0.55 },
+  { id:'e3', short:'Procurement briefing', name:'Defense procurement briefing day (date unverified)', role:'Annual supplier briefing by the procurement authority.', cat:'evt', st:'evt', infl:55, sup:20, src:2, action:'Register as a prospective supplier to receive the invitation.', x:-0.35, y:-0.55, z:0.7 }
+];
+P.EDGES = [['g1','g2'],['g1','g6'],['g1','i2'],['g2','i2'],['g2','i1'],['g3','i1'],['g3','i5'],['g3','c4'],['g4','i3'],['g5','i4'],['g6','g3'],['i1','i3'],['i1','i5'],['i2','i4'],['c1','c2'],['c1','l1'],['c4','c1'],['l2','i2'],['l1','c3'],['e1','g1'],['e1','i1'],['e1','i2'],['e2','i1'],['e2','c1'],['e3','g1'],['e3','g6'],['g4','g5'],['l2','g1']];
+P.TEAM = [
+  { id:'tm_you', short:'You', name:'You', role:'CEO', initials:'YO', source:'Manual entries', status:'CONNECTED', x:0, y:0.05, z:0 },
+  { id:'tm_mei', short:'Mei Chen', name:'Mei Chen', role:'BD lead', initials:'MC', source:'LinkedIn export', status:'CONNECTED', x:0.12, y:0.12, z:0.1 },
+  { id:'tm_priya', short:'Priya Nair', name:'Priya Nair', role:'Advisor, ex-defense', initials:'PN', source:'LinkedIn + contacts', status:'CONNECTED', x:-0.12, y:0.14, z:0.08 },
+  { id:'tm_dan', short:'Daniel Ruiz', name:'Daniel Ruiz', role:'CTO', initials:'DR', source:'Not connected yet', status:'INVITED', x:0.02, y:0.2, z:-0.12 }
+];
+/* contact = role at the organisation; the person's name stays in the teammate's own export */
+P.TIES = [
+  { m:'tm_mei', org:'i1', s:3, contact:'Secretariat contact', how:'Former colleague, 2019–21' },
+  { m:'tm_mei', org:'i2', s:2, contact:'BD manager', how:'1st-degree LinkedIn' },
+  { m:'tm_priya', org:'g2', s:2, contact:'Researcher', how:'Co-panelist, 2024 conference' },
+  { m:'tm_priya', org:'c1', s:3, contact:'Partner', how:'Invested in her last company' },
+  { m:'tm_you', org:'l1', s:3, contact:'Counsel', how:'Current advisor' }
+];
+P.CATS = { all:'All', gov:'Government', ind:'Industry', cap:'Capital', leg:'Legal', evt:'Events' };
+P.STANCE = { sup:'Supportive', neu:'Neutral', res:'Resistant', evt:'Event' };
+/* Sample source list (report sources [1]–[6]); Admiralty grade = reliability A–F + credibility 1–6 */
+P.SOURCES = [
+  { n:1, title:'Drone procurement policy notice', type:'Government gazette', grade:'A2', checked:'27 Oct 2026' },
+  { n:2, title:'Procurement authority tender archive', type:'Official record', grade:'A1', checked:'27 Oct 2026' },
+  { n:3, title:'NCSIST testing guidelines', type:'Official document', grade:'A2', checked:'24 Oct 2026' },
+  { n:4, title:'Committee meeting agenda', type:'Legislative record', grade:'A1', checked:'29 Oct 2026' },
+  { n:5, title:'Prime contractor annual report', type:'Company filing', grade:'B2', checked:'21 Oct 2026' },
+  { n:6, title:'NCC frequency-use rules', type:'Regulation', grade:'A1', checked:'22 Oct 2026' }
+];
+P.DOSSIER = { name:'Taiwan UAS Defense Grid', country:'Republic of China (Taiwan)', stakeholders:48, sources:126, alerts:3, shown:20,
+  client:'Skyward Robotics (fictional)', product:'Counter-UAS sensor kit', date:'30 Oct 2026', share:'portolan.app/s/q7Hk2mV9xR4tLp8wZc3NbF' };
+P.DOSSIERS = [
+  { name:'Taiwan UAS Defense Grid', conf:'High', pct:94, srcs:126 },
+  { name:'Japan Dual-Use Robotics Entry', conf:'High', pct:88, srcs:97 },
+  { name:'U.S. Generative AI Safety Mandate', conf:'High', pct:89, srcs:112 },
+  { name:'Singapore MedTech Sandbox', conf:'Moderate', pct:81, srcs:58 }
+];
+P.REC = ['g6','i1','g1']; /* recommended first contacts, in order */
+P.TRACK = [
+  { name:'Drone industry alliance', stage:'Contacted', next:'Intro meeting held, debrief due', due:'Yesterday', st:'sup' },
+  { name:'MND Armaments Bureau', stage:'Contacted', next:'Pre-tender briefing requested', due:'Nov 4', st:'sup' },
+  { name:'Kestrel Dual-Use Fund', stage:'Met', next:'Send dossier summary', due:'Nov 2', st:'sup' },
+  { name:'NCC (spectrum)', stage:'Found', next:'File spectrum pre-consultation', due:'Nov 8', st:'res' }
+];
+P.byId = {}; P.NODES.forEach(function(n){ P.byId[n.id]=n; });
+P.teamById = {}; P.TEAM.forEach(function(t){ P.teamById[t.id]=t; });
+P.band = function(v){ return v>=75?'High':v>=50?'Medium':'Low'; };
+P.conf = function(src){ return src>=6?'High':src>=3?'Moderate':'Thin'; };
+P.signed = function(v){ return (v>0?'+':v<0?'−':'±')+Math.abs(v); };
+P.dots = function(s){ return s>=3?'●●●':s===2?'●●○':'●○○'; };
+P.tiesFor = function(org){ return P.TIES.filter(function(t){return t.org===org;}); };
+P.memberTies = function(m){ return P.TIES.filter(function(t){return t.m===m;}); };
+P.warmPath = function(org){
+  var path=null;
+  P.TIES.forEach(function(t){ P.EDGES.forEach(function(e){
+    var other = e[0]===org?e[1]:(e[1]===org?e[0]:null);
+    if(other && other===t.org && (!path || t.s>path.tie.s)) path={tie:t, via:other};
+  });});
+  return path;
+};
+P.first = function(m){ return P.teamById[m].name.split(' ')[0]; };
+P.draft = function(m, contact, orgName, viaName){
+  return 'Hi '+P.first(m)+', could you introduce me to your '+contact.toLowerCase()+(viaName?' at '+viaName+', and ask whether they can connect us with '+orgName:' at '+orgName)+'?\n\nContext: we are entering Taiwan with counter-drone sensors that cover the 5.1 GHz detection gap. A 20-minute intro call is all I am asking for. I can send a short brief they can forward.';
+};
+P.esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+window.P = P;
+</script>
+<script>
+/* Pseudo-3D stakeholder map in SVG. Same projection as design/mockup/src/02-map.template.html
+   project(): rotate around the vertical axis, tilt, then perspective divide. No three.js. */
+P.createMap = function (opts) {
+  var svgNS = 'http://www.w3.org/2000/svg';
+  var host = opts.host, theme = opts.theme;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var S = { ang: 0.6, view: '3d', filter: 'all', sel: null, paused: reduce, team: false, mix: 0 };
+  var W = 360, H = 320, drag = null, raf = 0, last = 0;
+  var svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('class', 'pm-svg');
+  svg.setAttribute('role', 'img');
+  svg.setAttribute('aria-label', opts.label || 'Stakeholder map. Drag to rotate, tap a node for details. A full list follows the map.');
+  var gBack = document.createElementNS(svgNS, 'g'), gEdge = document.createElementNS(svgNS, 'g'), gNode = document.createElementNS(svgNS, 'g');
+  gBack.setAttribute('class', 'pm-back'); gEdge.setAttribute('class', 'pm-edges'); gNode.setAttribute('class', 'pm-nodes');
+  svg.appendChild(gBack); svg.appendChild(gEdge); svg.appendChild(gNode);
+  host.appendChild(svg);
+
+  var all = [];
+  function mk(o, isTeam) {
+    var g = document.createElementNS(svgNS, 'g');
+    g.setAttribute('class', 'pm-node ' + (isTeam ? 'pm-team' : 'pm-' + o.st + ' pm-cat-' + o.cat));
+    g.setAttribute('data-id', o.id);
+    var r = isTeam ? 7 : (theme.nodeBase || 3.5) + o.infl * (theme.nodeScale || 0.07);
+    var rank = P.REC.indexOf(o.id);
+    g.innerHTML = '<g class="pm-shape">' + (isTeam ? theme.team(o, r) : theme.node(o, r)) + (rank >= 0 && theme.rec ? theme.rec(rank + 1, r) : '') + '</g>' +
+      '<text class="pm-label" dy="0.35em">' + o.short + '</text>';
+    gNode.appendChild(g);
+    var rec = { o: o, g: g, shape: g.firstChild, label: g.lastChild, r: r, team: isTeam, rank: rank };
+    all.push(rec);
+    return rec;
+  }
+  P.NODES.forEach(function (n) { mk(n, false); });
+  P.TEAM.forEach(function (t) { mk(t, true); });
+
+  function size() {
+    var b = host.getBoundingClientRect();
+    W = Math.max(280, b.width); H = Math.max(260, b.height);
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    svg.setAttribute('width', W); svg.setAttribute('height', H);
+  }
+  function project(o, ang) {
+    var cx = W / 2, cy = H * (theme.cy || 0.5) - 4, R = Math.min(W, H) * (theme.radius || 0.36), tilt = 0.38;
+    var ca = Math.cos(ang), sa = Math.sin(ang), ct = Math.cos(tilt), st = Math.sin(tilt);
+    var x1 = o.x * ca + o.z * sa, z1 = -o.x * sa + o.z * ca;
+    var y2 = o.y * ct - z1 * st, z2 = o.y * st + z1 * ct;
+    var f = 2.8 / (2.8 + z2);
+    return { x: cx + x1 * R * f, y: cy + y2 * R * f, z: z2, f: f };
+  }
+  function matrixPos(n) {
+    var px = 34, py = 26;
+    return { x: px + (n.sup + 100) / 200 * (W - px * 2), y: py + (1 - n.infl / 100) * (H - py * 2 - 14), z: 0, f: 1 };
+  }
+  function inF(o) { return S.filter === 'all' || o.cat === S.filter; }
+
+  function derive() {
+    var sel = S.sel, teamOn = S.team && S.view === '3d';
+    var selOrg = sel && P.byId[sel] ? P.byId[sel] : null, selTeam = sel && P.teamById[sel] ? P.teamById[sel] : null;
+    var linked = {}, direct = [], path = null, hotEdge = {}, hotTie = {};
+    P.EDGES.forEach(function (e) { if (e[0] === sel) linked[e[1]] = 1; if (e[1] === sel) linked[e[0]] = 1; });
+    if (selOrg) {
+      direct = P.tiesFor(selOrg.id);
+      if (!direct.length) path = P.warmPath(selOrg.id);
+      if (teamOn) {
+        direct.forEach(function (t) { linked[t.m] = 1; hotTie[t.m + '|' + t.org] = 1; });
+        if (path) { linked[path.tie.m] = 1; linked[path.via] = 1; hotTie[path.tie.m + '|' + path.via] = 1; hotEdge[[path.via, selOrg.id].sort().join('|')] = 1; }
+      }
+    }
+    if (selTeam) P.memberTies(sel).forEach(function (t) { linked[t.org] = 1; hotTie[t.m + '|' + t.org] = 1; });
+    return { sel: sel, selOrg: selOrg, selTeam: selTeam, linked: linked, direct: direct, path: path, teamOn: teamOn, hotEdge: hotEdge, hotTie: hotTie };
+  }
+
+  function frame() {
+    var D = derive(), pts = {};
+    var m = S.mix; /* 0 = 3D, 1 = matrix */
+    all.forEach(function (a) {
+      var p3 = project(theme.pos && !a.team ? theme.pos(a.o) : a.o, S.ang), p;
+      if (a.team) p = p3;
+      else { var pm = matrixPos(a.o); p = { x: p3.x + (pm.x - p3.x) * m, y: p3.y + (pm.y - p3.y) * m, z: p3.z * (1 - m), f: p3.f + (1 - p3.f) * m }; }
+      pts[a.o.id] = p; a.p = p;
+    });
+    /* edges */
+    var h = '';
+    if (m < 0.98) {
+      var fade = 1 - m;
+      P.EDGES.forEach(function (e) {
+        var a = P.byId[e[0]], b = P.byId[e[1]], pa = pts[e[0]], pb = pts[e[1]];
+        var key = [e[0], e[1]].sort().join('|');
+        var hot = (D.selOrg && !(D.teamOn && D.path) && (e[0] === D.sel || e[1] === D.sel)) || D.hotEdge[key];
+        var vis = inF(a) && inF(b) && (!D.sel || hot || D.selTeam);
+        var op = (vis ? (hot ? 1 : theme.edgeOpacity || 0.22) : 0.05) * fade;
+        if (D.selTeam) op = 0.05 * fade;
+        h += '<line class="pm-edge' + (hot ? ' hot' : '') + '" x1="' + pa.x.toFixed(1) + '" y1="' + pa.y.toFixed(1) + '" x2="' + pb.x.toFixed(1) + '" y2="' + pb.y.toFixed(1) + '" opacity="' + op.toFixed(2) + '"/>';
+      });
+      if (D.teamOn) P.TIES.forEach(function (t) {
+        var hot = D.hotTie[t.m + '|' + t.org], pa = pts[t.m], pb = pts[t.org];
+        var op = D.sel ? (hot ? 1 : 0.08) : 0.7;
+        h += '<line class="pm-tie' + (hot ? ' hot' : '') + '" stroke-width="' + (hot ? 2.5 : t.s * 0.8) + '" x1="' + pa.x.toFixed(1) + '" y1="' + pa.y.toFixed(1) + '" x2="' + pb.x.toFixed(1) + '" y2="' + pb.y.toFixed(1) + '" opacity="' + op + '"/>';
+      });
+    }
+    gEdge.innerHTML = h;
+    gBack.innerHTML = theme.backdrop ? theme.backdrop({ W: W, H: H, ang: S.ang, mix: m, project: function (o) { return project(o, S.ang); }, R: Math.min(W, H) * (theme.radius || 0.36) }) : '';
+    /* nodes, painted back to front */
+    var order = all.slice().sort(function (a, b) { return b.p.z - a.p.z; });
+    order.forEach(function (a) {
+      var o = a.o, p = a.p, id = o.id;
+      var hidden = a.team && !D.teamOn;
+      var on = a.team || inF(o);
+      var isSel = D.sel === id, lk = !!D.linked[id];
+      var dim = !on || (D.sel && !isSel && !lk);
+      var showLabel = !hidden && on && (isSel || (D.sel ? lk : (a.team ? true : (o.infl >= 78 || a.rank >= 0))));
+      if (m > 0.5 && !a.team && !D.sel) showLabel = on && (o.infl >= 60 || a.rank >= 0);
+      a.g.setAttribute('transform', 'translate(' + p.x.toFixed(1) + ',' + p.y.toFixed(1) + ')');
+      a.shape.setAttribute('transform', 'scale(' + p.f.toFixed(3) + ')');
+      var cls = 'pm-node ' + (a.team ? 'pm-team' + (o.status !== 'CONNECTED' ? ' pm-pending' : '') : 'pm-' + o.st) + (isSel ? ' is-sel' : '') + (dim ? ' is-dim' : '') + (lk ? ' is-linked' : '') + (a.rank >= 0 && !D.sel ? ' is-rec' : '') + (hidden ? ' is-hidden' : '');
+      a.g.setAttribute('class', cls);
+      var right = p.x > W - 130;
+      a.label.setAttribute('x', ((right ? -1 : 1) * (a.r * p.f + 5)).toFixed(1));
+      a.label.setAttribute('text-anchor', right ? 'end' : 'start');
+      a.label.style.display = showLabel ? '' : 'none';
+      gNode.appendChild(a.g);
+    });
+  }
+
+  function tick(t) {
+    raf = requestAnimationFrame(tick);
+    var dt = last ? Math.min(50, t - last) : 16; last = t;
+    var target = S.view === 'mx' ? 1 : 0, changed = false;
+    if (S.mix !== target) { var step = dt / 380; S.mix = target > S.mix ? Math.min(1, S.mix + step) : Math.max(0, S.mix - step); changed = true; }
+    if (!S.paused && !S.sel && S.view === '3d' && !drag) { S.ang += dt * 0.00024; changed = true; }
+    if (changed || S.dirty) { S.dirty = false; frame(); }
+  }
+
+  /* pointer: drag rotates, a short press selects */
+  svg.addEventListener('pointerdown', function (e) {
+    var g = e.target.closest ? e.target.closest('.pm-node') : null;
+    drag = { x: e.clientX, y: e.clientY, lx: e.clientX, id: g ? g.getAttribute('data-id') : null, moved: false };
+    try { svg.setPointerCapture(e.pointerId); } catch (x) {}
+  });
+  svg.addEventListener('pointermove', function (e) {
+    if (!drag) return;
+    if (Math.abs(e.clientX - drag.x) + Math.abs(e.clientY - drag.y) > 5) drag.moved = true;
+    if (drag.moved && S.view === '3d') { S.ang += (e.clientX - drag.lx) * 0.012; S.dirty = true; }
+    drag.lx = e.clientX;
+  });
+  function end() {
+    if (!drag) return;
+    var d = drag; drag = null;
+    if (!d.moved) api.select(d.id && d.id === S.sel ? null : d.id);
+  }
+  svg.addEventListener('pointerup', end);
+  svg.addEventListener('pointercancel', function () { drag = null; });
+
+  var listeners = [];
+  function emit() { var D = derive(); listeners.forEach(function (fn) { fn(S, D); }); S.dirty = true; }
+  var api = {
+    state: S,
+    onChange: function (fn) { listeners.push(fn); fn(S, derive()); },
+    select: function (id) { S.sel = id || null; emit(); },
+    setView: function (v) { S.view = v; if (v === 'mx') S.sel = S.sel && P.teamById[S.sel] ? null : S.sel; emit(); },
+    setFilter: function (f) { S.filter = f; S.sel = null; emit(); },
+    toggleTeam: function () { S.team = !S.team; S.view = '3d'; S.sel = null; emit(); },
+    togglePause: function () { S.paused = !S.paused; emit(); },
+    rotate: function (d) { S.ang += d; S.dirty = true; },
+    project: project
+  };
+  size(); frame();
+  if (window.ResizeObserver) new ResizeObserver(function () { size(); S.dirty = true; }).observe(host);
+  raf = requestAnimationFrame(tick);
+  return api;
+};
+
+/* Wire common controls: any element with data-map-* attributes inside root. */
+P.bindControls = function (map, root) {
+  root = root || document;
+  function each(sel, fn) { Array.prototype.forEach.call(root.querySelectorAll(sel), fn); }
+  each('[data-map-view]', function (b) { b.addEventListener('click', function () { map.setView(b.getAttribute('data-map-view')); }); });
+  each('[data-map-filter]', function (b) { b.addEventListener('click', function () { map.setFilter(b.getAttribute('data-map-filter')); }); });
+  each('[data-map-rotate]', function (b) { b.addEventListener('click', function () { map.rotate(parseFloat(b.getAttribute('data-map-rotate'))); }); });
+  each('[data-map-pause]', function (b) { b.addEventListener('click', function () { map.togglePause(); }); });
+  each('[data-map-team]', function (b) { b.addEventListener('click', function () { map.toggleTeam(); }); });
+  root.addEventListener('click', function (e) {
+    var t = e.target.closest && e.target.closest('[data-pick]');
+    if (t) map.select(t.getAttribute('data-pick'));
+  });
+  map.onChange(function (S) {
+    each('[data-map-view]', function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-map-view') === S.view); });
+    each('[data-map-filter]', function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-map-filter') === S.filter); });
+    each('[data-map-pause]', function (b) { b.setAttribute('aria-pressed', S.paused); b.setAttribute('aria-label', S.paused ? 'Resume rotation' : 'Pause rotation'); b.setAttribute('data-paused', S.paused); });
+    each('[data-map-team]', function (b) { b.setAttribute('aria-pressed', S.team && S.view === '3d'); });
+    each('[data-pick]', function (b) { b.setAttribute('aria-current', b.getAttribute('data-pick') === S.sel ? 'true' : 'false'); });
+  });
+};
+
+/* Button feedback helper: swap label for a confirmation, restore after ms (0 = keep). */
+P.confirm = function (btn, text, ms) {
+  if (!btn.dataset.label) btn.dataset.label = btn.textContent;
+  btn.textContent = text; btn.setAttribute('data-done', 'true');
+  if (ms) setTimeout(function () { btn.textContent = btn.dataset.label; btn.removeAttribute('data-done'); }, ms);
+};
+P.copy = function (text, btn) {
+  var done = function () { P.confirm(btn, 'Copied', 1800); };
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done, done); else done();
+};
+</script>
+<script>
+/* Inspector panel + stakeholder list, shared markup with .ins-* hooks; each direction styles it.
+   opts: { el, listEl, recEl, metrics(n) -> html, stanceMark(st) -> html, idle -> html, teamIdle -> html } */
+P.bindInspector = function (map, opts) {
+  var e = P.esc;
+  function cites(n) {
+    if (!n.cites) return '<p class="ins-cites-none">' + n.src + ' sources in the evidence list. Open evidence to read the excerpts.</p>';
+    return '<ol class="ins-cites">' + n.cites.map(function (c) {
+      var s = P.SOURCES[c - 1];
+      return '<li><span class="ins-cite-n">[' + c + ']</span> <span class="ins-cite-t">' + e(s.title) + '</span> <span class="ins-grade" title="Admiralty grade: source reliability ' + s.grade[0] + ', information credibility ' + s.grade[1] + '">' + s.grade + '</span> <span class="ins-cite-d">checked ' + s.checked + '</span></li>';
+    }).join('') + '</ol>';
+  }
+  function tieBlock(D) {
+    var n = D.selOrg, h = '<div class="ins-team">';
+    if (D.direct.length) {
+      h += '<h4 class="ins-h">Who knows someone here</h4><ul class="ins-ties">' + D.direct.map(function (t) {
+        var me = t.m === 'tm_you';
+        return '<li><b>' + e(P.teamById[t.m].name) + '</b> knows their ' + e(t.contact.toLowerCase()) + ' <span class="ins-redact" role="img" aria-label="name withheld"></span><span class="ins-how">' + e(t.how) + ' <span class="ins-dots" aria-label="strength ' + t.s + ' of 3">' + P.dots(t.s) + '</span></span>' +
+          (me ? '<span class="ins-how">Your own contact: reach out directly.</span>' : '<button type="button" class="ins-btn ins-btn-ghost" data-draft="' + t.m + '|' + t.org + '">Ask ' + e(P.first(t.m)) + ' for an intro</button>') + '</li>';
+      }).join('') + '</ul>';
+    } else if (D.path) {
+      var p = D.path;
+      h += '<h4 class="ins-h">Best warm path</h4><p class="ins-path">You → ' + e(P.teamById[p.tie.m].name) + ' → ' + e(p.tie.contact) + ' (' + e(P.byId[p.via].short) + ') → ' + e(n.short) + '</p>' +
+        '<button type="button" class="ins-btn ins-btn-ghost" data-draft="' + p.tie.m + '|' + p.via + '|' + n.id + '">Ask ' + e(P.first(p.tie.m)) + ' to start the intro</button>';
+    } else {
+      h += '<h4 class="ins-h">No warm path</h4><p class="ins-path">Nobody on your team is within two steps of ' + e(n.short) + '.</p><button type="button" class="ins-btn ins-btn-ghost" data-expert>Request a Portolan expert intro</button>';
+    }
+    return h + '<div class="ins-draft" hidden></div></div>';
+  }
+  function render(S, D) {
+    var h;
+    if (D.selOrg) {
+      var n = D.selOrg;
+      h = '<div class="ins-head"><span class="ins-cat">' + P.CATS[n.cat] + '</span><span class="ins-stance ins-' + n.st + '">' + (opts.stanceMark ? opts.stanceMark(n.st) : '') + P.STANCE[n.st] + '</span></div>' +
+        '<h3 class="ins-name">' + e(n.name) + '</h3><p class="ins-role">' + e(n.role) + '</p>' +
+        (opts.metrics ? opts.metrics(n) : '') +
+        '<h4 class="ins-h">Recommended action</h4><p class="ins-action">' + e(n.action) + '</p>' +
+        '<h4 class="ins-h">Evidence</h4>' + cites(n) +
+        '<div class="ins-actions"><button type="button" class="ins-btn ins-btn-ghost" data-evidence>View evidence</button><button type="button" class="ins-btn ins-btn-main" data-track>Add to tracker</button></div>' +
+        (D.teamOn ? tieBlock(D) : '');
+    } else if (D.selTeam) {
+      var t = D.selTeam, ties = P.memberTies(t.id);
+      h = '<div class="ins-head"><span class="ins-cat">Your team</span><span class="ins-stance">' + (t.status === 'CONNECTED' ? ties.length + ' ties' : 'Invited') + '</span></div><h3 class="ins-name">' + e(t.name) + '</h3><p class="ins-role">' + e(t.role) + '. Source: ' + e(t.source) + '.</p>' +
+        (ties.length ? '<ul class="ins-ties">' + ties.map(function (x) { return '<li><b>' + e(P.byId[x.org].short) + '</b> ' + e(x.contact) + ' <span class="ins-redact" role="img" aria-label="name withheld"></span><span class="ins-how">' + e(x.how) + ' <span class="ins-dots">' + P.dots(x.s) + '</span></span></li>'; }).join('') + '</ul>'
+          : '<p class="ins-path">No connections yet. The invite is waiting for ' + e(P.first(t.id)) + ' to opt in and upload their own export.</p>');
+    } else {
+      h = D.teamOn ? (opts.teamIdle || '') : (opts.idle || '');
+    }
+    opts.el.innerHTML = h;
+  }
+  map.onChange(render);
+  opts.el.addEventListener('click', function (ev) {
+    var b = ev.target.closest('button'); if (!b) return;
+    if (b.hasAttribute('data-track')) P.confirm(b, 'Added to tracker', 0);
+    else if (b.hasAttribute('data-evidence')) P.confirm(b, 'Evidence list opens in the app', 1800);
+    else if (b.hasAttribute('data-expert')) P.confirm(b, 'Intro request recorded', 0);
+    else if (b.hasAttribute('data-draft')) {
+      var a = b.getAttribute('data-draft').split('|');
+      var tie = P.TIES.filter(function (t) { return t.m === a[0] && t.org === a[1]; })[0];
+      var txt = a[2] ? P.draft(a[0], tie.contact, P.byId[a[2]].short, P.byId[a[1]].short) : P.draft(a[0], tie.contact, P.byId[a[1]].short);
+      var box = opts.el.querySelector('.ins-draft');
+      box.hidden = false;
+      box.innerHTML = '<h4 class="ins-h">Draft for ' + e(P.first(a[0])) + ' to send</h4><pre class="ins-draft-text">' + e(txt) + '</pre><div class="ins-actions"><button type="button" class="ins-btn ins-btn-main" data-copy>Copy draft</button><button type="button" class="ins-btn ins-btn-ghost" data-close>Close</button></div><p class="ins-how">Portolan never sends messages. ' + e(P.first(a[0])) + ' sends it.</p>';
+      box._text = txt;
+    } else if (b.hasAttribute('data-copy')) P.copy(b.closest('.ins-draft')._text, b);
+    else if (b.hasAttribute('data-close')) { var d = b.closest('.ins-draft'); d.hidden = true; d.innerHTML = ''; }
+  });
+  if (opts.listEl) {
+    var rows = P.NODES.slice().sort(function (a, b) { return b.infl - a.infl; });
+    opts.listEl.innerHTML = rows.map(function (n) {
+      return '<li><button type="button" class="ins-row ins-' + n.st + '" data-pick="' + n.id + '">' + (opts.stanceMark ? opts.stanceMark(n.st) : '') + '<span class="ins-row-name">' + e(n.short) + '</span><span class="ins-row-meta">' + P.band(n.infl) + ' ' + n.infl + '</span><span class="ins-row-src">' + n.src + ' src</span></button></li>';
+    }).join('');
+  }
+  if (opts.recEl) {
+    opts.recEl.innerHTML = P.REC.map(function (id, i) {
+      var n = P.byId[id];
+      return '<li><button type="button" class="ins-rec" data-pick="' + id + '"><span class="ins-rec-n">' + (i + 1) + '</span><span class="ins-rec-body"><b>' + e(n.short) + '</b><span>' + e(n.action) + '</span></span></button></li>';
+    }).join('');
+  }
+};
+</script>
+<script>
+/* Watchfloor map marks: fill = stance, amber brackets = contact first. */
+var WF = {
+  shape: function (st, r) {
+    if (st === 'evt') return '<rect class="n n-evt" x="' + (-r * .72).toFixed(1) + '" y="' + (-r * .72).toFixed(1) + '" width="' + (r * 1.44).toFixed(1) + '" height="' + (r * 1.44).toFixed(1) + '" transform="rotate(45)" vector-effect="non-scaling-stroke"/>';
+    return '<circle class="n n-' + st + '" r="' + r.toFixed(1) + '" vector-effect="non-scaling-stroke"/>';
+  },
+  small: function (st) { return '<svg viewBox="-7 -7 14 14" aria-hidden="true">' + WF.shape(st, 5) + '</svg>'; },
+  brackets: function (r) {
+    var a = r + 6, b = 4;
+    return '<path class="brk" d="M' + (-a) + ',' + (-a + b) + 'V' + (-a) + 'H' + (-a + b) + 'M' + (a - b) + ',' + (-a) + 'H' + a + 'V' + (-a + b) + 'M' + a + ',' + (a - b) + 'V' + a + 'H' + (a - b) + 'M' + (-a + b) + ',' + a + 'H' + (-a) + 'V' + (a - b) + '" vector-effect="non-scaling-stroke"/>';
+  },
+  theme: function (opts) {
+    opts = opts || {};
+    return {
+      radius: opts.radius || 0.38, edgeOpacity: 0.35, cy: 0.56, nodeBase: 3, nodeScale: 0.065,
+      node: function (n, r) { return WF.shape(n.st, r); },
+      team: function (t, r) { return '<rect class="tm-c" x="' + -r + '" y="' + -r + '" width="' + 2 * r + '" height="' + 2 * r + '" vector-effect="non-scaling-stroke"/><text class="tm-i" dy="0.35em">' + t.initials + '</text>'; },
+      rec: function (k, r) { return WF.brackets(r) + '<text class="brk-n" x="' + (r + 9) + '" y="' + (-r - 3) + '">' + k + '</text>'; },
+      backdrop: function (c) {
+        var s = '', f3 = 1 - c.mix, i, p;
+        if (f3 > 0.02) {
+          s += '<g opacity="' + f3.toFixed(2) + '">';
+          [0.5, 1].forEach(function (rr) {
+            var d = '';
+            for (i = 0; i <= 64; i++) { var t = i / 64 * Math.PI * 2; p = c.project({ x: Math.cos(t) * rr, y: 0.8, z: Math.sin(t) * rr }); d += (i ? 'L' : 'M') + p.x.toFixed(1) + ',' + p.y.toFixed(1); }
+            s += '<path class="g-ring" d="' + d + '"/>';
+          });
+          var o = c.project({ x: 0, y: 0.8, z: 0 });
+          [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(function (v) { p = c.project({ x: v[0], y: 0.8, z: v[1] }); s += '<line class="g-ax" x1="' + o.x.toFixed(1) + '" y1="' + o.y.toFixed(1) + '" x2="' + p.x.toFixed(1) + '" y2="' + p.y.toFixed(1) + '"/>'; });
+          s += '</g>';
+        }
+        if (c.mix > 0.02) {
+          var px = 34, py = 26, x0 = c.W / 2, b = c.H - py - 14, y0 = py + (b - py) / 2;
+          s += '<g opacity="' + c.mix.toFixed(2) + '">';
+          for (i = 0; i <= 8; i++) { var gx = px + i / 8 * (c.W - 2 * px); s += '<line class="g-grid" x1="' + gx + '" y1="' + py + '" x2="' + gx + '" y2="' + b + '"/>'; }
+          for (i = 0; i <= 4; i++) { var gy = py + i / 4 * (b - py); s += '<line class="g-grid" x1="' + px + '" y1="' + gy + '" x2="' + (c.W - px) + '" y2="' + gy + '"/>'; }
+          s += '<line class="q-line" x1="' + x0 + '" y1="' + py + '" x2="' + x0 + '" y2="' + b + '"/><line class="q-line" x1="' + px + '" y1="' + y0 + '" x2="' + (c.W - px) + '" y2="' + y0 + '"/>' +
+            '<text class="q-lab res" x="' + (px + 4) + '" y="' + (py + 13) + '">BLOCKERS</text><text class="q-lab sup" x="' + (c.W - px - 4) + '" y="' + (py + 13) + '" text-anchor="end">CHAMPIONS</text><text class="q-lab" x="' + (px + 4) + '" y="' + (b - 6) + '">MONITOR</text><text class="q-lab" x="' + (c.W - px - 4) + '" y="' + (b - 6) + '" text-anchor="end">ALLIES TO GROW</text>' +
+            '<text class="q-ax" x="' + px + '" y="' + (c.H - 8) + '">SUP −100</text><text class="q-ax" x="' + x0 + '" y="' + (c.H - 8) + '" text-anchor="middle">0</text><text class="q-ax" x="' + (c.W - px) + '" y="' + (c.H - 8) + '" text-anchor="end">+100</text><text class="q-ax" transform="translate(14,' + y0 + ') rotate(-90)" text-anchor="middle">INFL</text></g>';
+        }
+        return s;
+      }
+    };
+  }
+};
+</script>
+<script>
+document.getElementById('legend').innerHTML = ['sup', 'neu', 'res', 'evt'].map(function (s) { return '<li>' + WF.small(s) + P.STANCE[s] + '</li>'; }).join('') +
+  '<li><svg viewBox="-7 -7 14 14"><rect class="tm-c" x="-5" y="-5" width="10" height="10"/></svg>Team</li><li><svg viewBox="-7 -7 14 14"><path d="M-7 0H7" stroke="#fff" stroke-width="1.5" stroke-dasharray="3 2"/></svg>Warm tie</li><li><svg viewBox="-9 -9 18 18">' + WF.brackets(2).replace('class="brk"', 'fill="none" stroke="#FFB020" stroke-width="1.5"') + '</svg>Contact first</li>';
+document.getElementById('tbl').innerHTML = P.NODES.slice().sort(function (a, b) { return b.infl - a.infl; }).map(function (n) {
+  return '<tr data-pick="' + n.id + '"><td class="n"><span class="st-' + n.st + '">' + (n.st === 'evt' ? '◇' : '●') + '</span> ' + n.short + '</td><td class="r">' + n.infl + '</td><td class="r st-' + n.st + '">' + P.signed(n.sup) + '</td><td class="r">' + n.src + (n.src <= 2 ? '<span style="color:var(--res)">*</span>' : '') + '</td></tr>';
+}).join('') + '<tr><td colspan="4" style="color:var(--dim)">* thin: 2 sources only</td></tr>';
+var map = P.createMap({ host: document.getElementById('stage'), theme: WF.theme() });
+P.bindControls(map);
+P.bindInspector(map, {
+  el: document.getElementById('ins'), recEl: document.getElementById('rec'), stanceMark: WF.small,
+  metrics: function (n) { return '<div class="kv"><div><b>' + n.infl + '</b><span>INFL ' + P.band(n.infl).toUpperCase() + '</span></div><div><b class="st-' + n.st + '">' + P.signed(n.sup) + '</b><span>SUPPORT ±100</span></div><div><b>' + n.src + '</b><span>SRC · ' + P.conf(n.src).toUpperCase() + '</span></div></div>'; },
+  idle: '<p class="ins-idle"><b>Bracketed nodes are the first three contacts.</b> Select any node or table row to inspect stance, sources and the next step.</p>',
+  teamIdle: '<p class="ins-idle"><b>White dashed lines are warm ties.</b> Select a teammate or an organisation to find the shortest route in.</p>'
+});
+document.getElementById('teamlist').innerHTML = P.TEAM.map(function (t) { var ok = t.status === 'CONNECTED'; return '<li><button type="button" data-pick="' + t.id + '"><span class="av' + (ok ? '' : ' pending') + '">' + t.initials + '</span><span class="tl-n">' + t.name + '<span class="tl-r">' + t.role.toUpperCase() + '</span></span><span class="tl-s">' + (ok ? P.memberTies(t.id).length + ' TIES' : 'INVITED') + '</span></button></li>'; }).join('');
+map.onChange(function (S) {
+  var on = S.team && S.view === '3d';
+  document.getElementById('teamblk').hidden = !on;
+  document.getElementById('team-sub').textContent = S.view === 'mx' ? '3D view only' : on ? '5 warm ties · 3 of 4 teammates' : 'Show who already knows someone';
+  document.getElementById('viewlab').textContent = S.view === 'mx' ? 'POWER MATRIX' : '3D INFLUENCE';
+  document.getElementById('hint2').textContent = S.view === 'mx' ? 'X = SUPPORT · Y = INFLUENCE' : on ? 'DASHED = WARM TIES' : 'DRAG TO ROTATE · TAP A NODE';
+});
+document.querySelectorAll('[data-up]').forEach(function (b) { b.addEventListener('click', function () { P.confirm(b, 'File picker opens in the app', 1800); }); });
+</script>
+</body>
+</html>
