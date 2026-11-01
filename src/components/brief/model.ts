@@ -68,7 +68,7 @@ export interface BriefVM {
   plan: PlanBoxVM[];
   summary: Cited[];
   risks: Cited[];
-  meet: { title: string; date: string; mapped: number; refs: SourceRef[] }[];
+  meet: { eventId: string; title: string; date: string; mapped: number; refs: SourceRef[] }[];
   needs: string[];
   changesNote: string[];
   evidence: EvidenceVM[];
@@ -288,7 +288,7 @@ export function buildBriefModel(d: Dossier, brief: Brief, now: Date): BriefVM {
     risks: checkAll(brief.risks, ok),
     meet: brief.meet
       .filter((m) => m.sourceIds.length > 0 && m.sourceIds.every((id) => ok.has(id)))
-      .map((m) => ({ title: m.title, date: m.date, mapped: m.mappedStakeholders, refs: m.sourceIds.map((id) => sourceRef(ok.get(id)!)) })),
+      .map((m) => ({ eventId: m.eventId, title: m.title, date: m.date, mapped: m.mappedStakeholders, refs: m.sourceIds.map((id) => sourceRef(ok.get(id)!)) })),
     needs: brief.needs.filter((n) => !PLACEHOLDER.test(n)),
     changesNote: brief.changesNote.filter((n) => !PLACEHOLDER.test(n)),
     evidence,

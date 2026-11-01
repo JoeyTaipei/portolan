@@ -1,0 +1,497 @@
+/* One-page A4 report (design/directions/color-admiralty/05-report.html, REP-12).
+   Global stylesheet with an rp- prefix, like map.css. Colours are tokens from globals.css. */
+
+@page {
+  size: A4;
+  margin: 0;
+}
+
+.rp-desk {
+  background: var(--desk);
+  padding: 20px 0 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.rp-toolbar {
+  width: min(794px, calc(100vw - 32px));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+}
+.rp-toolbar .acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.rp-toolbar .note {
+  font-size: 13px;
+  color: var(--ink2);
+}
+
+/* the paper; on narrow screens it is scaled to fit (printing is unaffected) */
+.rp-fit {
+  width: 794px;
+  transform-origin: top left;
+}
+
+.rp-sheet {
+  width: 794px;
+  height: 1123px;
+  background: var(--bg);
+  position: relative;
+  padding: 42px 46px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 12.3px;
+  line-height: 1.4;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.rp-sheet::before {
+  content: "";
+  position: absolute;
+  inset: 14px;
+  border: 6px solid transparent;
+  border-image: repeating-linear-gradient(90deg, var(--grad-a) 0 18px, var(--grad-b) 18px 36px) 6;
+  pointer-events: none;
+}
+.rp-sheet::after {
+  content: "";
+  position: absolute;
+  inset: 26px;
+  border: 1px solid var(--rule-strong);
+  pointer-events: none;
+}
+.rp-sheet a {
+  color: inherit;
+  text-decoration: none;
+}
+.rp-sheet .stamp {
+  font-size: 9.5px;
+  margin: 0 2px;
+}
+.rp-cite {
+  font-size: 0.86em;
+  color: var(--ink2);
+  white-space: nowrap;
+}
+
+.rp-head {
+  display: grid;
+  grid-template-columns: 1fr 214px;
+  gap: 16px;
+}
+.rp-cart {
+  border: 1.5px solid var(--rule-strong);
+  border-radius: var(--r-m);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.rp-cart .k {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink2);
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+.rp-cart .k .sample {
+  font-size: 10.5px;
+  padding: 0 5px;
+}
+.rp-cart h1 {
+  margin: 0;
+  font-size: 31px;
+  line-height: 1;
+  font-weight: 700;
+}
+.rp-cart p {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--ink2);
+}
+.rp-cart p b {
+  color: var(--ink);
+}
+.rp-brand {
+  border: 1.5px solid var(--rule-strong);
+  border-radius: var(--r-m);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 10px 12px;
+}
+.rp-brand .wm {
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 15px;
+}
+.rp-brand b {
+  display: block;
+  font-size: 19px;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--good);
+}
+.rp-brand span {
+  font-size: 11px;
+  color: var(--ink2);
+}
+
+.rp-row {
+  display: grid;
+  grid-template-columns: 1fr 262px;
+  gap: 18px;
+}
+.rp-lab {
+  margin: 0 0 5px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--act-text);
+}
+.rp-summary {
+  margin: 0;
+  font-size: 12.8px;
+  line-height: 1.42;
+}
+.rp-kj {
+  margin-top: 9px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1.5px solid var(--rule-strong);
+  border-bottom: 1.5px solid var(--rule-strong);
+}
+.rp-kj > div {
+  padding: 7px 0 6px;
+}
+.rp-kj > div + div {
+  border-left: 1px solid var(--rule);
+  padding-left: 10px;
+}
+.rp-kj b {
+  display: block;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 19px;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.rp-kj b.none {
+  font-style: normal;
+  font-size: 13px;
+  line-height: 1.25;
+}
+.rp-kj span {
+  font-size: 10.8px;
+  color: var(--ink2);
+  line-height: 1.3;
+  display: block;
+}
+.rp-kj .w b {
+  color: var(--notice-text);
+}
+.rp-judg {
+  margin-top: 8px;
+  font-size: 11.8px;
+  line-height: 1.38;
+}
+.rp-judg .icd {
+  height: 8px;
+  margin: 4px 0 2px;
+}
+.rp-judg .icd-k {
+  font-size: 10px;
+}
+
+.rp-mini {
+  margin: 0;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--r-m);
+  background: var(--stage);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.rp-mini .ex {
+  margin: 0;
+  padding: 6px 8px 0;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.rp-mini .ex span {
+  display: block;
+  font-size: 10px;
+  color: var(--ink2);
+}
+.rp-mini svg.map {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.rp-mini figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 8px;
+  padding: 4px 8px 5px;
+  border-top: 1px solid var(--rule);
+  font-size: 9.8px;
+  color: var(--ink2);
+  background: var(--panel);
+}
+.rp-mini figcaption svg {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  vertical-align: -1px;
+  overflow: visible;
+  margin-right: 2px;
+}
+.rp-mini .lbl {
+  font-size: 9.5px;
+  font-weight: 700;
+  fill: var(--act-text);
+  paint-order: stroke;
+  stroke: var(--halo);
+  stroke-width: 2.5px;
+}
+.rp-mini .zone {
+  font-size: 8px;
+  font-style: italic;
+  fill: var(--ink2);
+}
+
+.rp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  line-height: 1.32;
+}
+.rp-table th {
+  text-align: left;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--ink2);
+  padding: 0 6px 4px 0;
+  border-bottom: 1.5px solid var(--rule-strong);
+}
+.rp-table td {
+  padding: 3px 6px 3px 0;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+.rp-table td.nm {
+  font-weight: 700;
+  width: 150px;
+}
+.rp-table td.nm .k {
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--r-pill);
+  background: var(--act);
+  color: var(--act-ink);
+  font-size: 9.5px;
+  font-weight: 700;
+  margin-right: 5px;
+}
+.rp-table td.st,
+.rp-table td.in {
+  white-space: nowrap;
+}
+.rp-table td.st svg {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  overflow: visible;
+  vertical-align: -1px;
+  margin-right: 4px;
+}
+.rp-table td.un {
+  color: var(--ink2);
+  font-style: italic;
+}
+.rp-table td.src {
+  white-space: nowrap;
+  color: var(--ink2);
+  font-size: 10.6px;
+}
+
+.rp-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.rp-path {
+  margin: 0 0 9px;
+  font-size: 12.3px;
+  line-height: 1.4;
+}
+.rp-path .sub {
+  display: block;
+  font-size: 10.8px;
+  color: var(--ink2);
+}
+.rp-wps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 11.8px;
+  line-height: 1.36;
+  position: relative;
+}
+.rp-wps::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 12px;
+  bottom: 12px;
+  border-left: 1.5px dashed var(--route);
+}
+.rp-wps li {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  position: relative;
+}
+.rp-wps .wp {
+  flex: 0 0 auto;
+  width: 21px;
+  height: 21px;
+  border-radius: var(--r-pill);
+  border: 1.5px solid var(--act);
+  background: var(--bg);
+  display: grid;
+  place-items: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--act-text);
+}
+.rp-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11.8px;
+  line-height: 1.38;
+}
+.rp-haz li {
+  padding-left: 16px;
+  position: relative;
+}
+.rp-haz li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 9px;
+  height: 9px;
+  border: 1.5px dotted var(--res);
+  border-radius: 50%;
+}
+
+.rp-srcs {
+  margin-top: auto;
+  border-top: 1.5px solid var(--rule-strong);
+  padding-top: 7px;
+  font-size: 10.2px;
+  line-height: 1.5;
+  color: var(--ink2);
+}
+.rp-srcs ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  columns: 2;
+  column-gap: 18px;
+}
+.rp-srcs li {
+  break-inside: avoid;
+  padding: 1px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rp-srcs .stamp {
+  font-size: 9px;
+  margin: 0 3px;
+}
+.rp-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 10.4px;
+  color: var(--ink2);
+  margin-top: 6px;
+}
+.rp-foot b {
+  color: var(--act-text);
+  font-weight: 600;
+}
+
+@media print {
+  html,
+  body {
+    background: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  /* Only the paper prints: no bars, tabs, toolbar or frame border. */
+  .frame {
+    border: 0 !important;
+    min-height: 0 !important;
+  }
+  .frame > *:not(main) {
+    display: none !important;
+  }
+  main {
+    padding: 0 !important;
+  }
+  .rp-toolbar,
+  .rp-screen-only {
+    display: none !important;
+  }
+  .rp-desk {
+    background: none;
+    padding: 0;
+    display: block;
+  }
+  .rp-fit {
+    transform: none !important;
+    height: auto !important;
+  }
+  /* exactly one A4 page */
+  .rp-sheet {
+    width: 210mm;
+    height: 296.8mm;
+    margin: 0;
+    break-after: avoid;
+    break-inside: avoid;
+  }
+}
+
+@media print {
+  .rp-fitbox {
+    width: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+}
