@@ -2,8 +2,8 @@ import "server-only";
 import * as mock from "./mock";
 import type { RunInput, TaskGroupStatus, TaskRun, TaskRunResult, TaskSpec } from "./types";
 
-// Parallel Task API over plain fetch (plan P-4). Paid calls (creating runs) happen only when
-// RESEARCH_MODE is exactly "live"; anything else replays the spike output from ./mock.
+// Parallel Task API over plain fetch (plan P-4). Paid calls (creating runs) happen only in live
+// research mode (isLive below); anything else replays the spike output from ./mock.
 // The key is read here and nowhere else in the app, and never logged.
 
 const BASE = "https://api.parallel.ai";
