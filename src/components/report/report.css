@@ -47,7 +47,7 @@
   padding: 42px 46px 32px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   overflow: hidden;
   color: var(--ink);
   font-size: 12.3px;
@@ -167,7 +167,7 @@
   line-height: 1.42;
 }
 .rp-kj {
-  margin-top: 9px;
+  margin-top: 7px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   border-top: 1.5px solid var(--rule-strong);
@@ -413,7 +413,7 @@
   border-top: 1.5px solid var(--rule-strong);
   padding-top: 7px;
   font-size: 10.2px;
-  line-height: 1.5;
+  line-height: 1.42;
   color: var(--ink2);
 }
 .rp-srcs ol {

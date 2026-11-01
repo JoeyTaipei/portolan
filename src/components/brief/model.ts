@@ -154,7 +154,12 @@ export function evidenceItem(src: Source, d: Pick<Dossier, "facts" | "statements
 
 const pct = (f: number) => Math.round(f * 100);
 
-export function metricVMs(m: BriefMetrics, events: Dossier["events"], ok: ReadonlyMap<string, Source>): MetricVM[] {
+export function metricVMs(
+  m: BriefMetrics,
+  d: Pick<Dossier, "events" | "marketChecks" | "statements">,
+  ok: ReadonlyMap<string, Source>,
+): MetricVM[] {
+  const events = d.events;
   const r = m.entryReadiness;
   const o = m.opposition;
   const w = m.window;
@@ -162,6 +167,11 @@ export function metricVMs(m: BriefMetrics, events: Dossier["events"], ok: Readon
   const check = (v: number | null) => (v === null ? "No sourced rating" : `${v} of 3`);
   const ev = w.found ? events.find((e) => e.id === w.eventId) : undefined;
   const refMap = new Map([...ok].map(([k, v]) => [k, sourceRef(v)]));
+  // Each readiness check lists the sources it was rated from; support is worked out from the
+  // stakeholders' sourced statements.
+  const checkRefs = (c: Dossier["marketChecks"]["money"], rating: number | null) =>
+    rating === null || !c ? [] : refsFor(c.sourceIds, refMap);
+  const supportRefs = refsFor(d.statements.map((st) => st.sourceId), refMap);
   return [
     {
       key: "readiness",
@@ -174,9 +184,9 @@ export function metricVMs(m: BriefMetrics, events: Dossier["events"], ok: Readon
         basedOn: r ? `Based on ${r.basedOn.rated} of 3 checks` : "Based on 0 of 3 checks",
         factors: r
           ? [
-              { label: "Money: an open budget, tender or programme", weight: null, rating: check(r.checks.money), sources: [] },
-              { label: "Licence: a path for a foreign firm", weight: null, rating: check(r.checks.licence), sources: [] },
-              { label: "Support: supporters' share of known influence", weight: null, rating: check(r.checks.support), sources: [] },
+              { label: "Money: an open budget, tender or programme", weight: null, rating: check(r.checks.money), sources: checkRefs(d.marketChecks.money, r.checks.money) },
+              { label: "Licence: a path for a foreign firm", weight: null, rating: check(r.checks.licence), sources: checkRefs(d.marketChecks.licence, r.checks.licence) },
+              { label: "Support: supporters' share of known influence", weight: null, rating: check(r.checks.support), sources: r.checks.support === null ? [] : supportRefs },
             ]
           : [],
         summary:
@@ -271,7 +281,7 @@ export function buildBriefModel(d: Dossier, brief: Brief, now: Date): BriefVM {
       brief.version === latest.version
         ? briefStatus(brief, d, now)
         : { outOfDate: true, reasons: [`A newer version (v${latest.version}) exists.`] },
-    metrics: metricVMs(briefMetrics(d, now), d.events, ok),
+    metrics: metricVMs(briefMetrics(d, now), d, ok),
     rationale: checkAll(brief.rationale, ok),
     judgments: brief.judgments
       .filter((j) => !PLACEHOLDER.test(j.text) && j.sourceIds.length > 0 && j.sourceIds.every((id) => ok.has(id)))

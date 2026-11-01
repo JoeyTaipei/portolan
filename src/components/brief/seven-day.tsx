@@ -19,8 +19,8 @@ export function SevenDay({ plan }: { plan: PlanBoxVM[] }) {
               <p className="m-0 text-[14px] text-ink2">{b.empty}</p>
             ) : (
               <ul className="m-0 flex list-none flex-col gap-2 p-0">
-                {b.actions.map((a) => (
-                  <li key={a.text} className="text-[14px] leading-[1.45]">
+                {b.actions.map((a, i) => (
+                  <li key={i} className="text-[14px] leading-[1.45]">
                     {a.text}
                     <Cites refs={a.refs} />
                     <span className="block text-[12.5px] text-ink2">With {a.who}</span>

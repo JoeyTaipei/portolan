@@ -102,8 +102,8 @@ export function SourceList({ m, title, intro }: { m: SourcesVM; title: string; i
                       Backs up {r.facts.length} fact{r.facts.length === 1 ? "" : "s"}
                     </summary>
                     <ul className="mt-1 mb-0 flex flex-col gap-1 pl-4 leading-snug text-ink2">
-                      {r.facts.map((f) => (
-                        <li key={f}>{f}</li>
+                      {r.facts.map((f, i) => (
+                        <li key={i}>{f}</li>
                       ))}
                     </ul>
                   </details>

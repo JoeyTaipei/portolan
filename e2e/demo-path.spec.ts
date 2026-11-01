@@ -102,6 +102,9 @@ test("map → brief → A4 report prints on one page", async ({ page }) => {
   await expectNoSideScroll(page);
   if (hasBrief) {
     await expect(page.getByTestId("a4-sheet")).toBeVisible();
+    // Fixed caps keep everything on the paper: nothing is clipped at the bottom.
+    const overflow = await page.getByTestId("a4-sheet").evaluate((el) => el.scrollHeight - el.clientHeight);
+    expect(overflow).toBeLessThanOrEqual(0);
     await expect(page.getByTestId("a4-sheet")).toContainText("Sample data");
     await expect(page.getByTestId("a4-sheet")).toContainText(`/s/${SAMPLE_SHARE_ID}/sources`);
     await page.getByRole("button", { name: "Copy share link" }).click();

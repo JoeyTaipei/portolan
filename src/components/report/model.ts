@@ -5,8 +5,8 @@
 // team ties or documents (spec §9).
 import { buildBriefModel, fmtDay, type BriefVM, type Cited, type MetricVM } from "@/components/brief/model";
 import { buildMapModel, byInfluence, MAP_LIMIT, NO_ROUTE, type Mark } from "@/components/map/model";
-import { influenceText, type SourceRef } from "@/components/score/explain";
-import { isEligible } from "@/lib/scoring";
+import { influenceText, sourceRef, type SourceRef } from "@/components/score/explain";
+import { isEligible, sourcesFor } from "@/lib/scoring";
 import type { Brief, Category, Dossier, IcdTerm, Confidence } from "@/lib/types";
 
 export const TOP_N = 5;
@@ -70,7 +70,7 @@ export function buildReportModel(d: Dossier, brief: Brief, now: Date): ReportVM 
         // The next move's sources first, then the stakeholder's other sources, best grade first.
         refs: dedupe([
           ...n.action.sources,
-          ...[...n.explain.confidence.factors.flatMap((f) => f.sources)].sort(
+          ...sourcesFor(n.id, d.facts, d.statements, d.sources).map(sourceRef).sort(
             (x, y) => x.reliability.localeCompare(y.reliability) || x.credibility - y.credibility,
           ),
         ]).slice(0, ROW_SOURCES_N),
@@ -85,10 +85,12 @@ export function buildReportModel(d: Dossier, brief: Brief, now: Date): ReportVM 
     .map((n) => ({ id: n.id, short: n.short, category: n.category, mark: n.mark, influence: n.influence?.score ?? null, x: n.x, y: n.y, z: n.z }));
 
   const eventOf = new Map(d.events.map((e) => [e.id, e]));
+  const attendee = new Set(d.stakeholders.filter((s) => s.category !== "evt").map((s) => s.id));
   const meet = b.meet.slice(0, MEET_N).map((m) => ({
     title: m.title,
     date: m.date,
-    mapped: Math.max(m.mapped, eventOf.get(m.eventId)?.stakeholderIds.length ?? 0),
+    // Sourced attendees only: the event's own node (category evt) is not a stakeholder there.
+    mapped: Math.max(m.mapped, (eventOf.get(m.eventId)?.stakeholderIds ?? []).filter((id) => attendee.has(id)).length),
   }));
 
   // REP-7: one line per 7-day box, its first sourced action (or the box's empty note).
