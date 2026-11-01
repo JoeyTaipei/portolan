@@ -45,3 +45,53 @@ Does the influence method in `docs/scoring.md` §2 give stable, sourced ratings?
 - **D. Founder check (10 minutes, free):** rank these 10 from most to least influential for a US counter-drone startup's first government pilot. We compare that order with the scores; that is the number to quote.
 
 Raw outputs and scripts: kept outside the repo (scratchpad), not committed.
+
+## Founder ranking check (2026-11-01 evening)
+
+The founder ranked the 10 by influence over a US counter-drone startup's first government pilot. The list named NCSIST twice (2nd and 6th) and left out the National Police Agency, so it is compared two ways. "Ours" = Sonnet majority of 3 with the decision 0004 rules.
+
+| Founder rank | Stakeholder | Ours | Our rank |
+|---|---|---|---|
+| 1 | Defense Committee | Medium 53 | 5 |
+| 2 | NCSIST | High 71 | 4 |
+| 3 | AIDC | Low 33 | 7 |
+| 4 | Armaments Bureau | High 87 | 1 |
+| 5 | ITRI | Low 30 | 8 |
+| 6 | (NCSIST again; read as National Police Agency) | High 77 | 3 |
+| 7 | Coast Guard | High 82 | 2 |
+| 8 | Tron Future | Medium 45 | 6 |
+| 9 | Taiwania Capital | Low 15 | 9 |
+| 10 | Lee and Li | no score | 10 |
+
+Rank agreement (Spearman): **0.44** reading the 6th as the Police Agency, **0.57** dropping the duplicate (Opus: 0.52 / 0.63). Moderate: right at the bottom, wrong in the middle and top.
+
+Where we differ:
+1. **The legislature is under-rated.** The Defense Committee scored budget 1 ("can influence priorities"), but the Legislative Yuan approves the defence budget, which the rubric's 3 ("drafts or approves this budget") should cover. The rubric wording led the model to treat "approve" as an executive act.
+2. **Gatekeepers are missing.** The founder puts AIDC (state-backed aerospace prime) and ITRI high; we put them low, partly because decision 0004 sets their authority and budget to 0. For a foreign startup the route often runs through a local prime or certifier (the NPA tender is open to domestic firms only), and none of the five factors measures "controls the route in".
+3. **Buyers are over-rated relative to the founder.** We rank the Coast Guard and Police Agency 2nd–3rd; the founder 6th–7th.
+
+Caveats: one expert, 10 items, one duplicate. Ask the founder why AIDC and ITRI are 3rd and 5th before changing weights.
+
+## Re-run with the clarified rubric (2-pass + 3rd if split, US$0.36)
+
+| Founder rank | Stakeholder | Before | After |
+|---|---|---|---|
+| 1 | Defense Committee | Medium 53 | Medium 53 |
+| 2 | NCSIST | High 71 | High 70 |
+| 3 | AIDC | Low 33 | Low 33 |
+| 4 | Armaments Bureau | High 87 | High 87 |
+| 5 | ITRI | Low 30 | Medium 50 |
+| 6 | National Police Agency | High 77 | High 82 |
+| 7 | Coast Guard | High 82 | High 82 |
+| 8 | Tron Future | Medium 45 | Medium 62 |
+| 9 | Taiwania Capital | Low 15 | Low 6 |
+| 10 | Lee and Li | no score | no score |
+
+Spearman fell to **0.34 / 0.43** (from 0.44 / 0.57). The model applied the new wording; the gap is evidence:
+- Defense Committee: its sources show it reviewing the drone bill, while the plenary passes the budget, so budget stayed 1.
+- AIDC: its sources show it only as one bidder in the NPA tender, so it stayed low.
+- Tron Future: the gatekeeper wording lifted it (prime on the Army C-UAS contract), against the founder's view.
+
+Conclusion: the remaining gap is knowledge the founder has that our sources don't (e.g. AIDC as the defence ministry's aerospace prime, the committee's practical power over the defence budget). Rubric wording can't add it; better research queries or expert input as a dated, attributed source can.
+
+Cost: 7 of 10 needed a 3rd pass, so "3rd only if split" averages about 2.7 passes; at S3's live price (about US$0.029 per pass) that is about US$3.8 for 48 entities, still over the US$3.5 Claude cap.

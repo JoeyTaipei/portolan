@@ -1,6 +1,7 @@
 // docs/scoring.md §2: influence 0–100 from five factors; Claude rates four, code computes centrality.
 import type {
   Banded,
+  Category,
   Edge,
   Fact,
   FactorBreakdown,
@@ -73,26 +74,57 @@ function ratedFacts(stakeholderId: string, facts: Fact[]): Partial<Record<RatedF
   return out;
 }
 
-/**
- * The five ratings for one stakeholder. With no sourced Claude-rated factor, every factor is
- * null (centrality alone isn't evidence of influence), so there is no score.
- */
-export function influenceRatings(stakeholderId: string, facts: Fact[], edges: Edge[]): InfluenceRatings {
+/** §2.3 (decision 0004): categories with no formal authority over, or control of, government budgets. */
+const STRUCTURAL_ZERO: Partial<Record<Category, RatedFactor[]>> = {
+  ind: ["authority", "budget"],
+  cap: ["authority", "budget"],
+  leg: ["authority", "budget"],
+};
+
+/** §2.3 (decision 0004): fewer sourced Claude-rated factors than this → no score. */
+export const MIN_SOURCED_FACTORS = 2;
+
+/** Factors set to 0 by the category rule (no sourced rating), for SCORE-X to label "by category rule". */
+export function structuralZeros(stakeholderId: string, facts: Fact[], category?: Category): RatedFactor[] {
   const rf = ratedFacts(stakeholderId, facts);
-  const anyRated = RATED.some((k) => rf[k]);
+  return (category ? STRUCTURAL_ZERO[category] ?? [] : []).filter((k) => !rf[k]);
+}
+
+/**
+ * The five ratings for one stakeholder. With fewer than MIN_SOURCED_FACTORS sourced Claude-rated
+ * factors, every factor is null (centrality and category zeros aren't evidence), so there is no score.
+ */
+export function influenceRatings(
+  stakeholderId: string,
+  facts: Fact[],
+  edges: Edge[],
+  category?: Category,
+): InfluenceRatings {
+  const rf = ratedFacts(stakeholderId, facts);
+  const sourced = RATED.filter((k) => rf[k]).length;
+  if (sourced < MIN_SOURCED_FACTORS) {
+    return { authority: null, budget: null, access: null, recent: null, centrality: null };
+  }
+  const zeros = structuralZeros(stakeholderId, facts, category);
+  const pick = (k: RatedFactor): Rating03 | null => rf[k]?.rating ?? (zeros.includes(k) ? 0 : null);
   return {
-    authority: rf.authority?.rating ?? null,
-    budget: rf.budget?.rating ?? null,
-    access: rf.access?.rating ?? null,
-    recent: rf.recent?.rating ?? null,
-    centrality: anyRated ? centralityRating(stakeholderId, edges) : null,
+    authority: pick("authority"),
+    budget: pick("budget"),
+    access: pick("access"),
+    recent: pick("recent"),
+    centrality: centralityRating(stakeholderId, edges),
   };
 }
 
 /** For SCORE-X: each factor's rating, weight and the sources it cites. */
-export function influenceBreakdown(stakeholderId: string, facts: Fact[], edges: Edge[]): FactorBreakdown[] {
+export function influenceBreakdown(
+  stakeholderId: string,
+  facts: Fact[],
+  edges: Edge[],
+  category?: Category,
+): FactorBreakdown[] {
   const rf = ratedFacts(stakeholderId, facts);
-  const ratings = influenceRatings(stakeholderId, facts, edges);
+  const ratings = influenceRatings(stakeholderId, facts, edges, category);
   return FACTORS.map((factor) => {
     let sourceIds: string[] = [];
     if (factor === "centrality") {
@@ -110,6 +142,6 @@ export function influenceBreakdown(stakeholderId: string, facts: Fact[], edges: 
   });
 }
 
-export function influenceFor(stakeholderId: string, facts: Fact[], edges: Edge[]): Banded | null {
-  return influenceScore(influenceRatings(stakeholderId, facts, edges));
+export function influenceFor(stakeholderId: string, facts: Fact[], edges: Edge[], category?: Category): Banded | null {
+  return influenceScore(influenceRatings(stakeholderId, facts, edges, category));
 }

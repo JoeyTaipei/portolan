@@ -93,8 +93,16 @@ describe("§2 influence", () => {
     expect(influenceScore({ authority: 1, budget: 0, access: 1, centrality: 0, recent: 0 })?.level).toBe("Low");
   });
   it("ignores unverified facts", () => {
-    const facts = [fact("x", "authority", 3), fact("x", "budget", 3, { status: "unverified", sourceIds: [] })];
-    expect(influenceFor("x", facts, [])?.basedOn).toEqual({ rated: 2, of: 5 });
+    const facts = [fact("x", "authority", 3), fact("x", "access", 2), fact("x", "budget", 3, { status: "unverified", sourceIds: [] })];
+    expect(influenceFor("x", facts, [])?.basedOn).toEqual({ rated: 3, of: 5 });
+  });
+  it("decision 0004: fewer than 2 sourced factors → no score (no more \"Low 0\")", () => {
+    expect(influenceFor("x", [fact("x", "authority", 0)], [edge("x", "y")], "leg")).toBeNull();
+  });
+  it("decision 0004: ind/cap/leg get authority and budget 0 by category rule; sourced ratings win", () => {
+    const facts = [fact("x", "access", 1), fact("x", "recent", 2), fact("x", "budget", 1)];
+    expect(influenceFor("x", facts, [], "ind")?.basedOn).toEqual({ rated: 5, of: 5 });
+    expect(influenceFor("x", facts, [], "gov")?.basedOn).toEqual({ rated: 4, of: 5 });
   });
   it("no sourced Claude-rated factor → no score even with edges", () => {
     expect(influenceFor("x", [], [edge("x", "y")])).toBeNull();
