@@ -1,4 +1,4 @@
-// HOME-1: brand bar. The plan label is display only (no payments). Never "ATLAS".
+// HOME-1: brand bar. The plan label is display only (no payments). Brand is Portolan only.
 export function BrandBar() {
   return (
     <div className="flex flex-col gap-2">

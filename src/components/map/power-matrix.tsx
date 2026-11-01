@@ -84,7 +84,7 @@ export function PowerMatrix({
           })}
         </svg>
         {placed.length === 0 && (
-          <p className={s.hint} style={{ bottom: "auto", top: "45%", textAlign: "center" }}>
+          <p className={s.hint} style={{ bottom: "auto", top: "40%", left: "15%", right: "15%", textAlign: "center", background: "var(--panel)", padding: "8px 12px", border: "1px solid var(--rule)", borderRadius: "var(--r-m)" }}>
             No stakeholder has both a sourced influence score and a sourced statement yet, so the matrix is empty.
           </p>
         )}

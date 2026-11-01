@@ -29,7 +29,9 @@ export function DetailsPanel({
   dossierId,
   isSample,
   tracker,
+  hasRoute,
 }: {
+  hasRoute: boolean;
   node: NodeVM | null;
   dossierId: string;
   isSample: boolean;
@@ -39,8 +41,13 @@ export function DetailsPanel({
     return (
       <section aria-label="Stakeholder details" className="rounded-[var(--r-l)] border border-rule-strong bg-panel p-3.5">
         <p className="m-0 text-[14.5px] leading-normal text-ink2">
-          <b className="text-ink">Start with the dashed route.</b> It links the stakeholders to contact first. Click any
-          stakeholder to see where they stand, the sources behind it and the next step.
+          {hasRoute ? (
+            <>
+              <b className="text-ink">Start with the dashed route.</b> It links the stakeholders to contact first.{" "}
+            </>
+          ) : null}
+          Click any stakeholder on the map or in the list to see where they stand, the sources behind it and the next
+          step.
         </p>
       </section>
     );
