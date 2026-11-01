@@ -1,6 +1,6 @@
 import type { Mark } from "./model";
 import { MarkIcon } from "./node-mark";
-import s from "./map.module.css";
+import { s } from "./marks";
 
 // MAP-8: same marks as the map. Team and warm-tie entries arrive with the team layer (S7).
 const MARKS: Mark[] = ["supportive", "neutral", "resistant", "unknown", "event"];

@@ -7,7 +7,7 @@ import type { NodeVM } from "./model";
 import { NodeShape } from "./node-mark";
 import { depthBand, FLOOR_Y, nodeRadius, project } from "./project";
 import { useSize } from "./use-size";
-import s from "./map.module.css";
+import { s } from "./marks";
 
 // MAP-3/4/5/11: SVG pseudo-3D map. Auto-rotates (paused under reduced motion and while the
 // pointer is over it or a node is selected), drag or ← → to rotate, click a node to focus it,

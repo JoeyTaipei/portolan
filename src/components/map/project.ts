@@ -2,6 +2,8 @@
 // vertical axis, tilt 0.38, then perspective f = 2.8 / (2.8 + z). No three.js.
 
 export const TILT = 0.38;
+
+export const round = (v: number, k: number) => Math.round(v * k) / k;
 /** Sea floor height in model units (soundings sit here under each node). */
 export const FLOOR_Y = 0.8;
 
@@ -31,7 +33,9 @@ export function project(o: Point3, ang: number, W: number, H: number, radius = 0
   const y2 = o.y * ct - z1 * st;
   const z2 = o.y * st + z1 * ct;
   const f = 2.8 / (2.8 + z2);
-  return { x: cx + x1 * R * f, y: cy + y2 * R * f, z: z2, f };
+  // Rounded: Node and browsers can differ in the last digit of sin/cos, which would make the
+  // server HTML and the hydrated SVG disagree.
+  return { x: round(cx + x1 * R * f, 10), y: round(cy + y2 * R * f, 10), z: round(z2, 1e4), f: round(f, 1e3) };
 }
 
 /** Node radius from influence (mockup: 3.5 + infl × 0.07); unscored nodes get the base size. */

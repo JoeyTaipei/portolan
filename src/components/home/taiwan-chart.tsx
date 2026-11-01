@@ -2,7 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { NodeShape } from "@/components/map/node-mark";
-import s from "@/components/map/map.module.css";
+import { round } from "@/components/map/project";
+import { s } from "@/components/map/marks";
 import type { PlacedStakeholder } from "./model";
 import { chartProj, COAST, PORTS, type Bounds } from "./taiwan-coast";
 
@@ -76,8 +77,8 @@ export function TaiwanChart({
               className={i % 4 === 0 ? s.chartRhumbMain : s.chartRhumb}
               x1={rx}
               y1={ry}
-              x2={rx + Math.cos(a) * L}
-              y2={ry + Math.sin(a) * L}
+              x2={round(rx + Math.cos(a) * L, 10)}
+              y2={round(ry + Math.sin(a) * L, 10)}
             />
           );
         })}

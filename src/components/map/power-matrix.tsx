@@ -5,7 +5,7 @@ import type { NodeVM } from "./model";
 import { MarkIcon, NodeShape } from "./node-mark";
 import { nodeRadius } from "./project";
 import { useSize } from "./use-size";
-import s from "./map.module.css";
+import { s } from "./marks";
 
 // MAP-6: x = support −100…+100, y = influence; three depth bands (deepest on top); quadrants
 // from docs/scoring.md §5. Stakeholders with Unknown support or no influence sit beside it.

@@ -1,6 +1,6 @@
 import { STANCE_LABEL } from "@/components/score/explain";
 import type { Mark } from "./model";
-import s from "./map.module.css";
+import { s } from "./marks";
 
 // Chart-buoy stance marks (direction.md), shared by the map, matrix, chart, list and legend:
 // cone = supportive, square = resistant, hollow circle = neutral, diamond = event,
