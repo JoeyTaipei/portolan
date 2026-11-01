@@ -252,3 +252,46 @@ export async function listAliases(dossierId: string): Promise<{ alias: string; s
   const r = await db().from("org_aliases").select("alias, stakeholder_key").or(`dossier_id.is.null,dossier_id.eq.${dossierId}`);
   return (must(r, "aliases") as Row[]).map((x) => ({ alias: x.alias as string, stakeholderKey: x.stakeholder_key as string }));
 }
+
+// ─── Progress (RES-1) ────────────────────────────────────────────────────────
+
+export interface ProgressRows {
+  stakeholders: { name: string; status: string; createdAt: string }[];
+  sources: { title: string; publisher: string | null; accepted: boolean; rejectReason: string | null; reliability: string; credibility: number; createdAt: string }[];
+  acceptedSources: number;
+}
+
+/** What the progress screen shows: names found, latest sources (accepted and rejected), counts. */
+export async function progressRows(dossierId: string, runId: string, limit = 20): Promise<ProgressRows> {
+  const client = db();
+  const [st, src, acc] = await Promise.all([
+    client.from("stakeholders").select("name, status, created_at").eq("dossier_id", dossierId).eq("last_run_id", runId),
+    client
+      .from("sources")
+      .select("title, publisher, accepted, reject_reason, reliability, credibility, created_at")
+      .eq("dossier_id", dossierId)
+      .eq("run_id", runId)
+      .order("created_at", { ascending: false })
+      .order("label", { ascending: false })
+      .limit(limit),
+    client.from("sources").select("id", { count: "exact", head: true }).eq("dossier_id", dossierId).eq("run_id", runId).eq("accepted", true),
+  ]);
+  if (acc.error) throw new Error(`progress count: ${acc.error.message}`);
+  return {
+    stakeholders: (must(st, "progress stakeholders") as Row[]).map((x) => ({
+      name: x.name as string,
+      status: x.status as string,
+      createdAt: x.created_at as string,
+    })),
+    sources: (must(src, "progress sources") as Row[]).map((x) => ({
+      title: x.title as string,
+      publisher: (x.publisher as string) ?? null,
+      accepted: x.accepted as boolean,
+      rejectReason: (x.reject_reason as string) ?? null,
+      reliability: x.reliability as string,
+      credibility: x.credibility as number,
+      createdAt: x.created_at as string,
+    })),
+    acceptedSources: acc.count ?? 0,
+  };
+}
