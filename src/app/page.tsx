@@ -1,14 +1,17 @@
-// Placeholder until slice S1 replaces it with the Dossiers screen (design/screens/01-dossiers.png).
+import Link from "next/link";
+
+// Minimal home until S1 builds the Dossiers screen.
 export default function Home() {
   return (
-    <main className="flex flex-1 flex-col justify-center gap-3 bg-[#F3EEE4] px-6 py-16 text-[#1C1B19]">
-      <p className="font-mono text-xs tracking-widest text-[#6B655B]">MARKET ENTRY INTELLIGENCE</p>
-      <h1 className="font-serif text-4xl font-semibold leading-tight">
-        PORTOLAN <span className="font-normal italic text-[#A8441F]">{"// Cognitive Brief"}</span>
-      </h1>
-      <p className="max-w-sm font-serif text-lg italic text-[#4F4A42]">
-        Turning unverified public data into evidence-backed, fully traceable stakeholder influence maps.
+    <main className="frame flex flex-col justify-center gap-4 px-6 py-16">
+      <p className="m-0 text-[13px] font-semibold text-ink2">Market entry intelligence</p>
+      <h1 className="m-0 text-[40px] font-bold uppercase leading-none tracking-[.02em]">Portolan</h1>
+      <p className="m-0 max-w-[34ch] text-ink2">
+        Sourced stakeholder maps and briefs for entering a new market.
       </p>
+      <Link className="btn btn-main self-start" href="/d/sample">
+        Open the sample dossier
+      </Link>
     </main>
   );
 }
