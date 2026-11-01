@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Suspense } from "react";
 import { Exhibit } from "@/components/score/exhibit";
 import { PickFirstNotice } from "@/components/shell/pick-first";
@@ -27,6 +28,11 @@ export function HomeView({ m, sample }: { m: HomeModel; sample: { id: string; na
           </Suspense>
           <h1 className="sr-only">Portolan dossiers</h1>
           <BrandBar />
+          {!m.isSample || (
+            <Link href="/d/sample" className="btn btn-ghost mt-1 self-start">
+              Open the sample dossier
+            </Link>
+          )}
         </div>
         <div className="max-lg:order-2">
           <QuickNav m={m} />

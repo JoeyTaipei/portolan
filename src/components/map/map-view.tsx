@@ -33,6 +33,12 @@ export function MapView({ model, tracker }: { model: MapModel; tracker: TrackerI
   const [paused, setPaused] = useState(false);
   const controls = useRef<MapControls | null>(null);
   const fillRef = useFillHeight<HTMLDivElement>();
+  const detailsRef = useRef<HTMLDivElement>(null);
+
+  // A new selection brings its details into view (the list below may be scrolled).
+  useEffect(() => {
+    if (selected) detailsRef.current?.scrollIntoView({ block: "nearest" });
+  }, [selected]);
 
   const sorted = useMemo(() => [...model.nodes].sort(byInfluence), [model.nodes]);
   const drawn = useMemo(() => {
@@ -177,7 +183,7 @@ export function MapView({ model, tracker }: { model: MapModel; tracker: TrackerI
 
       {/* right */}
       <div className={`${col} gap-3.5 lg:border-l lg:border-rule-strong lg:px-[18px] lg:py-4 min-[1600px]:px-6`}>
-        <div className="max-lg:order-7">
+        <div ref={detailsRef} className="scroll-mt-4 max-lg:order-7">
           <DetailsPanel node={selNode} dossierId={model.dossierId} isSample={model.isSample} tracker={tracker} />
         </div>
         <div className="max-lg:order-10">
