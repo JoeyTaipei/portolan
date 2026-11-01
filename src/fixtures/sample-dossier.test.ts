@@ -1,46 +1,21 @@
-// Source-check loop over the sample fixture (spec §7.7, §17). Replaced by
-// src/lib/checks/source-check.ts in S3-T5.
+// Source-check loop over the sample fixture (spec §7.7, §17), using the same code the
+// research engine runs (src/lib/checks/source-check.ts).
 import { describe, expect, it } from "vitest";
+import { claimProblems, indexSources, numberProblems as numbers } from "@/lib/checks/source-check";
 import { contactFirst, scoreStakeholders } from "@/lib/scoring";
 import type { Brief, Sentence } from "@/lib/types";
 import { sampleDossier as d } from "./sample-dossier";
 
 const NOW = new Date("2026-11-01T00:00:00Z");
 
-/** §7.7: compare after normalising whitespace, quotes and full-width characters. */
-const norm = (t: string) =>
-  t
-    .normalize("NFKC")
-    .replace(/[“”„‟″]/g, '"')
-    .replace(/[‘’‚‛′]/g, "'")
-    .replace(/\s+/g, " ")
-    .trim();
-
 const byId = new Map(d.sources.map((s) => [s.id, s]));
+const index = indexSources(d.sources);
 
 /** Problems with one claim: ids exist, accepted, verified, and the quote is in a cited excerpt. */
-function problems(where: string, sourceIds: string[], quote: string | null): string[] {
-  const out: string[] = [];
-  if (sourceIds.length === 0) out.push(`${where}: no source`);
-  for (const id of sourceIds) {
-    const s = byId.get(id);
-    if (!s) out.push(`${where}: unknown source ${id}`);
-    else if (!s.accepted) out.push(`${where}: cites rejected source ${s.label}`);
-    else if (!s.verifiedAt) out.push(`${where}: ${s.label} has no verified date`);
-  }
-  if (quote !== null && !sourceIds.some((id) => byId.get(id) && norm(byId.get(id)!.excerpt).includes(norm(quote)))) {
-    out.push(`${where}: quote not in any cited excerpt: "${quote}"`);
-  }
-  return out;
-}
+const problems = (where: string, sourceIds: string[], quote: string | null) => claimProblems(where, sourceIds, quote, index);
 
 /** Every number in a written sentence must appear in one of its cited excerpts. */
-function numberProblems(where: string, text: string, sourceIds: string[]): string[] {
-  const excerpts = norm(sourceIds.map((id) => byId.get(id)?.excerpt ?? "").join(" "));
-  return (text.match(/\d[\d,.]*\d|\d/g) ?? [])
-    .filter((n) => !excerpts.includes(n))
-    .map((n) => `${where}: number ${n} not in cited excerpts`);
-}
+const numberProblems = (where: string, text: string, sourceIds: string[]) => numbers(where, text, sourceIds, index);
 
 function briefSentences(b: Brief): [string, Sentence][] {
   return [
