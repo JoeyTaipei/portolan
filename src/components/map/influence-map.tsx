@@ -1,0 +1,278 @@
+"use client";
+
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { Category } from "@/lib/types";
+import { LABEL_THRESHOLD } from "@/lib/scoring/influence";
+import type { NodeVM } from "./model";
+import { NodeShape } from "./node-mark";
+import { depthBand, FLOOR_Y, nodeRadius, project } from "./project";
+import { useSize } from "./use-size";
+import { s } from "./marks";
+
+// MAP-3/4/5/11: SVG pseudo-3D map. Auto-rotates (paused under reduced motion and while the
+// pointer is over it or a node is selected), drag or ← → to rotate, click a node to focus it,
+// click again or Esc to clear. The contact-first three are joined by a dashed route.
+
+export interface MapControls {
+  paused: boolean;
+  setPaused: (p: boolean) => void;
+  rotate: (d: number) => void;
+}
+
+const SPEED = 0.00024;
+
+function floorEllipse(rr: number, ang: number, W: number, H: number) {
+  let d = "";
+  for (let i = 0; i <= 64; i++) {
+    const t = (i / 64) * Math.PI * 2;
+    const p = project({ x: Math.cos(t) * rr, y: FLOOR_Y, z: Math.sin(t) * rr }, ang, W, H);
+    d += `${i ? "L" : "M"}${p.x.toFixed(1)},${p.y.toFixed(1)}`;
+  }
+  return `${d}Z`;
+}
+
+export function InfluenceMap({
+  nodes,
+  edges,
+  route,
+  filter,
+  selected,
+  onSelect,
+  controlsRef,
+  onPausedChange,
+}: {
+  nodes: NodeVM[];
+  edges: { a: string; b: string }[];
+  route: string[];
+  filter: Category | "all";
+  selected: string | null;
+  onSelect: (id: string | null) => void;
+  controlsRef: React.MutableRefObject<MapControls | null>;
+  onPausedChange: (paused: boolean) => void;
+}) {
+  const [hostRef, { w: W, h: H }] = useSize<HTMLDivElement>();
+  const [ang, setAng] = useState(0.6);
+  const [paused, setPausedState] = useState(false);
+  const [hover, setHover] = useState(false);
+  const drag = useRef<{ x: number; y: number; lx: number; id: string | null; moved: boolean } | null>(null);
+
+  // Reduced motion: paused by default (MAP-3).
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) setPausedState(true);
+  }, []);
+
+  useEffect(() => {
+    onPausedChange(paused);
+  }, [paused, onPausedChange]);
+
+  useEffect(() => {
+    controlsRef.current = {
+      paused,
+      setPaused: setPausedState,
+      rotate: (d) => setAng((a) => a + d),
+    };
+  }, [paused, controlsRef]);
+
+  // Animation loop. Stops when hidden (Activity runs this cleanup) and when not rotating.
+  const spinning = !paused && !hover && !selected;
+  useEffect(() => {
+    if (!spinning) return;
+    let raf = 0;
+    let last = 0;
+    const tick = (t: number) => {
+      const dt = last ? Math.min(50, t - last) : 16;
+      last = t;
+      if (!drag.current) setAng((a) => a + dt * SPEED);
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [spinning]);
+
+  const linked = useMemo(() => {
+    const out = new Set<string>();
+    if (!selected) return out;
+    for (const e of edges) {
+      if (e.a === selected) out.add(e.b);
+      if (e.b === selected) out.add(e.a);
+    }
+    return out;
+  }, [edges, selected]);
+
+  const pts = new Map(nodes.map((n) => [n.id, project(n, ang, W, H)]));
+  const inF = (n: NodeVM) => filter === "all" || n.category === filter;
+  const byId = new Map(nodes.map((n) => [n.id, n]));
+  const order = [...nodes].sort((a, b) => pts.get(b.id)!.z - pts.get(a.id)!.z);
+
+  // Backdrop: sea floor, compass rose lines, soundings under each node.
+  const origin = project({ x: 0, y: FLOOR_Y, z: 0 }, ang, W, H);
+  const north = project({ x: 0, y: FLOOR_Y, z: -1.02 }, ang, W, H);
+  const routePts = route.map((id) => pts.get(id)).filter((p): p is NonNullable<typeof p> => !!p);
+
+  function onPointerDown(e: React.PointerEvent<SVGSVGElement>) {
+    const g = (e.target as Element).closest?.("[data-id]");
+    drag.current = { x: e.clientX, y: e.clientY, lx: e.clientX, id: g?.getAttribute("data-id") ?? null, moved: false };
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch {
+      // some browsers refuse capture on synthetic events
+    }
+  }
+  function onPointerMove(e: React.PointerEvent<SVGSVGElement>) {
+    const d = drag.current;
+    if (!d) return;
+    if (Math.abs(e.clientX - d.x) + Math.abs(e.clientY - d.y) > 5) d.moved = true;
+    if (d.moved) setAng((a) => a + (e.clientX - d.lx) * 0.012);
+    d.lx = e.clientX;
+  }
+  function onPointerUp() {
+    const d = drag.current;
+    drag.current = null;
+    if (d && !d.moved) onSelect(d.id && d.id === selected ? null : d.id);
+  }
+
+  return (
+    <div
+      ref={hostRef}
+      className={s.stage}
+      onPointerEnter={(e) => e.pointerType === "mouse" && setHover(true)}
+      onPointerLeave={() => setHover(false)}
+    >
+      <svg
+        className={s.svg}
+        viewBox={`0 0 ${W} ${H}`}
+        role="img"
+        aria-label="Stakeholder map. Drag or use the left and right arrow keys to rotate, click a stakeholder for details. The full list is beside the map."
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={() => (drag.current = null)}
+      >
+        <g aria-hidden="true">
+          <path className={s.f1} d={floorEllipse(1.15, ang, W, H)} />
+          <path className={s.f2} d={floorEllipse(0.6, ang, W, H)} />
+          <path className={s.ring} d={floorEllipse(0.9, ang, W, H)} />
+          {Array.from({ length: 32 }, (_, i) => {
+            const a = (i / 32) * Math.PI * 2;
+            const L = i % 4 === 0 ? 0.9 : 1.9;
+            const p = project({ x: Math.cos(a) * L, y: FLOOR_Y, z: Math.sin(a) * L }, ang, W, H);
+            return (
+              <line
+                key={i}
+                className={s.rhumb}
+                x1={origin.x}
+                y1={origin.y}
+                x2={p.x}
+                y2={p.y}
+                opacity={i % 4 === 0 ? 0.9 : 0.4}
+              />
+            );
+          })}
+          <text className={s.roseN} x={north.x} y={north.y} textAnchor="middle">
+            N
+          </text>
+          {nodes.map((n) => {
+            const band = depthBand(n.influence?.level ?? null);
+            if (!band || !inF(n)) return null;
+            const t = pts.get(n.id)!;
+            const b = project({ x: n.x, y: FLOOR_Y, z: n.z }, ang, W, H);
+            return (
+              <g key={n.id} opacity={selected && selected !== n.id && !linked.has(n.id) ? 0.2 : 1}>
+                <line className={s.stem} x1={t.x} y1={t.y} x2={b.x} y2={b.y} />
+                <ellipse
+                  className={`${s.dot} ${band === 3 ? s.d3 : band === 2 ? s.d2 : s.d1}`}
+                  cx={b.x}
+                  cy={b.y}
+                  rx={3 + band * 1.6}
+                  ry={1.4 + band * 0.7}
+                />
+              </g>
+            );
+          })}
+          {!selected && routePts.length > 1 && (
+            <path
+              className={s.route}
+              d={routePts.map((p, k) => `${k ? "L" : "M"}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join("")}
+            />
+          )}
+        </g>
+        <g aria-hidden="true">
+          {edges.map((e) => {
+            const a = byId.get(e.a);
+            const b = byId.get(e.b);
+            const pa = pts.get(e.a);
+            const pb = pts.get(e.b);
+            if (!a || !b || !pa || !pb) return null;
+            const hot = !!selected && (e.a === selected || e.b === selected);
+            const vis = inF(a) && inF(b) && (!selected || hot);
+            return (
+              <line
+                key={`${e.a}-${e.b}`}
+                className={hot ? s.edgeHot : s.edge}
+                x1={pa.x}
+                y1={pa.y}
+                x2={pb.x}
+                y2={pb.y}
+                opacity={vis ? (hot ? 1 : 0.22) : 0.05}
+              />
+            );
+          })}
+        </g>
+        <g>
+          {order.map((n) => {
+            const p = pts.get(n.id)!;
+            const r = nodeRadius(n.influence?.score ?? null);
+            const rank = route.indexOf(n.id);
+            const isSel = selected === n.id;
+            const lk = linked.has(n.id);
+            const on = inF(n);
+            const dim = !on || (!!selected && !isSel && !lk);
+            const showLabel =
+              on && (isSel || (selected ? lk : (n.influence?.score ?? 0) >= LABEL_THRESHOLD || rank >= 0));
+            const right = p.x > W - 130;
+            const dashed = n.status === "still_researching" || n.status === "pending_check";
+            return (
+              <g
+                key={n.id}
+                data-id={n.id}
+                data-testid="map-node"
+                className={`${s.node} ${dim ? s.dim : ""} ${isSel ? s.selected : ""}`}
+                transform={`translate(${p.x.toFixed(1)},${p.y.toFixed(1)})`}
+              >
+                <title>{n.short}</title>
+                <g className={s.shape} transform={`scale(${p.f.toFixed(3)})`}>
+                  <NodeShape mark={n.mark} r={r} dashed={dashed} />
+                  {rank >= 0 && !selected && (
+                    <>
+                      <circle className={s.recRing} r={r + 5} />
+                      <text className={s.recN} x={-r - 5} y={-r - 3} textAnchor="end">
+                        {rank + 1}
+                      </text>
+                    </>
+                  )}
+                  {/* larger invisible hit target */}
+                  <circle r={Math.max(r + 4, 10)} fill="transparent" />
+                </g>
+                {showLabel && (
+                  <text
+                    className={s.label}
+                    dy="0.35em"
+                    x={(right ? -1 : 1) * (r * p.f + 5)}
+                    textAnchor={right ? "end" : "start"}
+                  >
+                    {n.short}
+                  </text>
+                )}
+              </g>
+            );
+          })}
+        </g>
+      </svg>
+      <span className={s.hint}>
+        {selected
+          ? "Press Esc or click it again to show all."
+          : "Deeper blue under a stakeholder = more influence. Drag to rotate."}
+      </span>
+    </div>
+  );
+}

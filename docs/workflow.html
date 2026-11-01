@@ -151,8 +151,12 @@ ul.refs{margin:0;padding-left:18px;font-size:14px;display:flex;flex-direction:co
       <tr><td>講清楚不能做什麼</td><td>只改計畫列的檔案；不加計畫外的功能、工具函式、套件；不動 migration 和 <code>types.ts</code>，要越界先問。</td></tr>
       <tr><td>回報要短</td><td>做完最多 3 行：改了哪些檔案、測試結果、要你看的頁面。不用加「檢查一遍再改錯」這種話，只會更慢更貴。</td></tr>
       <tr><td>用迴圈，不要一直下指令</td><td>你寫「怎樣算做完」，Claude 自己做到。每個切片用 <code>/goal</code> 加上 plan 的驗收條件，在 auto mode 跑。條件要寫成 Claude 會在對話裡印出來的證據（例如「npm test exit 0」），因為判斷的模型只看對話、不自己跑指令。一定加「或 30 輪後停」。</td></tr>
-      <tr><td>做的和查的分開</td><td>寫程式的 session 不審自己：<code>/code-review</code> 在新的 session 跑。修 bug 時測試要先在 main 上失敗、修完通過，兩次結果都給你看。</td></tr>
+      <tr><td>做的和查的分開</td><td>寫程式的 session 不審自己：開 PR 前在新的 session（模型選 Sonnet，乾淨的 context 比較便宜）跑審查關卡：同步最新基底分支、<code>npm test</code>、<code>npm run build</code>、<code>/code-review</code>、<code>/verify-ui</code> 截圖。你以看截圖為主，不用每行讀程式。修 bug 時測試要先在 main 上失敗、修完通過，兩次結果都給你看。</td></tr>
       <tr><td>「做完」只是說法</td><td>你和創辦人看過 preview 才算數。同時最多 2 個寫程式的 session：瓶頸是你們看的速度，不是 Claude。</td></tr>
+      <tr><td>同區塊一起做</td><td>幾個碰同一塊程式的小改（例如 UI 微調）放進同一個 session 一次做完，相關程式只讀一次，比拆成好幾個 session 省。</td></tr>
+      <tr><td>先看版本再選</td><td>新元件或有視覺取捨時，先叫 Claude 做一個獨立 HTML 頁，並排 2–3 種版本（例如載入動畫、進度條），選定才寫進 App。</td></tr>
+      <tr><td>先被問清楚</td><td>規格不清楚或複雜的功能，先用 grilling skill：Claude 一次問一題，把 UX 和技術細節問定、寫進 <code>docs/spec.md</code>，再 <code>/compact</code> 清掉討論，留 context 給寫程式。</td></tr>
+      <tr><td>回來先 recap</td><td>你回到 session 時，Claude 先用白話 2–3 句說目前狀態和下一步，一次只問一個問題。寫在 <code>CLAUDE.md</code>。</td></tr>
       <tr><td>先看計畫再動手</td><td>研究引擎（S3）和團隊人脈（S7）比較複雜，先用 <code>/plan</code> 看完再開始。</td></tr>
       <tr><td>驗證才算完成</td><td>每個切片都要：測試和建置通過、<code>/verify-ui</code> 用內建瀏覽器截圖比對設計稿、console 沒有錯誤。修 bug 先寫會失敗的測試。</td></tr>
       <tr><td>錯誤只犯一次</td><td>你糾正 Claude 一次，就請它把規則用一句話加進 <code>CLAUDE.md</code>。用 <code>/memory</code> 看和整理；保持 80 行以內。個人偏好放 <code>CLAUDE.local.md</code>（不會進 git）。</td></tr>
@@ -172,6 +176,7 @@ ul.refs{margin:0;padding-left:18px;font-size:14px;display:flex;flex-direction:co
       <tr><td>自動審查機器人、GitHub Code Review</td><td>GitHub 上的 Code Review 要 Team／Enterprise 方案；MVP 本機 <code>/code-review</code> 加你看 preview 就夠。</td></tr>
       <tr><td>效能爬坡、<code>claude -p</code> 自動化</td><td>沒有使用者之前沒有東西可以優化。送出後再接進每週流程。</td></tr>
       <tr><td><code>/sandbox</code>、容器</td><td>會擋到 npm、gh、Vercel 的網路，衝刺期間很麻煩。auto mode 加上金鑰只放 <code>.env.local</code> 就夠；之後跑無人看管的排程任務再開。</td></tr>
+      <tr><td><code>cc</code> 別名加略過權限</td><td>略過權限會連「付費 API 先問你」這道關都跳過。auto mode 已經不用一直按允許；要別名就設 <code>alias cc=claude</code>，不加略過權限。</td></tr>
       <tr><td>另一家公司的模型審查</td><td>不同公司的模型會抓到不同問題。這台 Mac mini 沒裝 Codex 或 Gemini CLI；送出後裝一個，只用在大或有風險的 PR（像 S3、S7、S8）。</td></tr>
       <tr><td>使用者回報迴圈</td><td>回報 → Claude 只讀不改地調查 → 開 GitHub issue 附短摘要，或當雜訊／重複關掉 → 你核准 → 修、審、上線。一開始只讓最安全的約 10% 自己跑，其他 90% 等你點頭。衝刺期間先把使用者回報貼進一個 session 讓它分類。</td></tr>
       <tr><td>公開 changelog</td><td>用合併的 PR 產生版本紀錄，比 commit 數更能證明進度；也能放進 YC 申請的「進度」。</td></tr>
@@ -251,7 +256,7 @@ ul.refs{margin:0;padding-left:18px;font-size:14px;display:flex;flex-direction:co
   </ol>
 </section>
 
-<div class="loop"><b>每個切片：</b> 新 session（worktree）→ /goal 跑到驗收條件成立 → 新 session /code-review → PR + Auto-fix → 創辦人在 MacBook 和手機看 preview → 你合併（自動上線）</div>
+<div class="loop"><b>每個切片：</b> 新 session（worktree）→（複雜功能先 grill → 寫進 spec → /compact）→ /goal 跑到驗收條件成立 → 新的 Sonnet session 跑審查關卡（測試、建置、/code-review、截圖）→ PR + Auto-fix → 創辦人在 MacBook 和手機看 preview → 你合併（自動上線）</div>
 
 <div class="part">設定（只做一次）</div>
 
@@ -310,7 +315,7 @@ gh 要登入 JoeyTaipei 帳號。需要我輸入密碼、登入或按允許時�
 <div class="note">內容：Next.js 骨架、<code>design/</code>（原始設計稿 + 8 個畫面的 390px 截圖 + 可讀原始碼）、<code>src/fixtures/taiwan-uas.ts</code>、<code>design/intent.md</code>、<code>CLAUDE.md</code>、<code>/verify-ui</code> skill、<code>.env.example</code>。</div></div></li>
     <li><input type="checkbox" id="m2-2"><div><div class="t"><span class="you">創辦人</span>讀 <code>design/intent.md</code>，補完標「待補」的地方</div>
 <div class="note">目標使用者、評分怎麼算、研究跑多久、每天上限、文件要不要收費、第一批審稿專家。用說的也可以，直接講給 Claude 改。</div></div></li>
-    <li><input type="checkbox" id="m2-3"><div><div class="t"><span class="cc">Claude</span>GitHub repo 和本機資料夾改名，連上 Vercel：在桌面版開 session，貼上</div>
+    <li><input type="checkbox" id="m2-3" checked><div><div class="t"><span class="cc">Claude</span>GitHub repo 和本機資料夾改名，連上 Vercel：在桌面版開 session，貼上</div>
 <pre><code>把 GitHub repo JoeyTaipei/atlas 改名成 portolan（gh repo rename portolan），更新 git remote，
 把本機資料夾改成 ~/code/portolan。npm install，npm run build 確認能過。
 確認 .env.local 存在，然後停下來讓我自己貼金鑰。
@@ -326,7 +331,7 @@ gh 要登入 JoeyTaipei 帳號。需要我輸入密碼、登入或按允許時�
 <section class="phase">
   <div class="ph-head"><span class="ph-num">3</span><h2>Spec、設計方向、Parallel 試做、Plan</h2><span class="where">桌面版 · 只做一次</span></div>
   <ol class="steps">
-    <li><input type="checkbox" id="m3-1"><div><div class="t"><span class="cc">Claude</span>寫整個 MVP 的 spec</div>
+    <li><input type="checkbox" id="m3-1" checked><div><div class="t"><span class="cc">Claude</span>寫整個 MVP 的 spec</div>
 <pre><code>/agent-skills:spec 讀 CLAUDE.md、design/intent.md、design/screens/ 的截圖、
 design/mockup/src/ 的 8 個 template 和 src/fixtures/，寫整個 MVP 的 docs/spec.md：
 路由、每頁的載入中／空資料／錯誤狀態、電腦版面（主要 1440 和 1920，最小 1280）和手機能讀的單欄版、資料表、
@@ -335,7 +340,7 @@ Parallel 和 Claude 的分工、研究流程（非同步、顯示進度）、費
 intent.md 第 5 節的每一列都要對到 spec 的一個功能，最後附對照表。
 可信度照 intent.md 第 10 節：ICD 203 用語 + 數字區間、Admiralty A–F／1–6、分數用區間 + 公開評分表（寫進 docs/scoring.md）。
 有取捨時給我 2–3 個選項和優缺點，一次問一個問題。</code></pre></div></li>
-    <li><input type="checkbox" id="m3-2"><div><div class="t"><span class="you">你</span>回答問題，讀完 <code>docs/spec.md</code>，尤其是評分和來源規則</div>
+    <li><input type="checkbox" id="m3-2" checked><div><div class="t"><span class="you">你</span>回答問題，讀完 <code>docs/spec.md</code>，尤其是評分和來源規則</div>
 <div class="note">這是客戶能不能信任 Portolan 的核心，Claude 不能替你決定。</div></div></li>
     <li><input type="checkbox" id="m3-d1" checked><div><div class="t"><span class="cc">Claude</span>做 4 個設計方向，畫成可以點的畫面</div>
 <pre><code>先讀 docs/research/generic-risks.md 和 design/screens/，用 frontend-design skill 做 4 個設計方向。
@@ -360,7 +365,7 @@ https://docs.parallel.ai/findall-api/findall-quickstart 。
 有沒有找到投資人／律師／活動（04 網絡要用）、各花多久、各花多少錢。
 結果寫進 docs/decisions/0001-research-engine.md，給我建議。程式放 scripts/spike/，不要進正式程式碼。</code></pre></div></li>
     <li><input type="checkbox" id="m3-4" checked><div><div class="t"><span class="you">你</span>選一個做法（品質夠、每份 dossier 的成本你能接受）</div></div></li>
-    <li><input type="checkbox" id="m3-5"><div><div class="t"><span class="cc">Claude</span>拆成切片</div>
+    <li><input type="checkbox" id="m3-5" checked><div><div class="t"><span class="cc">Claude</span>拆成切片</div>
 <pre><code>/agent-skills:plan 依 docs/spec.md 和 docs/decisions/ 拆成垂直切片，寫進 docs/plan.md：
 S0 骨架（型別 src/lib/types.ts、主題和字體照 design/direction.md、底部分頁、Supabase migration + RLS、
    PostHog、Vitest + Playwright、.claude/settings.json 的指令白名單）
@@ -387,9 +392,9 @@ S8 上線前檢查
 <section class="phase">
   <div class="ph-head"><span class="ph-num">4</span><h2>桌面版平行開發</h2><span class="where">Mac mini · Claude 桌面版</span></div>
   <ol class="steps">
-    <li><input type="checkbox" id="m4-1"><div><div class="t"><span class="you">你</span>每個切片開一個新 session，打開 Worktree，名稱用切片編號（例如「S1 ui」）</div>
+    <li><input type="checkbox" id="m4-1" checked><div><div class="t"><span class="you">你</span>每個切片開一個新 session，打開 Worktree，名稱用切片編號（例如「S1 ui」）</div>
 <div class="note">ui 這條依序做 S0、S1、S2、S5、S6、S7。一個切片一個 session，做完、合併就封存，下一個切片開新的，context 才乾淨。</div></div></li>
-    <li><input type="checkbox" id="m4-2"><div><div class="t"><span class="you">你</span>S0 合併後，另開 engine 這條的 session（同樣打開 Worktree），做 S3、S4</div>
+    <li><input type="checkbox" id="m4-2" checked><div><div class="t"><span class="you">你</span>S0 合併後，另開 engine 這條的 session（同樣打開 Worktree），做 S3、S4</div>
 <div class="note">engine 的開發伺服器用 <code>PORT=3001 npm run dev</code>，避免和 ui 搶 3000。S4 做完，engine 接著做 S6、S7 需要的伺服器部分（會前簡報草稿、匯出檔解析、機構比對）。</div></div></li>
     <li><input type="checkbox" id="m4-3"><div><div class="t">平行規則</div>
 <div class="note">最多同時 2 個寫程式的 session。同一個檔案只能一條改；<code>src/lib/types.ts</code> 和 migration 只在 ui 改，engine 要改先講。收到通知再切過去處理，其他時間不用盯。睡前讓一個 <code>/goal</code> 整晚跑，早上看結果。</div></div></li>
@@ -412,7 +417,7 @@ npm test 和 npm run build 都 exit 0；跑 /verify-ui，1440、1920、1280 照 
 <div class="note">清單裡有計畫外的檔案就叫它退回。這一步只花 2 分鐘，但能擋掉大部分越界。</div></div></li>
     <li><input type="checkbox" id="m5-4"><div><div class="t"><span class="cc">Claude</span>審查並開 PR</div>
 <pre><code>/code-review
-（在新的 session 跑，不要用寫程式的那個）修好 Critical 的問題，跑 npm test 和 npm run build，commit、push，用 gh pr create 開 PR。
+（在新的 session 跑，模型選 Sonnet，不要用寫程式的那個）先同步最新基底分支，修好 Critical 的問題，跑 npm test 和 npm run build，commit、push，用 gh pr create 開 PR。
 說明寫：做了什麼、測試結果、要我在電腦和手機上看的頁面、已知限制。不要合併。</code></pre>
 <div class="note">S3、S7、S8 開 PR 前再跑一次 <code>/security-review</code>。PR 開了以後在 session 的 Changes 卡片打開 Auto-fix，CI 失敗或有審查意見 Claude 會自己修。</div></div></li>
     <li><input type="checkbox" id="m5-5"><div><div class="t"><span class="you">創辦人</span>在 MacBook 和手機打開 PR 上的 Vercel preview 網址，實際點一遍</div>
