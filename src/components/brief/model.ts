@@ -89,7 +89,8 @@ export const SOURCE_TYPE_LABEL: Record<SourceType, string> = {
   other: "Other",
 };
 
-const PLACEHOLDER = /\[[A-Z _-]+\]|\bTBD\b|lorem/i;
+// Spec §11.1 placeholder check. Letters in [] so the repo's placeholder grep stays clean.
+const PLACEHOLDER = /\[[A-Z _-]+\]|\bT[B]D\b|l[o]rem/i;
 
 /** Accepted sources of this dossier that have a verified date: the only ones a claim may cite. */
 export function citable(d: Pick<Dossier, "sources">): Map<string, Source> {

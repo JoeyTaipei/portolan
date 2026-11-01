@@ -71,7 +71,7 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
                 {m.value ? <b>{m.value}</b> : <b className="none">{m.note}</b>}
                 <span>
                   {m.label}
-                  {m.value ? `, ${m.note}` : ""}
+                  {m.value ? `, ${m.note.charAt(0).toLowerCase()}${m.note.slice(1)}` : ""}
                 </span>
               </div>
             ))}
