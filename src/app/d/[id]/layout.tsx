@@ -31,9 +31,13 @@ async function Shell({ params, children }: Pick<LayoutProps<"/d/[id]">, "params"
   // Unknown ids still get the shell; each page calls notFound() so its 404 renders inside it.
   return (
     <DossierShell dossierId={dossier?.id ?? null} isSample={dossier?.isSample ?? false}>
-      <Suspense fallback={children}>
-        <StatePreview>{children}</StatePreview>
-      </Suspense>
+      {dossier ? (
+        <Suspense fallback={children}>
+          <StatePreview>{children}</StatePreview>
+        </Suspense>
+      ) : (
+        children
+      )}
     </DossierShell>
   );
 }

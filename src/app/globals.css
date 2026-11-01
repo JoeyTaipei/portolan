@@ -207,12 +207,12 @@
 .frame {
   min-height: 100dvh;
   border-top: var(--grad-w) solid transparent;
-  border-image: repeating-linear-gradient(90deg, var(--grad-a) 0 22px, var(--grad-b) 22px 44px) var(--grad-w);
+  border-image: repeating-linear-gradient(90deg, var(--grad-a) 0 22px, var(--grad-b) 22px 44px) 1;
 }
 @media (min-width: 1024px) {
   .frame {
     border: var(--grad-w) solid transparent;
-    border-image: repeating-linear-gradient(90deg, var(--grad-a) 0 22px, var(--grad-b) 22px 44px) var(--grad-w);
+    border-image: repeating-linear-gradient(90deg, var(--grad-a) 0 22px, var(--grad-b) 22px 44px) 1;
   }
 }
 
