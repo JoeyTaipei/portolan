@@ -19,11 +19,13 @@ import type {
   Brief,
   BriefingNoteContent,
   Category,
+  Contact,
   Credibility,
   Dossier,
   DocumentRequest,
   Edge,
   Fact,
+  IntroDraft,
   FactField,
   Lead,
   MatchCheck,
@@ -37,6 +39,8 @@ import type {
   Stakeholder,
   StatementRating,
   SupportStatement,
+  TeamMember,
+  Tie,
   TimedEvent,
   TrackerItem,
 } from "@/lib/types";
@@ -1020,6 +1024,89 @@ const documents: PortolanDocument[] = [
   },
 ];
 
+// ─── Team network: illustrative only (plan P-2, spec §10) ────────────────────
+// First names only; contacts are always redacted; every member, contact, tie and draft is
+// marked illustrative and shown as "Illustrative — not a real connection". Warm paths still
+// use only the sourced organisation edges above.
+
+const member = (id: string, name: string, role: string, status: TeamMember["status"]): TeamMember => ({
+  id,
+  dossierId: D,
+  name,
+  role,
+  status,
+  consentedAt: status === "connected" ? AT : null,
+  withdrawnAt: null,
+  illustrative: true,
+  createdAt: AT,
+});
+
+const team: TeamMember[] = [
+  member("tm-mei", "Mei", "Head of business development", "connected"),
+  member("tm-tom", "Tom", "CTO", "connected"),
+  member("tm-sara", "Sara", "Advisor", "invited"),
+];
+
+const contact = (id: string, memberId: string, title: string, orgText: string, origin: Contact["origin"]): Contact => ({
+  id,
+  memberId,
+  name: null,
+  title,
+  orgText,
+  linkedinUrl: null,
+  origin,
+  illustrative: true,
+  createdAt: AT,
+});
+
+const contacts: Contact[] = [
+  contact("ct-mei-aidc", "tm-mei", "Programme manager", "AIDC", "linkedin"),
+  contact("ct-mei-thunder", "tm-mei", "Sales director", "Thunder Tiger", "linkedin"),
+  contact("ct-tom-itri", "tm-tom", "Researcher", "ITRI", "manual"),
+  contact("ct-tom-taiwania", "tm-tom", "Investment associate", "Taiwania Capital", "google"),
+];
+
+const tie = (id: string, contactId: string, stakeholderId: string, strength: Tie["strength"], how: string): Tie => ({
+  id,
+  contactId,
+  stakeholderId,
+  strength,
+  how,
+  match: "exact",
+  illustrative: true,
+  createdAt: AT,
+});
+
+const ties: Tie[] = [
+  tie("tie-mei-aidc", "ct-mei-aidc", "aidc", 2, "Former colleague"),
+  tie("tie-mei-thunder", "ct-mei-thunder", "thunder", 1, "1st-degree LinkedIn"),
+  tie("tie-tom-itri", "ct-tom-itri", "itri", 3, "Worked on a project together"),
+  tie("tie-tom-taiwania", "ct-tom-taiwania", "taiwania", 1, "In contacts"),
+];
+
+const introDrafts: IntroDraft[] = [
+  {
+    id: "intro-mei-ab",
+    memberId: "tm-mei",
+    contactId: "ct-mei-aidc",
+    targetStakeholderId: "ab",
+    text: "Hi, I hope you're well. Our team makes a counter-UAS sensor kit (RF and radar detection) and we're working towards a first government pilot in Taiwan. I saw that AIDC attended the Armaments Bureau's drone procurement briefing in November 2025. Would you be open to a short call about how the Bureau looks at foreign sensor technology, and whether an introduction to someone on its team would make sense? Happy to work through a Taiwanese partner. Thanks, Mei",
+    sourceIds: [sid("taiwannews-6253686")],
+    illustrative: true,
+    createdAt: AT,
+  },
+  {
+    id: "intro-tom-ncsist",
+    memberId: "tm-tom",
+    contactId: "ct-tom-itri",
+    targetStakeholderId: "ncsist",
+    text: "Hi, good to be in touch again. Our team builds a counter-UAS sensor kit and is looking at Taiwan's unmanned-systems programmes. I read that ITRI and NCSIST signed an MOU on unmanned technology, including sensors and communication modules. Would you be open to a short call about how that work is organised, and could you suggest the right person at NCSIST to talk to? Thanks, Tom",
+    sourceIds: [sid("ncsist-16635")],
+    illustrative: true,
+    createdAt: AT,
+  },
+];
+
 // ─── The dossier (brief added below) ─────────────────────────────────────────
 
 const base: Dossier = {
@@ -1077,10 +1164,10 @@ const base: Dossier = {
   documentRequests,
   documents,
   intros: [],
-  team: [],
-  contacts: [],
-  ties: [],
-  introDrafts: [],
+  team,
+  contacts,
+  ties,
+  introDrafts,
   aliases: [],
 };
 
