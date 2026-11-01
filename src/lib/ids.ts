@@ -2,7 +2,8 @@
 // 128 bits, so links can't be guessed. Uses Web Crypto, which works on the server and in tests.
 
 export const SAMPLE_DOSSIER_ID = "sample";
-export const SAMPLE_SHARE_ID = "sample";
+/** The sample's share id is random like a real one, so /s/sample stays a 404 (spec §9). */
+export const SAMPLE_SHARE_ID = "jebqgYb3j4SoWrUgtDELdQ";
 
 const ID_PATTERN = /^[A-Za-z0-9_-]{22}$/;
 
