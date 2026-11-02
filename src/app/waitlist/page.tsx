@@ -46,7 +46,7 @@ export default function WaitlistPage({ searchParams }: PageProps<"/waitlist">) {
             ))}
           </ol>
         </div>
-        <section aria-label="Your details" className="rounded-[var(--r-l)] border border-rule-strong bg-panel p-5 lg:p-6">
+        <section aria-label="Your details" className="self-start rounded-[var(--r-l)] border border-rule-strong bg-panel p-5 lg:p-6">
           <Suspense fallback={<FormSkeleton />}>
             <StatePreview>
               <FormWithSource searchParams={searchParams} />
