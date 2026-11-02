@@ -396,7 +396,7 @@ S8 上線前檢查
 <div class="note">ui 這條依序做 S0、S1、S2、S5、S6、S7。一個切片一個 session，做完、合併就封存，下一個切片開新的，context 才乾淨。</div></div></li>
     <li><input type="checkbox" id="m4-2" checked><div><div class="t"><span class="you">你</span>S0 合併後，另開 engine 這條的 session（同樣打開 Worktree），做 S3、S4</div>
 <div class="note">engine 的開發伺服器用 <code>PORT=3001 npm run dev</code>，避免和 ui 搶 3000。S4 做完，engine 接著做 S6、S7 需要的伺服器部分（會前簡報草稿、匯出檔解析、機構比對）。</div></div></li>
-    <li><input type="checkbox" id="m4-3"><div><div class="t">平行規則</div>
+    <li><input type="checkbox" id="m4-3" checked><div><div class="t">平行規則</div>
 <div class="note">最多同時 2 個寫程式的 session。同一個檔案只能一條改；<code>src/lib/types.ts</code> 和 migration 只在 ui 改，engine 要改先講。收到通知再切過去處理，其他時間不用盯。睡前讓一個 <code>/goal</code> 整晚跑，早上看結果。</div></div></li>
   </ol>
 </section>
@@ -405,25 +405,25 @@ S8 上線前檢查
 <section class="phase">
   <div class="ph-head"><span class="ph-num">5</span><h2>每個切片</h2><span class="where">在該切片的工作區</span></div>
   <ol class="steps">
-    <li><input type="checkbox" id="m5-1"><div><div class="t"><span class="cc">Claude</span>開分支</div>
+    <li><input type="checkbox" id="m5-1" checked><div><div class="t"><span class="cc">Claude</span>開分支</div>
 <pre><code>從最新的 main 開一條 feature/&lt;切片名稱&gt;</code></pre>
 <div class="note">Worktree session 已經有自己的分支時，改名成 feature/&lt;切片名稱&gt; 就好。</div></div></li>
-    <li><input type="checkbox" id="m5-2"><div><div class="t"><span class="cc">Claude</span>用 <code>/goal</code> 做到驗收條件全部成立</div>
+    <li><input type="checkbox" id="m5-2" checked><div><div class="t"><span class="cc">Claude</span>用 <code>/goal</code> 做到驗收條件全部成立</div>
 <pre><code>/goal docs/plan.md 的 S&lt;n&gt; 做完：用 /agent-skills:build 的 TDD 逐項做，只改 S&lt;n&gt; 列的檔案；
 npm test 和 npm run build 都 exit 0；跑 /verify-ui，1440、1920、1280 照 design/direction.md、390 能讀、
 載入中／空資料／錯誤狀態都有、console 沒有錯誤；最後印出 git diff --name-only。或 30 輪後停。</code></pre>
 <div class="note">S3、S7 先用 <code>/effort high</code> 和 <code>/plan</code> 看過計畫再設 goal。輸入 <code>/goal</code> 看進度和判斷理由；被判「做不到」就讀理由，改計畫或回答問題後再設一次。走錯方向按 Esc 打斷；要退回前一步按兩次 Esc（或 <code>/rewind</code>）。說明：<a href="https://code.claude.com/docs/en/goal" target="_blank" rel="noopener">/goal</a>。</div></div></li>
-    <li><input type="checkbox" id="m5-3"><div><div class="t"><span class="you">你</span>goal 達成後看一眼 <code>/verify-ui</code> 的截圖和 diff 檔案清單</div>
+    <li><input type="checkbox" id="m5-3" checked><div><div class="t"><span class="you">你</span>goal 達成後看一眼 <code>/verify-ui</code> 的截圖和 diff 檔案清單</div>
 <div class="note">清單裡有計畫外的檔案就叫它退回。這一步只花 2 分鐘，但能擋掉大部分越界。</div></div></li>
-    <li><input type="checkbox" id="m5-4"><div><div class="t"><span class="cc">Claude</span>審查並開 PR</div>
+    <li><input type="checkbox" id="m5-4" checked><div><div class="t"><span class="cc">Claude</span>審查並開 PR</div>
 <pre><code>/code-review
 （在新的 session 跑，模型選 Sonnet，不要用寫程式的那個）先同步最新基底分支，修好 Critical 的問題，跑 npm test 和 npm run build，commit、push，用 gh pr create 開 PR。
 說明寫：做了什麼、測試結果、要我在電腦和手機上看的頁面、已知限制。不要合併。</code></pre>
 <div class="note">S3、S7、S8 開 PR 前再跑一次 <code>/security-review</code>。PR 開了以後在 session 的 Changes 卡片打開 Auto-fix，CI 失敗或有審查意見 Claude 會自己修。</div></div></li>
-    <li><input type="checkbox" id="m5-5"><div><div class="t"><span class="you">創辦人</span>在 MacBook 和手機打開 PR 上的 Vercel preview 網址，實際點一遍</div>
+    <li><input type="checkbox" id="m5-5" checked><div><div class="t"><span class="you">創辦人</span>在 MacBook 和手機打開 PR 上的 Vercel preview 網址，實際點一遍</div>
 <div class="note">不對的留在 PR 的留言或直接告訴你，你轉給該切片的 session 修。看的重點：核心流程走得完、每個分數點得開來源、沒有佔位字。</div></div></li>
-    <li><input type="checkbox" id="m5-6"><div><div class="t"><span class="you">你</span>創辦人看過後在 GitHub 按合併，Vercel 自動上線，接著做下一個切片</div></div></li>
-    <li><input type="checkbox" id="m5-7"><div><div class="t">你糾正 Claude 的時候</div>
+    <li><input type="checkbox" id="m5-6" checked><div><div class="t"><span class="you">你</span>創辦人看過後在 GitHub 按合併，Vercel 自動上線，接著做下一個切片</div></div></li>
+    <li><input type="checkbox" id="m5-7" checked><div><div class="t">你糾正 Claude 的時候</div>
 <pre><code>把這次的教訓用一句話加進 CLAUDE.md。</code></pre>
 <div class="note">只記會重複發生的事。Claude 變笨時先 <code>/context</code>；換切片時開新 session。</div></div></li>
   </ol>
@@ -435,7 +435,7 @@ npm test 和 npm run build 都 exit 0；跑 /verify-ui，1440、1920、1280 照 
 <section class="phase">
   <div class="ph-head"><span class="ph-num">6</span><h2>上線、帶使用者、送出申請</h2><span class="where">桌面版</span></div>
   <ol class="steps">
-    <li><input type="checkbox" id="m6-1"><div><div class="t"><span class="cc">Claude</span>上線前檢查</div>
+    <li><input type="checkbox" id="m6-1" checked><div><div class="t"><span class="cc">Claude</span>上線前檢查</div>
 <pre><code>/agent-skills:ship
 特別確認：intent.md 第 5 節每一列都做到了（列出沒做到的）；沒有 [CLIENT]、[DATE]、[Name] 這類佔位字；
 有一頁隱私說明（資料會送到 Parallel 和 Anthropic 處理、團隊人脈怎麼存和怎麼刪）和「不是法律或投資建議」；
