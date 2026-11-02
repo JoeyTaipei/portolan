@@ -15,7 +15,7 @@ export function ContactFirst({
   return (
     <section aria-labelledby="cf-h" className="flex flex-col gap-2">
       <h2 id="cf-h" className="m-0 border-b border-rule-strong pb-1.5 text-[15px] font-bold">
-        Contact these three first, in order
+        Contact first, in order
       </h2>
       {nodes.length === 0 ? (
         <p className="m-0 text-[13.5px] leading-normal text-ink2">

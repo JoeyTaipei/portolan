@@ -7,7 +7,7 @@ import type { BriefVM } from "./model";
 export function ExecPath({ path, reduce, dossierId }: Pick<BriefVM, "path" | "reduce" | "dossierId">) {
   return (
     <section aria-labelledby="path-h" className="flex flex-col gap-3">
-      <h2 id="path-h" className="m-0 text-[16px] font-bold">
+      <h2 id="path-h" className="m-0 scroll-mt-4 text-[22px] font-bold">
         Recommended executive path
       </h2>
       {path.length === 0 ? (
@@ -19,12 +19,12 @@ export function ExecPath({ path, reduce, dossierId }: Pick<BriefVM, "path" | "re
               <span className="grid size-[27px] place-items-center rounded-full border-[1.5px] border-[var(--act)] bg-bg text-[12px] font-extrabold text-[var(--act-text)]">
                 {i + 1}
               </span>
-              <p className="m-0 text-[15px] leading-[1.5]">
+              <p className="m-0 text-[17px] leading-[1.5]">
                 <Link href={`/d/${dossierId}/map?s=${p.stakeholderId}`} className="font-bold text-ink">
                   {p.who}
                 </Link>
                 . {p.why.text}
-                <Cites refs={p.why.refs} />
+                <Cites refs={p.why.refs} dossierId={dossierId} />
               </p>
             </li>
           ))}
@@ -32,12 +32,12 @@ export function ExecPath({ path, reduce, dossierId }: Pick<BriefVM, "path" | "re
       )}
       {reduce.length > 0 && (
         <div className="flex max-w-[68ch] flex-col gap-1.5">
-          <h3 className="m-0 text-[14.5px] font-bold text-[var(--res-text)]">How to reduce opposition</h3>
+          <h3 className="m-0 text-[16px] font-bold">How to reduce opposition</h3>
           <ul className="m-0 flex list-none flex-col gap-1.5 p-0">
             {reduce.map((r) => (
-              <li key={r.stakeholderId} className="border-l-[3px] border-[var(--res)] pl-3 text-[15px] leading-[1.5]">
+              <li key={r.stakeholderId} className="text-[17px] leading-[1.5]">
                 <b>{r.who}.</b> {r.step.text}
-                <Cites refs={r.step.refs} />
+                <Cites refs={r.step.refs} dossierId={dossierId} />
               </li>
             ))}
           </ul>

@@ -381,6 +381,13 @@ UI copy is English (the mockup's language). Nautical terms appear only in visual
 
 PostHog events (`docs/metrics.md`): `dossier_created` (fired once when the progress page first sees `ready`), `report_exported` (report page opened or share link copied), `debrief_saved`. Before sending, `$current_url`, `$pathname` and `$referrer` are rewritten so `/d/<id>` becomes `/d/:id` and `/s/<id>` becomes `/s/:id`; email is never sent as a property.
 
+### LAYOUT-BR "Briefing room" layout for Map, Brief, A4 report, Tracker — S10
+Joey approved on 2026-11-02 (canvas https://claude.ai/artifact/TGqF7LqopaDth4u5uR6LUE). Same rules as 01 Markets: one scrolling page (no fixed-height columns), one main column plus a quieter side column, magenta only for the route and next steps, inline citations are source chips. Features and data stay as specified per screen; only layout and styling change.
+- **02 Map**: title "Who decides" with the market name and shown count; one toolbar row (3D map / Power matrix, category filter, rotate controls); the map takes the main column (about 70% of the height of the window); side column: selected stakeholder (or the how-to-start note), contact-first three, then "All N stakeholders, by influence" as a collapsible list with search. Next step heading uses the magenta diamond, not a left-border box.
+- **03 Brief**: header with version line and actions (Re-brief, Export one-page A4 PDF); the four metrics as a row; left: versions and a section list; centre: one reading column (≤700px) with source chips; the evidence cards move to the end of the reading column.
+- **05 A4 report**: the key judgment moves to the top as the bottom line under the title; "Next move" column header in magenta. The map exhibit stays.
+- **04 Tracker**: stage counts become the route (four stops on a dashed magenta line, each still a filter button); each row's "Set meeting date" and "Briefing note" are buttons; the debrief column sits beside the list.
+
 ### SRC-CHIP Source chip and grade words (shared) — S9
 Joey picked "numbered chip + card, grade in plain words" on 2026-11-02 (canvas https://claude.ai/artifact/E2XA3TwqNA1YnzGp33vcBK).
 - Inline citations on interactive screens (home bottom line, next moves, key judgments, alert, map next step) are a small chip with the source number and site ("13 mnd.gov.tw"). Clicking opens a card: source number, type, title (links to the page), site and checked date, the grade as two plain lines ("Completely reliable source." / "Probably true." + the stored credibility reason), then "Admiralty grade A2" as a footnote and "In the source list". Escape or a click outside closes it.

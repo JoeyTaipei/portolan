@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { editTrackerItem, removeTrackerItem, saveDebrief, undoDebrief as undoDebriefAction } from "@/app/d/[id]/tracker/actions";
-import { useFillHeight } from "@/components/map/fill-height";
 import { track } from "@/lib/analytics";
 import { OVERLAY_EVENT, readOverlay, writeOverlay } from "@/lib/sample/overlay";
 import {
@@ -61,7 +60,6 @@ export function TrackerView({ initial, isSample, name, nowIso }: { initial: Trac
   const [filter, setFilter] = useState<TrackerStage | null>(null);
   const [receipt, setReceipt] = useState<DebriefReceipt | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
-  const ref = useFillHeight<HTMLDivElement>();
 
   useEffect(() => {
     // After hydration: the browser's clock and, on the sample, this browser's changes.
@@ -124,15 +122,11 @@ export function TrackerView({ initial, isSample, name, nowIso }: { initial: Trac
   const byId = new Map(state.tracker.map((t) => [t.id, t]));
 
   return (
-    <div
-      ref={ref}
-      className="flex flex-col gap-5 px-4 pt-[18px] pb-8 lg:grid lg:grid-cols-[minmax(0,1fr)_420px] lg:gap-0 lg:p-0 min-[1600px]:grid-cols-[minmax(0,1fr)_480px]"
-    >
-      <div className="contents lg:flex lg:min-h-0 lg:flex-col lg:gap-6 lg:overflow-y-auto lg:px-8 lg:py-[22px] min-[1600px]:px-12">
-        <header className="order-1 max-w-[880px]">
-          <p className="m-0 text-[13px] text-ink2">Entry tracker</p>
-          <h1 className="mt-0.5 mb-0 text-[28px] font-extrabold leading-[1.02] min-[1600px]:text-[31px]">From first contact to first deal</h1>
-          <p className="m-0 mt-1 text-[14.5px] text-ink2">{name}</p>
+    <div className="mx-auto flex w-full max-w-[1360px] flex-col gap-6 px-4 pt-[18px] pb-10 lg:grid lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-x-12 lg:gap-y-8 lg:px-10 lg:pt-8 lg:pb-14 min-[1600px]:grid-cols-[minmax(0,1fr)_440px]">
+      <div className="contents lg:flex lg:flex-col lg:gap-8">
+        <header className="order-1">
+          <p className="m-0 text-[14px] text-ink2">{name}</p>
+          <h1 className="mt-1 mb-0 text-[32px] font-bold leading-[1.05] lg:text-[40px]">From first contact to first deal</h1>
         </header>
         <div className="order-2">
           <StageCounts counts={counts} filter={filter} onFilter={setFilter} />
@@ -151,7 +145,7 @@ export function TrackerView({ initial, isSample, name, nowIso }: { initial: Trac
       </div>
       <aside
         aria-label="Debrief"
-        className="order-3 flex flex-col gap-3 lg:min-h-0 lg:overflow-y-auto lg:border-l lg:border-rule-strong lg:bg-panel2 lg:px-5 lg:py-[18px] min-[1600px]:px-6"
+        className="order-3 flex flex-col gap-3 lg:sticky lg:top-4 lg:mt-[92px]"
       >
         {notice && (
           <p role="status" className="m-0 rounded-[var(--r-m)] border border-rule bg-panel px-3 py-2 text-[13.5px]">

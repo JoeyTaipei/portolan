@@ -41,7 +41,7 @@ export function DetailsPanel({
 }) {
   if (!node) {
     return (
-      <section aria-label="Stakeholder details" className="rounded-[var(--r-l)] border border-rule-strong bg-panel p-3.5">
+      <section aria-label="Stakeholder details" className="border-y border-rule py-3">
         <p className="m-0 text-[14.5px] leading-normal text-ink2">
           {hasRoute ? (
             <>
@@ -61,7 +61,7 @@ export function DetailsPanel({
       aria-label="Stakeholder details"
       aria-live="polite"
       data-testid="details"
-      className="flex flex-col rounded-[var(--r-l)] border border-rule-strong bg-panel p-3.5"
+      className="flex flex-col"
     >
       <div className="flex items-center justify-between gap-2 text-[12.5px] font-semibold text-ink2">
         <span>
@@ -73,7 +73,7 @@ export function DetailsPanel({
           {STANCE_LABEL[n.mark]}
         </span>
       </div>
-      <h2 className="mt-2 mb-1 text-[21px] font-extrabold leading-[1.12]">{n.name}</h2>
+      <h2 className="mt-1.5 mb-1 text-[24px] font-bold leading-[1.12]">{n.name}</h2>
       {n.nameZh && <p className="m-0 text-[14px] text-ink2" lang="zh-Hant">{n.nameZh}</p>}
       <p className="mt-1 mb-3 text-[14px] leading-[1.45] text-ink2">
         {n.role.text ?? "Role not found yet"}
@@ -114,9 +114,12 @@ export function DetailsPanel({
         </div>
       </dl>
 
-      <h3 className="mt-3.5 mb-1.5 text-[12.5px] font-bold text-[var(--act-text)]">Recommended action</h3>
-      <div className="rounded-r-[var(--r-s)] border-l-4 border-[var(--act)] bg-panel2 px-2.5 py-2">
-        <p className="m-0 text-[15px] font-semibold leading-[1.45]" data-testid="next-step">
+      <h3 className="mt-4 mb-1.5 flex items-center gap-2 text-[14px] font-bold">
+        <span aria-hidden="true" className="inline-block size-2 rotate-45 bg-[var(--act)]" />
+        Next step
+      </h3>
+      <div>
+        <p className="m-0 text-[17px] leading-[1.4]" data-testid="next-step">
           {n.action.text}
         </p>
         {n.action.verified ? (

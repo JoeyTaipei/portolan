@@ -566,6 +566,20 @@ Joey picked option C "Briefing room" and the word "Markets" on 2026-11-02 (spec 
 
 ---
 
+### S10 Briefing room layout for Map, Brief, A4 report, Tracker
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| ui | `feature/pages-briefing-room` (stacked on `feature/dossier-page`) | S9 | 2 h | P4 | none |
+
+**Risky changes — list before code**: sources (brief citations become chips; evidence cards stay; A4 stays one page). Verify: e2e evidence-row grade check, A4 one-page check, chips open the right source.
+
+**Files**: `src/components/{map,brief,report,tracker}/**` (layout and styling), `src/app/d/[id]/brief/page.tsx`, `e2e/demo-path.spec.ts` (only if a label moves), `docs/spec.md`, `docs/plan.md`.
+
+**Tests added**: none.
+
+---
+
 ## 6. Risks
 
 | Risk | Impact | Mitigation |

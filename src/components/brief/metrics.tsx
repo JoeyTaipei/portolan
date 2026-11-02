@@ -5,12 +5,12 @@ import type { MetricVM } from "./model";
 export function Metrics({ metrics, dossierId }: { metrics: MetricVM[]; dossierId: string }) {
   return (
     <section aria-labelledby="met-h" className="flex flex-col">
-      <h2 id="met-h" className="m-0 mb-1.5 text-[15px] font-bold">
+      <h2 id="met-h" className="sr-only">
         Where you stand
       </h2>
-      <ul className="m-0 grid list-none grid-cols-2 border-t-[1.5px] border-rule-strong p-0 lg:grid-cols-1">
+      <ul className="m-0 grid list-none grid-cols-2 border-t-2 border-rule-strong p-0 lg:grid-cols-4">
         {metrics.map((m) => (
-          <li key={m.key} className="border-b border-rule">
+          <li key={m.key} className="border-b border-rule lg:border-l lg:px-4 lg:first:border-l-0 lg:first:pl-0">
             <ScoreX
               explanation={m.explain}
               dossierId={dossierId}

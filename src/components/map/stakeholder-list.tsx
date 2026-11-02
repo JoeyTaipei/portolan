@@ -13,6 +13,7 @@ export function StakeholderList({
   onQuery,
   selected,
   onSelect,
+  title = true,
 }: {
   nodes: NodeVM[];
   total: number;
@@ -20,10 +21,11 @@ export function StakeholderList({
   onQuery: (q: string) => void;
   selected: string | null;
   onSelect: (id: string) => void;
+  title?: boolean;
 }) {
   return (
     <section aria-labelledby="all-h" className="flex flex-col gap-2">
-      <h2 id="all-h" className="m-0 border-b border-rule-strong pb-1.5 text-[15px] font-bold">
+      <h2 id="all-h" className={title ? "m-0 border-b border-rule-strong pb-1.5 text-[15px] font-bold" : "sr-only"}>
         All {total} stakeholders, by influence
       </h2>
       <label className="flex flex-col gap-1 text-[12.5px] font-semibold text-ink2">

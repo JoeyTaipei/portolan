@@ -54,6 +54,15 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
 
       <div className="rp-row">
         <section>
+          {r.judgment && (
+            <section className="rp-bottom" aria-label="Bottom line">
+              <p>
+                <b>Bottom line:</b> {r.judgment.text} <span className="t">{icdText(r.judgment.icd)}, {r.judgment.confidence.toLowerCase()} confidence.</span>
+                <Cite refs={r.judgment.refs} />
+              </p>
+              <IcdScale term={r.judgment.icd} />
+            </section>
+          )}
           <p className="rp-lab">Executive summary</p>
           <p className="rp-summary">
             {r.summary.length === 0
@@ -76,14 +85,6 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
               </div>
             ))}
           </div>
-          {r.judgment && (
-            <div className="rp-judg">
-              <b>Key judgment.</b> {r.judgment.text} <b>{icdText(r.judgment.icd)}</b>, {r.judgment.confidence.toLowerCase()}{" "}
-              confidence.
-              <Cite refs={r.judgment.refs} />
-              <IcdScale term={r.judgment.icd} />
-            </div>
-          )}
         </section>
         <MapExhibit exhibit={r.exhibit} takeaway={takeaway} />
       </div>
@@ -96,7 +97,7 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
               <th>Stakeholder</th>
               <th>Stance</th>
               <th>Influence</th>
-              <th>Next move</th>
+              <th className="nx">Next move</th>
               <th>Sources</th>
             </tr>
           </thead>
