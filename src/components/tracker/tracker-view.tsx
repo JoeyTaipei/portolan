@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { editTrackerItem, removeTrackerItem, saveDebrief, undoDebrief as undoDebriefAction } from "@/app/d/[id]/tracker/actions";
 import { track } from "@/lib/analytics";
 import { OVERLAY_EVENT, readOverlay, writeOverlay } from "@/lib/sample/overlay";
+import { ALSO_AGREE_MAX } from "@/lib/tracker/memo";
 import {
   applyDebrief,
   dueDebriefs,
@@ -103,7 +104,7 @@ export function TrackerView({ initial, isSample, name, nowIso }: { initial: Trac
         statement: newId("st-db"),
         playbook: newId("pb"),
         facts: Array.from({ length: 4 }, () => newId("fact-db")),
-        edges: Array.from({ length: 5 }, () => newId("edge-db")),
+        edges: Array.from({ length: ALSO_AGREE_MAX }, () => newId("edge-db")),
       };
       const out = applyDebrief(state, input, ids, new Date());
       r = persist(out.state) ? { ok: true, data: out.receipt } : { ok: false, error: NO_STORAGE };
