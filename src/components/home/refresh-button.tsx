@@ -8,13 +8,13 @@ import { refreshDossier } from "@/app/actions/research";
 export function RefreshButton({ dossierId, isSample }: { dossierId: string; isSample: boolean }) {
   const [pending, start] = useTransition();
   const [msg, setMsg] = useState<string | null>(null);
-  const reason = "The sample doesn't refresh. Your own dossiers do.";
+  const reason = "The sample doesn't refresh. Your own markets do.";
   return (
     <div className="flex flex-col items-end gap-1">
       <button
         type="button"
-        aria-label={isSample ? `Refresh dossier (${reason})` : "Refresh dossier"}
-        title={isSample ? reason : "Refresh dossier"}
+        aria-label={isSample ? `Refresh market (${reason})` : "Refresh market"}
+        title={isSample ? reason : "Refresh market"}
         aria-busy={pending}
         aria-disabled={isSample}
         onClick={() => {

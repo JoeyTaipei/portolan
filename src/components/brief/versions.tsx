@@ -24,7 +24,7 @@ export function Versions({
   const [pending, start] = useTransition();
   const [estimate, setEstimate] = useState<RebriefEstimate | null>(null);
   const [msg, setMsg] = useState<string | null>(null);
-  const sampleReason = "The sample brief can't be rewritten. Your own dossiers can.";
+  const sampleReason = "The sample brief can't be rewritten. Your own markets can.";
 
   const ask = () => {
     if (isSample) {

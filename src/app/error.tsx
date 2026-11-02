@@ -6,7 +6,7 @@ import { Nis } from "@/components/shell/nis";
 // Home error: data is safe, try again, and the sample always opens (SHELL-2).
 export default function HomeError({ retry }: { error: unknown; retry: () => void }) {
   return (
-    <Nis kind="error" title="Dossiers didn't load" desc="Your data is safe. Something went wrong on our side, so please try again.">
+    <Nis kind="error" title="Markets didn't load" desc="Your data is safe. Something went wrong on our side, so please try again.">
       <div className="acts">
         <button type="button" className="btn btn-main" onClick={() => retry()}>
           Try again

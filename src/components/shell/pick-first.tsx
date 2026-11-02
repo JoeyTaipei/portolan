@@ -8,7 +8,7 @@ export function PickFirstNotice() {
   if (params.get("pick") !== "1") return null;
   return (
     <p role="status" className="m-0 border-l-4 border-[var(--notice)] py-0.5 pl-3 text-[15px] font-semibold text-[var(--notice-text)]">
-      Pick a dossier first.
+      Pick a market first.
     </p>
   );
 }

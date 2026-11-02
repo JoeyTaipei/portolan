@@ -119,7 +119,7 @@ export function LoadingState({ label = "Loading…", skeleton }: { label?: strin
           actions={[{ label: "Try again", retry: true }]}
         />
       ) : (
-        <Nis kind="loading" title={label} desc="Fetching the dossier and its sources." />
+        <Nis kind="loading" title={label} desc="Fetching the market and its sources." />
       )}
       {skeleton ?? <PageSkeleton />}
     </div>
@@ -147,7 +147,7 @@ export function PageSkeleton() {
 const PREVIEW_COPY: Record<Exclude<NisKind, "loading">, { title: string; desc: string }> = {
   empty: {
     title: "Nothing here yet",
-    desc: "This page has no data to show yet. Open the sample dossier to see it filled in.",
+    desc: "This page has no data to show yet. Open the sample market to see it filled in.",
   },
   error: {
     title: "This page didn't load",
@@ -180,7 +180,7 @@ export function StatePreview({ children }: { children: ReactNode }) {
       actions={
         state === "error"
           ? [{ label: "Try again", href: pathname }]
-          : [{ label: "Open the sample dossier", href: "/d/sample" }]
+          : [{ label: "Open the sample market", href: "/d/sample" }]
       }
     />
   );

@@ -45,10 +45,10 @@ export function DossierSelect({
     <section aria-labelledby="sel-h" className="flex flex-col gap-0.5">
       <div className="mb-1 flex items-center justify-between gap-2.5 border-b border-rule-strong pb-2">
         <h2 id="sel-h" className="m-0 text-[16px] font-bold">
-          Your dossiers
+          Your markets
         </h2>
         <button type="button" className="btn btn-ghost btn-s" aria-expanded={open} onClick={() => setOpen((o) => !o)}>
-          {open ? "Close" : "+ New dossier"}
+          {open ? "Close" : "+ New market"}
         </button>
       </div>
       {open && <NewDossierForm />}

@@ -7,7 +7,7 @@ import { DossierShell } from "@/components/shell/dossier-shell";
 import { PageSkeleton, StatePreview } from "@/components/shell/nis";
 import { sampleDossier } from "@/lib/sample/reader";
 
-// 01 Dossiers: the most recently opened dossier is selected (client check), else the sample.
+// 01 Markets: the most recently opened market is selected (client check), else the sample.
 export default function Home() {
   return (
     <DossierShell dossierId={sampleDossier.id} isSample>
@@ -26,7 +26,7 @@ async function HomeContent() {
   return (
     <>
       <OpenLastDossier />
-      <HomeView m={m} sample={{ id: m.id, name: m.name, level: m.confidence.level, sources: m.counts.sources }} />
+      <HomeView atHome m={m} sample={{ id: m.id, name: m.name, level: m.confidence.level, sources: m.counts.sources }} />
     </>
   );
 }

@@ -1,6 +1,6 @@
-// What the home screen (01 Dossiers) shows for the selected dossier. Server-side, explicit `now`.
+// What the home screen (01 Markets) shows for the selected dossier. Server-side, explicit `now`.
 // Scores come only from src/lib/scoring; judgments and alerts are shown only with accepted sources.
-import { buildMapModel, type Mark } from "@/components/map/model";
+import { buildMapModel, byInfluence, type Mark } from "@/components/map/model";
 import { dataConfidenceExplanation, refsFor, sourceRef, type Explanation, type SourceRef } from "@/components/score/explain";
 import { briefMetrics, taipeiDay } from "@/lib/scoring";
 import type { DataConfidenceResult, DossierStatus, IcdTerm, Confidence, Dossier } from "@/lib/types";
@@ -27,6 +27,8 @@ export interface HomeModel {
   confidenceX: Explanation;
   judgments: { text: string; icd: IcdTerm; confidence: Confidence; sources: SourceRef[] }[];
   alert: { title: string; days: number; date: string; sources: SourceRef[]; url: string | null } | null;
+  /** HOME-9: contact-first three, then by influence; events skipped. */
+  moves: { id: string; name: string; step: string; verified: boolean; sources: SourceRef[] }[];
   placed: PlacedStakeholder[];
   mapShown: number;
   nav: { mapTotal: number; nextSteps: number; leads: number; documents: number; briefVersion: number | null };
@@ -65,6 +67,17 @@ export function buildHomeModel(d: Dossier, now: Date): HomeModel {
     .filter((n) => n.lat !== null && n.lng !== null)
     .map((n) => ({ id: n.id, short: n.short, mark: n.mark, lat: n.lat!, lng: n.lng!, city: n.city }));
 
+  const people = map.nodes.filter((n) => n.category !== "evt");
+  const first = map.contactFirst.map((id) => people.find((n) => n.id === id)).filter((n) => n !== undefined);
+  const rest = people.filter((n) => !map.contactFirst.includes(n.id)).sort(byInfluence);
+  const moves = [...first, ...rest].slice(0, 5).map((n) => ({
+    id: n.id,
+    name: n.name,
+    step: n.action.text,
+    verified: n.action.verified,
+    sources: n.action.sources,
+  }));
+
   return {
     id: d.id,
     isSample: d.isSample,
@@ -82,6 +95,7 @@ export function buildHomeModel(d: Dossier, now: Date): HomeModel {
     confidenceX: dataConfidenceExplanation(metrics.dataConfidence),
     judgments,
     alert,
+    moves,
     placed,
     mapShown: Math.min(map.nodes.length, 30),
     nav: {

@@ -8,7 +8,7 @@ import { track } from "@/lib/analytics";
 // RES-1 research progress (spec §7.3). Polls GET /api/dossiers/[id]/progress every 3 s (the same
 // request moves the research forward). New log lines are revealed one by one, not dumped; the
 // bar and phase follow the server. Leaving and coming back picks up from the database.
-// Ready → "Your dossier is ready" + the link again (D3); failed → the reason + Try again.
+// Ready → "Your market is ready" + the link again (D3); failed → the reason + Try again.
 
 const POLL_MS = 3000;
 const REVEAL_MS = 380;
@@ -144,7 +144,7 @@ export function ProgressClient({ dossierId }: { dossierId: string }) {
         <div className="flex flex-col gap-1.5">
           <p className="m-0 text-[12.5px] font-semibold tracking-[0.08em] text-ink2 uppercase">Research</p>
           <h1 id="res-h" className="m-0 text-[24px] leading-tight font-bold">
-            {done ? "Your dossier is ready" : status === "failed" ? "Research didn't finish" : "Researching your market"}
+            {done ? "Your market is ready" : status === "failed" ? "Research didn't finish" : "Researching your market"}
           </h1>
           {!done && status !== "failed" && (
             <p className="m-0 text-[14px] text-ink2">You can leave this page. Open your link again later and it picks up from here.</p>
@@ -207,7 +207,7 @@ export function ProgressClient({ dossierId }: { dossierId: string }) {
 
         {done && (
           <div className="flex flex-col gap-2.5 rounded-[var(--r-m)] border border-rule-strong bg-panel p-3.5" role="status">
-            <p className="m-0 text-[14px] font-semibold text-[var(--notice-text)]">This link is the only key to your dossier. Save it now.</p>
+            <p className="m-0 text-[14px] font-semibold text-[var(--notice-text)]">This link is the only key to your market. Save it now.</p>
             <code className="block break-all rounded-[var(--r-s)] bg-panel2 px-2 py-1.5 text-[13px]" data-testid="dossier-link">
               {url}
             </code>
@@ -230,7 +230,7 @@ export function ProgressClient({ dossierId }: { dossierId: string }) {
                 {copied ? "Copied" : "Copy link"}
               </button>
               <button type="button" className="btn btn-main btn-s flex-1" onClick={() => router.refresh()}>
-                Open the dossier
+                Open the market
               </button>
             </div>
           </div>
