@@ -736,7 +736,7 @@ Why: Erin asked for a Chinese version of the app beside the English one, with a 
 
 **Acceptance**: the shared block (§4) with routes `/`, `/d/sample`, `/d/sample/{map,brief,report,tracker,network,docs,sources}`, `/s/<sample share id>`, `/privacy`, `/waitlist`, in both languages; `PORT=3001 npx playwright test e2e/demo-path.spec.ts`.
 
-### S18 Market conclusions in 繁中 (added 2026-11-02, Erin)
+### S18 Market conclusions, brief and A4 in 繁中 (added 2026-11-02, Erin; brief and A4 added the same day)
 
 | Lane | Branch | Depends on | Estimate | Priority | Packages |
 |---|---|---|---|---|---|
@@ -750,9 +750,9 @@ Why: spec I18N-8. Sample only; real dossiers need a paid step, so the options an
 - *A home conclusion is missed.* Verify: unit test that every bottom line, key judgment and next step on `/d/sample` has an entry; e2e that no conclusion on `/d/sample` in 繁中 has a run of English words.
 - No paid call, no migration, no `src/lib/types.ts` change; tracker and memo files untouched.
 
-**Files**: `src/fixtures/sample-dossier.zh.ts` (new), `src/lib/i18n/{index.ts,i18n.test.ts}`, `src/components/home/{model.ts,market-header.tsx,key-judgments.tsx,next-moves.tsx,dossier-select.tsx}`, `e2e/demo-path.spec.ts`, `docs/spec.md`, `docs/plan.md`.
+**Files**: `src/fixtures/sample-dossier.zh.ts` (new), `src/lib/i18n/{index.ts,zh-TW.ts,i18n.test.ts}`, `src/components/home/{model.ts,market-header.tsx,key-judgments.tsx,next-moves.tsx,dossier-select.tsx}`, `src/components/brief/{rationale,exec-path,seven-day,requirements,routes}.tsx`, `src/app/d/[id]/brief/page.tsx`, `src/components/report/a4-report.tsx`, `e2e/demo-path.spec.ts`, `docs/spec.md`, `docs/plan.md`.
 
-**Acceptance**: `npm test`, `npm run build`, `npx playwright test e2e/demo-path.spec.ts`; screenshots of `/d/sample` in 繁中 at 1440 and 390.
+**Acceptance**: `npm test`, `npm run build`, `npx playwright test e2e/demo-path.spec.ts` (no English sentence on the sample's home, brief and A4 in 繁中; the A4 prints on one page); screenshots of `/d/sample`, `/d/sample/brief`, `/d/sample/report` in 繁中 at 1440 and 390.
 
 ## 6. Risks
 

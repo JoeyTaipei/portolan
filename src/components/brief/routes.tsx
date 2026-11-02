@@ -17,12 +17,12 @@ export async function Routes({ routes, firstBuyer, dossierId }: { routes: BriefV
         <ScoreX
           explanation={firstBuyer.explain}
           dossierId={dossierId}
-          label={t("Most likely first buyer: {name}. Show how this is worked out", { name: firstBuyer.who })}
+          label={t("Most likely first buyer: {name}. Show how this is worked out", { name: t.n(firstBuyer.who) })}
           className="flex w-full flex-col items-start gap-0.5 rounded-[var(--r-l)] border border-rule-strong bg-panel px-3 py-2.5 text-left font-[inherit] text-ink hover:bg-panel2"
         >
           <span className="text-[12.5px] font-semibold text-ink2">{t("Most likely first buyer")}</span>
           <span className="text-[18px] font-bold leading-tight" data-testid="first-buyer">
-            {firstBuyer.who}, {t.k(firstBuyer.how)}
+            {t.n(firstBuyer.who)}{t.locale === "zh-TW" ? "，" : ", "}{t.k(firstBuyer.how)}
           </span>
           <span className="text-[13.5px] text-ink2">{t("Why:")} {t.x(firstBuyer.why)}</span>
         </ScoreX>
@@ -35,12 +35,12 @@ export async function Routes({ routes, firstBuyer, dossierId }: { routes: BriefV
             <span>
               <span className="font-bold">{t.k(r.label)}</span>
               <span className="block text-[13px] text-ink2">
-                {r.buyer ? `${r.buyer} · ` : ""}
+                {r.buyer ? `${t.n(r.buyer)} · ` : ""}
                 {t.k(r.accessLabel)}
               </span>
             </span>
             <span>
-              {r.text}
+              <span data-testid="conclusion">{t.r(r.text)}</span>
               <Cites refs={r.refs} dossierId={dossierId} />
               {r.money ? (
                 <span className="block text-[13.5px]">

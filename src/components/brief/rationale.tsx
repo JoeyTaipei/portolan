@@ -13,7 +13,7 @@ export async function Rationale({ items, changesNote, dossierId }: { items: Cite
           <p className="m-0 font-bold">{t("What changed and why")}</p>
           <ul className="m-0 pl-4">
             {changesNote.map((n) => (
-              <li key={n}>{n}</li>
+              <li key={n}>{t.r(n)}</li>
             ))}
           </ul>
         </div>
@@ -30,7 +30,7 @@ export async function Rationale({ items, changesNote, dossierId }: { items: Cite
             key: String(i),
             body: (
               <p className="m-0 text-[17px] leading-[1.55]">
-                {s.text}
+                <span data-testid="conclusion">{t.r(s.text)}</span>
                 <Cites refs={s.refs} dossierId={dossierId} />
               </p>
             ),

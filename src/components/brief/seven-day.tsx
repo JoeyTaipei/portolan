@@ -23,9 +23,9 @@ export async function SevenDay({ plan, dossierId }: { plan: PlanBoxVM[]; dossier
               <ul className="m-0 flex list-none flex-col gap-2 p-0">
                 {b.actions.map((a, i) => (
                   <li key={i} className="text-[14px] leading-[1.45]">
-                    {a.text}
+                    <span data-testid="conclusion">{t.r(a.text)}</span>
                     <Cites refs={a.refs} dossierId={dossierId} />
-                    <span className="block text-[12.5px] text-ink2">{t("With {name}", { name: a.who })}</span>
+                    <span className="block text-[12.5px] text-ink2">{t("With {name}", { name: t.n(a.who) })}</span>
                   </li>
                 ))}
               </ul>

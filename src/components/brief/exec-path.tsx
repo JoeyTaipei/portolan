@@ -23,9 +23,9 @@ export async function ExecPath({ path, reduce, dossierId }: Pick<BriefVM, "path"
               </span>
               <p className="m-0 text-[17px] leading-[1.5]">
                 <Link href={`/d/${dossierId}/map?s=${p.stakeholderId}`} className="font-bold text-ink">
-                  {p.who}
+                  {t.n(p.who)}
                 </Link>
-                . {p.why.text}
+                {t(".")} <span data-testid="conclusion">{t.r(p.why.text)}</span>
                 <Cites refs={p.why.refs} dossierId={dossierId} />
               </p>
             </li>
@@ -38,7 +38,7 @@ export async function ExecPath({ path, reduce, dossierId }: Pick<BriefVM, "path"
           <ul className="m-0 flex list-none flex-col gap-1.5 p-0">
             {reduce.map((r) => (
               <li key={r.stakeholderId} className="text-[17px] leading-[1.5]">
-                <b>{r.who}.</b> {r.step.text}
+                <b>{t.n(r.who)}{t(".")}</b> <span data-testid="conclusion">{t.r(r.step.text)}</span>
                 <Cites refs={r.step.refs} dossierId={dossierId} />
               </li>
             ))}

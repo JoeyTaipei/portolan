@@ -1,4 +1,4 @@
-import { SAMPLE_ZH } from "@/fixtures/sample-dossier.zh";
+import { SAMPLE_NAMES_ZH, SAMPLE_ZH } from "@/fixtures/sample-dossier.zh";
 import { zhTW } from "./zh-TW";
 
 // SHELL-4: English / 繁體中文. The dictionary is keyed by the English text, so English is
@@ -26,10 +26,12 @@ export interface T {
   /** Translate a code-written string built elsewhere (exact key or `{…}` pattern); else as is. */
   x: (s: string) => string;
   /**
-   * Research-written text with a hand-made translation (the sample's conclusions, I18N-8);
+   * Research-written text with a hand-made translation (the sample's sentences, I18N-8);
    * exact match only, so real dossiers' Claude-written sentences come back unchanged.
    */
   r: (s: string) => string;
+  /** A sample stakeholder's name → its sourced Chinese name (nameZh); anything else unchanged. */
+  n: (s: string) => string;
   /** Exact key only (enum labels like "Supportive"); anything else unchanged. */
   k: (s: string) => string;
   /** English dates inside a code-built string, in Chinese ("2 Nov 2026" → "2026年11月2日"). */
@@ -43,7 +45,7 @@ const DICT: Record<string, string> = zhTW;
 
 function fill(template: string, vars?: Vars): string {
   if (!vars) return template;
-  return template.replace(/\{(\w+)(?:\|[tl])?\}/g, (whole, name: string) =>
+  return template.replace(/\{(\w+)(?:\|[tln])?\}/g, (whole, name: string) =>
     name in vars ? String(vars[name]) : whole,
   );
 }
@@ -63,7 +65,7 @@ export function zhDates(s: string): string {
     .replace(DM, (_, d, mon) => `${m(mon)}月${Number(d)}日`);
 }
 
-type Filter = "" | "t" | "l";
+type Filter = "" | "t" | "l" | "n";
 
 interface Pattern {
   re: RegExp;
@@ -85,16 +87,18 @@ function buildPatterns(): Pattern[] {
   for (const [en, zh] of Object.entries(DICT)) {
     if (!en.includes("{")) continue;
     const names: Pattern["names"] = [];
-    const parts = en.split(/(\{\w+(?:\|[tl])?\})/);
+    const parts = en.split(/(\{\w+(?:\|[tln])?\})/);
     let literal = 0;
     const src = parts
       .map((part) => {
-        const ph = part.match(/^\{(\w+)(?:\|([tl]))?\}$/);
+        const ph = part.match(/^\{(\w+)(?:\|([tln]))?\}$/);
         if (!ph) {
           literal += part.length;
           return part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
         }
         names.push({ name: ph[1], filter: (ph[2] ?? "") as Filter });
+        // A checked value is as specific as a literal: "{name|n}, {route|t}" beats "{title}, {when|t}".
+        if (ph[2]) literal += 2;
         return NUMERIC.has(ph[1]) ? "([\\d,.]+)" : ph[1].startsWith("date") ? `(${DATE})` : "(.+?)";
       })
       .join("");
@@ -110,6 +114,7 @@ function listItem(item: string): string | undefined {
 
 /** `{x|t}` and `{x|l}` values; undefined when the value has no translation. */
 function filtered(filter: Filter, v: string): string | undefined {
+  if (filter === "n") return SAMPLE_NAMES_ZH[v];
   if (filter === "t") {
     const out = translateRuntime(v);
     return out !== v || DICT[v] !== undefined ? out : undefined;
@@ -120,7 +125,8 @@ function filtered(filter: Filter, v: string): string | undefined {
 
 /**
  * Exact key, then the most specific `{…}` pattern. Values are kept verbatim, except `{x|t}`
- * (translated), `{x|l}` (a comma list of labels, each translated) and `{date…}` (date localised).
+ * (translated), `{x|l}` (a comma list of labels, each translated), `{x|n}` (a sample
+ * stakeholder's sourced Chinese name) and `{date…}` (date localised).
  */
 export function translateRuntime(s: string): string {
   const exact = DICT[s];
@@ -161,6 +167,7 @@ export function makeT(locale: Locale): T {
   t.x = (s: string) => (zh ? translateRuntime(s) : s);
   t.k = (s: string) => (zh ? (DICT[s] ?? s) : s);
   t.r = (s: string) => (zh ? (SAMPLE_ZH[s] ?? DICT[s] ?? s) : s);
+  t.n = (s: string) => (zh ? (SAMPLE_NAMES_ZH[s] ?? s) : s);
   t.dt = (s: string) => (zh ? zhDates(s) : s);
   t.date = (iso, opts) => formatDate(locale, iso, opts);
   t.locale = locale;

@@ -18,7 +18,7 @@ export async function Requirements({ items, exportCheck, dossierId }: { items: B
           <li key={x.topic} className="grid gap-x-4 border-b border-rule py-2.5 text-[14.5px] leading-[1.45] sm:grid-cols-[160px_minmax(0,1fr)]">
             <span className="font-bold">{t.k(x.label)}</span>
             <span>
-              {x.text}
+              <span data-testid="conclusion">{t.r(x.text)}</span>
               <Cites refs={x.refs} dossierId={dossierId} />
             </span>
           </li>

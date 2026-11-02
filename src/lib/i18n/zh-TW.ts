@@ -1151,4 +1151,9 @@ export const zhTW = {
   // docs
   "AI draft · not reviewed — check names and dates before sharing": "AI 草稿 · 未經審閱，分享前請檢查姓名和日期",
   "AI draft · not reviewed — check names and dates before sharing · facts checked {date}": "AI 草稿 · 未經審閱，分享前請檢查姓名和日期 · 事實查證於 {date}",
+
+  // first buyer rule (sample names via |n)
+  "{name|n}, {route|t}": "{name}，{route}",
+  "{route|t} · {name|n}": "{route} · {name}",
+  "NCSIST co-development or subcontract": "與國家中山科學研究院共同開發或分包",
 } as const satisfies Record<string, string>;
