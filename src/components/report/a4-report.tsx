@@ -173,15 +173,20 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
           </ol>
         </section>
         <section>
-          <p className="rp-lab">Where to meet them</p>
-          {r.meet.length === 0 ? (
-            <p className="rp-list">No sourced event with a date yet.</p>
+          <p className="rp-lab">Partner candidates</p>
+          {r.partners.length === 0 ? (
+            <p className="rp-list">No Taiwanese firm with sourced evidence yet.</p>
           ) : (
-            <ul className="rp-list">
-              {r.meet.map((m) => (
-                <li key={m.title}>
-                  <b>{m.title}</b>, {fmtDay(m.date)}.
-                  {m.mapped > 0 && ` ${m.mapped} mapped stakeholder${m.mapped === 1 ? "" : "s"} expected.`}
+            <ul className="rp-list" aria-label="Partner candidates" data-testid="a4-partners">
+              {r.partners.map((p, i) => (
+                <li key={p.id}>
+                  <b>
+                    {i + 1}. {p.short}
+                  </b>
+                  , {p.sources} source{p.sources === 1 ? "" : "s"}
+                  {p.buyers > 0 && `, tied to ${p.buyers} buyer${p.buyers === 1 ? "" : "s"}`}
+                  {p.flags.length > 0 && `; ${p.flags.join(", ")}`}
+                  <Cite refs={p.refs} />
                 </li>
               ))}
             </ul>

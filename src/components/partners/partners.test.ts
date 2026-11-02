@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { sampleDossier } from "@/lib/sample/reader";
+import { buildReportModel } from "@/components/report/model";
 import { buildPartners, partnerQuestions } from "./model";
 
 // Plan S15 (NET-7): partner candidates are picked, flagged and ordered by code from sourced data.
@@ -29,5 +30,11 @@ describe("partner candidates", () => {
   it("never makes a card for an organisation in China", () => {
     const d = { ...sampleDossier, stakeholders: sampleDossier.stakeholders.map((s) => (s.id === "aidc" ? { ...s, isChina: true as const, isPerson: false as const } : s)) };
     expect(buildPartners(d, now).map((c) => c.id)).not.toContain("aidc");
+  });
+
+  it("puts the top 3 on the A4, and their sources in the shared source list", () => {
+    const r = buildReportModel(sampleDossier, sampleDossier.briefs.at(-1)!, now);
+    expect(r.partners.map((p) => p.short)).toEqual(["AIDC", "Thunder Tiger", "Ubiqconn"]);
+    for (const p of r.partners) for (const ref of p.refs) expect(r.citedIds).toContain(ref.id);
   });
 });

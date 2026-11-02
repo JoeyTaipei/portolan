@@ -6,6 +6,7 @@
 import { buildBriefModel, fmtDay, type BriefVM, type Cited, type MetricVM } from "@/components/brief/model";
 import { buildMapModel, byInfluence, MAP_LIMIT, NO_ROUTE, type Mark } from "@/components/map/model";
 import { influenceText, sourceRef, type SourceRef } from "@/components/score/explain";
+import { buildPartners } from "@/components/partners/model";
 import { buildVerdict, type VerdictVM } from "@/components/score/verdict";
 import { isEligible, sourcesFor } from "@/lib/scoring";
 import type { Brief, Category, Dossier, IcdTerm, Confidence } from "@/lib/types";
@@ -17,6 +18,8 @@ export const REQUIREMENTS_N = 4;
 /** REP-12: past this many characters the last requirement is dropped so the page still fits. */
 export const REQUIREMENTS_CHARS = 380;
 export const MEET_N = 3;
+/** REP-14 (option A, Joey 2026-11-02): top partner candidates, in place of Where to meet them. */
+export const PARTNERS_N = 3;
 export const ROW_SOURCES_N = 2;
 /** REP-13: the "Not verified" line is cut to this many characters so the page still fits. */
 export const GAPS_CHARS = 170;
@@ -51,6 +54,8 @@ export interface ReportVM {
   path: BriefVM["path"];
   plan: { days: string; text: string; refs: SourceRef[] }[];
   meet: { title: string; date: string; mapped: number }[];
+  /** REP-14: one line per top partner candidate (NET-7), with the sources of its first two evidence items. */
+  partners: { id: string; short: string; sources: number; buyers: number; flags: string[]; refs: SourceRef[] }[];
   risks: Cited[];
   /** REP-9: up to 4 sourced entry requirements; when empty, Key risks shows instead. */
   requirements: BriefVM["requirements"];
@@ -123,6 +128,16 @@ export function buildReportModel(d: Dossier, brief: Brief, now: Date): ReportVM 
   const judgment = b.judgments[0] ?? null;
   const verdict = buildVerdict(d, now, map.contactFirst.length);
   const tableSources = dedupe(top.flatMap((t) => t.refs));
+  const partners = buildPartners(d, now)
+    .slice(0, PARTNERS_N)
+    .map((p) => ({
+      id: p.id,
+      short: p.short,
+      sources: p.sourceCount,
+      buyers: p.buyers.length,
+      flags: p.flags.map((f) => f.label.toLowerCase()),
+      refs: dedupe(p.evidence.slice(0, 2).flatMap((e) => e.refs)),
+    }));
   const citedIds = dedupe([
     ...summary.flatMap((s) => s.refs),
     ...(judgment?.refs ?? []),
@@ -132,6 +147,7 @@ export function buildReportModel(d: Dossier, brief: Brief, now: Date): ReportVM 
     ...risks.flatMap((r) => r.refs),
     ...requirements.flatMap((r) => r.refs),
     ...verdict.reasons.flatMap((r) => r.refs),
+    ...partners.flatMap((p) => p.refs),
   ]).map((r) => r.id);
 
   const confidence = b.metrics.find((m) => m.key === "confidence")!;
@@ -151,6 +167,7 @@ export function buildReportModel(d: Dossier, brief: Brief, now: Date): ReportVM 
     path: b.path,
     plan,
     meet,
+    partners,
     risks,
     requirements,
     exportCheck: requirements.length > 0 && b.exportCheck,
