@@ -12,6 +12,7 @@ import {
   type Explanation,
   type SourceRef,
 } from "@/components/score/explain";
+import { suggestsSpecIn } from "@/lib/checks/pre-display";
 import { briefMetrics, briefStatus, citedSourceIds, STALE_SOURCE_DAYS, daysBetween } from "@/lib/scoring";
 import type { Brief, BriefMetrics, BriefStatus, Dossier, EntryRequirement, IcdTerm, Confidence, RequirementTopic, Sentence, Source } from "@/lib/types";
 
@@ -111,7 +112,7 @@ export function citable(d: Pick<Dossier, "sources">): Map<string, Source> {
 
 /** BRIEF-6 in code: null when the sentence must not be shown. */
 export function checkSentence(s: Sentence, ok: ReadonlyMap<string, Source>): Cited | null {
-  if (!s.text.trim() || PLACEHOLDER.test(s.text)) return null;
+  if (!s.text.trim() || PLACEHOLDER.test(s.text) || suggestsSpecIn(s.text)) return null;
   if (s.sourceIds.length === 0 || !s.sourceIds.every((id) => ok.has(id))) return null;
   return { text: s.text, refs: s.sourceIds.map((id) => sourceRef(ok.get(id)!)) };
 }
@@ -304,7 +305,7 @@ export function buildBriefModel(d: Dossier, brief: Brief, now: Date): BriefVM {
     metrics: metricVMs(briefMetrics(d, now), d, ok),
     rationale: checkAll(brief.rationale, ok),
     judgments: brief.judgments
-      .filter((j) => !PLACEHOLDER.test(j.text) && j.sourceIds.length > 0 && j.sourceIds.every((id) => ok.has(id)))
+      .filter((j) => !PLACEHOLDER.test(j.text) && !suggestsSpecIn(j.text) && j.sourceIds.length > 0 && j.sourceIds.every((id) => ok.has(id)))
       .map((j) => ({ text: j.text, icd: j.icd, confidence: j.confidence, refs: j.sourceIds.map((id) => sourceRef(ok.get(id)!)) })),
     path: brief.path
       .filter((p) => onMap(p.stakeholderId))
