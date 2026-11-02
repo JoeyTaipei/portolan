@@ -359,8 +359,12 @@ export function applyDebrief(
   // TRK-10: the memo's influence answers and "who else must agree" ties (scoring §3.2).
   const memoCtx = item.stakeholderId ? { stakeholderId: item.stakeholderId, debriefId: ids.debrief, sourceId: ids.source, at } : null;
   const newFacts = memoCtx ? memoFacts(memo, { ...memoCtx, newId: (i) => ids.facts?.[i] ?? `${ids.debrief}-f${i}` }) : [];
+  // A pair already tied on the map adds nothing to centrality: keep the tie list one line per pair.
+  const tied = (x: string, y: string) => state.edges.some((e) => (e.aId === x && e.bId === y) || (e.aId === y && e.bId === x));
   const newEdges = memoCtx
-    ? memoEdges(memo, { ...memoCtx, dossierId: state.dossierId, newId: (i) => ids.edges?.[i] ?? `${ids.debrief}-e${i}` })
+    ? memoEdges(memo, { ...memoCtx, dossierId: state.dossierId, newId: (i) => ids.edges?.[i] ?? `${ids.debrief}-e${i}` }).filter(
+        (e) => !tied(e.aId, e.bId),
+      )
     : [];
   const facts = [...state.facts, ...newFacts];
   const edges = [...state.edges, ...newEdges];

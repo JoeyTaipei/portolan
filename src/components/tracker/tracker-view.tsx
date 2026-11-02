@@ -175,7 +175,7 @@ export function TrackerView({ initial, isSample, name, nowIso }: { initial: Trac
             memoFor={(d) => {
               const self = state.stakeholders.find((x) => x.id === d.item.stakeholderId);
               if (!self) return null;
-              const others = state.stakeholders.filter((x) => x.id !== self.id).map((x) => ({ id: x.id, name: x.short ?? x.name }));
+              const others = state.stakeholders.filter((x) => x.id !== self.id && x.category !== "evt").map((x) => ({ id: x.id, name: x.short ?? x.name }));
               return { others: others.sort((a, b) => a.name.localeCompare(b.name)), isChina: self.isChina };
             }}
           />

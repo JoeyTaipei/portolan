@@ -229,6 +229,14 @@ describe("meeting memo", () => {
     expect(receipt.memoFactors).toContain("centrality");
   });
 
+  it("adds no second tie for a pair already tied on the map", () => {
+    const s = base();
+    s.edges = [{ id: "e-r", dossierId: "d", aId: "ab", bId: "alliance", relation: "Partners", sourceIds: ["s1"], status: "sourced", createdAt: "2026-10-01T00:00:00Z" }];
+    const { state, receipt } = applyDebrief(s, input({ memo: memo({ alsoAgree: ["ab"] }) }), MEMO_IDS, NOW);
+    expect(state.edges).toEqual(s.edges);
+    expect(receipt.memoFactors).not.toContain("centrality");
+  });
+
   it("keeps no 'who we met' text for a China stakeholder", () => {
     const s = base();
     s.stakeholders[0] = { ...s.stakeholders[0], isChina: true };
