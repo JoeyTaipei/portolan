@@ -4,13 +4,20 @@
 // Risky change: a debrief is a source (A1, weight ×2 in scoring) and support is recomputed from
 // statements, never adjusted by a fixed amount. The playbook row is anonymised: route, category,
 // overall and next step only — no dossier id, names or free text (TRK-5).
+import { influenceBreakdown, influenceFor } from "@/lib/scoring/influence";
 import { debriefRating, supportFor } from "@/lib/scoring/support";
+import { cleanMemo, memoEdges, memoExcerptLines, memoFacts, memoHasContent } from "@/lib/tracker/memo";
 import type {
+  Banded,
   Brief,
   Category,
   Debrief,
+  DebriefMemo,
   DebriefOverall,
   Dossier,
+  Edge,
+  Fact,
+  InfluenceFactor,
   Iso,
   Lead,
   PlaybookOutcome,
@@ -44,12 +51,15 @@ export const DEFAULT_DUE_DAYS = 7;
 /** What the tracker reads and writes. The sample overlay and the database hold the same shapes. */
 export interface TrackerState {
   dossierId: string;
-  stakeholders: Pick<Stakeholder, "id" | "name" | "short" | "category">[];
+  stakeholders: Pick<Stakeholder, "id" | "name" | "short" | "category" | "isChina">[];
   leads: Pick<Lead, "id" | "name" | "type" | "stakeholderId">[];
   tracker: TrackerItem[];
   debriefs: Debrief[];
   statements: SupportStatement[];
   sources: Source[];
+  /** Influence facts and ties: a meeting memo adds its own (TRK-10, scoring §3.2). */
+  facts: Fact[];
+  edges: Edge[];
   playbook: PlaybookOutcome[];
   /** The current brief, if any: a debrief saved after `inputsAt` makes it Out of date (§7). */
   brief: Pick<Brief, "inputsAt"> | null;
@@ -105,6 +115,13 @@ export function itemCategory(state: Pick<TrackerState, "stakeholders" | "leads">
   if (s) return s.category;
   const lead = state.leads.find((l) => l.id === item.leadId);
   return lead ? LEAD_CATEGORY[lead.type] : null;
+}
+
+/** Influence for the item's stakeholder (scoring §2, with memo answers first per §3.2). */
+export function itemInfluence(state: Pick<TrackerState, "stakeholders" | "facts" | "edges">, item: TrackerItem): Banded | null {
+  if (!item.stakeholderId) return null;
+  const s = state.stakeholders.find((x) => x.id === item.stakeholderId);
+  return influenceFor(item.stakeholderId, state.facts, state.edges, s?.category);
 }
 
 /** Support for the item's stakeholder, recomputed from statements (scoring §3). */
@@ -188,6 +205,8 @@ export interface DebriefInput {
   addToPlaybook: boolean;
   /** With "Yes": the next step and its due date (default 7 days). */
   nextStep: { text: string; dueDate: string } | null;
+  /** TRK-9 optional detail; null when "Add detail" was left closed or empty. */
+  memo?: DebriefMemo | null;
 }
 
 /** Ids for the new rows, made by the caller (random on the sample, database ids on real dossiers). */
@@ -196,6 +215,9 @@ export interface DebriefIds {
   source: string;
   statement: string;
   playbook: string;
+  /** For the memo's facts (up to 4) and ties (up to 5). */
+  facts?: string[];
+  edges?: string[];
 }
 
 /** Everything the result card shows, and what Undo needs to put back. */
@@ -205,6 +227,10 @@ export interface DebriefReceipt {
   itemBefore: TrackerItem;
   supportBefore: SupportResult;
   supportAfter: SupportResult;
+  influenceBefore: Banded | null;
+  influenceAfter: Banded | null;
+  /** Factors the memo set or changed (TRK-10), for the result card. */
+  memoFactors: InfluenceFactor[];
   stageBefore: TrackerStage;
   stageAfter: TrackerStage;
   nextStep: { text: string; dueDate: string } | null;
@@ -254,8 +280,19 @@ export function applyDebrief(
   const name = itemName(state, item);
   const category = itemCategory(state, item);
   const supportBefore = itemSupport(state, item, now);
+  const influenceBefore = itemInfluence(state, item);
+  const stakeholder = item.stakeholderId ? state.stakeholders.find((x) => x.id === item.stakeholderId) : undefined;
+  const memo =
+    input.memo && memoHasContent(input.memo)
+      ? cleanMemo(input.memo, {
+          stakeholderId: item.stakeholderId,
+          isChina: stakeholder?.isChina ?? false,
+          mapIds: new Set(state.stakeholders.map((x) => x.id)),
+        })
+      : null;
 
-  // The debrief as an A1 source (scoring §3.1). The excerpt is fixed text, never the notes.
+  // The debrief as an A1 source (scoring §3.1). The excerpt is fixed text, never the notes; the
+  // memo's influence answers are fixed words too, so each memo fact's quote is in the excerpt.
   const source: Source = {
     id: ids.source,
     dossierId: state.dossierId,
@@ -264,7 +301,10 @@ export function applyDebrief(
     title: `Debrief, ${day}, your team`,
     publisher: null,
     sourceType: "debrief",
-    excerpt: `Meeting debrief: overall ${OVERALL_LABEL[input.overall].toLowerCase()}; next step agreed: ${input.nextStepAgreed ? "yes" : "not yet"}.`,
+    excerpt: [
+      `Meeting debrief: overall ${OVERALL_LABEL[input.overall].toLowerCase()}; next step agreed: ${input.nextStepAgreed ? "yes" : "not yet"}.`,
+      ...memoExcerptLines(memo),
+    ].join(" "),
     excerptLang: "en",
     translation: null,
     reliability: "A",
@@ -284,7 +324,7 @@ export function applyDebrief(
         stakeholderId: item.stakeholderId,
         runId: null,
         debriefId: ids.debrief,
-        rating: debriefRating(input.overall),
+        rating: memo?.stance ?? debriefRating(input.overall),
         summary: `Meeting debrief: ${OVERALL_LABEL[input.overall].toLowerCase()}`,
         quote: null,
         sourceId: ids.source,
@@ -316,6 +356,21 @@ export function applyDebrief(
   const statements = statement ? [...state.statements, statement] : state.statements;
   const supportAfter = item.stakeholderId ? supportFor(item.stakeholderId, statements, sources, now) : supportBefore;
 
+  // TRK-10: the memo's influence answers and "who else must agree" ties (scoring §3.2).
+  const memoCtx = item.stakeholderId ? { stakeholderId: item.stakeholderId, debriefId: ids.debrief, sourceId: ids.source, at } : null;
+  const newFacts = memoCtx ? memoFacts(memo, { ...memoCtx, newId: (i) => ids.facts?.[i] ?? `${ids.debrief}-f${i}` }) : [];
+  const newEdges = memoCtx
+    ? memoEdges(memo, { ...memoCtx, dossierId: state.dossierId, newId: (i) => ids.edges?.[i] ?? `${ids.debrief}-e${i}` })
+    : [];
+  const facts = [...state.facts, ...newFacts];
+  const edges = [...state.edges, ...newEdges];
+  const influenceAfter = itemInfluence({ stakeholders: state.stakeholders, facts, edges }, item);
+  const before = item.stakeholderId ? influenceBreakdown(item.stakeholderId, state.facts, state.edges, stakeholder?.category) : [];
+  const after = item.stakeholderId ? influenceBreakdown(item.stakeholderId, facts, edges, stakeholder?.category) : [];
+  const memoFactors = after
+    .filter((f, i) => newFacts.some((x) => x.field === f.factor) || (f.factor === "centrality" && newEdges.length > 0) || f.rating !== before[i]?.rating)
+    .map((f) => f.factor);
+
   const debrief: Debrief = {
     id: ids.debrief,
     trackerItemId: item.id,
@@ -331,6 +386,7 @@ export function applyDebrief(
     stageAfter,
     addedNextStep: added?.text ?? null,
     playbookOutcomeId: playbook?.id ?? null,
+    memo,
     createdAt: at,
   };
 
@@ -340,6 +396,8 @@ export function applyDebrief(
     debriefs: [...state.debriefs, debrief],
     statements,
     sources,
+    facts,
+    edges,
     playbook: playbook ? [...state.playbook, playbook] : state.playbook,
   };
   return {
@@ -350,6 +408,9 @@ export function applyDebrief(
       itemBefore: item,
       supportBefore,
       supportAfter,
+      influenceBefore,
+      influenceAfter,
+      memoFactors,
       stageBefore: item.stage,
       stageAfter,
       nextStep: added,
@@ -359,7 +420,7 @@ export function applyDebrief(
   };
 }
 
-/** TRK-6: delete the debrief, its source, statement and playbook row; put the item back as it was. */
+/** TRK-6: delete the debrief, its source, statement, memo facts and ties, and playbook row; put the item back. */
 export function undoDebrief(state: TrackerState, receipt: Pick<DebriefReceipt, "debriefId" | "itemBefore">): TrackerState {
   const debrief = state.debriefs.find((d) => d.id === receipt.debriefId);
   if (!debrief) return state;
@@ -371,6 +432,8 @@ export function undoDebrief(state: TrackerState, receipt: Pick<DebriefReceipt, "
     debriefs: state.debriefs.filter((d) => d.id !== debrief.id),
     statements: state.statements.filter((s) => !statementIds.has(s.id)),
     sources: state.sources.filter((s) => !(sourceIds.has(s.id) && s.origin === "debrief")),
+    facts: state.facts.filter((f) => f.debriefId !== debrief.id),
+    edges: state.edges.filter((e) => e.debriefId !== debrief.id),
     playbook: state.playbook.filter((p) => p.id !== debrief.playbookOutcomeId),
   };
 }
@@ -380,12 +443,14 @@ export function trackerState(d: Dossier, playbook: PlaybookOutcome[] = []): Trac
   const brief = d.briefs.at(-1) ?? null;
   return {
     dossierId: d.id,
-    stakeholders: d.stakeholders.map(({ id, name, short, category }) => ({ id, name, short, category })),
+    stakeholders: d.stakeholders.map(({ id, name, short, category, isChina }) => ({ id, name, short, category, isChina })),
     leads: d.leads.map(({ id, name, type, stakeholderId }) => ({ id, name, type, stakeholderId })),
     tracker: d.tracker,
     debriefs: d.debriefs,
     statements: d.statements,
     sources: d.sources,
+    facts: d.facts,
+    edges: d.edges,
     playbook,
     brief: brief ? { inputsAt: brief.inputsAt } : null,
   };

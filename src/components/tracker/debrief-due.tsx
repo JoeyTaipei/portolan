@@ -10,11 +10,13 @@ export function DebriefDue({
   name,
   now,
   onSave,
+  memoFor,
 }: {
   due: DueDebrief[];
   name: (d: DueDebrief) => string;
   now: Date;
   onSave: (input: DebriefInput) => Promise<string | null>;
+  memoFor: (d: DueDebrief) => { others: { id: string; name: string }[]; isChina: boolean } | null;
 }) {
   const first = due[0];
   if (!first) {
@@ -47,9 +49,9 @@ export function DebriefDue({
         <h2 id="debrief-h" className="m-0 text-[20px] font-extrabold leading-tight">
           How did your meeting with {name(first)} go?
         </h2>
-        <p className="m-0 mt-1 text-[13.5px] text-ink2">Takes 30 seconds. Your answers update this stakeholder and your next briefing note.</p>
+        <p className="m-0 mt-1 text-[13.5px] text-ink2">Takes 30 seconds. Your answers update this stakeholder and your next briefing note; add detail to update their influence score.</p>
       </div>
-      <DebriefForm key={first.item.id} itemId={first.item.id} now={now} onSave={onSave} />
+      <DebriefForm key={first.item.id} itemId={first.item.id} now={now} onSave={onSave} memoFor={memoFor(first)} />
     </section>
   );
 }

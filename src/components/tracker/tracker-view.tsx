@@ -37,6 +37,8 @@ function withOverlay(base: TrackerState, o: SampleOverlay): TrackerState {
     debriefs: o.debriefs ?? base.debriefs,
     statements: o.statements ?? base.statements,
     sources: o.sources ?? base.sources,
+    facts: o.facts ?? base.facts,
+    edges: o.edges ?? base.edges,
     playbook: o.playbook ?? base.playbook,
   };
 }
@@ -48,6 +50,8 @@ function persist(s: TrackerState): boolean {
     writeOverlay("debriefs", s.debriefs) &&
     writeOverlay("statements", s.statements) &&
     writeOverlay("sources", s.sources) &&
+    writeOverlay("facts", s.facts) &&
+    writeOverlay("edges", s.edges) &&
     writeOverlay("playbook", s.playbook)
   );
 }
@@ -93,7 +97,14 @@ export function TrackerView({ initial, isSample, name, nowIso }: { initial: Trac
   async function debrief(input: DebriefInput): Promise<string | null> {
     let r: ActionResult<DebriefReceipt>;
     if (isSample) {
-      const ids = { debrief: newId("db"), source: newId("src-db"), statement: newId("st-db"), playbook: newId("pb") };
+      const ids = {
+        debrief: newId("db"),
+        source: newId("src-db"),
+        statement: newId("st-db"),
+        playbook: newId("pb"),
+        facts: Array.from({ length: 4 }, () => newId("fact-db")),
+        edges: Array.from({ length: 5 }, () => newId("edge-db")),
+      };
       const out = applyDebrief(state, input, ids, new Date());
       r = persist(out.state) ? { ok: true, data: out.receipt } : { ok: false, error: NO_STORAGE };
     } else {
@@ -102,7 +113,7 @@ export function TrackerView({ initial, isSample, name, nowIso }: { initial: Trac
     if (!r.ok) return r.error;
     setNotice(null);
     setReceipt(r.data);
-    track("debrief_saved", { overall: input.overall, next_step_agreed: input.nextStepAgreed, playbook: input.addToPlaybook, sample: isSample });
+    track("debrief_saved", { overall: input.overall, next_step_agreed: input.nextStepAgreed, playbook: input.addToPlaybook, memo: Boolean(input.memo), sample: isSample });
     return null;
   }
 
@@ -115,7 +126,7 @@ export function TrackerView({ initial, isSample, name, nowIso }: { initial: Trac
       if (!r.ok) return r.error;
     }
     setReceipt(null);
-    setNotice("Debrief removed. Support, stage and next step are back as they were.");
+    setNotice("Debrief removed. Support, influence, stage and next step are back as they were.");
     return null;
   }
 
@@ -160,6 +171,12 @@ export function TrackerView({ initial, isSample, name, nowIso }: { initial: Trac
             now={now}
             name={(d) => itemName(state, byId.get(d.item.id) ?? d.item)}
             onSave={debrief}
+            memoFor={(d) => {
+              const self = state.stakeholders.find((x) => x.id === d.item.stakeholderId);
+              if (!self) return null;
+              const others = state.stakeholders.filter((x) => x.id !== self.id).map((x) => ({ id: x.id, name: x.short ?? x.name }));
+              return { others: others.sort((a, b) => a.name.localeCompare(b.name)), isChina: self.isChina };
+            }}
           />
         )}
       </aside>

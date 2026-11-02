@@ -5,8 +5,10 @@ import { briefStatus } from "@/lib/scoring/brief-status";
 import { sourceWeight } from "@/lib/scoring/source-weight";
 import { supportFor } from "@/lib/scoring/support";
 import { sampleDossier } from "@/lib/sample/reader";
-import type { Source, SupportStatement } from "@/lib/types";
-import { applyDebrief, dueDebriefs, trackerState, undoDebrief, type DebriefInput, type TrackerState } from "./flow";
+import { influenceBreakdown, influenceFor } from "@/lib/scoring/influence";
+import type { DebriefMemo, Fact, Source, SupportStatement } from "@/lib/types";
+import { applyDebrief, dueDebriefs, itemInfluence, trackerState, undoDebrief, type DebriefInput, type TrackerState } from "./flow";
+import { emptyMemo, memoForPrompt } from "./memo";
 
 const NOW = new Date("2026-11-01T10:00:00Z");
 const IDS = { debrief: "db-1", source: "src-db-1", statement: "st-db-1", playbook: "pb-1" };
@@ -41,10 +43,17 @@ function stmt(id: string, rating: SupportStatement["rating"], sourceId: string):
   return { id, stakeholderId: "alliance", runId: "r", debriefId: null, rating, summary: "s", quote: null, sourceId, statedAt: null, createdAt: "2026-10-01T00:00:00Z" };
 }
 
+function fact(id: string, field: Fact["field"], rating: Fact["rating"], over: Partial<Fact> = {}): Fact {
+  return { id, stakeholderId: "alliance", runId: "r", field, value: "v", rating, quote: "x", sourceIds: ["s1"], status: "sourced", model: null, createdAt: "2026-10-01T00:00:00Z", ...over };
+}
+
 function base(): TrackerState {
   return {
     dossierId: "d",
-    stakeholders: [{ id: "alliance", name: "Taiwan Drone Industry Alliance", short: "Drone alliance", category: "ind" }],
+    stakeholders: [
+      { id: "alliance", name: "Taiwan Drone Industry Alliance", short: "Drone alliance", category: "ind", isChina: false },
+      { id: "ab", name: "Armaments Bureau", short: "Armaments Bureau", category: "gov", isChina: false },
+    ],
     leads: [],
     tracker: [
       {
@@ -63,6 +72,8 @@ function base(): TrackerState {
     debriefs: [],
     statements: [stmt("a", 1, "s1"), stmt("b", 2, "s2")],
     sources: [src("s1"), src("s2", { reliability: "C", credibility: 3 })],
+    facts: [fact("f-auth", "authority", 1), fact("f-budget", "budget", 1), fact("f-access", "access", 2)],
+    edges: [],
     playbook: [],
     brief: { inputsAt: "2026-10-30T04:09:36Z" },
   };
@@ -156,5 +167,102 @@ describe("undoDebrief", () => {
     const { state, receipt } = applyDebrief(withMeeting, input({ trackerItemId: item.id, overall: "positive" }), IDS, NOW);
     expect(receipt.supportAfter).not.toEqual(receipt.supportBefore);
     expect(undoDebrief(state, receipt)).toEqual(withMeeting);
+  });
+});
+
+// TRK-9…12 meeting memo (plan S17, docs/scoring.md §3.2): "memo wins", Not sure writes nothing.
+const memo = (over: Partial<DebriefMemo> = {}): DebriefMemo => ({ ...emptyMemo(), ...over });
+const MEMO_IDS = { ...IDS, facts: ["mf-0", "mf-1", "mf-2", "mf-3"], edges: ["me-0", "me-1", "me-2", "me-3", "me-4"] };
+
+describe("meeting memo", () => {
+  it("turns a 'Decides' answer into authority 3 that replaces the research rating", () => {
+    const s = base();
+    // A newer research fact still loses to the memo answer.
+    s.facts.push(fact("f-auth-new", "authority", 0, { createdAt: "2026-12-01T00:00:00Z" }));
+    const { state, receipt } = applyDebrief(s, input({ memo: memo({ authority: 3 }) }), MEMO_IDS, NOW);
+    const memoFact = state.facts.find((f) => f.id === "mf-0")!;
+    expect(memoFact).toMatchObject({ field: "authority", rating: 3, debriefId: IDS.debrief, sourceIds: [IDS.source], status: "sourced", runId: null });
+    const auth = influenceBreakdown("alliance", state.facts, state.edges, "ind").find((f) => f.factor === "authority")!;
+    expect(auth).toMatchObject({ rating: 3, sourceIds: [IDS.source] });
+    // The quote is fixed text found in the debrief source's excerpt.
+    expect(state.sources.find((x) => x.id === IDS.source)!.excerpt).toContain(memoFact.quote!);
+    expect(receipt.influenceAfter!.score).toBeGreaterThan(receipt.influenceBefore!.score);
+    expect(receipt.memoFactors).toContain("authority");
+    expect(state.debriefs[0].memo).toMatchObject({ authority: 3 });
+  });
+
+  it("records nothing for Not sure", () => {
+    const s = base();
+    const { state, receipt } = applyDebrief(s, input({ memo: memo() }), MEMO_IDS, NOW);
+    expect(state.facts).toEqual(s.facts);
+    expect(state.edges).toEqual([]);
+    expect(state.debriefs[0].memo).toBeNull();
+    expect(receipt.influenceAfter).toEqual(receipt.influenceBefore);
+    expect(receipt.memoFactors).toEqual([]);
+  });
+
+  it("Undo restores the influence score exactly", () => {
+    const s = base();
+    const before = itemInfluence(s, s.tracker[0]);
+    const { state, receipt } = applyDebrief(s, input({ memo: memo({ authority: 3, budget: 0, recent: 3, alsoAgree: ["ab"] }) }), MEMO_IDS, NOW);
+    expect(itemInfluence(state, state.tracker[0])).not.toEqual(before);
+    const undone = undoDebrief(state, receipt);
+    expect(undone).toEqual(s);
+    expect(itemInfluence(undone, undone.tracker[0])).toEqual(before);
+  });
+
+  it("uses the memo stance for the debrief statement instead of Overall", () => {
+    const { state } = applyDebrief(base(), input({ overall: "negative", memo: memo({ stance: 1 }) }), MEMO_IDS, NOW);
+    expect(state.statements.find((x) => x.id === IDS.statement)!.rating).toBe(1);
+    const plain = applyDebrief(base(), input({ overall: "negative" }), IDS, NOW);
+    expect(plain.state.statements.find((x) => x.id === IDS.statement)!.rating).toBe(-2);
+  });
+
+  it("adds sourced ties for 'who else must agree', raising centrality; off-map and self ids are dropped", () => {
+    const s = base();
+    const { state, receipt } = applyDebrief(s, input({ memo: memo({ alsoAgree: ["ab", "not-on-map", "alliance"] }) }), MEMO_IDS, NOW);
+    expect(state.edges).toHaveLength(1);
+    expect(state.edges[0]).toMatchObject({ aId: "alliance", bId: "ab", sourceIds: [IDS.source], status: "sourced", debriefId: IDS.debrief });
+    const c = (st: TrackerState) => influenceBreakdown("alliance", st.facts, st.edges, "ind").find((f) => f.factor === "centrality")!.rating;
+    expect(c(s)).toBe(0);
+    expect(c(state)).toBe(1);
+    expect(receipt.memoFactors).toContain("centrality");
+  });
+
+  it("keeps no 'who we met' text for a China stakeholder", () => {
+    const s = base();
+    s.stakeholders[0] = { ...s.stakeholders[0], isChina: true };
+    const { state } = applyDebrief(s, input({ memo: memo({ metRole: "Wang Wei, deputy director", authority: 2 }) }), MEMO_IDS, NOW);
+    expect(state.debriefs[0].memo!.metRole).toBeNull();
+    expect(JSON.stringify(state)).not.toContain("Wang Wei");
+    const t = applyDebrief(base(), input({ memo: memo({ metRole: "Deputy director" }) }), MEMO_IDS, NOW);
+    expect(t.state.debriefs[0].memo!.metRole).toBe("Deputy director");
+  });
+
+  it("marks the brief out of date only for the debrief, not as 'Stakeholders changed'", () => {
+    const { state } = applyDebrief(base(), input({ memo: memo({ authority: 3 }) }), MEMO_IDS, NOW);
+    const brief = sampleDossier.briefs.at(-1)!;
+    const status = briefStatus(
+      { ...brief, inputsAt: "2026-10-30T04:09:36Z" },
+      { ...sampleDossier, debriefs: state.debriefs, facts: [...sampleDossier.facts, ...state.facts.filter((f) => f.debriefId)] },
+      NOW,
+    );
+    expect(status.reasons).toContain("A debrief was saved after this brief was written.");
+    expect(status.reasons).not.toContain("Stakeholders changed after this brief was written.");
+  });
+
+  it("gives Claude priorities, concerns and asks but never the private notes", () => {
+    const { state } = applyDebrief(
+      base(),
+      input({ memo: memo({ priorities: ["non_red"], concernsNote: "Worried about acceptance tests", asks: ["test_data"], timeline: "year" }) }),
+      MEMO_IDS,
+      NOW,
+    );
+    const text = memoForPrompt(state.debriefs[0].memo)!;
+    expect(text).toContain("No PRC parts");
+    expect(text).toContain("Worried about acceptance tests");
+    expect(text).toContain("This year");
+    expect(text).not.toContain("Acme");
+    expect(influenceFor("alliance", state.facts, state.edges, "ind")).toEqual(influenceFor("alliance", base().facts, [], "ind"));
   });
 });

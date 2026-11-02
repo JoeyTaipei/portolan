@@ -10,6 +10,7 @@ import { buildBriefModel, pickBrief } from "@/components/brief/model";
 import { Rationale } from "@/components/brief/rationale";
 import { Requirements } from "@/components/brief/requirements";
 import { Routes } from "@/components/brief/routes";
+import { SampleMetrics, SampleVersions } from "@/components/brief/sample-live";
 import { Unverified } from "@/components/brief/unverified";
 import { SevenDay } from "@/components/brief/seven-day";
 import { Versions } from "@/components/brief/versions";
@@ -34,7 +35,8 @@ async function BriefContent({ params, searchParams }: Pick<PageProps<"/d/[id]/br
   if (!d) notFound();
   await connection();
   const sp = await searchParams;
-  const brief = pickBrief(d, typeof sp.v === "string" ? sp.v : null);
+  const v = typeof sp.v === "string" ? sp.v : null;
+  const brief = pickBrief(d, v);
   if (!brief) {
     return (
       <Nis
@@ -69,10 +71,14 @@ async function BriefContent({ params, searchParams }: Pick<PageProps<"/d/[id]/br
           Export one-page A4 PDF
         </Link>
       </header>
-      <Metrics metrics={m.metrics} dossierId={m.dossierId} />
+      {d.isSample ? <SampleMetrics dossier={d} v={v} m={m} /> : <Metrics metrics={m.metrics} dossierId={m.dossierId} />}
       <div className="flex flex-col gap-8 lg:grid lg:grid-cols-[220px_minmax(0,720px)] lg:items-start lg:gap-12">
         <aside className="flex flex-col gap-6 lg:sticky lg:top-4">
-          <Versions dossierId={m.dossierId} isSample={m.isSample} version={m.version} versions={m.versions} status={m.status} />
+          {d.isSample ? (
+            <SampleVersions dossier={d} v={v} m={m} />
+          ) : (
+            <Versions dossierId={m.dossierId} isSample={m.isSample} version={m.version} versions={m.versions} status={m.status} />
+          )}
           <nav aria-label="In this brief" className="hidden flex-col lg:flex">
             {sections.map((x) => (
               <a key={x.id} href={`#${x.id}`} className="border-l-[3px] border-rule py-2 pl-3 text-[15px] text-ink2 no-underline hover:border-rule-strong hover:text-ink">

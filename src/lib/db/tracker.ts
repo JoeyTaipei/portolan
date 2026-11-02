@@ -1,6 +1,6 @@
 import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { Debrief, PlaybookOutcome, Source, SupportStatement, TrackerItem, TrackerOrigin } from "@/lib/types";
+import type { Debrief, Edge, Fact, PlaybookOutcome, Source, SupportStatement, TrackerItem, TrackerOrigin } from "@/lib/types";
 import { getDb } from "./client";
 
 // Tracker writes for real dossiers (spec §13: tracker_items, debriefs, playbook_outcomes, plus
@@ -108,9 +108,12 @@ export async function insertDebrief(rows: {
   source: Source | null;
   statement: SupportStatement | null;
   playbook: PlaybookOutcome | null;
+  /** TRK-10: the memo's influence facts and "who else must agree" ties (cascade with the debrief). */
+  facts: Fact[];
+  edges: Edge[];
 }): Promise<void> {
   const c = db();
-  const { dossierId, item, debrief, source, statement, playbook } = rows;
+  const { dossierId, item, debrief, source, statement, playbook, facts, edges } = rows;
   try {
     if (playbook) {
       // Anonymised (TRK-5): only these columns exist on the table, and only these are sent.
@@ -141,6 +144,7 @@ export async function insertDebrief(rows: {
         stage_after: debrief.stageAfter,
         added_next_step: debrief.addedNextStep,
         playbook_outcome_id: debrief.playbookOutcomeId,
+        memo: debrief.memo ?? null,
       }),
       "save debrief",
     );
@@ -177,6 +181,41 @@ export async function insertDebrief(rows: {
         }),
         "save debrief statement",
       );
+      if (facts.length) {
+        must(
+          await c.from("facts").insert(
+            facts.map((f) => ({
+              id: f.id,
+              stakeholder_id: f.stakeholderId,
+              field: f.field,
+              value: f.value,
+              rating: f.rating,
+              quote: f.quote,
+              source_ids: [source.id],
+              status: "sourced",
+              debrief_id: debrief.id,
+            })),
+          ),
+          "save memo facts",
+        );
+      }
+      if (edges.length) {
+        must(
+          await c.from("edges").insert(
+            edges.map((e) => ({
+              id: e.id,
+              dossier_id: dossierId,
+              a_id: e.aId,
+              b_id: e.bId,
+              relation: e.relation,
+              source_ids: [source.id],
+              status: "sourced",
+              debrief_id: debrief.id,
+            })),
+          ),
+          "save memo ties",
+        );
+      }
     }
     must(
       await c
@@ -193,14 +232,14 @@ export async function insertDebrief(rows: {
 }
 
 async function removeDebriefRows(c: SupabaseClient, dossierId: string, debriefId: string, sourceId: string | null, playbookId: string | null) {
-  // Deleting the debrief cascades to its statement; the source and playbook row go separately.
+  // Deleting the debrief cascades to its statement, memo facts and ties; the source and playbook row go separately.
   await c.from("debriefs").delete().eq("id", debriefId);
   if (sourceId) await c.from("sources").delete().eq("id", sourceId).eq("dossier_id", dossierId).eq("origin", "debrief");
   if (playbookId) await c.from("playbook_outcomes").delete().eq("id", playbookId);
 }
 
 /**
- * TRK-6 Undo: delete the debrief (its statement cascades), its source and its playbook row, and
+ * TRK-6 Undo: delete the debrief (its statement, memo facts and ties cascade), its source and its playbook row, and
  * put the item back: stage from the debrief's own record, next step as it was before.
  */
 export async function deleteDebrief(

@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { supportText } from "@/components/score/explain";
+import { influenceText, supportText } from "@/components/score/explain";
 import { STAGE_LABEL, type DebriefReceipt } from "@/lib/tracker/flow";
-import type { SupportResult } from "@/lib/types";
+import type { InfluenceFactor, SupportResult } from "@/lib/types";
 import { fmtDate } from "./model";
 
 // TRK-4 "Debrief saved — here's what changed": support old → new with the reason, the stage
@@ -18,6 +18,14 @@ function supportReason(before: SupportResult, after: SupportResult): string {
     before.kind === "unknown" ? " (there was no sourced statement before)" : ""
   }.`;
 }
+
+const FACTOR_WORD: Record<InfluenceFactor, string> = {
+  authority: "authority",
+  budget: "budget",
+  access: "access",
+  centrality: "network",
+  recent: "recent action",
+};
 
 export function DebriefResult({
   receipt,
@@ -61,6 +69,18 @@ export function DebriefResult({
           </b>
           <span className="block text-[13px] text-ink2">{supportReason(r.supportBefore, r.supportAfter)}</span>
         </li>
+        {r.memoFactors.length > 0 && (
+          <li data-testid="influence-change">
+            Influence:{" "}
+            <b className="num">
+              {influenceText(r.influenceBefore)} → {influenceText(r.influenceAfter)}
+            </b>
+            <span className="block text-[13px] text-ink2">
+              Your meeting answers updated {r.memoFactors.map((f) => FACTOR_WORD[f]).join(", ")}. A meeting answer replaces the research rating for
+              its factor; Undo puts it back.
+            </span>
+          </li>
+        )}
         <li>
           Stage:{" "}
           {r.stageBefore === r.stageAfter ? (

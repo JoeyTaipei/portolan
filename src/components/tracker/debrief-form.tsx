@@ -2,11 +2,14 @@
 
 import { useState } from "react";
 import { addDays, DEFAULT_DUE_DAYS, NOTES_MAX, OVERALL_LABEL, type DebriefInput } from "@/lib/tracker/flow";
-import type { DebriefOverall } from "@/lib/types";
+import { emptyMemo, memoHasContent } from "@/lib/tracker/memo";
+import type { DebriefMemo, DebriefOverall } from "@/lib/types";
+import { MemoDetail } from "./memo-detail";
 
 // TRK-3: Overall is required (Save stays disabled, with the reason beside it, until one is
 // picked); "Did they agree to a next step?"; notes private to the team, ≤ 1000 characters;
 // TRK-5 "Add anonymised outcome to the Portolan playbook", ticked by default.
+// TRK-9 "Add detail (optional)" folds out the meeting memo for mapped stakeholders.
 
 const OVERALLS: DebriefOverall[] = ["positive", "neutral", "negative"];
 
@@ -21,10 +24,13 @@ export function DebriefForm({
   itemId,
   now,
   onSave,
+  memoFor,
 }: {
   itemId: string;
   now: Date;
   onSave: (input: DebriefInput) => Promise<string | null>;
+  /** Null for a lead with no stakeholder on the map: there is no score for the memo to update. */
+  memoFor: { others: { id: string; name: string }[]; isChina: boolean } | null;
 }) {
   const [overall, setOverall] = useState<DebriefOverall | null>(null);
   const [agreed, setAgreed] = useState<boolean | null>(null);
@@ -32,6 +38,7 @@ export function DebriefForm({
   const [stepDue, setStepDue] = useState(() => addDays(now, DEFAULT_DUE_DAYS));
   const [notes, setNotes] = useState("");
   const [playbook, setPlaybook] = useState(true);
+  const [memo, setMemo] = useState<DebriefMemo>(emptyMemo);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -50,6 +57,7 @@ export function DebriefForm({
       notes: notes.trim() || null,
       addToPlaybook: playbook,
       nextStep: agreed ? { text: stepText.trim(), dueDate: stepDue } : null,
+      memo: memoFor && memoHasContent(memo) ? memo : null,
     });
     setBusy(false);
     if (err) setError(err);
@@ -112,6 +120,21 @@ export function DebriefForm({
           {notes.length} / {NOTES_MAX}
         </span>
       </label>
+
+      {memoFor && (
+        <details className="group rounded-[var(--r-m)] border border-dashed border-rule-strong bg-panel open:border-solid open:border-rule open:bg-panel2/40" data-testid="memo">
+          <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-2 px-3 text-[14px] font-bold [&::-webkit-details-marker]:hidden">
+            <span>
+              Add detail <span className="font-normal text-ink2">(optional) · updates the influence score</span>
+            </span>
+            <span aria-hidden="true" className="text-[20px] leading-none group-open:hidden">+</span>
+            <span aria-hidden="true" className="hidden text-[20px] leading-none group-open:inline">–</span>
+          </summary>
+          <div className="px-3 pt-1 pb-3">
+            <MemoDetail memo={memo} onChange={setMemo} others={memoFor.others} isChina={memoFor.isChina} />
+          </div>
+        </details>
+      )}
 
       <label className="flex cursor-pointer items-start gap-2.5 text-[14px] leading-snug" htmlFor="debrief-playbook">
         <input id="debrief-playbook" type="checkbox" className="mt-0.5 size-5 shrink-0 accent-[var(--ink)]" checked={playbook} onChange={(e) => setPlaybook(e.target.checked)} />
