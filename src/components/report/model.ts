@@ -22,7 +22,7 @@ export const MEET_N = 3;
 export const PARTNERS_N = 3;
 export const ROW_SOURCES_N = 2;
 /** REP-13: the "Not verified" line is cut to this many characters so the page still fits. */
-export const GAPS_CHARS = 170;
+export const GAPS_CHARS = 105;
 /** REP-12/13: the foot lists this many of the table's sources so the "Not verified" line fits. */
 export const SOURCES_N = 6;
 

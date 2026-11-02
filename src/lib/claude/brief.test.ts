@@ -76,7 +76,7 @@ describe("what we could not verify", () => {
   });
 
   it("keeps the A4 line to whole items and counts the rest", () => {
-    expect(gapLine(["a".repeat(100), "b".repeat(60), "c".repeat(30)])).toEqual({ items: ["a".repeat(100), "b".repeat(60)], more: 1 });
+    expect(gapLine(["a".repeat(50), "b".repeat(40), "c".repeat(30)])).toEqual({ items: ["a".repeat(50), "b".repeat(40)], more: 1 });
   });
 });
 

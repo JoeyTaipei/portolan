@@ -488,7 +488,7 @@ function firstBuyerVM(d: Dossier, brief: Brief, routes: RouteVM[], ok: ReadonlyM
         label: `${r.label}${r.buyer ? ` · ${r.buyer}` : ""}`,
         weight: null,
         rating: [r.accessLabel, r.money ? `${r.money.status}, ${r.money.amount}` : r.undated ? UNDATED_AMOUNT : "no amount"].join(" · "),
-        sources: [...r.refs, ...(r.money?.refs ?? [])],
+        sources: [...r.refs, ...(r.money?.refs ?? [])].filter((x, i, a) => a.findIndex((y) => y.id === x.id) === i),
       })),
       summary: FIRST_BUYER_RULE,
     },

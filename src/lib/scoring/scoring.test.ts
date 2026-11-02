@@ -1,6 +1,6 @@
 // One example per section of docs/scoring.md (spec §17).
 import { describe, expect, it } from "vitest";
-import type { Banded, Brief, BriefMetrics, Edge, Fact, MarketCheck, ProcurementRoute, Rating03, Source, SupportResult, SupportStatement, TimedEvent } from "@/lib/types";
+import type { Banded, Brief, BriefMetrics, Edge, Fact, MarketCheck, MoneyStatus, ProcurementRoute, Rating03, Source, SupportResult, SupportStatement, TimedEvent } from "@/lib/types";
 import { briefStatus } from "./brief-status";
 import { centralityRating, influenceFor, influenceScore } from "./influence";
 import { dataConfidence, entryReadiness, oppositionIndex, stakeholderConfidence, windowToAct, type Scored } from "./metrics";
@@ -332,7 +332,7 @@ describe("first buyer (scoring §9)", () => {
   const route = (over: Partial<ProcurementRoute>): ProcurementRoute => ({
     route: "fms", text: "x", sourceIds: ["s1"], buyerId: "a", access: "direct", money: null, ...over,
   });
-  const money = (status: ProcurementRoute["money"] extends infer M ? NonNullable<M>["status"] : never, asOf: string | null = "2026-07-01") => ({ amount: "1", asOf, status, sourceIds: ["s1"] });
+  const money = (status: MoneyStatus, asOf: string | null = "2026-07-01") => ({ amount: "1", asOf, status, sourceIds: ["s1"] });
   const base = { govOnMap: new Set(["a", "b"]), influence: new Map([["a", 50], ["b", 80]]), events: [] as TimedEvent[], now: NOW };
 
   it("ranks by money status, and an undated amount counts as none", () => {
