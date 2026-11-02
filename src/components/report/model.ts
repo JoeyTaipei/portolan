@@ -54,6 +54,10 @@ export interface ReportVM {
   path: BriefVM["path"];
   plan: { days: string; text: string; refs: SourceRef[] }[];
   meet: { title: string; date: string; mapped: number }[];
+  /** REP-15 (option A, Joey 2026-11-02): code's first-buyer pick, in place of the entry path. */
+  firstBuyer: BriefVM["firstBuyer"];
+  /** True when the brief has routes, so the A4 shows the first-buyer block (or its "none" line). */
+  hasRoutes: boolean;
   /** REP-14: one line per top partner candidate (NET-7), with the sources of its first two evidence items. */
   partners: { id: string; short: string; sources: number; buyers: number; flags: string[]; refs: SourceRef[] }[];
   risks: Cited[];
@@ -142,7 +146,7 @@ export function buildReportModel(d: Dossier, brief: Brief, now: Date): ReportVM 
     ...summary.flatMap((s) => s.refs),
     ...(judgment?.refs ?? []),
     ...tableSources,
-    ...b.path.flatMap((p) => p.why.refs),
+    ...(b.routes.length > 0 ? (b.firstBuyer?.refs ?? []) : b.path.flatMap((p) => p.why.refs)),
     ...plan.flatMap((p) => p.refs),
     ...risks.flatMap((r) => r.refs),
     ...requirements.flatMap((r) => r.refs),
@@ -167,6 +171,8 @@ export function buildReportModel(d: Dossier, brief: Brief, now: Date): ReportVM 
     path: b.path,
     plan,
     meet,
+    firstBuyer: b.firstBuyer,
+    hasRoutes: b.routes.length > 0,
     partners,
     risks,
     requirements,

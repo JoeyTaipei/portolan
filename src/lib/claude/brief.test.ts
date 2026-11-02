@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { sampleDossier } from "@/lib/sample/reader";
 import { buildBriefModel } from "@/components/brief/model";
-import { gapLine } from "@/components/report/model";
+import { buildReportModel, gapLine } from "@/components/report/model";
 import { isEligible, scoreStakeholders } from "@/lib/scoring";
 import { briefPrompt, writeBrief } from "./brief";
 
@@ -105,6 +105,12 @@ describe("procurement routes", () => {
     expect(w.brief.draft.routes.map((r) => r.route)).not.toContain("ncsist");
     const m = buildBriefModel(d, { ...brief, routes: w.brief.draft.routes }, now);
     expect(m.gaps.find((g) => g.key === "routes")?.text).toContain("NCSIST co-development or subcontract");
+  });
+
+  it("shows the first buyer on the A4 with its sources in the shared list", () => {
+    const r = buildReportModel(sampleDossier, brief, now);
+    expect(r.firstBuyer?.who).toBe("National Police Agency");
+    for (const ref of r.firstBuyer!.refs) expect(r.citedIds).toContain(ref.id);
   });
 
   it("drops an amount that is not in its cited excerpt", async () => {
