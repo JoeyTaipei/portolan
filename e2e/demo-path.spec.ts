@@ -89,7 +89,7 @@ test("map → brief → A4 report prints on one page", async ({ page }) => {
     const rows = page.getByTestId("evidence-row");
     expect(await rows.count()).toBeGreaterThan(0);
     for (const row of await rows.all()) {
-      await expect(row.locator(".stamp")).toHaveText(/^[A-F][1-6]$/);
+      await expect(row.locator(".stamp")).toHaveAttribute("data-grade", /^[A-F][1-6]$/);
       await expect(row.getByTestId("verified")).toContainText(/Verified \d{1,2} \w{3} \d{4}/);
     }
     await page.getByRole("link", { name: "Export one-page A4 PDF" }).click();

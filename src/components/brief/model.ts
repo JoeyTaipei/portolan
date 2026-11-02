@@ -13,7 +13,7 @@ import {
   type SourceRef,
 } from "@/components/score/explain";
 import { briefMetrics, briefStatus, citedSourceIds, STALE_SOURCE_DAYS, daysBetween } from "@/lib/scoring";
-import type { Brief, BriefMetrics, BriefStatus, Dossier, IcdTerm, Confidence, Sentence, Source, SourceType } from "@/lib/types";
+import type { Brief, BriefMetrics, BriefStatus, Dossier, IcdTerm, Confidence, Sentence, Source } from "@/lib/types";
 
 export interface Cited {
   text: string;
@@ -75,19 +75,8 @@ export interface BriefVM {
   acceptedCount: number;
 }
 
-export const SOURCE_TYPE_LABEL: Record<SourceType, string> = {
-  government_gazette: "Government gazette",
-  legislative_record: "Legislative record",
-  government_site: "Government site",
-  news: "News",
-  trade_press: "Trade press",
-  company_site: "Company site",
-  report: "Report",
-  event_page: "Event page",
-  database: "Database",
-  debrief: "Debrief",
-  other: "Other",
-};
+import { SOURCE_TYPE_LABEL } from "@/components/score/grade";
+export { SOURCE_TYPE_LABEL };
 
 // Spec §11.1 placeholder check. Letters in [] so the repo's placeholder grep stays clean.
 const PLACEHOLDER = /\[[A-Z _-]+\]|\bT[B]D\b|l[o]rem/i;

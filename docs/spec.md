@@ -381,6 +381,12 @@ UI copy is English (the mockup's language). Nautical terms appear only in visual
 
 PostHog events (`docs/metrics.md`): `dossier_created` (fired once when the progress page first sees `ready`), `report_exported` (report page opened or share link copied), `debrief_saved`. Before sending, `$current_url`, `$pathname` and `$referrer` are rewritten so `/d/<id>` becomes `/d/:id` and `/s/<id>` becomes `/s/:id`; email is never sent as a property.
 
+### SRC-CHIP Source chip and grade words (shared) — S9
+Joey picked "numbered chip + card, grade in plain words" on 2026-11-02 (canvas https://claude.ai/artifact/E2XA3TwqNA1YnzGp33vcBK).
+- Inline citations on interactive screens (home bottom line, next moves, key judgments, alert, map next step) are a small chip with the source number and site ("13 mnd.gov.tw"). Clicking opens a card: source number, type, title (links to the page), site and checked date, the grade as two plain lines ("Completely reliable source." / "Probably true." + the stored credibility reason), then "Admiralty grade A2" as a footnote and "In the source list". Escape or a click outside closes it.
+- Everywhere else a grade is shown as words ("usually reliable, probably true"); the code is in the tooltip and `data-grade`. The A4 table cites by label only; its source list keeps the words.
+- Only accepted sources reach a chip (same `refsFor` filter); a claim with no source still shows Unverified.
+
 ### SCORE-X Score explanation (shared)
 Every score (influence, support, the four metrics, confidence, match) opens the same panel: the result (e.g. "High · 70–85"), each factor's rating and weight, "Based on 3 of 5 factors", the sources cited for each factor (title, Admiralty stamp, verified date, linking to `/d/[id]/sources?id=`), and a plain-language summary of the matching section of `docs/scoring.md`. Unknown support says "No sourced statement found yet", never 0.
 

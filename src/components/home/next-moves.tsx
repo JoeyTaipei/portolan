@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Nis } from "@/components/shell/nis";
 import type { HomeModel } from "./model";
-import { SourceStamps } from "./source-stamps";
+import { SourceChips } from "@/components/score/source-chip";
 
 // HOME-9: the contact-first three, then the rest by influence, each with its sourced next step.
 // A stakeholder without one shows the Unverified fallback, never an invented step.
@@ -35,7 +35,7 @@ export function NextMoves({ m }: { m: HomeModel }) {
                   <Link href={`/d/${m.id}/map?s=${encodeURIComponent(mv.id)}`} className="font-semibold">
                     {mv.name}
                   </Link>
-                  {mv.sources.length > 0 && <SourceStamps dossierId={m.id} sources={mv.sources} />}
+                  {mv.sources.length > 0 && <SourceChips dossierId={m.id} sources={mv.sources} />}
                 </p>
               </div>
             </li>

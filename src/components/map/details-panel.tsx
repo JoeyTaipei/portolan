@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { STANCE_LABEL, influenceText, supportText } from "@/components/score/explain";
 import { ScoreX } from "@/components/score/score-x";
-import { Stamp } from "@/components/score/stamp";
+import { SourceChips } from "@/components/score/source-chip";
 import { AddToTrackerButton } from "@/components/tracker/add-button";
 import type { TrackerItem } from "@/lib/types";
 import { AddToTracker } from "./add-to-tracker";
@@ -121,12 +121,7 @@ export function DetailsPanel({
         </p>
         {n.action.verified ? (
           <p className="m-0 mt-1 text-[12.5px] text-ink2">
-            {n.action.sources.map((s) => (
-              <span key={s.id} className="mr-2 inline-block">
-                {s.label}
-                <Stamp reliability={s.reliability} credibility={s.credibility} />
-              </span>
-            ))}
+            Sources <SourceChips dossierId={dossierId} sources={n.action.sources} />
           </p>
         ) : (
           <p className="m-0 mt-1 text-[12.5px] text-ink2">

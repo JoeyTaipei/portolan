@@ -115,9 +115,8 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
                 <td className={t.nextVerified ? undefined : "un"}>{t.next}</td>
                 <td className="src">
                   {t.refs.map((s) => (
-                    <span key={s.id} className="mr-1 inline-block">
+                    <span key={s.id} className="mr-1 inline-block" title={s.title}>
                       {s.label}
-                      <Stamp reliability={s.reliability} credibility={s.credibility} />
                     </span>
                   ))}
                 </td>
@@ -193,7 +192,7 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
         <ol aria-label="Sources in the table">
           {r.sources.map((s) => (
             <li key={s.id} title={s.title}>
-              [{s.label}]<Stamp reliability={s.reliability} credibility={s.credibility} />
+              [{s.label}] <Stamp reliability={s.reliability} credibility={s.credibility} />
               {s.verifiedAt ? `checked ${fmtDay(s.verifiedAt)}` : "date unverified"} · {s.title}
             </li>
           ))}

@@ -1,6 +1,6 @@
 import { IcdScale, icdText } from "@/components/score/icd-scale";
 import { Paras } from "@/components/score/paras";
-import { Stamp } from "@/components/score/stamp";
+import { SourceChips } from "@/components/score/source-chip";
 import type { HomeModel } from "./model";
 
 // Side column key judgments: the sourced judgments after the bottom line, each with an ICD term +
@@ -32,13 +32,7 @@ export function KeyJudgments({ m }: { m: HomeModel }) {
                 </p>
                 <IcdScale term={j.icd} />
                 <p className="m-0 text-[12.5px] text-ink2">
-                  {j.confidence} confidence. Sources{" "}
-                  {j.sources.map((s) => (
-                    <span key={s.id}>
-                      {s.label}
-                      <Stamp reliability={s.reliability} credibility={s.credibility} />
-                    </span>
-                  ))}
+                  {j.confidence} confidence. <SourceChips dossierId={m.id} sources={j.sources} />
                 </p>
               </>
             ),

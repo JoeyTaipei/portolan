@@ -1,4 +1,4 @@
-import { Stamp } from "@/components/score/stamp";
+import { SourceChip } from "@/components/score/source-chip";
 import type { HomeModel } from "./model";
 
 // HOME-6: the next sourced deadline tied to the goal within 30 days. None → hidden (not an error).
@@ -26,7 +26,7 @@ export function AlertCard({ m }: { m: HomeModel }) {
               {s.label} {s.title}
             </>
           )}
-          <Stamp reliability={s.reliability} credibility={s.credibility} />
+          <SourceChip dossierId={m.id} source={s} />
         </p>
       </div>
     </section>

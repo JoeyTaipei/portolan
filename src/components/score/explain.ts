@@ -11,6 +11,7 @@ import type {
   SupportResult,
   SupportStatement,
 } from "@/lib/types";
+import { hostOf, SOURCE_TYPE_LABEL } from "./grade";
 
 export interface SourceRef {
   id: string;
@@ -19,6 +20,12 @@ export interface SourceRef {
   reliability: Source["reliability"];
   credibility: Source["credibility"];
   verifiedAt: string | null;
+  url: string | null;
+  /** "mnd.gov.tw"; null without a URL. */
+  host: string | null;
+  /** "Government site", "News"… */
+  type: string;
+  credibilityReason: string | null;
 }
 
 export interface ExplainFactor {
@@ -44,6 +51,10 @@ export function sourceRef(s: Source): SourceRef {
     reliability: s.reliability,
     credibility: s.credibility,
     verifiedAt: s.verifiedAt,
+    url: s.url,
+    host: hostOf(s.url),
+    type: SOURCE_TYPE_LABEL[s.sourceType],
+    credibilityReason: s.credibilityReason,
   };
 }
 
