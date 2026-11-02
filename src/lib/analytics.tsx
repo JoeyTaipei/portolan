@@ -7,7 +7,7 @@ import { useEffect } from "react";
 // leave the browser: every URL-like value is rewritten /d/<id> → /d/:id and /s/<id> → /s/:id
 // before sending. No email property is ever sent. Without a key this is a no-op.
 
-export type AnalyticsEvent = "dossier_created" | "report_exported" | "debrief_saved";
+export type AnalyticsEvent = "dossier_created" | "report_exported" | "debrief_saved" | "waitlist_joined";
 
 const URL_PROPS = ["$current_url", "$pathname", "$referrer"] as const;
 
@@ -70,7 +70,7 @@ export function AnalyticsProvider() {
   return null;
 }
 
-/** The three product events. Properties must never contain an id or an email. */
+/** The product events (docs/metrics.md). Properties must never contain an id or an email. */
 export function track(event: AnalyticsEvent, properties?: Props): void {
   try {
     if (!started) return;

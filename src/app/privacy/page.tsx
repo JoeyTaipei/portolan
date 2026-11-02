@@ -11,7 +11,7 @@ const SECTIONS: { id: string; title: string; body: string[] }[] = [
     body: [
       "For each market: the company, product, goal and optional details you enter, your email address, the research results with their sources, and anything you add later, such as tracker items, meeting debriefs, lead and intro requests, and documents.",
       "Your email address is used to send you the market link and to count today's research requests. It is never shown on the share link or sent to our analytics.",
-      "We count page views and three actions (market created, report exported, debrief saved) with PostHog. Market and share links are removed from those records before they leave your browser, and no email address is sent.",
+      "We count page views and four actions (market created, report exported, debrief saved, waitlist joined) with PostHog. Market and share links are removed from those records before they leave your browser, and no email address is sent.",
       "When you save a debrief, an anonymised outcome (the type of stakeholder, the route and how the meeting went) is kept to improve advice for everyone. It contains no names, notes or quotes from the meeting.",
       "Changes you make to the sample market stay in your own browser and are never sent to us.",
     ],
@@ -42,6 +42,15 @@ const SECTIONS: { id: string; title: string; body: string[] }[] = [
       "These contacts belong to that one market. They are seen only by people with the market link, never on the share link, never shown to other clients and never used for anyone else's research.",
       "There is no login, so we can't check who uploads. Each teammate confirms that the export is their own and that they agree to share these connections (self-certified).",
       "A teammate can choose “Withdraw my connections” at any time. Their contacts and ties are deleted from our database at once and disappear from the map. Intro drafts already copied out of Portolan can't be recalled.",
+    ],
+  },
+  {
+    id: "waitlist",
+    title: "Waitlist",
+    body: [
+      "If you join the waitlist, we keep your company name, email address and phone number, the time you agreed to be contacted and which page you came from. We use them only to follow up with you about Portolan.",
+      "Only the Portolan team sees them, in our database. A message with the same details is posted to the team's private Slack channel. They are never sent to our analytics: PostHog records only that someone joined and from which page.",
+      "To be removed, reply to any message from us and we delete your details.",
     ],
   },
   {
