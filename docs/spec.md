@@ -103,7 +103,7 @@ Lane rules (workflow.html): at most two coding sessions at once; one file is edi
 
 | Route | Screen | Who can see it |
 |---|---|---|
-| `/` | 01 Dossiers home (the most recently opened dossier is selected; if none, the sample) | Everyone |
+| `/` | 01 Markets home (the most recently opened dossier is selected; if none, the sample) | Everyone |
 | `/d/[id]` | Dossier overview: while researching, shows progress (RES-1); when done, shows the dossier card, key judgments, alerts and the refresh "needs your check" list | Anyone with the link |
 | `/d/[id]/map` | 02 Map | Same |
 | `/d/[id]/brief` (`?v=2` for an older version) | 03 Strategy brief | Same |
@@ -130,9 +130,9 @@ All `/d/*` and `/s/*` responses send `X-Robots-Tag: noindex` and `Referrer-Polic
 ## 6. Shared layout and states (on every page)
 
 ### SHELL-1 Navigation
-- Desktop (≥1024px): one top bar with the Portolan brand, five tabs (Dossiers, Map, Tracker, Network, Docs) and a `Sample data` stamp on the sample.
+- Desktop (≥1024px): one top bar with the Portolan brand, five tabs (Markets, Map, Tracker, Network, Docs) and a `Sample data` stamp on the sample.
 - Phone (<1024px): the five tabs are fixed at the bottom; touch targets ≥ 44px; the current tab is `--ink` bold with an underline (not colour alone).
-- With no dossier selected, Map/Tracker/Network/Docs send the user to `/` with "Pick a dossier first".
+- With no dossier selected, Map/Tracker/Network/Docs send the user to `/` with "Pick a market first".
 
 ### SHELL-2 Loading / empty / error
 All use the `.nis` component (icon + title + one-sentence reason + one or two actions). Adding `?state=loading|empty|error` to any page URL previews that state (only on `/d/sample` and in development).
@@ -384,15 +384,22 @@ PostHog events (`docs/metrics.md`): `dossier_created` (fired once when the progr
 ### SCORE-X Score explanation (shared)
 Every score (influence, support, the four metrics, confidence, match) opens the same panel: the result (e.g. "High · 70–85"), each factor's rating and weight, "Based on 3 of 5 factors", the sources cited for each factor (title, Admiralty stamp, verified date, linking to `/d/[id]/sources?id=`), and a plain-language summary of the matching section of `docs/scoring.md`. Unknown support says "No sourced statement found yet", never 0.
 
-### 01 Dossiers (`/`, `/d/[id]`) — S1, S4
-- **HOME-1** Brand bar: "Market entry intelligence", plan label (Pro, display only), tagline. Never "ATLAS".
-- **HOME-2** Six-tile quick nav: Dossiers, Map, Tracker, Network, Documents, Strategy Brief, linking to the selected dossier's pages.
-- **HOME-3** Dossier card: Verified dossier stamp (only when `ready` and data confidence ≥ Medium; otherwise "Partial"), Sample data on the sample, name, country, "refreshed 2h ago" (relative; hover for the exact time). Three numbers: stakeholders, accepted sources, new alerts (future timed events from research that this browser hasn't seen yet). "Open stakeholder map".
-- **HOME-4** Confidence: data confidence "High · 126 sources"; opens SCORE-X. No percentages.
-- **HOME-5** Refresh: §7.6. Spins while running, then "refreshed just now"; over the limit it shows why.
-- **HOME-6** Time-sensitive alert: the next sourced deadline related to the client's goal within 30 days, e.g. "Alert · 14 days. Procurement amendment goes to committee review. 2 supportive stakeholders are co-sponsors." With a grade stamp and a link to the source. None → the block is hidden (not an error).
-- **HOME-7** Select dossier: the dossiers this browser remembers plus the sample, each with its confidence level. Dossiers the server can't find show "Link no longer works" and can be removed.
-- **HOME-8** "+ New dossier" / "Close" opens the form (§7.1). Target market dropdown: Taiwan selectable; United States, Japan, Singapore shown as "coming soon" and disabled; China not listed. Any industry.
+### 01 Markets (`/`, `/d/[id]`) — S1, S4, S9
+Layout "Briefing room" (Joey picked option C on 2026-11-02, canvas https://claude.ai/artifact/19wMZjQA4qqkNJfKkduKzT). The page leads with the answer and the next moves; the Taiwan chart is a small inset, the full chart is the Map tab.
+- **Word.** On screen a dossier is called a **market** ("Markets" tab, "Your markets", "+ New market", "Verified market", "market link"). Code names, routes (`/d/`), tables, the localStorage key and PostHog event names (`dossier_created`) keep "dossier".
+- **Desktop (≥1024px)**, one scrolling page, max width 1360px. Top: a market header (left) and an evidence panel (right, 320–360px). Below: Next moves (left, wide) and a side column (right, 360–420px).
+- **Phone (<1024px)**, one column: header → evidence → next moves → key judgments → alert → chart inset → workspace links → your markets.
+- **HOME-1** Brand line: "Market entry intelligence" and the plan label (Pro, display only) as a small line above the market name; the tagline sits under "Your markets". The large wordmark is gone (the top bar already shows Portolan). Never "ATLAS".
+- **HOME-2** Workspace links in the side column: Stakeholder map, Tracker, Network, Documents, Strategy brief, each with its short count, linking to the selected market's pages.
+- **HOME-3** Market header: Verified market stamp (only when `ready` and data confidence ≥ Medium; otherwise "Partial"), Sample data on the sample, country and "refreshed 2h ago" (relative; hover for the exact time), name as the page h1. **Bottom line**: the first sourced key judgment as a large sentence with its ICD term and source stamps; none → "No bottom line yet. It comes from the strategy brief." Buttons: "Open stakeholder map" (main) and "One-page A4 report". Evidence panel: four numbers (stakeholders, cited sources, upcoming events, network leads).
+- **HOME-4** Confidence in the evidence panel: "Confidence: High · 126 sources" with "16 of 36 stakeholders rest on two or more independent sources"; opens SCORE-X. No percentages.
+- **HOME-5** Refresh button in the evidence panel: §7.6. Spins while running, then "refreshed just now"; over the limit it shows why.
+- **HOME-9 Next moves**: up to 5 stakeholders, the contact-first three (scoring §5) first, then the rest by influence, skipping events. Each row: number, the stakeholder's sourced next step, its name, and its source stamps; it links to that stakeholder on the map. A stakeholder with no sourced step shows "Find a sourced contact route first" marked Unverified. None → empty state with "Open the map".
+- **Key judgments** (side column): the remaining sourced judgments (2nd and 3rd), each with the ICD scale, confidence and source stamps.
+- **HOME-6** Time-sensitive alert (side column, above key judgments): the next sourced deadline related to the client's goal within 30 days, with a grade stamp and a link to the source. None → hidden (not an error).
+- **Chart inset** (side column): a small Taiwan chart with the placed marks and "N of M stakeholders placed by a sourced address", linking to the Map tab.
+- **HOME-7** Your markets: the markets this browser remembers plus the sample, each with its confidence level. Markets the server can't find are hidden (simpler version).
+- **HOME-8** "+ New market" / "Close" opens the form (§7.1). Target market dropdown: Taiwan selectable; United States, Japan, Singapore shown as "coming soon" and disabled; China not listed. Any industry.
 - **RES-1** Research progress screen (§7.3).
 - Middle column Taiwan chart: stakeholders with a city are drawn on a fixed Taiwan outline (ochre land); those without an address aren't drawn; clicking one opens the map with it selected.
 - Right column key judgments: 3 numbered paragraphs (`.paras`) using ICD terms + ranges (e.g. "Likely (55–80%)") with confidence stated separately; each cited; taken from the brief's rationale.

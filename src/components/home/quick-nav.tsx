@@ -1,11 +1,10 @@
 import Link from "next/link";
 import type { HomeModel } from "./model";
 
-// HOME-2: six tiles linking to the selected dossier's pages, each with a short count.
+// HOME-2: links to the selected market's pages, each with a short count.
 export function QuickNav({ m }: { m: HomeModel }) {
   const base = `/d/${m.id}`;
-  const tiles = [
-    { label: "Dossiers", sub: "Overview", href: base, current: true },
+  const links = [
     { label: "Stakeholder map", sub: `${m.mapShown} of ${m.nav.mapTotal}`, href: `${base}/map` },
     { label: "Tracker", sub: `${m.nav.nextSteps} next step${m.nav.nextSteps === 1 ? "" : "s"}`, href: `${base}/tracker` },
     { label: "Network", sub: `${m.nav.leads} lead${m.nav.leads === 1 ? "" : "s"}`, href: `${base}/network` },
@@ -13,21 +12,23 @@ export function QuickNav({ m }: { m: HomeModel }) {
     { label: "Strategy brief", sub: m.nav.briefVersion ? `version ${m.nav.briefVersion}` : "not written yet", href: `${base}/brief` },
   ];
   return (
-    <nav
-      aria-label="Workspace"
-      className="grid grid-cols-3 gap-px overflow-hidden rounded-[var(--r-l)] border border-rule-strong bg-[var(--tile-gap-bg)] lg:grid-cols-2"
-    >
-      {tiles.map((t) => (
-        <Link
-          key={t.label}
-          href={t.href}
-          aria-current={t.current ? "page" : undefined}
-          className="flex min-h-16 flex-col justify-between gap-2.5 bg-panel px-2.5 py-[9px] text-[13.5px] font-semibold text-ink no-underline hover:bg-panel2 aria-[current=page]:bg-[var(--tile-on)] aria-[current=page]:text-[var(--tile-on-ink)]"
-        >
-          {t.label}
-          <span className={`text-[12px] font-medium ${t.current ? "text-[var(--tile-on-ink2)]" : "text-ink2"}`}>{t.sub}</span>
-        </Link>
-      ))}
+    <nav aria-labelledby="ws-h" className="flex flex-col">
+      <h2 id="ws-h" className="m-0 border-b border-rule-strong pb-2 text-[16px] font-bold">
+        Workspace
+      </h2>
+      <ul className="m-0 list-none p-0">
+        {links.map((l) => (
+          <li key={l.label}>
+            <Link
+              href={l.href}
+              className="flex min-h-11 items-center justify-between gap-3 border-b border-rule px-1 text-[15px] font-semibold text-ink no-underline hover:bg-panel2"
+            >
+              {l.label}
+              <span className="text-[13px] font-medium text-ink2">{l.sub}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </nav>
   );
 }

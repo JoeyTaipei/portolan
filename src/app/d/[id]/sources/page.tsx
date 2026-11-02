@@ -27,7 +27,7 @@ async function Content({ params }: Pick<PageProps<"/d/[id]/sources">, "params">)
     <SourceList
       m={m}
       title="Sources"
-      intro="Every accepted source behind this dossier, with its Admiralty grade, the date it was checked and what it backs up."
+      intro="Every accepted source behind this market, with its Admiralty grade, the date it was checked and what it backs up."
     />
   );
 }

@@ -75,7 +75,7 @@ function leadVM(l: Lead, d: Dossier, byId: ReadonlyMap<string, SourceRef>): Lead
         : `${attendees} mapped stakeholder${attendees === 1 ? "" : "s"}`
       : `${passed} of ${checks.length} checks`;
   const s = l.stakeholderId ? d.stakeholders.find((x) => x.id === l.stakeholderId) : undefined;
-  const mapBlocked = !l.stakeholderId || !s ? "Not on this dossier's map yet" : s.x === null || s.y === null ? "On the list, but it has no map position yet" : null;
+  const mapBlocked = !l.stakeholderId || !s ? "Not on this market's map yet" : s.x === null || s.y === null ? "On the list, but it has no map position yet" : null;
   return {
     id: l.id,
     type: l.type,

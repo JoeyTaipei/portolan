@@ -15,7 +15,7 @@ const REQUIRED: { name: "company" | "product" | "goal" | "email"; label: string;
   { name: "company", label: "Your company", what: "your company", placeholder: "e.g. Skyward Robotics" },
   { name: "product", label: "Product or service", what: "the product or service", placeholder: "e.g. Counter-UAS sensor kit" },
   { name: "goal", label: "Goal", what: "a goal", placeholder: "e.g. First government pilot within 12 months" },
-  { name: "email", label: "Email for the dossier link", what: "an email", placeholder: "you@company.com" },
+  { name: "email", label: "Email for the market link", what: "an email", placeholder: "you@company.com" },
 ];
 
 const field =
@@ -76,7 +76,7 @@ export function NewDossierForm() {
       <div className="flex flex-col gap-2.5 rounded-[var(--r-m)] border border-rule-strong bg-panel p-3.5" role="status">
         <p className="m-0 text-[15px] font-bold">Research started</p>
         <p className="m-0 text-[14px] font-semibold text-[var(--notice-text)]">
-          This link is the only key to your dossier. Save it now.
+          This link is the only key to your market. Save it now.
         </p>
         <code className="block break-all rounded-[var(--r-s)] bg-panel2 px-2 py-1.5 text-[13px]">{created.url}</code>
         <div className="flex gap-2">
@@ -95,7 +95,7 @@ export function NewDossierForm() {
             {copied ? "Copied" : "Copy link"}
           </button>
           <Link href={`/d/${created.id}`} className="btn btn-main btn-s flex-1">
-            Open the dossier
+            Open the market
           </Link>
         </div>
       </div>
@@ -107,7 +107,7 @@ export function NewDossierForm() {
       ref={formRef}
       noValidate
       onSubmit={submit}
-      aria-label="New dossier"
+      aria-label="New market"
       className="flex flex-col gap-2.5 rounded-[var(--r-m)] border border-dashed border-rule-strong bg-panel p-3.5"
     >
       {REQUIRED.slice(0, 2).map((r) => (

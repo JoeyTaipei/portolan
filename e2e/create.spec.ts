@@ -10,16 +10,16 @@ const ID = /\/d\/([A-Za-z0-9_-]{22})$/;
 /** `/` opens the last dossier this browser saw, so later requests start from that overview. */
 async function fillForm(page: Page, email: string, path = "/") {
   await page.goto(path);
-  const form = page.getByRole("form", { name: "New dossier" });
+  const form = page.getByRole("form", { name: "New market" });
   // The form starts open on an empty home; otherwise open it (retried until hydrated).
   await expect(async () => {
-    if (!(await form.isVisible())) await page.getByRole("button", { name: "+ New dossier" }).click();
+    if (!(await form.isVisible())) await page.getByRole("button", { name: "+ New market" }).click();
     await expect(form).toBeVisible({ timeout: 1_000 });
   }).toPass({ timeout: 20_000 });
   await form.getByLabel("Your company").fill("E2E Robotics");
   await form.getByLabel("Product or service").fill("Counter-UAS sensor kit");
   await form.getByLabel("Goal").fill("First government pilot within 12 months");
-  await form.getByLabel("Email for the dossier link").fill(email);
+  await form.getByLabel("Email for the market link").fill(email);
   await form.getByRole("button", { name: "Start research" }).click();
 }
 
@@ -33,18 +33,18 @@ test("mock create → progress lines one by one → ready; third same-email requ
   await fillForm(page, email);
   const started = page.getByRole("status").filter({ hasText: "Research started" });
   await expect(started).toBeVisible({ timeout: 20_000 });
-  await expect(started).toContainText("This link is the only key to your dossier. Save it now.");
+  await expect(started).toContainText("This link is the only key to your market. Save it now.");
   const url = (await started.locator("code").textContent())?.trim() ?? "";
   const id = ID.exec(url)?.[1];
   expect(id, `dossier link ${url}`).toBeTruthy();
 
   // 2. Progress: lines appear one at a time, then ready.
   const t0 = Date.now();
-  await started.getByRole("link", { name: "Open the dossier" }).click();
+  await started.getByRole("link", { name: "Open the market" }).click();
   await expect(page.getByTestId("research-progress")).toBeVisible();
   const lines = page.getByTestId("progress-line");
   const counts: number[] = [];
-  const heading = page.getByRole("heading", { level: 1, name: "Your dossier is ready" });
+  const heading = page.getByRole("heading", { level: 1, name: "Your market is ready" });
   while (!(await heading.isVisible())) {
     expect(Date.now() - t0, "ready within 60 s").toBeLessThan(60_000);
     counts.push(await lines.count());
@@ -61,14 +61,14 @@ test("mock create → progress lines one by one → ready; third same-email requ
   await expect(page.getByTestId("dossier-link")).toContainText(`/d/${id}`);
 
   // 3. The overview opens with the real dossier.
-  await page.getByRole("button", { name: "Open the dossier" }).click();
+  await page.getByRole("button", { name: "Open the market" }).click();
   await expect(page.getByTestId("research-progress")).toHaveCount(0, { timeout: 15_000 });
 
   // 4. Second request from the same email is allowed; the third is blocked before research.
   await fillForm(page, email, `/d/${id}`);
   await expect(page.getByRole("status").filter({ hasText: "Research started" })).toBeVisible({ timeout: 20_000 });
   await fillForm(page, email, `/d/${id}`);
-  await expect(page.getByRole("form", { name: "New dossier" }).getByRole("alert")).toContainText("Today's research limit is reached. Your link still works; try again after 00:00 Taipei time.", {
+  await expect(page.getByRole("form", { name: "New market" }).getByRole("alert")).toContainText("Today's research limit is reached. Your link still works; try again after 00:00 Taipei time.", {
     timeout: 20_000,
   });
   console.log("[create.spec] third same-email request blocked");

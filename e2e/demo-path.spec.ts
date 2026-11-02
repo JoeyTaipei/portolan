@@ -21,7 +21,7 @@ test("home → sample → map → Add to tracker stays in this browser", async (
   page.on("pageerror", (e) => errors.push(e.message));
 
   await page.goto("/");
-  await page.getByRole("link", { name: "Open the sample dossier" }).click();
+  await page.getByRole("link", { name: "Open the sample market" }).click();
   await expect(page).toHaveURL(/\/d\/sample$/);
   await expect(page.getByText("Sample data").first()).toBeVisible();
   await expectNoSideScroll(page);
@@ -74,7 +74,7 @@ test("map → brief → A4 report prints on one page", async ({ page }) => {
 
   await page.goto("/d/sample/map");
   await expect(page.getByTestId("map-node").first()).toBeVisible();
-  await page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Dossiers" }).click();
+  await page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Markets" }).click();
   await page.getByRole("link", { name: /Strategy brief/ }).click();
   await expect(page).toHaveURL(/\/d\/sample\/brief$/);
   await expectNoSideScroll(page);

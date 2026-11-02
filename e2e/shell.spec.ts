@@ -27,8 +27,8 @@ test("/d/sample without ?state shows the sample dossier", async ({ page }) => {
 for (const id of ["not-a-real-id", "AAAAAAAAAAAAAAAAAAAAAA"]) {
   test(`/d/${id} shows the dossier-not-found page`, async ({ page }) => {
     await page.goto(`/d/${id}`);
-    await expect(page.getByRole("heading", { name: "Dossier not found" })).toBeVisible();
-    await expect(page.getByText("This link doesn't open a dossier. Check the link, or open the sample.")).toBeVisible();
-    await expect(page.getByRole("link", { name: "Open the sample dossier" })).toHaveAttribute("href", "/d/sample");
+    await expect(page.getByRole("heading", { name: "Market not found" })).toBeVisible();
+    await expect(page.getByText("This link doesn't open a market. Check the link, or open the sample.")).toBeVisible();
+    await expect(page.getByRole("link", { name: "Open the sample market" })).toHaveAttribute("href", "/d/sample");
   });
 }

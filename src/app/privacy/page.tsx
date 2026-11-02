@@ -9,53 +9,53 @@ const SECTIONS: { id: string; title: string; body: string[] }[] = [
     id: "what-we-store",
     title: "What we store",
     body: [
-      "For each dossier: the company, product, goal and optional details you enter, your email address, the research results with their sources, and anything you add later, such as tracker items, meeting debriefs, lead and intro requests, and documents.",
-      "Your email address is used to send you the dossier link and to count today's research requests. It is never shown on the share link or sent to our analytics.",
-      "We count page views and three actions (dossier created, report exported, debrief saved) with PostHog. Dossier and share links are removed from those records before they leave your browser, and no email address is sent.",
+      "For each market: the company, product, goal and optional details you enter, your email address, the research results with their sources, and anything you add later, such as tracker items, meeting debriefs, lead and intro requests, and documents.",
+      "Your email address is used to send you the market link and to count today's research requests. It is never shown on the share link or sent to our analytics.",
+      "We count page views and three actions (market created, report exported, debrief saved) with PostHog. Market and share links are removed from those records before they leave your browser, and no email address is sent.",
       "When you save a debrief, an anonymised outcome (the type of stakeholder, the route and how the meeting went) is kept to improve advice for everyone. It contains no names, notes or quotes from the meeting.",
-      "Changes you make to the sample dossier stay in your own browser and are never sent to us.",
+      "Changes you make to the sample market stay in your own browser and are never sent to us.",
     ],
   },
   {
     id: "processors",
     title: "Who processes your research",
     body: [
-      "Your research inputs (company, product, goal and optional details) and the web pages fetched for them are sent to Parallel, for web research, and to Anthropic, for analysis and writing. They process this data to produce your dossier.",
+      "Your research inputs (company, product, goal and optional details) and the web pages fetched for them are sent to Parallel, for web research, and to Anthropic, for analysis and writing. They process this data to produce your market map and report.",
       "Text from fetched pages is treated as data, never as instructions. Every stakeholder, score and recommendation points to the source it came from, or is marked Unverified.",
     ],
   },
   {
     id: "link",
-    title: "Your dossier link is the only key",
+    title: "Your market link is the only key",
     body: [
-      "There is no login. Anyone with the dossier link can view and change that dossier, so keep it private. Links are long random codes that can't be guessed, and dossier pages are kept out of search engines.",
-      "The share link is a separate link. It opens only the one-page report and the sources it cites: never the tracker, debriefs, team contacts or documents, and it doesn't reveal the dossier link.",
+      "There is no login. Anyone with the market link can view and change that market, so keep it private. Links are long random codes that can't be guessed, and market pages are kept out of search engines.",
+      "The share link is a separate link. It opens only the one-page report and the sources it cites: never the tracker, debriefs, team contacts or documents, and it doesn't reveal the market link.",
     ],
   },
   {
     id: "team-ties",
     title: "Team contacts",
     body: [
-      "Teammates can add their own work connections to a dossier, from a LinkedIn or contacts export or by typing them in. The file is read in the teammate's browser and is never uploaded or stored.",
+      "Teammates can add their own work connections to a market, from a LinkedIn or contacts export or by typing them in. The file is read in the teammate's browser and is never uploaded or stored.",
       "Only four fields are kept: name, job title, organisation and LinkedIn profile link. Email addresses, phone numbers, postal addresses and notes are always dropped. For organisations in China, no contact names are kept.",
-      "Only contacts at an organisation on the dossier's map are kept; everyone else is discarded. Contact names are shown as hidden bars, never in full.",
-      "These contacts belong to that one dossier. They are seen only by people with the dossier link, never on the share link, never shown to other clients and never used for anyone else's research.",
+      "Only contacts at an organisation on the market's map are kept; everyone else is discarded. Contact names are shown as hidden bars, never in full.",
+      "These contacts belong to that one market. They are seen only by people with the market link, never on the share link, never shown to other clients and never used for anyone else's research.",
       "There is no login, so we can't check who uploads. Each teammate confirms that the export is their own and that they agree to share these connections (self-certified).",
       "A teammate can choose “Withdraw my connections” at any time. Their contacts and ties are deleted from our database at once and disappear from the map. Intro drafts already copied out of Portolan can't be recalled.",
     ],
   },
   {
     id: "deletion",
-    title: "Deleting a dossier",
+    title: "Deleting a market",
     body: [
-      "To have a dossier deleted, reply to the email that sent you its link, from the address you used to create it. We delete the dossier and everything in it, including tracker items, debriefs, documents and team contacts.",
+      "To have a market deleted, reply to the email that sent you its link, from the address you used to create it. We delete the market and everything in it, including tracker items, debriefs, documents and team contacts.",
     ],
   },
   {
     id: "not-advice",
     title: "Research, not advice",
     body: [
-      "Dossiers, reports and documents are research references drawn from public sources. They are not legal or investment advice. Check anything important with a qualified adviser before you act on it.",
+      "Markets, reports and documents are research references drawn from public sources. They are not legal or investment advice. Check anything important with a qualified adviser before you act on it.",
     ],
   },
 ];

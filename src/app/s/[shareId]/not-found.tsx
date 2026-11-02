@@ -10,7 +10,7 @@ export default function SharedNotFound() {
         headingLevel={1}
         title="Report not found"
         desc="This link doesn't open a shared report. Check the link with the person who sent it."
-        actions={[{ label: "Open the sample dossier", href: "/d/sample" }]}
+        actions={[{ label: "Open the sample market", href: "/d/sample" }]}
       />
     </SharedFrame>
   );

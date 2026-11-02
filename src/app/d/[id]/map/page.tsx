@@ -27,7 +27,7 @@ async function MapContent({ params }: Pick<PageProps<"/d/[id]/map">, "params">) 
         kind="empty"
         headingLevel={1}
         title="No stakeholders on the map yet"
-        desc="Research hasn't placed anyone yet. Follow its progress on the dossier page."
+        desc="Research hasn't placed anyone yet. Follow its progress on the market page."
         actions={[{ label: "See research progress", href: `/d/${d.id}` }]}
       />
     );

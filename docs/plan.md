@@ -545,6 +545,26 @@ The slice's `/goal acceptance` block is what gets pasted into `/goal`. Each task
 
 ---
 
+### S9 Market home (option C) + "Markets" wording
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| ui | `feature/dossier-page` | main after S8 | 2 h | P4 | none |
+
+Joey picked option C "Briefing room" and the word "Markets" on 2026-11-02 (spec §12 01).
+
+**Risky changes — list before code**: sources and Unverified (next moves and the bottom line reuse map/brief view models that already drop unaccepted sources; a stakeholder with no sourced step shows the Unverified fallback). No ids, keys, paid calls, China or uploads touched.
+
+**Files**: `src/components/home/**`, `src/app/d/[id]/page.tsx`, `src/app/page.tsx`, `src/app/(loading,error).tsx`, `src/app/d/[id]/(error,not-found).tsx`, `src/app/d/[id]/map/page.tsx`, `src/app/s/[shareId]/not-found.tsx`, `src/app/privacy/page.tsx`, `src/components/shell/{tabs,nis,not-found-state,pick-first}.tsx`, `src/components/progress/progress-client.tsx` (copy only), `src/components/{map,network,brief}/*` (copy only), `e2e/*.spec.ts` (copy only), `docs/spec.md`, `docs/plan.md`, `CLAUDE.md` (tab names).
+
+**Tasks**
+- **S9-T1 Wording** — every on-screen "dossier" → "market"; code names, routes, tables, events unchanged. Server action error strings stay (engine lane; follow-up).
+- **S9-T2 Layout** — HOME-1…9 as in spec §12 01: header + evidence panel, next moves, side column (alert, key judgments, chart inset, workspace links, your markets).
+
+**Tests added**: none (copy and layout; e2e strings updated).
+
+---
+
 ## 6. Risks
 
 | Risk | Impact | Mitigation |

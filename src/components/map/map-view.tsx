@@ -136,7 +136,7 @@ export function MapView({ model, tracker }: { model: MapModel; tracker: TrackerI
           {inFilter.length === 0 ? (
             <div className="nis inline flex-1" role="status" data-state="empty">
               <h2>No stakeholders in this category</h2>
-              <p>Nothing in this dossier fits the current filter. Clear it to see everyone.</p>
+              <p>Nothing in this market fits the current filter. Clear it to see everyone.</p>
               <div className="acts">
                 <button type="button" className="btn btn-main" onClick={() => setFilter("all")}>
                   Clear filter

@@ -18,7 +18,7 @@ const svg = (children: ReactNode) => (
 );
 
 export const TABS: TabDef[] = [
-  { key: "dossiers", label: "Dossiers", segment: "", icon: svg(<path d="M3 6h7l2 2h9v11H3z" />) },
+  { key: "dossiers", label: "Markets", segment: "", icon: svg(<path d="M3 6h7l2 2h9v11H3z" />) },
   {
     key: "map",
     label: "Map",
