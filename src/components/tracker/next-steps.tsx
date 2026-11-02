@@ -6,6 +6,7 @@ import { MarkIcon } from "@/components/map/node-mark";
 import { Nis } from "@/components/shell/nis";
 import { STAGE_LABEL, STAGES, type ItemEdit } from "@/lib/tracker/flow";
 import type { ActionResult, TrackerStage } from "@/lib/types";
+import { useT } from "@/lib/i18n/client";
 import { fmtDate, type RowVM } from "./model";
 
 // TRK-7 next steps: name, next step, due date, stage tag and stance mark (diamond for events).
@@ -40,17 +41,18 @@ export function NextSteps({
   onRemove: Remove;
 }) {
   const [open, setOpen] = useState<{ id: string; focus: "meeting" | "step" } | null>(null);
+  const t = useT();
 
   if (total === 0) {
     return (
       <Nis
         kind="empty"
         inline
-        title="Nothing tracked yet"
-        desc="Add stakeholders from the map or save leads from Network."
+        title={t("Nothing tracked yet")}
+        desc={t("Add stakeholders from the map or save leads from Network.")}
         actions={[
-          { label: "Open the map", href: `/d/${dossierId}/map` },
-          { label: "Open Network", href: `/d/${dossierId}/network` },
+          { label: t("Open the map"), href: `/d/${dossierId}/map` },
+          { label: t("Open Network"), href: `/d/${dossierId}/network` },
         ]}
       />
     );
@@ -62,18 +64,18 @@ export function NextSteps({
         <h2 id="steps-h" className="m-0 text-[22px] font-bold">
           {filter ? (
             <>
-              {STAGE_LABEL[filter]} · <span className="num">{rows.length}</span> shown of <span className="num">{total}</span>
+              {t("{stage|t} · {n} shown of {m}", { stage: t.k(STAGE_LABEL[filter]), n: rows.length, m: total })}
             </>
           ) : (
-            "Next steps"
+            t("Next steps")
           )}
         </h2>
       </div>
       {rows.length === 0 ? (
-        <Nis kind="empty" inline title={`No one at ${filter ? STAGE_LABEL[filter] : "this stage"} yet`} desc="Clear the filter to see everyone you're tracking.">
+        <Nis kind="empty" inline title={filter ? t("No one at {stage|t} yet", { stage: t.k(STAGE_LABEL[filter]) }) : t("No one at this stage yet")} desc={t("Clear the filter to see everyone you're tracking.")}>
           <div className="acts">
             <button type="button" className="btn btn-main" onClick={onClearFilter}>
-              Show all
+              {t("Show all")}
             </button>
           </div>
         </Nis>
@@ -112,40 +114,41 @@ function Row({
   onRemove: Remove;
 }) {
   const { item } = row;
-  const due = fmtDate(item.dueDate);
-  const meeting = fmtDate(item.meetingAt);
+  const t = useT();
+  const due = item.dueDate && t.x(fmtDate(item.dueDate)!);
+  const meeting = item.meetingAt && t.x(fmtDate(item.meetingAt)!);
   return (
     <li className="border-b border-rule py-4" data-testid="tracker-row">
       <div className="grid grid-cols-[18px_minmax(0,1fr)_auto] items-start gap-x-2.5 gap-y-1">
-        <span className="mt-1 flex" title={`Support ${row.support}`}>
+        <span className="mt-1 flex" title={t("Support {value}", { value: t.k(row.support) })}>
           <MarkIcon mark={row.mark} />
         </span>
         <div className="min-w-0">
           <p className="m-0 text-[17px] font-bold leading-snug">{row.name}</p>
-          <p className="m-0 mt-1 text-[16px] leading-[1.45] text-ink">{item.nextStep ?? "No next step yet"}</p>
+          <p className="m-0 mt-1 text-[16px] leading-[1.45] text-ink">{item.nextStep ?? t("No next step yet")}</p>
           <p className="m-0 mt-1 flex flex-wrap gap-x-3 text-[12.5px] text-ink2">
             <span>
-              Support <span className="num font-semibold text-ink">{row.support}</span>
+              {t("Support")} <span className="num font-semibold text-ink">{t.k(row.support)}</span>
             </span>
-            {meeting && <span>Meeting {meeting}</span>}
+            {meeting && <span>{t("Meeting {date}", { date: meeting })}</span>}
           </p>
         </div>
         <div className="flex flex-col items-end gap-1 text-right">
-          <span className={`rounded-[var(--r-chip)] border px-1.5 py-px text-[12px] font-bold ${STAGE_TAG[item.stage]}`}>{STAGE_LABEL[item.stage]}</span>
-          <span className="num text-[12.5px] text-ink2">{due ? `Due ${due}` : "No due date"}</span>
+          <span className={`rounded-[var(--r-chip)] border px-1.5 py-px text-[12px] font-bold ${STAGE_TAG[item.stage]}`}>{t.k(STAGE_LABEL[item.stage])}</span>
+          <span className="num text-[12.5px] text-ink2">{due ? t("Due {date}", { date: due }) : t("No due date")}</span>
         </div>
       </div>
       <div className="mt-3 flex flex-wrap items-center gap-2 pl-[28px]">
         {!open && (
           <button type="button" className="btn btn-main btn-s" onClick={() => onOpen("meeting")}>
-            {item.meetingAt ? "Change meeting date" : "Set meeting date"}
+            {item.meetingAt ? t("Change meeting date") : t("Set meeting date")}
           </button>
         )}
         <Link href={`/d/${dossierId}/docs?item=${encodeURIComponent(item.id)}`} className="btn btn-ghost btn-s">
-          Briefing note
+          {t("Briefing note")}
         </Link>
         <button type="button" className={linkBtn} aria-expanded={open === "step"} onClick={() => onOpen(open ? null : "step")}>
-          {open ? "Close" : "Edit"}
+          {open ? t("Close") : t("Edit")}
         </button>
       </div>
       {open && <Editor row={row} focus={open} onDone={() => onOpen(null)} onSave={onSave} onRemove={onRemove} />}
@@ -180,6 +183,7 @@ function Editor({
   const [confirmRemove, setConfirmRemove] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const uid = item.id.replace(/[^A-Za-z0-9_-]/g, "");
+  const t = useT();
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
@@ -193,7 +197,7 @@ function Editor({
     });
     setBusy(null);
     if (r.ok) onDone();
-    else setError(r.error);
+    else setError(t.x(r.error));
   }
 
   async function remove() {
@@ -205,41 +209,41 @@ function Editor({
     setError(null);
     const r = await onRemove(item.id);
     setBusy(null);
-    if (!r.ok) setError(r.error);
+    if (!r.ok) setError(t.x(r.error));
   }
 
   return (
-    <form onSubmit={save} className="mt-2 ml-[28px] flex flex-col gap-3 rounded-[var(--r-l)] border border-rule-strong bg-panel p-3" aria-label={`Edit ${row.name}`}>
+    <form onSubmit={save} className="mt-2 ml-[28px] flex flex-col gap-3 rounded-[var(--r-l)] border border-rule-strong bg-panel p-3" aria-label={t("Edit {name}", { name: row.name })}>
       <div className="grid gap-3 sm:grid-cols-2">
         <label className="flex flex-col gap-1 text-[13px] font-semibold" htmlFor={`stage-${uid}`}>
-          Stage
+          {t("Stage")}
           <select id={`stage-${uid}`} className={field} value={stage} onChange={(e) => setStage(e.target.value as TrackerStage)}>
             {STAGES.map((s) => (
               <option key={s} value={s}>
-                {STAGE_LABEL[s]}
+                {t.k(STAGE_LABEL[s])}
               </option>
             ))}
           </select>
         </label>
         <label className="flex flex-col gap-1 text-[13px] font-semibold" htmlFor={`meeting-${uid}`}>
-          Meeting date
+          {t("Meeting date")}
           <input id={`meeting-${uid}`} type="date" className={field} value={meetingAt} autoFocus={focus === "meeting"} onChange={(e) => setMeetingAt(e.target.value)} />
         </label>
         <label className="flex flex-col gap-1 text-[13px] font-semibold sm:col-span-2" htmlFor={`next-${uid}`}>
-          Next step
+          {t("Next step")}
           <input id={`next-${uid}`} type="text" maxLength={300} className={field} value={nextStep} autoFocus={focus === "step"} onChange={(e) => setNextStep(e.target.value)} />
         </label>
         <label className="flex flex-col gap-1 text-[13px] font-semibold" htmlFor={`due-${uid}`}>
-          Due date
+          {t("Due date")}
           <input id={`due-${uid}`} type="date" className={field} value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
         </label>
       </div>
       <div className="flex flex-wrap items-center gap-2">
         <button type="submit" className="btn btn-main btn-s" disabled={busy !== null}>
-          {busy === "save" ? "Saving…" : "Save"}
+          {busy === "save" ? t("Saving…") : t("Save")}
         </button>
         <button type="button" className="btn btn-ghost btn-s" onClick={onDone}>
-          Cancel
+          {t("Cancel")}
         </button>
         <button
           type="button"
@@ -247,7 +251,7 @@ function Editor({
           disabled={busy !== null}
           onClick={remove}
         >
-          {busy === "remove" ? "Removing…" : confirmRemove ? "Confirm remove" : "Remove from tracker"}
+          {busy === "remove" ? t("Removing…") : confirmRemove ? t("Confirm remove") : t("Remove from tracker")}
         </button>
       </div>
       {error && (

@@ -3,6 +3,8 @@
 import { influenceText } from "@/components/score/explain";
 import { CATEGORY_LABEL, type NodeVM } from "./model";
 import { MarkIcon } from "./node-mark";
+import { translateRuntime } from "@/lib/i18n";
+import { useT } from "@/lib/i18n/client";
 
 // Full list of every stakeholder by influence (the map draws at most 30), with the plain
 // search input above it (simpler version of Find a stakeholder).
@@ -23,13 +25,14 @@ export function StakeholderList({
   onSelect: (id: string) => void;
   title?: boolean;
 }) {
+  const t = useT();
   return (
     <section aria-labelledby="all-h" className="flex flex-col gap-2">
       <h2 id="all-h" className={title ? "m-0 border-b border-rule-strong pb-1.5 text-[15px] font-bold" : "sr-only"}>
-        All {total} stakeholders, by influence
+        {t("All {n} stakeholders, by influence", { n: total })}
       </h2>
       <label className="flex flex-col gap-1 text-[12.5px] font-semibold text-ink2">
-        Find a stakeholder
+        {t("Find a stakeholder")}
         <input
           type="search"
           value={query}
@@ -37,14 +40,14 @@ export function StakeholderList({
           onKeyDown={(e) => {
             if (e.key === "Escape") onQuery("");
           }}
-          placeholder="Name, Chinese name or category"
+          placeholder={t("Name, Chinese name or category")}
           autoComplete="off"
           className="min-h-11 rounded-[var(--r-m)] border border-[var(--field-line)] bg-[var(--field)] px-2.5 text-[15px] font-normal text-ink placeholder:text-ink3"
         />
       </label>
       {nodes.length === 0 ? (
         <p className="m-0 text-[13.5px] text-ink2" role="status">
-          No stakeholder matches “{query.trim()}”. Try the Chinese name or a category, such as Government.
+          {t("No stakeholder matches “{query}”. Try the Chinese name or a category, such as Government.", { query: query.trim() })}
         </p>
       ) : (
         <ul className="m-0 list-none p-0">
@@ -59,10 +62,10 @@ export function StakeholderList({
                 <MarkIcon mark={n.mark} />
                 <span className="min-w-0 text-[14px] font-semibold">
                   {n.short}
-                  <span className="block text-[12px] font-normal text-ink2">{CATEGORY_LABEL[n.category]}</span>
+                  <span className="block text-[12px] font-normal text-ink2">{t.k(CATEGORY_LABEL[n.category])}</span>
                 </span>
-                <span className="text-[12.5px] text-ink2">{influenceText(n.influence)}</span>
-                <span className="num min-w-[42px] text-right text-[12.5px] text-ink2">{n.sourceCount} src</span>
+                <span className="text-[12.5px] text-ink2">{t.x(influenceText(n.influence))}</span>
+                <span className="num min-w-[42px] text-right text-[12.5px] text-ink2">{t("{n} src", { n: n.sourceCount })}</span>
               </button>
             </li>
           ))}
@@ -75,5 +78,5 @@ export function StakeholderList({
 export function matches(n: NodeVM, q: string): boolean {
   const s = q.trim().toLowerCase();
   if (!s) return true;
-  return [n.short, n.name, n.nameZh ?? "", CATEGORY_LABEL[n.category]].join(" ").toLowerCase().includes(s);
+  return [n.short, n.name, n.nameZh ?? "", CATEGORY_LABEL[n.category], translateRuntime(CATEGORY_LABEL[n.category])].join(" ").toLowerCase().includes(s);
 }

@@ -18,6 +18,7 @@ import {
   type TrackerState,
 } from "@/lib/tracker/flow";
 import type { ActionResult, SampleOverlay, TrackerStage } from "@/lib/types";
+import { useT } from "@/lib/i18n/client";
 import { DebriefDue } from "./debrief-due";
 import { DebriefResult } from "./debrief-result";
 import { buildRows } from "./model";
@@ -60,6 +61,7 @@ export function TrackerView({ initial, isSample, name, nowIso }: { initial: Trac
   const [filter, setFilter] = useState<TrackerStage | null>(null);
   const [receipt, setReceipt] = useState<DebriefReceipt | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const t = useT();
 
   useEffect(() => {
     // After hydration: the browser's clock and, on the sample, this browser's changes.
@@ -115,18 +117,18 @@ export function TrackerView({ initial, isSample, name, nowIso }: { initial: Trac
       if (!r.ok) return r.error;
     }
     setReceipt(null);
-    setNotice("Debrief removed. Support, stage and next step are back as they were.");
+    setNotice(t("Debrief removed. Support, stage and next step are back as they were."));
     return null;
   }
 
-  const byId = new Map(state.tracker.map((t) => [t.id, t]));
+  const byId = new Map(state.tracker.map((x) => [x.id, x]));
 
   return (
     <div className="mx-auto flex w-full max-w-[1360px] flex-col gap-6 px-4 pt-[18px] pb-10 lg:grid lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-x-12 lg:gap-y-8 lg:px-10 lg:pt-8 lg:pb-14 min-[1600px]:grid-cols-[minmax(0,1fr)_440px]">
       <div className="contents lg:flex lg:flex-col lg:gap-8">
         <header className="order-1">
           <p className="m-0 text-[14px] text-ink2">{name}</p>
-          <h1 className="mt-1 mb-0 text-[32px] font-bold leading-[1.05] lg:text-[40px]">From first contact to first deal</h1>
+          <h1 className="mt-1 mb-0 text-[32px] font-bold leading-[1.05] lg:text-[40px]">{t("From first contact to first deal")}</h1>
         </header>
         <div className="order-2">
           <StageCounts counts={counts} filter={filter} onFilter={setFilter} />
@@ -144,7 +146,7 @@ export function TrackerView({ initial, isSample, name, nowIso }: { initial: Trac
         </div>
       </div>
       <aside
-        aria-label="Debrief"
+        aria-label={t("Debrief")}
         className="order-3 flex flex-col gap-3 lg:sticky lg:top-4 lg:mt-[92px]"
       >
         {notice && (

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Both } from "@/lib/i18n/client";
 
 // Exhibit frame (direction.md): "Exhibit N" + one-line finding above, how to read it + source below.
 export function Exhibit({
@@ -10,7 +11,7 @@ export function Exhibit({
   children,
 }: {
   n: number;
-  finding: string;
+  finding: ReactNode;
   howToRead: ReactNode;
   className?: string;
   bodyClassName?: string;
@@ -19,7 +20,9 @@ export function Exhibit({
   return (
     <figure className={`exhibit ${className}`}>
       <p className="ex-t">
-        <span>Exhibit {n}</span>
+        <span>
+          <Both k="Exhibit {n}" vars={{ n }} />
+        </span>
         {finding}
       </p>
       <div className={`relative min-h-0 ${bodyClassName}`}>{children}</div>

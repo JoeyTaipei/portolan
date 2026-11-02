@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { addDays, DEFAULT_DUE_DAYS, NOTES_MAX, OVERALL_LABEL, type DebriefInput } from "@/lib/tracker/flow";
 import type { DebriefOverall } from "@/lib/types";
+import { useT } from "@/lib/i18n/client";
 
 // TRK-3: Overall is required (Save stays disabled, with the reason beside it, until one is
 // picked); "Did they agree to a next step?"; notes private to the team, ≤ 1000 characters;
@@ -34,9 +35,10 @@ export function DebriefForm({
   const [playbook, setPlaybook] = useState(true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const t = useT();
 
   const needsStep = agreed === true && stepText.trim() === "";
-  const reason = !overall ? "Pick Overall to save." : needsStep ? "Write the next step they agreed to." : null;
+  const reason = !overall ? t("Pick Overall to save.") : needsStep ? t("Write the next step they agreed to.") : null;
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -52,32 +54,32 @@ export function DebriefForm({
       nextStep: agreed ? { text: stepText.trim(), dueDate: stepDue } : null,
     });
     setBusy(false);
-    if (err) setError(err);
+    if (err) setError(t.x(err));
   }
 
   return (
-    <form onSubmit={submit} className="flex flex-col gap-4" aria-label="Meeting debrief">
+    <form onSubmit={submit} className="flex flex-col gap-4" aria-label={t("Meeting debrief")}>
       <fieldset className="m-0 border-0 p-0">
         <legend className="mb-1.5 p-0 text-[13.5px] font-bold">
-          Overall <span className="font-normal text-ink2">(required)</span>
+          {t("Overall")} <span className="font-normal text-ink2">{t("(required)")}</span>
         </legend>
         <div className="grid grid-cols-3 gap-1.5">
           {OVERALLS.map((o) => (
             <button key={o} type="button" aria-pressed={overall === o} className={pill(overall === o)} onClick={() => setOverall(o)}>
-              {OVERALL_LABEL[o]}
+              {t.k(OVERALL_LABEL[o])}
             </button>
           ))}
         </div>
       </fieldset>
 
       <fieldset className="m-0 border-0 p-0">
-        <legend className="mb-1.5 p-0 text-[13.5px] font-bold">Did they agree to a next step?</legend>
+        <legend className="mb-1.5 p-0 text-[13.5px] font-bold">{t("Did they agree to a next step?")}</legend>
         <div className="grid grid-cols-2 gap-1.5">
           <button type="button" aria-pressed={agreed === true} className={pill(agreed === true)} onClick={() => setAgreed(true)}>
-            Yes
+            {t("Yes")}
           </button>
           <button type="button" aria-pressed={agreed === false} className={pill(agreed === false)} onClick={() => setAgreed(false)}>
-            Not yet
+            {t("Not yet")}
           </button>
         </div>
       </fieldset>
@@ -85,11 +87,11 @@ export function DebriefForm({
       {agreed && (
         <div className="grid gap-3 rounded-[var(--r-m)] border-l-4 border-[var(--act)] bg-panel2 p-2.5 sm:grid-cols-[minmax(0,1fr)_150px]">
           <label className="flex flex-col gap-1 text-[13px] font-semibold" htmlFor="debrief-step">
-            Next step
-            <input id="debrief-step" type="text" maxLength={300} className={`${field} min-h-11`} value={stepText} onChange={(e) => setStepText(e.target.value)} placeholder="What you agreed to do next" />
+            {t("Next step")}
+            <input id="debrief-step" type="text" maxLength={300} className={`${field} min-h-11`} value={stepText} onChange={(e) => setStepText(e.target.value)} placeholder={t("What you agreed to do next")} />
           </label>
           <label className="flex flex-col gap-1 text-[13px] font-semibold" htmlFor="debrief-due">
-            Due
+            {t("Due")}
             <input id="debrief-due" type="date" className={`${field} min-h-11`} value={stepDue} onChange={(e) => setStepDue(e.target.value || addDays(now, DEFAULT_DUE_DAYS))} />
           </label>
         </div>
@@ -97,7 +99,7 @@ export function DebriefForm({
 
       <label className="flex flex-col gap-1 text-[13.5px] font-bold" htmlFor="debrief-notes">
         <span>
-          What did they say? <span className="font-normal text-ink2">(private to your team)</span>
+          {t("What did they say?")} <span className="font-normal text-ink2">{t("(private to your team)")}</span>
         </span>
         <textarea
           id="debrief-notes"
@@ -116,14 +118,14 @@ export function DebriefForm({
       <label className="flex cursor-pointer items-start gap-2.5 text-[14px] leading-snug" htmlFor="debrief-playbook">
         <input id="debrief-playbook" type="checkbox" className="mt-0.5 size-5 shrink-0 accent-[var(--ink)]" checked={playbook} onChange={(e) => setPlaybook(e.target.checked)} />
         <span>
-          <b>Add anonymised outcome to the Portolan playbook</b>
-          <span className="block text-[12.5px] text-ink2">Only the route, category, overall and next step. No names, no notes, never shown to other clients.</span>
+          <b>{t("Add anonymised outcome to the Portolan playbook")}</b>
+          <span className="block text-[12.5px] text-ink2">{t("Only the route, category, overall and next step. No names, no notes, never shown to other clients.")}</span>
         </span>
       </label>
 
       <div className="flex flex-col gap-1.5">
         <button type="submit" className="btn btn-act w-full disabled:cursor-not-allowed disabled:opacity-55" disabled={reason !== null || busy} aria-describedby={reason ? "debrief-reason" : undefined}>
-          {busy ? "Saving…" : "Save debrief"}
+          {busy ? t("Saving…") : t("Save debrief")}
         </button>
         {reason && (
           <p id="debrief-reason" className="m-0 text-[13px] text-ink2">

@@ -1,5 +1,6 @@
 "use client";
 
+import { useT } from "@/lib/i18n/client";
 import { useId, useState } from "react";
 import { clean } from "@/lib/team/parse";
 import type { TeamMember } from "@/lib/types";
@@ -15,18 +16,19 @@ export function MemberList() {
   const [role, setRole] = useState("");
   const [error, setError] = useState<string | null>(null);
   const uid = useId();
+  const t = useT();
   const members = team.state.team;
   const connected = members.filter((m) => m.status === "connected").length;
   const tieCount = (id: string) => {
     const mine = new Set(team.state.contacts.filter((c) => c.memberId === id).map((c) => c.id));
-    return team.state.ties.filter((t) => mine.has(t.contactId)).length;
+    return team.state.ties.filter((x) => mine.has(x.contactId)).length;
   };
 
   function add(e: React.FormEvent) {
     e.preventDefault();
     const n = clean(name);
     if (!n) {
-      setError("Write the teammate's first name.");
+      setError(t("Write the teammate's first name."));
       return;
     }
     const m: TeamMember = {
@@ -40,7 +42,7 @@ export function MemberList() {
       createdAt: new Date().toISOString(),
     };
     if (!team.save({ ...team.state, team: [...members, m] })) {
-      setError(NO_STORAGE);
+      setError(t.k(NO_STORAGE));
       return;
     }
     setName("");
@@ -52,9 +54,9 @@ export function MemberList() {
   return (
     <section aria-labelledby={`${uid}-h`} className="flex flex-col gap-2">
       <h3 id={`${uid}-h`} className="m-0 flex items-baseline justify-between text-[14px] font-bold">
-        Teammates
+        {t("Teammates")}
         <span className="text-[12.5px] font-semibold text-ink2">
-          <span className="num">{connected}</span> of <span className="num">{members.filter((m) => m.status !== "withdrawn").length}</span> connected
+          {t("{n} of {m} connected", { n: connected, m: members.filter((m) => m.status !== "withdrawn").length })}
         </span>
       </h3>
       <ul className="m-0 flex list-none flex-col gap-1.5 p-0">
@@ -75,12 +77,12 @@ export function MemberList() {
               <span className="text-[12px] text-ink2">
                 {m.status === "connected" ? (
                   <>
-                    <span className="num">{tieCount(m.id)}</span> {tieCount(m.id) === 1 ? "tie" : "ties"}
+                    <span className="num">{tieCount(m.id)}</span> {tieCount(m.id) === 1 ? t("tie") : t("ties")}
                   </>
                 ) : m.status === "invited" ? (
-                  "Invited"
+                  t("Invited")
                 ) : (
-                  "Withdrawn"
+                  t("Withdrawn")
                 )}
               </span>
             </button>
@@ -90,14 +92,14 @@ export function MemberList() {
       {adding ? (
         <form onSubmit={add} className="flex flex-col gap-2 rounded-[var(--r-m)] border border-rule bg-panel2 p-2.5">
           <label className="text-[12.5px] font-semibold" htmlFor={`${uid}-n`}>
-            First name
+            {t("First name")}
           </label>
           <input id={`${uid}-n`} value={name} maxLength={60} onChange={(e) => setName(e.target.value)} className="min-h-10 rounded-[var(--r-m)] border border-[var(--field-line)] bg-[var(--field)] px-2 text-[14px]" />
           <label className="text-[12.5px] font-semibold" htmlFor={`${uid}-r`}>
-            Role (optional)
+            {t("Role (optional)")}
           </label>
           <input id={`${uid}-r`} value={role} maxLength={80} onChange={(e) => setRole(e.target.value)} className="min-h-10 rounded-[var(--r-m)] border border-[var(--field-line)] bg-[var(--field)] px-2 text-[14px]" />
-          <p className="m-0 text-[12px] text-ink2">They&apos;re added as invited. Only they can add their own connections.</p>
+          <p className="m-0 text-[12px] text-ink2">{t("They're added as invited. Only they can add their own connections.")}</p>
           {error && (
             <p role="alert" className="m-0 text-[12.5px] text-[var(--res-text)]">
               {error}
@@ -105,16 +107,16 @@ export function MemberList() {
           )}
           <div className="flex gap-2">
             <button type="submit" className="btn btn-main btn-s">
-              Add as invited
+              {t("Add as invited")}
             </button>
             <button type="button" className="btn btn-ghost btn-s" onClick={() => setAdding(false)}>
-              Cancel
+              {t("Cancel")}
             </button>
           </div>
         </form>
       ) : (
         <button type="button" className="btn btn-ghost btn-s self-start" onClick={() => setAdding(true)}>
-          + Add teammate
+          {t("+ Add teammate")}
         </button>
       )}
     </section>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
+import { useT } from "@/lib/i18n/client";
 import type { Credibility, Reliability } from "@/lib/types";
 import type { SourceRef } from "./explain";
 import { CREDIBILITY_WORDS, RELIABILITY_WORDS } from "./grade";
@@ -19,18 +20,13 @@ const relLevel = (r: Reliability) => (r === "A" || r === "B" ? "good" : r === "C
 const credLevel = (c: Credibility) => (c <= 2 ? "good" : c === 3 ? "mid" : c === 6 ? "none" : "weak");
 const cap = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
 
-function day(iso: string | null): string | null {
-  if (!iso) return null;
-  const [y, m, d] = iso.slice(0, 10).split("-").map(Number);
-  return new Date(y, m - 1, d).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
-}
-
 export function SourceChip({ source: s, dossierId }: { source: SourceRef; dossierId: string }) {
   const [pos, setPos] = useState<{ left: number; top: number } | null>(null);
   const btn = useRef<HTMLButtonElement>(null);
   const card = useRef<HTMLDivElement>(null);
   const id = useId();
   const open = pos !== null;
+  const t = useT();
 
   useEffect(() => {
     if (!open) return;
@@ -64,7 +60,7 @@ export function SourceChip({ source: s, dossierId }: { source: SourceRef; dossie
     setPos({ left: Math.max(8, Math.min(r.left, window.innerWidth - w - 8)), top: r.bottom + 6 });
   };
 
-  const checked = day(s.verifiedAt);
+  const checked = s.verifiedAt ? t.date(s.verifiedAt.slice(0, 10)) : null;
   return (
     <>
       <button
@@ -73,7 +69,7 @@ export function SourceChip({ source: s, dossierId }: { source: SourceRef; dossie
         onClick={toggle}
         aria-expanded={open}
         aria-controls={open ? id : undefined}
-        aria-label={`Source ${s.label}: ${s.title}`}
+        aria-label={t("Source {label}: {title}", { label: s.label, title: s.title })}
         className="mx-0.5 inline-flex h-[22px] min-w-[22px] cursor-pointer items-center justify-center gap-1 rounded-full border-0 bg-[var(--depth1)] px-1.5 align-[2px] font-[inherit] text-[12px] font-semibold leading-none text-ink hover:bg-[var(--depth2)] aria-expanded:bg-ink aria-expanded:text-panel"
         data-testid="source-chip"
       >
@@ -85,13 +81,13 @@ export function SourceChip({ source: s, dossierId }: { source: SourceRef; dossie
           ref={card}
           id={id}
           role="dialog"
-          aria-label={`Source ${s.label}`}
+          aria-label={t("Source {label}", { label: s.label })}
           style={{ left: pos.left, top: pos.top, width: Math.min(W, typeof window === "undefined" ? W : window.innerWidth - 16) }}
           className="fixed z-50 flex flex-col gap-2 rounded-[var(--r-l)] border border-rule-strong bg-panel p-4 text-left text-[14px] font-normal leading-normal text-ink shadow-[0_8px_24px_rgba(20,35,58,.14)]"
         >
           <p className="m-0 flex justify-between gap-3 text-[13px] text-ink2">
-            <span>Source {s.label}</span>
-            <span>{s.type}</span>
+            <span>{t("Source {label}", { label: s.label })}</span>
+            <span>{t.k(s.type)}</span>
           </p>
           <p className="m-0 text-[15.5px] font-semibold leading-snug [overflow-wrap:anywhere]">
             {s.url ? (
@@ -103,29 +99,26 @@ export function SourceChip({ source: s, dossierId }: { source: SourceRef; dossie
             )}
           </p>
           <p className="m-0 text-[13px] text-ink2">
-            {[s.host, checked ? `checked ${checked}` : "date unverified"].filter(Boolean).join(", ")}
+            {[s.host, checked ? t("checked {date}", { date: checked }) : t("date unverified")].filter(Boolean).join(", ")}
           </p>
           <div className="flex flex-col gap-1.5 border-t border-rule pt-2.5">
             <p className="m-0 flex gap-2.5">
               {dot(relLevel(s.reliability))}
               <span>
-                <b>{cap(RELIABILITY_WORDS[s.reliability])} source.</b>
+                <b>{t.k(`${cap(RELIABILITY_WORDS[s.reliability])} source.`)}</b>
               </span>
             </p>
             <p className="m-0 flex gap-2.5">
               {dot(credLevel(s.credibility))}
               <span>
-                <b>{cap(CREDIBILITY_WORDS[s.credibility])}.</b> {s.credibilityReason}
+                <b>{t.k(`${cap(CREDIBILITY_WORDS[s.credibility])}.`)}</b> {s.credibilityReason}
               </span>
             </p>
           </div>
           <p className="m-0 flex items-center justify-between gap-3 text-[12.5px] text-ink2">
-            <span>
-              Admiralty grade {s.reliability}
-              {s.credibility}
-            </span>
+            <span>{t("Admiralty grade {grade}", { grade: `${s.reliability}${s.credibility}` })}</span>
             <Link href={`/d/${dossierId}/sources?id=${encodeURIComponent(s.label)}`} className="text-[13.5px] font-semibold">
-              In the source list
+              {t("In the source list")}
             </Link>
           </p>
         </div>

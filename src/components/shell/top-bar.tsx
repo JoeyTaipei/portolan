@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Both } from "@/lib/i18n/client";
+import { LangSwitch } from "./lang-switch";
 import { currentTab, tabHref, TABS } from "./tabs";
 
 // SHELL-1 desktop bar: brand, five tabs (≥1024px) and the Sample data stamp.
@@ -29,12 +31,19 @@ export function TopBar({ dossierId, isSample }: { dossierId: string | null; isSa
               }`}
             >
               {t.icon}
-              {t.label}
+              <Both k={t.label} />
             </Link>
           );
         })}
       </nav>
-      {isSample ? <span className="sample">Sample data</span> : <span aria-hidden="true" />}
+      <div className="flex items-center gap-3">
+        <LangSwitch />
+        {isSample && (
+          <span className="sample">
+            <Both k="Sample data" />
+          </span>
+        )}
+      </div>
     </header>
   );
 }

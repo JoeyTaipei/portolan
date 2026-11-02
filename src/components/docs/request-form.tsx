@@ -1,5 +1,6 @@
 "use client";
 
+import { useT } from "@/lib/i18n/client";
 import Link from "next/link";
 import { useId, useState } from "react";
 import type { ActionResult, DocumentType } from "@/lib/types";
@@ -40,6 +41,7 @@ export function RequestForm({
   const uid = useId();
   const isNote = type === "briefing_note";
   const blocked = isNote && meetings.length === 0;
+  const t = useT();
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -51,7 +53,7 @@ export function RequestForm({
     if (r.ok) {
       setDone(r.data.received);
       setOpen(false);
-    } else setError(r.error);
+    } else setError(t.x(r.error));
   }
 
   return (
@@ -66,29 +68,29 @@ export function RequestForm({
           setDone(null);
         }}
       >
-        {open ? "Close" : "+ Request a document"}
+        {open ? t("Close") : t("+ Request a document")}
       </button>
 
       {done && (
         <p role="status" className="m-0 rounded-[var(--r-m)] border border-rule-strong bg-panel px-3 py-2.5 text-[13.5px] leading-[1.45]">
-          <b>Request received.</b> {done}
+          <b>{t("Request received.")}</b> {done}
         </p>
       )}
 
       {open && (
-        <form id={`${uid}-form`} onSubmit={submit} className="flex flex-col gap-4 rounded-[var(--r-l)] border border-rule bg-panel p-4" aria-label="Request a document">
+        <form id={`${uid}-form`} onSubmit={submit} className="flex flex-col gap-4 rounded-[var(--r-l)] border border-rule bg-panel p-4" aria-label={t("Request a document")}>
           <fieldset className="m-0 flex flex-col gap-1.5 border-0 p-0">
-            <legend className="mb-1.5 p-0 text-[13px] font-bold">Document</legend>
-            {TYPES.map((t) => (
+            <legend className="mb-1.5 p-0 text-[13px] font-bold">{t("Document")}</legend>
+            {TYPES.map((k) => (
               <label
-                key={t}
-                className={`flex min-h-11 cursor-pointer items-start gap-2.5 rounded-[var(--r-m)] border px-3 py-2 ${type === t ? "border-rule-strong bg-panel2" : "border-rule"}`}
+                key={k}
+                className={`flex min-h-11 cursor-pointer items-start gap-2.5 rounded-[var(--r-m)] border px-3 py-2 ${type === k ? "border-rule-strong bg-panel2" : "border-rule"}`}
               >
-                <input type="radio" name={`${uid}-type`} value={t} checked={type === t} onChange={() => setType(t)} className="mt-1 accent-[var(--ink)]" />
+                <input type="radio" name={`${uid}-type`} value={k} checked={type === k} onChange={() => setType(k)} className="mt-1 accent-[var(--ink)]" />
                 <span className="text-[14px] leading-snug">
-                  <b>{TYPE_INFO[t].label}</b>
+                  <b>{t.k(TYPE_INFO[k].label)}</b>
                   <span className="block text-[12.5px] text-ink2">
-                    {TYPE_INFO[t].pages} · {TYPE_INFO[t].desc.toLowerCase()}
+                    {t.k(TYPE_INFO[k].pages)} · {t.k(TYPE_INFO[k].desc.toLowerCase())}
                   </span>
                 </span>
               </label>
@@ -98,13 +100,13 @@ export function RequestForm({
           {isNote && (
             <div className="flex flex-col gap-1.5">
               <label htmlFor={`${uid}-item`} className="text-[13px] font-bold">
-                Which meeting or stakeholder
+                {t("Which meeting or stakeholder")}
               </label>
               {blocked ? (
                 <p className="m-0 text-[13.5px] text-ink2">
-                  Add someone to your tracker first.{" "}
+                  {t("Add someone to your tracker first.")}{" "}
                   <Link href={`/d/${dossierId}/map`} className="font-semibold text-[var(--link)]">
-                    Open the map
+                    {t("Open the map")}
                   </Link>
                 </p>
               ) : (
@@ -127,17 +129,17 @@ export function RequestForm({
           {isNote ? (
             <div className="flex flex-col gap-1.5">
               <label className="flex min-h-11 cursor-pointer items-center justify-between gap-3 text-[14px] font-semibold">
-                Expert review
+                {t("Expert review")}
                 <input type="checkbox" role="switch" checked={expert} onChange={(e) => setExpert(e.target.checked)} className="h-5 w-9 accent-[var(--ink)]" />
               </label>
               <p className="m-0 text-[13px] leading-[1.45] text-ink2" aria-live="polite">
                 {expert
-                  ? `AI draft in about 10 minutes, then expert review ${etaText}.`
-                  : "AI draft in about 10 minutes. Not reviewed — check names and dates before sharing."}
+                  ? t("AI draft in about 10 minutes, then expert review {eta|t}.", { eta: t.k(etaText) })
+                  : t("AI draft in about 10 minutes. Not reviewed — check names and dates before sharing.")}
               </p>
             </div>
           ) : (
-            <p className="m-0 text-[13px] leading-[1.45] text-ink2">A manual service: the Portolan team prepares it and uploads the PDF here.</p>
+            <p className="m-0 text-[13px] leading-[1.45] text-ink2">{t("A manual service: the Portolan team prepares it and uploads the PDF here.")}</p>
           )}
 
           {error && (
@@ -146,7 +148,7 @@ export function RequestForm({
             </p>
           )}
           <button type="submit" className="btn btn-main" disabled={busy || blocked}>
-            {busy ? "Sending…" : `Request ${TYPE_INFO[type].label.toLowerCase()}`}
+            {busy ? t("Sending…") : t("Request {doc|t}", { doc: t.k(TYPE_INFO[type].label.toLowerCase()) })}
           </button>
         </form>
       )}

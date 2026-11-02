@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { addToTracker } from "@/app/d/[id]/tracker/actions";
+import { useT } from "@/lib/i18n/client";
 
 // MAP-10 "Add to tracker" on a real dossier: the Server Action stores it (the sample uses the
 // browser-only overlay in components/map/add-to-tracker.tsx).
@@ -22,6 +23,7 @@ export function AddToTrackerButton({
   // A different stakeholder was selected: start fresh.
   const s = state.for === stakeholderId ? state : { for: stakeholderId, status: "idle" as const, error: null };
   const added = alreadyTracked || s.status === "added";
+  const t = useT();
 
   async function add() {
     if (added || s.status === "busy") return;
@@ -39,11 +41,11 @@ export function AddToTrackerButton({
         aria-busy={s.status === "busy"}
         className={`btn w-full ${added ? "border-[var(--done)] bg-[var(--done)] text-[var(--done-ink)]" : "btn-main"}`}
       >
-        {added ? "Added to tracker" : s.status === "busy" ? "Adding…" : "Add to tracker"}
+        {added ? t("Added to tracker") : s.status === "busy" ? t("Adding…") : t("Add to tracker")}
       </button>
       {s.error && (
         <p role="alert" className="m-0 text-[13px] font-semibold text-[var(--res-text)]">
-          {s.error}
+          {t.x(s.error)}
         </p>
       )}
     </div>

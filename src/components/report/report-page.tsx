@@ -1,5 +1,7 @@
 import { headers } from "next/headers";
 import { Nis } from "@/components/shell/nis";
+import { Both } from "@/lib/i18n/client";
+import { getT } from "@/lib/i18n/server";
 import type { Dossier } from "@/lib/types";
 import { A4Report } from "./a4-report";
 import { buildReportModel } from "./model";
@@ -19,13 +21,14 @@ async function origin(): Promise<string> {
 export async function ReportScreen({ d, shared }: { d: Dossier; shared: boolean }) {
   const brief = d.briefs.at(-1);
   if (!brief) {
+    const t = await getT();
     return (
       <Nis
         kind="empty"
         headingLevel={1}
-        title="This report is still being prepared"
-        desc="It appears here once the strategy brief has been written from sourced facts."
-        actions={shared ? [] : [{ label: "See research progress", href: `/d/${d.id}` }]}
+        title={t("This report is still being prepared")}
+        desc={t("It appears here once the strategy brief has been written from sourced facts.")}
+        actions={shared ? [] : [{ label: t("See research progress"), href: `/d/${d.id}` }]}
       />
     );
   }
@@ -44,7 +47,7 @@ export async function ReportScreen({ d, shared }: { d: Dossier; shared: boolean 
 export function ReportSkeleton() {
   return (
     <div className="rp-desk" aria-busy="true">
-      <Nis kind="loading" title="Loading the report…" desc="Fetching the brief and its sources." />
+      <Nis kind="loading" title={<Both k="Loading the report…" />} desc={<Both k="Fetching the brief and its sources." />} />
       <div className="skel" style={{ width: "min(794px, calc(100vw - 32px))", height: 600 }} />
     </div>
   );

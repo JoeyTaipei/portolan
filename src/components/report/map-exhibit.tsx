@@ -1,3 +1,4 @@
+import { getT } from "@/lib/i18n/server";
 import { NodeShape } from "@/components/map/node-mark";
 import { FLOOR_Y, project, round, type Point3 } from "@/components/map/project";
 import type { Mark } from "@/components/map/model";
@@ -28,7 +29,8 @@ const LEGEND: { mark: Mark; label: string }[] = [
   { mark: "unknown", label: "Unknown" },
 ];
 
-export function MapExhibit({ exhibit, takeaway }: { exhibit: ReportVM["exhibit"]; takeaway: string }) {
+export async function MapExhibit({ exhibit, takeaway }: { exhibit: ReportVM["exhibit"]; takeaway: string }) {
+  const t = await getT();
   const pos = new Map(exhibit.nodes.map((n) => [n.id, at(n)]));
   const centre = at({ x: 0, y: FLOOR_Y, z: 0 });
   const rhumbs = Array.from({ length: 16 }, (_, i) => {
@@ -49,10 +51,10 @@ export function MapExhibit({ exhibit, takeaway }: { exhibit: ReportVM["exhibit"]
   return (
     <figure className="rp-mini">
       <p className="ex">
-        <span>Exhibit 1</span>
+        <span>{t("Exhibit {n}", { n: 1 })}</span>
         {takeaway}
       </p>
-      <svg className="map" viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Stakeholder map at a fixed angle">
+      <svg className="map" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={t("Stakeholder map at a fixed angle")}>
         <path className="pm-f1" d={floor(1.15)} />
         <path className="pm-f2" d={floor(0.6)} />
         {rhumbs.map((r, i) => (
@@ -79,13 +81,13 @@ export function MapExhibit({ exhibit, takeaway }: { exhibit: ReportVM["exhibit"]
           );
         })}
         <text className="zone" x={8} y={13}>
-          Government
+          {t("Government")}
         </text>
         <text className="zone" x={W - 8} y={13} textAnchor="end">
-          Industry
+          {t("Industry")}
         </text>
         <text className="zone" x={W / 2} y={H - 5} textAnchor="middle">
-          Capital and legal
+          {t("Capital and legal")}
         </text>
       </svg>
       <figcaption>
@@ -94,11 +96,11 @@ export function MapExhibit({ exhibit, takeaway }: { exhibit: ReportVM["exhibit"]
             <svg viewBox="-7 -7 14 14" aria-hidden="true">
               <NodeShape mark={l.mark} r={5} />
             </svg>
-            {l.label}
+            {t.k(l.label)}
           </span>
         ))}
-        <span>Size = influence. Dashed route 1–3 = contact first.</span>
-        <span>Source: Portolan analysis of {exhibit.sourceCount} sources</span>
+        <span>{t("Size = influence. Dashed route 1–3 = contact first.")}</span>
+        <span>{t("Source: Portolan analysis of {n} sources", { n: exhibit.sourceCount })}</span>
       </figcaption>
     </figure>
   );

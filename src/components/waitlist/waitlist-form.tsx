@@ -1,5 +1,6 @@
 "use client";
 
+import { useT } from "@/lib/i18n/client";
 import Link from "next/link";
 import { useRef, useState, useTransition } from "react";
 import { joinWaitlistAction } from "@/app/waitlist/actions";
@@ -31,6 +32,7 @@ export function WaitlistForm({ from }: { from: CameFrom }) {
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
   const [pending, start] = useTransition();
+  const t = useT();
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -59,8 +61,8 @@ export function WaitlistForm({ from }: { from: CameFrom }) {
         return;
       }
       const fields = r.fields ?? {};
-      setErrors(fields);
-      setError(r.fields ? null : r.error);
+      setErrors(Object.fromEntries(Object.entries(fields).map(([k, m]) => [k, t.x(m as string)])));
+      setError(r.fields ? null : t.x(r.error));
       const first = ORDER.find((k) => fields[k]);
       if (first) (form.elements.namedItem(first) as HTMLInputElement | null)?.focus();
     });
@@ -69,19 +71,15 @@ export function WaitlistForm({ from }: { from: CameFrom }) {
   if (done) {
     return (
       <div role="status" className="flex flex-col gap-3">
-        <h2 className="m-0 text-[22px] font-bold leading-tight">You&rsquo;re on the list</h2>
-        <p className="m-0 text-[15px]">
-          Thank you. The Portolan team will contact you by email or phone, using the details you left here.
-        </p>
-        <p className="m-0 text-[14px] text-ink2">
-          Sent the wrong details? Fill in the form again with the same email and we&rsquo;ll update them.
-        </p>
+        <h2 className="m-0 text-[22px] font-bold leading-tight">{t("You’re on the list")}</h2>
+        <p className="m-0 text-[15px]">{t("Thank you. The Portolan team will contact you by email or phone, using the details you left here.")}</p>
+        <p className="m-0 text-[14px] text-ink2">{t("Sent the wrong details? Fill in the form again with the same email and we’ll update them.")}</p>
         <div className="flex flex-wrap gap-2">
           <Link href="/d/sample" className="btn btn-main">
-            See the sample market
+            {t("See the sample market")}
           </Link>
           <button type="button" className="btn btn-ghost" onClick={() => setDone(false)}>
-            Edit my details
+            {t("Edit my details")}
           </button>
         </div>
       </div>
@@ -92,14 +90,14 @@ export function WaitlistForm({ from }: { from: CameFrom }) {
   const desc = (k: WaitlistField, extra?: string) => [extra, errors[k] ? `${k}-err` : undefined].filter(Boolean).join(" ") || undefined;
 
   return (
-    <form ref={formRef} noValidate onSubmit={submit} aria-label="Join the waitlist" className="flex flex-col gap-4">
+    <form ref={formRef} noValidate onSubmit={submit} aria-label={t("Join the waitlist")} className="flex flex-col gap-4">
       <label className={lab}>
-        Company name
+        {t("Company name")}
         <input name="company" autoComplete="organization" required maxLength={200} aria-invalid={inv("company")} aria-describedby={desc("company")} className={field} />
         <FieldError id="company-err" msg={errors.company} />
       </label>
       <label className={lab}>
-        Contact email
+        {t("Contact email")}
         <input
           name="email"
           type="email"
@@ -114,9 +112,9 @@ export function WaitlistForm({ from }: { from: CameFrom }) {
         <FieldError id="email-err" msg={errors.email} />
       </label>
       <label className={lab}>
-        Phone
+        {t("Phone")}
         <span id="phone-hint" className="text-[13px] font-normal text-ink2">
-          Include the country code, e.g. +61 412 345 678
+          {t("Include the country code, e.g. +61 412 345 678")}
         </span>
         <input
           name="phone"
@@ -148,8 +146,9 @@ export function WaitlistForm({ from }: { from: CameFrom }) {
             className="mt-px size-5 shrink-0 accent-[var(--ink)]"
           />
           <span>
-            I agree that the Portolan team may contact me by email or phone about Portolan. We keep only these details and the
-            time you joined; see <Link href="/privacy#waitlist">Privacy</Link>.
+            {t("I agree that the Portolan team may contact me by email or phone about Portolan. We keep only these details and the time you joined; see")}{" "}
+            <Link href="/privacy#waitlist">{t("Privacy")}</Link>
+            {t(".")}
           </span>
         </label>
         <FieldError id="consent-err" msg={errors.consent} />
@@ -160,7 +159,7 @@ export function WaitlistForm({ from }: { from: CameFrom }) {
         </p>
       )}
       <button type="submit" className="btn btn-main" disabled={pending} aria-busy={pending || undefined}>
-        {pending ? "Joining…" : "Join the waitlist"}
+        {pending ? t("Joining…") : t("Join the waitlist")}
       </button>
     </form>
   );

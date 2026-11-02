@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Both } from "@/lib/i18n/client";
 import { resetOverlay } from "@/lib/sample/overlay";
 
 // SHELL-3: on /d/sample, say that changes stay in this browser, with Reset sample.
@@ -15,7 +16,9 @@ export function SampleBar() {
 
   return (
     <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-rule bg-panel px-[18px] py-1.5 text-[13px] text-ink2 lg:px-6">
-      <span>Changes to the sample stay in this browser.</span>
+      <span>
+        <Both k="Changes to the sample stay in this browser." />
+      </span>
       <button
         type="button"
         aria-live="polite"
@@ -25,7 +28,7 @@ export function SampleBar() {
           setDone(true);
         }}
       >
-        {done ? "Sample reset" : "Reset sample"}
+        {done ? <Both k="Sample reset" /> : <Both k="Reset sample" />}
       </button>
     </div>
   );

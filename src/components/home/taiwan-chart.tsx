@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useT } from "@/lib/i18n/client";
 import { NodeShape } from "@/components/map/node-mark";
 import { round } from "@/components/map/project";
 import { s } from "@/components/map/marks";
@@ -59,6 +60,7 @@ export function TaiwanChart({
   label: string;
 }) {
   const router = useRouter();
+  const t = useT();
   const pr = chartProj(bounds, w, h);
   const [rx, ry] = pr(rose[0], rose[1]);
   const coast = `M${COAST.map(([lon, lat]) => pr(lon, lat).map((v) => v.toFixed(1)).join(",")).join("L")}Z`;
@@ -91,7 +93,7 @@ export function TaiwanChart({
             <g key={p.name}>
               <circle className={s.port} cx={x} cy={y} r={1.8} />
               <text className={s.portName} transform={`translate(${x.toFixed(1)},${y.toFixed(1)}) rotate(${p.rot})`} x={5} dy="0.35em">
-                {p.name}
+                {t.k(p.name)}
               </text>
             </g>
           );
@@ -106,7 +108,7 @@ export function TaiwanChart({
             key={p.id}
             role="link"
             tabIndex={0}
-            aria-label={`${p.short}${p.city ? `, ${p.city}` : ""}. Open on the stakeholder map`}
+            aria-label={t("{name}. Open on the stakeholder map", { name: `${p.short}${p.city ? `, ${p.city}` : ""}` })}
             className={s.placed}
             transform={`translate(${x.toFixed(1)},${y.toFixed(1)})`}
             onClick={() => open(p.id)}
