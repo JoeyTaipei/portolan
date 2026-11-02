@@ -4,6 +4,7 @@ import { quadrant } from "@/lib/scoring/ranking";
 import type { NodeVM } from "./model";
 import { MarkIcon, NodeShape } from "./node-mark";
 import { nodeRadius } from "./project";
+import { placeLabels } from "./matrix-labels";
 import { useSize } from "./use-size";
 import { s } from "./marks";
 
@@ -36,6 +37,19 @@ export function PowerMatrix({
     };
   };
 
+  const labels = placeLabels(
+    placed.map((n) => ({ id: n.id, ...pos(n), r: nodeRadius(n.influence?.score ?? null), text: n.short })),
+    W,
+    H,
+    // Quadrant titles (11px text on the baselines used below).
+    [
+      { x1: px, x2: px + 70, y1: py + 4, y2: py + 19 },
+      { x1: W - px - 80, x2: W - px, y1: py + 4, y2: py + 19 },
+      { x1: px, x2: px + 60, y1: bt - 18, y2: bt - 3 },
+      { x1: W - px - 105, x2: W - px, y1: bt - 18, y2: bt - 3 },
+    ],
+  );
+
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-2">
       <div ref={ref} className={s.stage} style={{ cursor: "default" }}>
@@ -59,7 +73,7 @@ export function PowerMatrix({
             const p = pos(n);
             const r = nodeRadius(n.influence?.score ?? null);
             const isSel = selected === n.id;
-            const right = p.x > W - 130;
+            const lab = labels.get(n.id)!;
             return (
               <g
                 key={n.id}
@@ -70,15 +84,14 @@ export function PowerMatrix({
                 onClick={() => onSelect(isSel ? null : n.id)}
               >
                 <title>{n.short}</title>
+                {lab.dy !== 0 && <line className={s.edge} x1={0} y1={0} x2={lab.dx} y2={lab.dy} pointerEvents="none" />}
                 <g className={s.shape}>
                   <NodeShape mark={n.mark} r={r} />
                   <circle r={Math.max(r + 4, 10)} fill="transparent" />
                 </g>
-                {(isSel || (n.influence?.score ?? 0) >= 60) && (
-                  <text className={s.label} dy="0.35em" x={(right ? -1 : 1) * (r + 5)} textAnchor={right ? "end" : "start"}>
-                    {n.short}
-                  </text>
-                )}
+                <text className={s.label} dy="0.35em" x={lab.dx} y={lab.dy} textAnchor={lab.anchor}>
+                  {n.short}
+                </text>
               </g>
             );
           })}
