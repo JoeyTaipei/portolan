@@ -1,5 +1,6 @@
 import "server-only";
 import { writeBrief } from "@/lib/claude/brief";
+import { translateAfterBrief } from "@/lib/claude/translate";
 import { writeLeads } from "@/lib/claude/leads";
 import { rateEntity } from "@/lib/claude/rate";
 import {
@@ -451,6 +452,8 @@ async function runBrief(run: ResearchRun, step: ResearchStep, now: Date) {
     return;
   }
   const version = await insertBrief(run.dossierId, r.brief.draft, r.brief.removed);
+  // I18N-9: the 繁中 pass; a failure only logs and the brief stays English.
+  await translateAfterBrief({ d, version, draft: r.brief.draft, ledger: { store: ledgerStore, runId: run.id, dossierId: run.dossierId, purpose: "brief_zh" } });
   await updateStep(step.id, { status: "done", result: { version, removed: r.brief.removed.length, log: r.brief.log.slice(0, 20), model: r.brief.model } });
 }
 

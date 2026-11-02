@@ -31,7 +31,7 @@ export async function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string 
   const route = r.exhibit.route
     .map((id) => r.exhibit.nodes.find((n) => n.id === id)?.short)
     .filter((n): n is string => !!n);
-  const names = t.locale === "zh-TW" ? route.map(t.n).join("、") : route.length === 1 ? route[0] : `${route.slice(0, -1).join(", ")} and ${route.at(-1)}`;
+  const names = t.locale === "zh-TW" ? route.map((x) => t.n(x, r.zh)).join("、") : route.length === 1 ? route[0] : `${route.slice(0, -1).join(", ")} and ${route.at(-1)}`;
   const takeaway =
     route.length > 0 ? t("Contact {name} first.", { name: names }) : t("No stakeholder is ready to contact first yet.");
 
@@ -47,11 +47,11 @@ export async function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string 
             <span>{t("Market entry brief · Confidential")}</span>
             {r.isSample && <span className="sample">{t("Sample data")}</span>}
           </div>
-          <h1>{t.r(r.name)}</h1>
+          <h1>{t.r(r.name, r.zh)}</h1>
           {r.preparedFor && (
             <p>
-              {t("Prepared for")} <b>{t.r(r.preparedFor.company)}</b>,{" "}
-              {t.r(r.preparedFor.product)}, {t.dt(r.preparedFor.date)}
+              {t("Prepared for")} <b>{t.r(r.preparedFor.company, r.zh)}</b>,{" "}
+              {t.r(r.preparedFor.product, r.zh)}, {t.dt(r.preparedFor.date)}
             </p>
           )}
         </div>
@@ -77,7 +77,7 @@ export async function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string 
           {r.judgment && (
             <section className="rp-bottom" aria-label={t("Bottom line")}>
               <p>
-                <b>{t("Bottom line:")}</b> <span data-testid="conclusion">{t.r(r.judgment.text)}</span>{" "}
+                <b>{t("Bottom line:")}</b> <span data-testid="conclusion">{t.r(r.judgment.text, r.zh)}</span>{" "}
                 <span className="t">
                   {t("{icd|t}, {level|t} confidence.", { icd: t.k(icdText(r.judgment.icd)), level: t.locale === "zh-TW" ? t.k(r.judgment.confidence) : r.judgment.confidence.toLowerCase() })}
                 </span>
@@ -104,7 +104,7 @@ export async function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string 
               ? t("Not enough sourced facts for this section.")
               : r.summary.map((s, i) => (
                   <span key={i}>
-                    <span data-testid="conclusion">{t.r(s.text)}</span>
+                    <span data-testid="conclusion">{t.r(s.text, r.zh)}</span>
                     <Cite refs={s.refs} />{" "}
                   </span>
                 ))}
@@ -156,14 +156,14 @@ export async function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string 
                       {row.first}
                     </span>
                   )}
-                  {t.n(row.name)}
+                  {t.n(row.name, r.zh)}
                 </td>
                 <td className="st">
                   <MarkIcon mark={row.mark} />
                   {t.k(STANCE_LABEL[row.mark])}
                 </td>
                 <td className="in">{t.x(row.influence)}</td>
-                <td className={row.nextVerified ? undefined : "un"} data-testid="conclusion">{t.r(row.next)}</td>
+                <td className={row.nextVerified ? undefined : "un"} data-testid="conclusion">{t.r(row.next, r.zh)}</td>
                 <td className="src">
                   {row.refs.map((s) => (
                     <span
@@ -188,7 +188,7 @@ export async function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string 
               <p className="rp-lab">{t("Most likely first buyer")}</p>
               {r.firstBuyer ? (
                 <p className="rp-path" data-testid="a4-first-buyer">
-                  <b>{t.n(r.firstBuyer.who)}</b>{t.locale === "zh-TW" ? "，" : ", "}{t.k(r.firstBuyer.how)}{t(".")} {t("Why:")}{" "}
+                  <b>{t.n(r.firstBuyer.who, r.zh)}</b>{t.locale === "zh-TW" ? "，" : ", "}{t.k(r.firstBuyer.how)}{t(".")} {t("Why:")}{" "}
                   {t.x(r.firstBuyer.why)}{t(".")}
                   <Cite refs={r.firstBuyer.refs} />
                 </p>
@@ -208,7 +208,7 @@ export async function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string 
                   {r.path.map((p, i) => (
                     <span key={p.stakeholderId}>
                       {i > 0 && " → "}
-                      <b>{t.n(p.who)}</b>
+                      <b>{t.n(p.who, r.zh)}</b>
                     </span>
                   ))}
                   <Cite refs={dedupeRefs(r.path.flatMap((p) => p.why.refs))} />
@@ -225,7 +225,7 @@ export async function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string 
               <li key={p.days}>
                 <span className="wp">{i + 1}</span>
                 <span>
-                  <b>{t.k(p.days)}{t(".")}</b> <span data-testid="conclusion">{t.r(p.text)}</span>
+                  <b>{t.k(p.days)}{t(".")}</b> <span data-testid="conclusion">{t.r(p.text, r.zh)}</span>
                   <Cite refs={p.refs} />
                 </span>
               </li>
@@ -247,7 +247,7 @@ export async function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string 
               {r.partners.map((p, i) => (
                 <li key={p.id}>
                   <b>
-                    {i + 1}. {t.n(p.short)}
+                    {i + 1}. {t.n(p.short, r.zh)}
                   </b>
                   {t(p.sources === 1 ? ", {n} source" : ", {n} sources", { n: p.sources })}
                   {p.buyers > 0 && t(p.buyers === 1 ? ", tied to {n} buyer" : ", tied to {n} buyers", { n: p.buyers })}
@@ -265,7 +265,7 @@ export async function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string 
               <ul className="rp-list rp-req" aria-label={t("Entry requirements")}>
                 {r.requirements.map((x) => (
                   <li key={x.topic}>
-                    <b>{t.k(x.label)}{t(".")}</b> <span data-testid="conclusion">{t.r(x.text)}</span>
+                    <b>{t.k(x.label)}{t(".")}</b> <span data-testid="conclusion">{t.r(x.text, r.zh)}</span>
                     <Cite refs={x.refs} />
                   </li>
                 ))}
@@ -290,7 +290,7 @@ export async function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string 
                 <ul className="rp-list rp-haz">
                   {r.risks.map((s, i) => (
                     <li key={i}>
-                      <span data-testid="conclusion">{t.r(s.text)}</span>
+                      <span data-testid="conclusion">{t.r(s.text, r.zh)}</span>
                       <Cite refs={s.refs} />
                     </li>
                   ))}
