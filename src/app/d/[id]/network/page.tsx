@@ -8,7 +8,7 @@ import { loadDossier } from "@/lib/db/load-dossier";
 
 export const metadata = { title: "Network · Portolan" };
 
-// 04 Network (spec §12). `?tab=lawyers|events` opens that tab. Only the cards' view model goes
+// 04 Network (spec §12). Partners is the default tab; `?tab=investors|lawyers|events` opens another. Only the cards' view model goes
 // to the browser; matches are the sourced checks research stored, never computed here.
 export default function NetworkPage({ params, searchParams }: PageProps<"/d/[id]/network">) {
   return (
@@ -24,5 +24,5 @@ async function NetworkContent({ params, searchParams }: Pick<PageProps<"/d/[id]/
   if (!d) notFound();
   await connection();
   const sp = await searchParams;
-  return <NetworkView vm={buildNetworkModel(d)} tab={parseTab(sp.tab)} />;
+  return <NetworkView vm={buildNetworkModel(d, new Date())} tab={parseTab(sp.tab)} />;
 }

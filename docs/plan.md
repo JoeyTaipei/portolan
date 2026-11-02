@@ -663,6 +663,29 @@ Why: the research report (`reports/顧問級進場報告改進建議.md`) found 
 
 **Acceptance**: the shared block (§4) with routes `/d/sample/brief` and `/d/sample/report`; `PORT=3001 npx playwright test e2e/demo-path.spec.ts` (A4 stays one page).
 
+### S15 Partner candidates (added 2026-11-02, slice C of the consulting-report handover)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| ui (one session) | `feature/partner-cards` (stacked on S14) | S14 | 3 h | P4 | none |
+
+Why: the founder approved slices A, B, C, D and F on 2026-11-02 (not E, G, H). The research report ranks named local partners as the strongest upgrade: a paid report with no named partners repeats the free trade.gov guide. Joey chose "existing data only" (no Claude classification, no Parallel enrich). Spec NET-7, REP-14.
+
+**Risky changes: list before code** (sources and Unverified marks; China rule):
+- *A card read as an endorsement.* "Candidate" label, fixed line "Ranked by public evidence, not endorsed", human intro as the route.
+- *Evidence overstated* (an MOU shown as a contract). Each item is its own sourced text; code adds no kind label.
+- *A wrong flag.* Flags come from verbatim quotes and show that quote. Verify: tests for both flags and for non-matches.
+- *China rule.* An Industry stakeholder in China never gets a card. Verify: unit test.
+- *Unsourced items on a card.* Only accepted sources with a verified date; a next step with none shows Unverified. Verify: test that every evidence item has refs.
+- *A4 past one page.* Verify: e2e one-page check.
+- No migration, no `src/lib/types.ts` change, no paid call.
+
+**Files**: `src/components/partners/{model.ts,partners.test.ts,partner-card.tsx}`, `src/components/network/{model.ts,tabs.tsx,network-view.tsx}`, `src/app/d/[id]/network/page.tsx`, `src/components/report/{model.ts,a4-report.tsx,report.css}`, `design/partner-options/index.html`, `docs/spec.md`, `docs/plan.md`.
+
+**Tests added**: `partners.test.ts`: sample cards, order and counts; exclusive flag on MiTAC and JC Tech only; contract trouble on Tron Future only; China excluded; every evidence item cited.
+
+**Acceptance**: the shared block (§4) with routes `/d/sample/network?tab=partners` and `/d/sample/report`; `PORT=3001 npx playwright test e2e/demo-path.spec.ts`.
+
 ---
 
 ## 6. Risks
