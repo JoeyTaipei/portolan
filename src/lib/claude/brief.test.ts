@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { sampleDossier } from "@/lib/sample/reader";
 import { buildBriefModel } from "@/components/brief/model";
+import { gapLine } from "@/components/report/model";
+import { isEligible, scoreStakeholders } from "@/lib/scoring";
 import { briefPrompt, writeBrief } from "./brief";
 
 // S8 finding F1: text from fetched pages (event titles, fact values) must not be able to close
@@ -50,5 +52,30 @@ describe("entry requirements", () => {
     expect(buildBriefModel(sampleDossier, brief, now).exportCheck).toBe(true);
     const withExport = { ...brief, requirements: [...brief.requirements, { topic: "export_control" as const, text: "x", sourceIds: brief.requirements[0].sourceIds }] };
     expect(buildBriefModel(sampleDossier, withExport, now).exportCheck).toBe(false);
+  });
+});
+
+// Plan S14 (BRIEF-11): "What we could not verify" is counted by code from the same data as the
+// Unverified marks, and a line goes away once its gap has a source.
+describe("what we could not verify", () => {
+  const now = new Date("2026-11-02T00:00:00Z");
+  const brief = sampleDossier.briefs.at(-1)!;
+
+  it("lists the sample's gaps with counts that match scoring", () => {
+    const m = buildBriefModel(sampleDossier, brief, now);
+    expect(m.gaps.map((g) => g.key)).toEqual(["requirements", "export", "window", "support", "influence", "unscored", "events"]);
+    const eligible = sampleDossier.stakeholders.filter(isEligible).map((s) => s.id);
+    const unknown = scoreStakeholders(sampleDossier, now).filter((s) => eligible.includes(s.id) && s.support.kind === "unknown").length;
+    expect(m.gaps.find((g) => g.key === "support")!.text).toContain(`Unknown for ${unknown} of ${eligible.length} stakeholders`);
+    expect(m.gaps.find((g) => g.key === "requirements")!.text).toBe("Entry requirements: no source found for cybersecurity.");
+  });
+
+  it("drops a line when the gap is sourced", () => {
+    const withCyber = { ...brief, requirements: [...brief.requirements, { topic: "cybersecurity" as const, text: "x", sourceIds: brief.requirements[0].sourceIds }] };
+    expect(buildBriefModel(sampleDossier, withCyber, now).gaps.map((g) => g.key)).not.toContain("requirements");
+  });
+
+  it("keeps the A4 line to whole items and counts the rest", () => {
+    expect(gapLine(["a".repeat(100), "b".repeat(60), "c".repeat(30)])).toEqual({ items: ["a".repeat(100), "b".repeat(60)], more: 1 });
   });
 });

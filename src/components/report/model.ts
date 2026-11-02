@@ -18,6 +18,10 @@ export const REQUIREMENTS_N = 4;
 export const REQUIREMENTS_CHARS = 380;
 export const MEET_N = 3;
 export const ROW_SOURCES_N = 2;
+/** REP-13: the "Not verified" line is cut to this many characters so the page still fits. */
+export const GAPS_CHARS = 170;
+/** REP-12/13: the foot lists this many of the table's sources so the "Not verified" line fits. */
+export const SOURCES_N = 6;
 
 export interface ExhibitNode {
   id: string;
@@ -51,6 +55,8 @@ export interface ReportVM {
   /** REP-9: up to 4 sourced entry requirements; when empty, Key risks shows instead. */
   requirements: BriefVM["requirements"];
   exportCheck: boolean;
+  /** REP-13: short gap items that fit on one line, and how many more are only in the brief. */
+  gaps: { items: string[]; more: number };
   /** The numbered list at the foot: the sources cited in the table. */
   sources: SourceRef[];
   /** Every source the report cites; /s/[shareId]/sources lists exactly these. */
@@ -116,11 +122,11 @@ export function buildReportModel(d: Dossier, brief: Brief, now: Date): ReportVM 
   const summary = b.summary;
   const judgment = b.judgments[0] ?? null;
   const verdict = buildVerdict(d, now, map.contactFirst.length);
-  const sources = dedupe(top.flatMap((t) => t.refs));
+  const tableSources = dedupe(top.flatMap((t) => t.refs));
   const citedIds = dedupe([
     ...summary.flatMap((s) => s.refs),
     ...(judgment?.refs ?? []),
-    ...sources,
+    ...tableSources,
     ...b.path.flatMap((p) => p.why.refs),
     ...plan.flatMap((p) => p.refs),
     ...risks.flatMap((r) => r.refs),
@@ -148,9 +154,23 @@ export function buildReportModel(d: Dossier, brief: Brief, now: Date): ReportVM 
     risks,
     requirements,
     exportCheck: requirements.length > 0 && b.exportCheck,
-    sources,
+    // The export-control line already shows under Entry requirements; don't repeat it.
+    gaps: gapLine(b.gaps.filter((g) => !(g.key === "export" && requirements.length > 0)).map((g) => g.short)),
+    sources: tableSources.slice(0, SOURCES_N),
     citedIds,
   };
+}
+
+/** REP-13: keep whole items while they fit in GAPS_CHARS; the rest are counted. */
+export function gapLine(shorts: string[]): ReportVM["gaps"] {
+  const items: string[] = [];
+  let n = 0;
+  for (const s of shorts) {
+    n += s.length + 3;
+    if (n > GAPS_CHARS && items.length > 0) break;
+    items.push(s);
+  }
+  return { items, more: shorts.length - items.length };
 }
 
 function dedupe(refs: SourceRef[]): SourceRef[] {

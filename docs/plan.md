@@ -638,6 +638,31 @@ Why: after a pitch, interested people leave company, email and phone so the team
 
 **Acceptance**: the shared block (§4) with route `/waitlist` (plus `/privacy`, `/d/sample/docs`, `/s/<sample share id>` for the links) at 1440 and 390; `grep -rn 'NEXT_PUBLIC_[A-Z_]*SLACK' .` prints nothing.
 
+### S14 No spec-in rule + "What we could not verify" (added 2026-11-02, slices A + B of the consulting-report handover)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| ui + engine (one session) | `feature/spec-in-rule-and-unverified-box` | S12 | 3 h | P4 | none |
+
+Why: the research report (`reports/顧問級進場報告改進建議.md`) found one of three AI entry reports advised "spec-in", which can break Government Procurement Act Art. 26 and Art. 88. Its other finding: listing what we could not verify turns the Unverified rule into a selling point. Spec BRIEF-10, BRIEF-11, REP-13.
+
+**Risky changes: list before code** (sources and Unverified marks; prompts of paid calls, but no paid call is made):
+- *A: the check removes a lawful sentence* (a sourced fact about Art. 26, or the lawful alternative) and a section goes thin. Verify: `checks.test.ts` keeps an Art. 26 fact and the lawful alternative; it also runs every sample brief sentence and next step through the check and expects no match.
+- *A: Claude words spec-in in a way the phrase list misses.* The prompt rule is the main guard and the list is a backstop; removals are logged in `brief_check_log`, so new wordings can be added. Verify: test covers English and Chinese wordings (spec-in, 綁標, tailor the tender, help the buyer write the specification, lock out rivals, name your brand in the tender).
+- *A: a blocked next step.* It becomes Unverified ("Find a sourced contact route first"); this adds an Unverified mark and never hides one.
+- *A: changed prompts change live output.* Nothing is run now; the next real brief costs about US$0.30 as before. Mock briefs are not affected.
+- *B: the box says something is unverified when it is sourced, or the reverse.* It counts from the same data and filters as the marks on the map and metrics (`citable`, `scoreStakeholders`, `briefMetrics`). Verify: a unit test checks the sample's counts against those functions and that the box drops a line when that gap is filled.
+- *B: the box hides an existing Unverified mark.* It only adds; the export-control line, Unknown support and Unverified next steps stay where they are. Verify: existing tests unchanged; screenshots.
+- *B: the box reads as a finding or advice.* Fixed code sentences, grey dashed style like the export-control line, no Claude text, no names (counts and topic names only; the A4 is shared by link).
+- *B: the A4 runs past one page.* The A4 line is cut by characters with "and N more in the strategy brief". Verify: e2e one-page check.
+- No migration and no `src/lib/types.ts` change: the box is computed on read, like the metrics.
+
+**Files**: A: `src/lib/claude/{prompts.ts,brief.ts,briefing-note.ts,rate.ts}`, `src/lib/checks/{pre-display.ts,checks.test.ts}`, `src/components/brief/model.ts` and `src/components/map/model.ts` (display filters). B: `src/components/brief/{model.ts,unverified.tsx}`, `src/app/d/[id]/brief/page.tsx`, `src/components/report/{model.ts,a4-report.tsx,report.css}`, `src/lib/claude/brief.test.ts`, `design/unverified-options/index.html`. Both: `docs/spec.md`, `docs/plan.md`.
+
+**Tests added**: `checks.test.ts`: spec-in sentences removed with the reason; lawful sentences kept; no sample sentence matches. `brief.test.ts`: the box's lines and counts on the sample, and a line goes away when its gap is sourced.
+
+**Acceptance**: the shared block (§4) with routes `/d/sample/brief` and `/d/sample/report`; `PORT=3001 npx playwright test e2e/demo-path.spec.ts` (A4 stays one page).
+
 ---
 
 ## 6. Risks

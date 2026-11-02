@@ -227,6 +227,13 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
         </section>
       </div>
 
+      <p className="rp-gaps" data-testid="a4-gaps">
+        <b>Not verified:</b>{" "}
+        {r.gaps.items.length === 0
+          ? "every item on this page has a source."
+          : `${r.gaps.items.join(" · ")}${r.gaps.more ? `, and ${r.gaps.more} more in the strategy brief` : ""}.`}
+      </p>
+
       <footer className="rp-srcs">
         <ol aria-label="Sources in the table">
           {r.sources.map((s) => (
