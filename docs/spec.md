@@ -311,7 +311,7 @@ A claim that fails is sent back to Claude once with the failure reason. If it fa
 - On the sample: clear that member's data from localStorage.
 
 ### 10.8 Privacy page (`/privacy`, S2 shell, S8 content)
-Plain English: what we store; that research inputs and fetched pages are sent to Parallel and Anthropic for processing; that the dossier link is the only key; how team ties are stored (fields kept, fields dropped, only matched contacts), who sees them (this dossier only), and how withdrawal deletes them; that the upload declaration is self-certified; how to ask for a dossier to be deleted; and that documents are research references, not legal or investment advice.
+Plain English: what we store; that research inputs and fetched pages are sent to Parallel and Anthropic for processing; that the dossier link is the only key; how team ties are stored (fields kept, fields dropped, only matched contacts), who sees them (this dossier only), and how withdrawal deletes them; that the upload declaration is self-certified; how to ask for a dossier to be deleted; and that documents are research references, not legal or investment advice. Waitlist (S13): what is stored (company, email, phone, consent time, which page they came from), that the team sees it in Supabase and gets a Slack notification, and how to be removed.
 
 ---
 
@@ -509,6 +509,19 @@ Layout "Briefing room" (Joey picked option C on 2026-11-02, canvas https://claud
 ### Sources page (`/d/[id]/sources`) — S2
 - All accepted sources, filterable by stakeholder or type. Each: number S12, title, URL, type, grade stamp, verified date, verbatim excerpt (Taiwanese sources: original + translation), and which facts cite it; verified over 90 days ago → "Recheck due". A second tab "Rejected sources" lists what the quality filter blocked and why (for transparency).
 
+
+### 09 Waitlist (`/waitlist`) — S13 (added 2026-11-02, Joey)
+After a pitch, an interested person leaves their details so the team can follow up. Decisions settled with Joey on 2026-11-02 (grilling, one question at a time):
+- **Where**: its own page `/waitlist`, outside the five tabs (no sixth tab). It is opened directly after a demo (URL or QR code). One "Join the waitlist" link sits at the bottom of the Docs tab (`/d/[id]/docs`) and one at the bottom of the share page (`/s/[shareId]`), outside the A4 sheet so the report still prints as one page. Links add `?from=docs` or `?from=share`; anything else counts as `direct`.
+- **Fields (all required)**: company name (1–200 characters), contact email (valid, ≤254), phone (7–20 digits; may contain `+`, spaces, `-`, `(`, `)`). No name field.
+- **Consent**: a required checkbox: "I agree that the Portolan team may contact me by email or phone about Portolan. We keep only these details and the time you joined; see Privacy." (Privacy links to `/privacy#waitlist`.) The server rejects a submission without it and stores `consented_at` and the wording version (`consent_version = 'v1'`).
+- **CRM = a Supabase table** `waitlist` (§13). The team reads, filters and exports it in the Supabase dashboard (Table Editor, CSV export), which already needs a login; there is no in-app admin page.
+- **Notification**: after a row is saved, the server posts one Slack message (company, email, phone, where they came from, new or updated) to `WAITLIST_SLACK_WEBHOOK_URL` (server-only env var, `.env.local` / `vercel env`, never `NEXT_PUBLIC_`). Unset → no message. A failed post is logged and never fails the submission.
+- **Spam protection**: a hidden honeypot field (a value → reply "joined" but store nothing, count nothing, post nothing); per-IP limit 5 submissions a day (scope `waitlist:ip:<sha256(ip + salt)>`, the raw IP is never stored) and site-wide 200 a day (`waitlist:site`), counted with `bump_usage` (UTC+8 day) after validation and before the write. Over the limit → "Too many sign-ups from here today. Try again tomorrow, or mention it to the person who showed you Portolan." The same email again updates its row (company, phone, consent time) instead of adding one.
+- **Deletion**: "To be removed, reply to any message from us." (on `/privacy`).
+- **States**: the form is the normal state; submitting → button disabled with "Joining…"; success → the form is replaced by "You're on the list" with what happens next (the team contacts them by email or phone); field errors appear under each field and the first is focused; server or database error → a red line "Something went wrong on our side. Your details weren't saved; try again in a moment." with the form kept filled; database not configured → "The waitlist isn't open here yet." `?state=loading|empty|error` previews follow `.nis` like every page (empty = the blank form).
+- **Analytics**: PostHog `waitlist_joined` on success with one property `from` (docs/share/direct). No company, email or phone is ever sent.
+
 ---
 
 ## 13. Data tables (Supabase; RLS on everything, no anon policies; all created in S0)
@@ -543,6 +556,7 @@ Main columns only; types and indexes are set in the migration. Every table has `
 | `org_aliases` | `id`, `dossier_id` nullable (null = site-wide seed), `alias`, `stakeholder_key` |
 | `email_outbox` | `id`, `dossier_id`, `to_email`, `kind`, `status` (pending/sent_manually) |
 | `ops_log` | `id`, `action`, `target_id`, `actor`, `note` |
+| `waitlist` (S13) | `id`, `company`, `email` (lower-cased, unique), `phone`, `came_from` (direct/docs/share), `consent_version`, `consented_at`, `updated_at` — not tied to any dossier |
 
 - Support, influence and the metrics are **never stored as the truth**: each read recomputes them with `scoring` from facts, support_statements, debriefs and edges (`briefs.metrics` is a snapshot for that version).
 - The sample and real dossiers share one set of TypeScript types (the `Dossier` aggregate in `src/lib/types.ts`); the sample file exports the same shape.
@@ -659,6 +673,7 @@ export function influenceScore(r: InfluenceRatings): Banded | null {
 7. A third research request from the same email on the same day is blocked with a friendly message.
 8. After withdrawal, the member's contacts and ties have 0 rows in the database and disappear from the map.
 9. The privacy page says data is sent to Parallel and Anthropic, explains how team ties are stored and deleted, and says documents are not legal or investment advice.
+10. `/waitlist` saves one row per email in `waitlist` with consent time; a 6th submission from one IP in a day is refused with a friendly message; the honeypot stores nothing; no company, email or phone reaches PostHog.
 
 ---
 

@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Waitlist options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FCFDFB;--panel:#FFFFFF;--panel2:#EEF5FA;--field-line:#B4C6D6;
+  --ink:#14233A;--ink2:#53627A;--ink3:#8996A8;--rule:#D3E0EA;--rule-strong:#14233A;
+  --link:#A8136A;--focus:#C2187A;--act:#C2187A;--route:#C2187A;
+  --btn-bg:#14233A;--btn-ink:#FFFFFF;--res:#B23B2E;--sup:#0F6E5A;
+  --water1:#DCEBF5;--water2:#B5D3EA;--land:#EAD58A;--rhumb:#4F7396;--depth3:#2F6FAE;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.45 "IBM Plex Sans Condensed",system-ui,sans-serif}
+a{color:var(--link)}
+/* picker */
+.picker{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 16px;background:var(--ink);color:#fff}
+.picker b{margin-right:8px}
+.picker button{font:600 14px inherit;font-family:inherit;padding:6px 12px;border-radius:6px;border:1px solid #fff;background:transparent;color:#fff;cursor:pointer}
+.picker button[aria-pressed=true]{background:#fff;color:var(--ink)}
+.picker .sp{flex:1}
+.stagewrap{padding:24px 16px;display:flex;justify-content:center}
+.stagewrap.phone .page{width:390px;min-height:844px}
+.page{width:100%;max-width:1440px;min-height:860px;background:var(--bg);border:7px solid transparent;border-image:repeating-linear-gradient(90deg,var(--ink) 0 22px,#fff 22px 44px) 1}
+.top{display:flex;align-items:center;height:58px;padding:0 24px;border-bottom:1px solid var(--rule-strong);background:#fff}
+.brand{font-weight:700;font-size:17px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);text-decoration:none}
+.top .back{margin-left:auto;font-size:14px;color:var(--ink2)}
+/* shared form */
+h1{margin:0;font-size:31px;font-weight:800;line-height:1.05}
+.lede{margin:8px 0 0;color:var(--ink2);font-size:16px;max-width:52ch}
+form{display:flex;flex-direction:column;gap:14px}
+label.f{display:flex;flex-direction:column;gap:4px;font-weight:600;font-size:14px}
+input[type=text],input[type=email],input[type=tel]{height:44px;border:1px solid var(--field-line);border-radius:6px;padding:0 12px;font:400 15px inherit;font-family:inherit;color:var(--ink);background:#fff}
+input:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+.hint{font-weight:400;color:var(--ink2);font-size:13px}
+.err{color:var(--res);font-weight:500;font-size:13px}
+.bad input{border-color:var(--res)}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.4}
+.consent input{width:20px;height:20px;margin-top:1px;accent-color:var(--ink)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;border-radius:6px;border:1px solid var(--btn-bg);background:var(--btn-bg);color:var(--btn-ink);font:600 15px inherit;font-family:inherit;cursor:pointer}
+.small{font-size:13px;color:var(--ink2)}
+.paras{counter-reset:p;margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px}
+.paras li{counter-increment:p;display:grid;grid-template-columns:26px 1fr;font-size:15px}
+.paras li::before{content:counter(p) ".";font-weight:700;font-style:italic}
+.paras b{display:block}
+/* A: two columns */
+.A main{display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:64px;padding:56px 48px;max-width:1180px}
+.A .card{border:1px solid var(--rule-strong);border-radius:8px;background:#fff;padding:24px}
+.A .left h2{margin:32px 0 12px;font-size:16px;font-weight:700}
+/* B: single column */
+.B main{padding:56px 48px;max-width:640px}
+.B form{margin-top:28px;padding-top:20px;border-top:1px solid var(--rule-strong)}
+.B .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.B .after{margin-top:28px;border-left:4px solid var(--act);padding:4px 0 4px 14px;font-size:14px}
+/* C: chart + side form */
+.C main{display:grid;grid-template-columns:minmax(0,1fr) 400px;min-height:795px}
+.C .chart{position:relative;border-right:1px solid var(--rule-strong);background:var(--bg);display:flex;flex-direction:column;padding:32px 40px}
+.C .chart svg{flex:1;width:100%;min-height:420px}
+.C .exh{font-size:13px;color:var(--ink2);margin-top:6px}
+.C .exh b{color:var(--ink)}
+.C aside{padding:32px 28px;background:#fff;display:flex;flex-direction:column;gap:18px}
+.C aside h1{font-size:28px}
+/* phone */
+.phone .A main,.phone .C main{grid-template-columns:1fr;gap:28px;padding:24px 16px}
+.phone .B main{padding:24px 16px}
+.phone .B .row{grid-template-columns:1fr}
+.phone .C .chart{border-right:0;border-bottom:1px solid var(--rule-strong);padding:0 0 16px}
+.phone .C .chart svg{min-height:200px}
+.phone .C aside{padding:0}
+.phone .top{padding:0 16px}
+.phone .page{border-width:7px 0 0 0}
+@media (max-width:900px){.A main,.C main{grid-template-columns:1fr;padding:24px 16px}.B main{padding:24px 16px}.B .row{grid-template-columns:1fr}}
+.note{max-width:1440px;margin:0 auto;padding:0 16px 32px;color:var(--ink2);font-size:14px}
+.note b{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="picker" role="toolbar" aria-label="Pick a version">
+  <b>Waitlist page</b>
+  <button data-v="A" aria-pressed="true">A · Two columns</button>
+  <button data-v="B" aria-pressed="false">B · One column</button>
+  <button data-v="C" aria-pressed="false">C · Chart + side form</button>
+  <span class="sp"></span>
+  <button data-w="desk" aria-pressed="true">1440</button>
+  <button data-w="phone" aria-pressed="false">390</button>
+</div>
+
+<div class="stagewrap" id="stage">
+
+<!-- A -->
+<div class="page A" data-version="A">
+  <header class="top"><a class="brand" href="#">Portolan</a><a class="back" href="#">See the sample market</a></header>
+  <main>
+    <div class="left">
+      <h1>Join the Portolan waitlist</h1>
+      <p class="lede">Leave your company and how to reach you. We'll follow up about mapping your first meetings in Taiwan.</p>
+      <h2>What happens next</h2>
+      <ol class="paras">
+        <li><span><b>We contact you</b>by email or phone, using the details you leave here.</span></li>
+        <li><span><b>We ask about your goal</b>the product, the buyer you want to reach and your deadline.</span></li>
+        <li><span><b>You get a sourced market map</b>stakeholders, a strategy brief and a one-page A4 report.</span></li>
+      </ol>
+    </div>
+    <div class="card">
+      <form onsubmit="return false">
+        <label class="f">Company name<input type="text" autocomplete="organization" value="Skyline Robotics"></label>
+        <label class="f bad">Contact email<input type="email" autocomplete="email" value="ana@skyline"><span class="err">Enter a valid email, like name@company.com.</span></label>
+        <label class="f">Phone<span class="hint">Include the country code, e.g. +61 412 345 678</span><input type="tel" autocomplete="tel"></label>
+        <label class="consent"><input type="checkbox"><span>I agree that the Portolan team may contact me by email or phone about Portolan. We keep only these details and the time you joined; see <a href="#">Privacy</a>.</span></label>
+        <button class="btn">Join the waitlist</button>
+      </form>
+    </div>
+  </main>
+</div>
+
+<!-- B -->
+<div class="page B" data-version="B" hidden>
+  <header class="top"><a class="brand" href="#">Portolan</a><a class="back" href="#">See the sample market</a></header>
+  <main>
+    <h1>Join the Portolan waitlist</h1>
+    <p class="lede">Leave your company and how to reach you. We'll follow up about mapping your first meetings in Taiwan.</p>
+    <form onsubmit="return false">
+      <label class="f">Company name<input type="text" autocomplete="organization" value="Skyline Robotics"></label>
+      <div class="row">
+        <label class="f bad">Contact email<input type="email" value="ana@skyline"><span class="err">Enter a valid email, like name@company.com.</span></label>
+        <label class="f">Phone<input type="tel" placeholder="+61 412 345 678"></label>
+      </div>
+      <label class="consent"><input type="checkbox"><span>I agree that the Portolan team may contact me by email or phone about Portolan. We keep only these details and the time you joined; see <a href="#">Privacy</a>.</span></label>
+      <div><button class="btn">Join the waitlist</button></div>
+    </form>
+    <p class="after">After you join, we contact you by email or phone to ask about your goal, then build your sourced market map.</p>
+  </main>
+</div>
+
+<!-- C -->
+<div class="page C" data-version="C" hidden>
+  <header class="top"><a class="brand" href="#">Portolan</a><a class="back" href="#">See the sample market</a></header>
+  <main>
+    <div class="chart">
+      <svg viewBox="0 0 640 460" role="img" aria-label="Illustrative chart: a route from you to a first meeting">
+        <rect width="640" height="460" fill="var(--bg)"/>
+        <g stroke="var(--rhumb)" stroke-width=".6" opacity=".55">
+          <line x1="320" y1="230" x2="0" y2="0"/><line x1="320" y1="230" x2="640" y2="0"/><line x1="320" y1="230" x2="0" y2="460"/><line x1="320" y1="230" x2="640" y2="460"/><line x1="320" y1="0" x2="320" y2="460"/><line x1="0" y1="230" x2="640" y2="230"/>
+        </g>
+        <path d="M402 70c30 10 52 40 58 78 8 50-6 98-26 140-18 38-40 78-62 96-12 10-22 2-26-14-10-40-30-70-40-108-12-46 0-110 30-150 18-24 42-48 66-42z" fill="var(--water2)" transform="translate(-6 -6) scale(1.04)"/>
+        <path d="M402 70c30 10 52 40 58 78 8 50-6 98-26 140-18 38-40 78-62 96-12 10-22 2-26-14-10-40-30-70-40-108-12-46 0-110 30-150 18-24 42-48 66-42z" fill="var(--land)" stroke="var(--ink)" stroke-width="1.2"/>
+        <path d="M110 380 C 200 340, 280 300, 372 170" fill="none" stroke="var(--route)" stroke-width="2" stroke-dasharray="6 5"/>
+        <circle cx="110" cy="380" r="7" fill="#fff" stroke="var(--ink)" stroke-width="1.8"/>
+        <text x="124" y="398" font-size="14" font-weight="600" fill="var(--ink)">You</text>
+        <path d="M372 158 l9 16 h-18z" fill="var(--sup)" stroke="#fff"/>
+        <text x="388" y="152" font-size="14" font-weight="600" fill="var(--ink)">First meeting</text>
+      </svg>
+      <p class="exh"><b>Exhibit 1</b> · Portolan maps who decides, who supports you and who to contact first. Illustration only.</p>
+    </div>
+    <aside>
+      <div><h1>Join the Portolan waitlist</h1><p class="lede">Leave your company and how to reach you. We'll follow up about your first meetings in Taiwan.</p></div>
+      <form onsubmit="return false">
+        <label class="f">Company name<input type="text" value="Skyline Robotics"></label>
+        <label class="f bad">Contact email<input type="email" value="ana@skyline"><span class="err">Enter a valid email, like name@company.com.</span></label>
+        <label class="f">Phone<input type="tel" placeholder="+61 412 345 678"></label>
+        <label class="consent"><input type="checkbox"><span>I agree that the Portolan team may contact me by email or phone about Portolan. We keep only these details and the time you joined; see <a href="#">Privacy</a>.</span></label>
+        <button class="btn">Join the waitlist</button>
+      </form>
+    </aside>
+  </main>
+</div>
+
+</div>
+<div class="note">
+  <p><b>A</b> explains what happens next beside the form; form in a bordered card. <b>B</b> is the quickest to fill: one narrow column, email and phone side by side, no extra panel. <b>C</b> echoes the home page: an illustrative chart on the left and the form in a right-hand column (the chart is decoration, not data).</p>
+  <p>All three: same fields, required consent box, error under the field, "Joining…" while sending, then "You're on the list". The email field shows an error state on purpose.</p>
+</div>
+<script>
+const pages=[...document.querySelectorAll('.page')];
+document.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-v]').forEach(x=>x.setAttribute('aria-pressed',x===b));pages.forEach(p=>p.hidden=p.dataset.version!==b.dataset.v)});
+document.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-w]').forEach(x=>x.setAttribute('aria-pressed',x===b));document.getElementById('stage').classList.toggle('phone',b.dataset.w==='phone')});
+</script>
+</body>
+</html>

@@ -6,6 +6,7 @@
 | dossier_created | 研究完成、dossier 建立 |
 | report_exported | 打開 A4 報告或複製分享連結 |
 | debrief_saved | 存下會後回報 |
+| waitlist_joined | 在 /waitlist 送出候補名單成功；只帶 `from`（docs / share / direct），不帶公司、Email、電話 |
 
 ## 每週
 | 週 | 新 dossier | 每週活躍 | 上週留下來的 % | 收入 | 週成長 % |

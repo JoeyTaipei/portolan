@@ -615,6 +615,29 @@ Why: research (`reports/顧問級進場報告改進建議.md`) found consulting 
 
 **Tests added**: `scoring.test.ts` — one case per verdict (none, no-go by licence 0, no-go by opposition High, go, conditional with reasons) and the sample gives Conditional go.
 
+### S13 Waitlist page (added 2026-11-02, Joey)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| ui + engine (one session) | `feature/waitlist` | S11 merged | 3 h | P4 | none |
+
+Why: after a pitch, interested people leave company, email and phone so the team can follow up. Not in intent.md §5; Joey asked for it on 2026-11-02. Every decision is in spec §12 "09 Waitlist" (settled with Joey one question at a time): own page `/waitlist`, Supabase table as the CRM, Slack webhook notification (optional), all three fields required, required consent checkbox, honeypot + per-IP and site-wide daily limits, removal by replying to us, PostHog `waitlist_joined`.
+
+**Risky changes — list before code** (personal data of people outside any dossier; a new migration, allowed by this plan):
+- *Contact details readable by anyone.* The table has RLS on, no policies, and `revoke all … from anon, authenticated`; only the server (secret key) writes. There is no read path in the app. Verify: migration review; `grep` shows `waitlist` is read nowhere in `src/`.
+- *Personal data leaking to analytics or logs.* The PostHog event carries only `from`; server logs never print the email or phone. Verify: unit test on the event props; code review of `console.*` lines.
+- *Slack webhook URL exposed.* Server-only env var, read only in `src/lib/waitlist/notify.ts` (imports `server-only`). Verify: the acceptance `grep` for `NEXT_PUBLIC_.*SLACK` prints nothing; build passes with `server-only`.
+- *Spam fills the table or floods Slack.* Honeypot + 5/IP/day + 200/day before any write or post. Verify: unit tests (6th call refused; honeypot stores and counts nothing).
+- *The raw IP stored.* Only `sha256(ip + EMAIL_HASH_SALT)` appears, inside the `usage_counters` scope. Verify: unit test.
+- *Migration not applied before deploy* → every submission fails with the friendly error. Verify: Joey runs `npx supabase@2 db push` before merging.
+- No paid API is called.
+
+**Files**: `supabase/migrations/20261102180000_waitlist.sql`, `src/lib/waitlist/{join.ts,join.test.ts,shared.ts,notify.ts}`, `src/lib/db/waitlist.ts`, `src/app/waitlist/{page.tsx,actions.ts,loading.tsx,error.tsx}`, `src/components/waitlist/**`, `src/app/privacy/page.tsx`, `src/lib/analytics.tsx` (event name), `src/app/d/[id]/docs/page.tsx` + `src/components/docs/docs-view.tsx` (a `footer` slot at the foot of the right column) and `src/app/s/[shareId]/page.tsx` (one link each), `.env.example`, `docs/metrics.md`, `design/waitlist-options/index.html`, `docs/spec.md`, `docs/plan.md`. `src/lib/types.ts` is not changed (the waitlist types live in `src/lib/waitlist/join.ts`).
+
+**Tests added**: `join.test.ts` — validation (each field, phone rule, consent required, `from` falls back to direct); honeypot stores and counts nothing; IP limit checked before the site limit and a refusal writes nothing; the stored scope holds a hash, not the IP; analytics props contain only `from`.
+
+**Acceptance**: the shared block (§4) with route `/waitlist` (plus `/privacy`, `/d/sample/docs`, `/s/<sample share id>` for the links) at 1440 and 390; `grep -rn 'NEXT_PUBLIC_[A-Z_]*SLACK' .` prints nothing.
+
 ---
 
 ## 6. Risks

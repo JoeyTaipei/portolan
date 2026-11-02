@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { sampleBriefingNote } from "@/app/actions/drafts";
 import { requestDocument, retryDraft } from "@/app/d/[id]/docs/actions";
 import { useFillHeight } from "@/components/map/fill-height";
@@ -21,7 +21,7 @@ const NO_STORAGE = "This browser won't save changes. Allow site storage and try 
 /** Real dossiers: while a draft is being written, look again every few seconds. */
 const POLL_MS = 5000;
 
-export function DocsView({ vm, preselect }: { vm: DocsVM; preselect: string | null }) {
+export function DocsView({ vm, preselect, footer }: { vm: DocsVM; preselect: string | null; footer?: ReactNode }) {
   const [overlay, setOverlay] = useState<SampleOverlay | null>(null);
   const ref = useFillHeight<HTMLDivElement>();
   const router = useRouter();
@@ -142,6 +142,7 @@ export function DocsView({ vm, preselect }: { vm: DocsVM; preselect: string | nu
 
       <aside className="flex flex-col gap-3 lg:min-h-0 lg:overflow-y-auto lg:border-l lg:border-rule-strong lg:bg-panel2 lg:px-5 lg:py-[18px] min-[1600px]:px-6">
         <WatchList dossierId={dossierId} items={vm.watch} nextUpdate={vm.nextUpdate} />
+        {footer}
       </aside>
     </div>
   );
