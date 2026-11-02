@@ -237,6 +237,16 @@ test("繁中: the switch changes the app, the A4 still prints on one page and so
   await expect(nav.getByRole("link", { name: "地圖" })).toBeVisible();
   await expect(page.locator("html")).toHaveAttribute("lang", "zh-Hant-TW");
   await expect(page.getByRole("link", { name: "打開利害關係人地圖" })).toBeVisible();
+  // I18N-8: every market conclusion on the sample's first page reads in Chinese, with no run of
+  // English words left (source chips and abbreviations like NCSIST are fine).
+  const conclusions = page.getByTestId("conclusion");
+  expect(await conclusions.count()).toBeGreaterThanOrEqual(8);
+  for (const c of await conclusions.all()) {
+    const text = (await c.textContent()) ?? "";
+    expect(text, text).toMatch(/[\u4e00-\u9fff]/);
+    expect(text, text).not.toMatch(/[A-Za-z]+(?:[\s,'-]+[A-Za-z]+){2,}/);
+  }
+  await expect(page.getByRole("heading", { level: 1, name: "台灣反無人機市場進入" })).toBeVisible();
   expect((await context.cookies()).find((c) => c.name === "portolan_lang")?.value).toBe("zh-TW");
   await expectNoSideScroll(page);
 

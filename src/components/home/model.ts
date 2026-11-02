@@ -31,7 +31,7 @@ export interface HomeModel {
   judgments: { text: string; icd: IcdTerm; confidence: Confidence; sources: SourceRef[] }[];
   alert: { title: string; days: number; date: string; sources: SourceRef[]; url: string | null } | null;
   /** HOME-9: contact-first three, then by influence; events skipped. */
-  moves: { id: string; name: string; step: string; verified: boolean; sources: SourceRef[] }[];
+  moves: { id: string; name: string; nameZh: string | null; step: string; verified: boolean; sources: SourceRef[] }[];
   placed: PlacedStakeholder[];
   mapShown: number;
   nav: { mapTotal: number; nextSteps: number; leads: number; documents: number; briefVersion: number | null };
@@ -76,6 +76,7 @@ export function buildHomeModel(d: Dossier, now: Date): HomeModel {
   const moves = [...first, ...rest].slice(0, 5).map((n) => ({
     id: n.id,
     name: n.name,
+    nameZh: n.nameZh,
     step: n.action.text,
     verified: n.action.verified,
     sources: n.action.sources,

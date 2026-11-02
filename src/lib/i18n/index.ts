@@ -1,3 +1,4 @@
+import { SAMPLE_ZH } from "@/fixtures/sample-dossier.zh";
 import { zhTW } from "./zh-TW";
 
 // SHELL-4: English / 繁體中文. The dictionary is keyed by the English text, so English is
@@ -24,6 +25,11 @@ export interface T {
   (key: Key, vars?: Vars): string;
   /** Translate a code-written string built elsewhere (exact key or `{…}` pattern); else as is. */
   x: (s: string) => string;
+  /**
+   * Research-written text with a hand-made translation (the sample's conclusions, I18N-8);
+   * exact match only, so real dossiers' Claude-written sentences come back unchanged.
+   */
+  r: (s: string) => string;
   /** Exact key only (enum labels like "Supportive"); anything else unchanged. */
   k: (s: string) => string;
   /** English dates inside a code-built string, in Chinese ("2 Nov 2026" → "2026年11月2日"). */
@@ -154,6 +160,7 @@ export function makeT(locale: Locale): T {
   const t = ((key: Key, vars?: Vars) => fill(zh ? (DICT[key] ?? key) : key, vars)) as T;
   t.x = (s: string) => (zh ? translateRuntime(s) : s);
   t.k = (s: string) => (zh ? (DICT[s] ?? s) : s);
+  t.r = (s: string) => (zh ? (SAMPLE_ZH[s] ?? DICT[s] ?? s) : s);
   t.dt = (s: string) => (zh ? zhDates(s) : s);
   t.date = (iso, opts) => formatDate(locale, iso, opts);
   t.locale = locale;

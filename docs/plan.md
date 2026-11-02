@@ -736,6 +736,24 @@ Why: Erin asked for a Chinese version of the app beside the English one, with a 
 
 **Acceptance**: the shared block (§4) with routes `/`, `/d/sample`, `/d/sample/{map,brief,report,tracker,network,docs,sources}`, `/s/<sample share id>`, `/privacy`, `/waitlist`, in both languages; `PORT=3001 npx playwright test e2e/demo-path.spec.ts`.
 
+### S18 Market conclusions in 繁中 (added 2026-11-02, Erin)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| ui (one side session) | `feature/zh-sample-conclusions` | S17 merged | 1.5 h | P4 | none |
+
+Why: spec I18N-8. Sample only; real dossiers need a paid step, so the options and costs go to Erin in the PR (not built).
+
+**Risky changes — list before code** (sources and Unverified marks; sample data):
+- *A translation changes a fact* (a number, a date, who decides). Verify: unit test that every number in each Chinese sentence matches the English (NT$210 billion → 2,100 億, 27 August 2026 → 2026年8月27日); organisation names are the stakeholders' sourced `nameZh`.
+- *A translation stands in for a real dossier's sentence.* `t.r` is an exact-match lookup on the sample's sentences only. Verify: unit test that an unknown sentence comes back unchanged.
+- *A home conclusion is missed.* Verify: unit test that every bottom line, key judgment and next step on `/d/sample` has an entry; e2e that no conclusion on `/d/sample` in 繁中 has a run of English words.
+- No paid call, no migration, no `src/lib/types.ts` change; tracker and memo files untouched.
+
+**Files**: `src/fixtures/sample-dossier.zh.ts` (new), `src/lib/i18n/{index.ts,i18n.test.ts}`, `src/components/home/{model.ts,market-header.tsx,key-judgments.tsx,next-moves.tsx,dossier-select.tsx}`, `e2e/demo-path.spec.ts`, `docs/spec.md`, `docs/plan.md`.
+
+**Acceptance**: `npm test`, `npm run build`, `npx playwright test e2e/demo-path.spec.ts`; screenshots of `/d/sample` in 繁中 at 1440 and 390.
+
 ## 6. Risks
 
 | Risk | Impact | Mitigation |

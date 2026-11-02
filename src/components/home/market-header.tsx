@@ -34,7 +34,7 @@ export async function MarketHeader({ m }: { m: HomeModel }) {
         </span>
       </div>
       <h1 id="mk-h" className="m-0 text-[34px] font-bold leading-[1.05] tracking-[-.01em] lg:text-[46px]">
-        {m.name}
+        {t.r(m.name)}
       </h1>
       <p className="m-0 flex flex-wrap items-baseline gap-x-2 text-[13px] text-ink2">
         {t("Entry verdict")}
@@ -44,7 +44,7 @@ export async function MarketHeader({ m }: { m: HomeModel }) {
       </p>
       {line ? (
         <p className="m-0 max-w-[50ch] text-[19px] leading-[1.4] lg:text-[23px]">
-          <b>{t("Bottom line:")}</b> {line.text} <span className="text-ink2">{t.k(icdText(line.icd))}{t(".")}</span>{" "}
+          <b>{t("Bottom line:")}</b> <span data-testid="conclusion">{t.r(line.text)}</span> <span className="text-ink2">{t.k(icdText(line.icd))}{t(".")}</span>{" "}
           <SourceChips dossierId={m.id} sources={line.sources} />
         </p>
       ) : (
@@ -56,7 +56,7 @@ export async function MarketHeader({ m }: { m: HomeModel }) {
           <ul className="m-0 list-disc pl-5">
             {m.verdict.reasons.map((x) => (
               <li key={x.text}>
-                {t.k(x.text)} {x.refs.length > 0 && <SourceChips dossierId={m.id} sources={x.refs} />}
+                <span data-testid="conclusion">{t.k(x.text)}</span> {x.refs.length > 0 && <SourceChips dossierId={m.id} sources={x.refs} />}
               </li>
             ))}
           </ul>

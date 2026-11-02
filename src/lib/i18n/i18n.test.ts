@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest";
+import { buildHomeModel } from "@/components/home/model";
+import { SAMPLE_ZH } from "@/fixtures/sample-dossier.zh";
 import { sampleDossier } from "@/lib/sample/reader";
 import { makeT, toLocale, translateRuntime, zhDates } from "./index";
 import { zhTW } from "./zh-TW";
@@ -82,5 +84,32 @@ describe("t.date", () => {
   it("formats a calendar day in each language", () => {
     expect(en.date("2026-11-02")).toBe("2 Nov 2026");
     expect(zh.date("2026-11-02")).toBe("2026年11月2日");
+  });
+});
+
+describe("the sample's home conclusions in 繁中 (I18N-8)", () => {
+  const m = buildHomeModel(sampleDossier, new Date("2026-11-02T00:00:00Z"));
+  const english = [m.name, ...m.judgments.map((j) => j.text), ...m.moves.map((x) => x.step)];
+
+  it("every bottom line, key judgment and next step on /d/sample has a Chinese version", () => {
+    for (const s of english) expect(SAMPLE_ZH[s], s).toBeTruthy();
+    for (const s of english) expect(zh.r(s)).not.toBe(s);
+  });
+
+  it("every number in the Chinese matches the English", () => {
+    const MONTH = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    // English → the numbers a Chinese reader sees: "210 billion" is 2,100 億; "27 August 2026" is 2026年8月27日.
+    const norm = (s: string) =>
+      s
+        .replace(/(\d+) billion/g, (_, n) => `${(Number(n) * 10).toLocaleString("en")} 億`)
+        .replace(new RegExp(`(\\d{1,2}) (${MONTH.join("|")}) (\\d{4})`, "g"), (_, d, mo, y) => `${y} ${MONTH.indexOf(mo) + 1} ${d}`);
+    const nums = (s: string) => (s.match(/\d[\d,.]*/g) ?? []).sort();
+    for (const [en, zhText] of Object.entries(SAMPLE_ZH)) expect(nums(zhText), en).toEqual(nums(norm(en)));
+  });
+
+  it("names come from the stakeholders' own sourced Chinese names, and real dossiers stay English", () => {
+    expect(SAMPLE_ZH[m.judgments[0].text]).toContain("內政部警政署");
+    expect(zh.r("A sentence a real dossier's brief wrote.")).toBe("A sentence a real dossier's brief wrote.");
+    expect(en.r(m.judgments[0].text)).toBe(m.judgments[0].text);
   });
 });

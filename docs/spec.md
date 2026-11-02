@@ -160,6 +160,7 @@ The whole app can be read in English or Traditional Chinese (zh-TW). Placement a
 - **I18N-5 A4 report and share link in Chinese.** Same one-page rule (REP-12): the Chinese A4 prints on exactly one page; labels are Chinese only (no English under them), research text stays as written. The share page `/s/[shareId]` follows the viewer's own cookie.
 - **I18N-6 Font.** IBM Plex Sans Condensed stays the only Latin face; CJK characters fall back to **Noto Sans TC** (Google Fonts, self-hosted by `next/font`, no preload). Chinese text uses the same sizes and weights; no italics on CJK (numbers stay italic).
 - **I18N-7 `lang` attribute.** `<html lang>` is `en` or `zh-Hant-TW` so screen readers and the CJK font pick up the language.
+- **I18N-8 Market conclusions in 繁中 (added 2026-11-02, Erin: 「請把第一頁market的市場結論全部都確保是中文」).** On the market page (`/`, `/d/[id]`) in 繁中, the market name, Bottom line, Key judgments, each Next move's step and the verdict reasons read in Chinese. The sample's research-written sentences have hand-made translations (`src/fixtures/sample-dossier.zh.ts`, no paid call): organisation names use the stakeholder's own sourced Chinese name, numbers and dates match the English, excerpts and titles stay verbatim; Next moves show the stakeholder's sourced Chinese name when it has one. Real dossiers keep their Claude-written English until Erin picks a paid option (plan S18).
 - States: an unknown cookie value falls back to English; a missing translation shows the English text (never a key or a placeholder).
 
 ### Widths (direction.md)
