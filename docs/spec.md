@@ -151,6 +151,17 @@ Button feedback: something changes within 150ms of a press (spinner, or the labe
 - Writes on the sample (add to tracker, save lead, debrief, upload contacts, request a document) are stored only in this browser's localStorage (`portolan.sample.*`). They are never sent to the server and never call a paid API. A bar at the top says "Changes to the sample stay in this browser" with "Reset sample".
 - The sample's intro drafts and briefing note are pre-written and stored in the sample file (marked Sample data).
 
+### SHELL-4 Language: English / 繁體中文 — S17 (added 2026-11-02, Erin)
+The whole app can be read in English or Traditional Chinese (zh-TW). Placement and look of the switch: `design/language-options/` (option picked by Erin: see the plan, S17).
+- **I18N-1 Switch.** A visible two-way switch "English / 繁中" on every page (top bar on desktop, reachable on phones); the current language is marked by weight and an underline, not colour alone. Pressing it changes the page in place (no navigation, same URL) and gives feedback within 150ms.
+- **I18N-2 Remembered per visitor.** The choice is stored in a first-party cookie `portolan_lang` (`en` | `zh-TW`, 1 year, `SameSite=Lax`, not `HttpOnly` so the switch can set it). No cookie → English. URLs do not change, so dossier and share links stay the same in both languages. The cookie holds no personal data; `/privacy` says so.
+- **I18N-3 What is translated.** All code-written copy: tabs (Markets, Map, Tracker, Network, Docs → 市場、地圖、追蹤、人脈、文件), labels, buttons and their feedback, loading/empty/error states, score explanations (SCORE-X), grade words, ICD terms, verdict words, code-written sentences on the A4, the privacy page and the waitlist. Dates use `2026年11月2日` in Chinese.
+- **I18N-4 What is never translated.** Cited source excerpts and quotes, source titles, URLs, site names, organisation and person names from sources, and research-generated text (Claude-written brief sentences, next steps, key judgments, notes) stay verbatim in the language they were written in. Translating research text would need a paid Claude call; not done (ask first with a cost estimate). Code-written labels around them may be Chinese.
+- **I18N-5 A4 report and share link in Chinese.** Same one-page rule (REP-12): the Chinese A4 prints on exactly one page; labels are Chinese, research text stays as written. The share page `/s/[shareId]` follows the viewer's own cookie.
+- **I18N-6 Font.** IBM Plex Sans Condensed stays the only Latin face; CJK characters fall back to **Noto Sans TC** (Google Fonts, self-hosted by `next/font`, no preload). Chinese text uses the same sizes and weights; no italics on CJK (numbers stay italic).
+- **I18N-7 `lang` attribute.** `<html lang>` is `en` or `zh-Hant-TW` so screen readers and the CJK font pick up the language.
+- States: an unknown cookie value falls back to English; a missing translation shows the English text (never a key or a placeholder).
+
 ### Widths (direction.md)
 - Primary 1440 and 1920, minimum 1280: `≥1024px` three columns; `≥1600px` wider side columns; no horizontal scroll at 1280.
 - Phone 390: one column, in the order of `design/screens/`; it only needs to be readable and tappable.
@@ -381,7 +392,7 @@ Labels: `approved` with an expert reviewer → EXPERT APPROVED; with the founder
 
 ## 12. Screens
 
-UI copy is English (the mockup's language). Nautical terms appear only in visuals (direction.md "Copy"). Scores always show a level + range and open an explanation (SCORE-X).
+UI copy is English (the mockup's language), with a Traditional Chinese version (SHELL-4). Nautical terms appear only in visuals (direction.md "Copy"). Scores always show a level + range and open an explanation (SCORE-X).
 
 PostHog events (`docs/metrics.md`): `dossier_created` (fired once when the progress page first sees `ready`), `report_exported` (report page opened or share link copied), `debrief_saved`. Before sending, `$current_url`, `$pathname` and `$referrer` are rewritten so `/d/<id>` becomes `/d/:id` and `/s/<id>` becomes `/s/:id`; email is never sent as a property.
 
