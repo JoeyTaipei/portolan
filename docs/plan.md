@@ -578,6 +578,25 @@ Joey picked option C "Briefing room" and the word "Markets" on 2026-11-02 (spec 
 
 **Tests added**: none.
 
+### S11 Entry requirements on the brief and A4 (added 2026-11-02, Joey)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| ui + engine (one session) | `feature/entry-requirements` | S10 | 3 h | P4 | none |
+
+Why: three AI-written entry reports (Gemini, ChatGPT-style) all lead with "what you must meet to bid"; ours had it only scattered in Key risks. Joey picked "Claude writes it into the brief" and layout B (replaces Key risks on the A4).
+
+**Risky changes — list before code** (sources and Unverified marks; types + migration, approved by Joey 2026-11-02):
+- *An unsourced rule shown as fact* (e.g. "foreign firms can't bid" when a source doesn't say so) could make a user give up on a market. Verify: requirements go through the same pre-display check as every brief sentence (`brief.test.ts` asserts an uncited requirement is removed); the sample fixture test checks every requirement's sources.
+- *The export-control check line read as advice.* It is fixed code text, grey, dashed mark, "Needs a specialist check (no source found)"; it is never written by Claude. Verify: unit test that it appears only when no sourced export-control item exists.
+- *A4 runs past one page.* Verify: the e2e one-page check; the A4 shows at most 4 items.
+- *Migration not applied before deploy* → inserting a brief fails in production. Verify: Joey runs `npx supabase@2 db push` before merging; reading old rows without the column falls back to `[]`.
+- No paid API call is needed to build or test this (mock brief uses the sample).
+
+**Files**: `supabase/migrations/20261102120000_brief_requirements.sql`, `src/lib/types.ts` (Brief.requirements), `src/lib/db/{briefs,read}.ts`, `src/lib/claude/brief.ts`, `src/lib/scoring/brief-status.ts` (cited ids), `src/fixtures/sample-dossier.ts` (+ test), `src/components/brief/{model.ts,requirements.tsx}`, `src/app/d/[id]/brief/page.tsx`, `src/components/report/{model.ts,a4-report.tsx,report.css}`, `src/lib/claude/brief.test.ts`, `src/lib/scoring/scoring.test.ts` (Brief literal), `design/entry-requirements-options/index.html`, `docs/spec.md`, `docs/plan.md`.
+
+**Tests added**: `brief.test.ts` — an uncited requirement is removed; the export-control line appears only without a sourced export-control item. Fixture test covers requirements.
+
 ---
 
 ## 6. Risks
@@ -653,7 +672,7 @@ Joey picked option C "Briefing room" and the word "Markets" on 2026-11-02 (spec 
 | 05 | Top 5 stakeholders table | REP-6 | S2 | S2-T4 | P1 |
 | 05 | Recommended entry path, 7-day plan | REP-7 | S2 | S2-T4 | P1 |
 | 05 | Where to meet them | REP-8 | S2 | S2-T4 | P1 |
-| 05 | Key risks | REP-9 | S2 | S2-T4 | P1 |
+| 05 | Entry requirements (Key risks when none) | REP-9, BRIEF-9 | S2, S11 | S2-T4, S11 | P1 |
 | 05 | Source list and full-list link | REP-10 | S2 | S2-T4, S2-T5 | P1 |
 | 05 | Share link, Sample data line | REP-11, §9 | S2 | S2-T4, S2-T5 | P1 |
 | 05 | A4 print styles | REP-12 | S2 | S2-T4 | P1 |

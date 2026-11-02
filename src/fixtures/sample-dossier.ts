@@ -1238,6 +1238,14 @@ const brief: Brief = {
     s("A domestic counter-drone contract failed acceptance tests, so new systems face strict testing.", "taipeitimes-2003860773"),
     s("RF devices need NCC approval before import, which can delay a demo.", "ncc-keyword"),
   ],
+  // BRIEF-9: each line restates its source; export control has none, so the screens add the check line.
+  requirements: [
+    { topic: "who_can_bid", ...s("Only domestic firms can bid on the police counter-drone tender; foreign firms cannot.", "upmedia-263412") },
+    { topic: "local_content", ...s("Drone module parts must be made in Taiwan with no Chinese parts; foreign technology may fill gaps.", "taiwannews-6253686") },
+    { topic: "screening", ...s("Police tender bidders pass a security review, then NCSIST tests.", "upmedia-272263") },
+    { topic: "import_permit", ...s("Controlled RF devices need NCC approval before import.", "ncc-keyword") },
+    { topic: "procurement_route", ...s("US firms can sell through Foreign Military Sales or direct commercial sales to Taiwanese buyers.", "trade-systems") },
+  ],
   meet: events
     .filter((e) => e.kind === "event" && e.date)
     .map((e) => ({ eventId: e.id, title: e.title, date: e.date!, mappedStakeholders: 0, sourceIds: e.sourceIds })),

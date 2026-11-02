@@ -1,4 +1,4 @@
-import { fmtDay } from "@/components/brief/model";
+import { EXPORT_CHECK, fmtDay, REQUIREMENT_LABEL } from "@/components/brief/model";
 import { MarkIcon } from "@/components/map/node-mark";
 import { STANCE_LABEL, type SourceRef } from "@/components/score/explain";
 import { IcdScale, icdText } from "@/components/score/icd-scale";
@@ -171,20 +171,43 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
               ))}
             </ul>
           )}
-          <p className="rp-lab" style={{ marginTop: 11 }}>
-            Key risks
-          </p>
-          {r.risks.length === 0 ? (
-            <p className="rp-list">Not enough sourced facts for this section.</p>
+          {r.requirements.length > 0 ? (
+            <>
+              <p className="rp-lab" style={{ marginTop: 11 }}>
+                Entry requirements
+              </p>
+              <ul className="rp-list rp-req" aria-label="Entry requirements">
+                {r.requirements.map((x) => (
+                  <li key={x.topic}>
+                    <b>{x.label}.</b> {x.text}
+                    <Cite refs={x.refs} />
+                  </li>
+                ))}
+                {r.exportCheck && (
+                  <li className="chk">
+                    <b>{REQUIREMENT_LABEL.export_control}.</b> <i>{EXPORT_CHECK}</i>
+                  </li>
+                )}
+              </ul>
+            </>
           ) : (
-            <ul className="rp-list rp-haz">
-              {r.risks.map((s, i) => (
-                <li key={i}>
-                  {s.text}
-                  <Cite refs={s.refs} />
-                </li>
-              ))}
-            </ul>
+            <>
+              <p className="rp-lab" style={{ marginTop: 11 }}>
+                Key risks
+              </p>
+              {r.risks.length === 0 ? (
+                <p className="rp-list">Not enough sourced facts for this section.</p>
+              ) : (
+                <ul className="rp-list rp-haz">
+                  {r.risks.map((s, i) => (
+                    <li key={i}>
+                      {s.text}
+                      <Cite refs={s.refs} />
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </>
           )}
         </section>
       </div>

@@ -271,7 +271,7 @@ describe("§7 brief Out of date", () => {
     id: "b1", dossierId: "d", version: 1,
     metrics: { entryReadiness: null, opposition: null, window: { found: false, text: "No sourced deadline found" }, dataConfidence: { level: "Low", sourceCount: 0, qualifying: 0, of: 0 } },
     rationale: [{ text: "t", sourceIds: ["S1"] }], judgments: [], path: [], reduceOpposition: [],
-    plan: { prep: [], contact: [], event: [], followUp: [] }, summary: [], risks: [], meet: [], needs: [], changesNote: [],
+    plan: { prep: [], contact: [], event: [], followUp: [] }, summary: [], risks: [], requirements: [], meet: [], needs: [], changesNote: [],
     inputsAt: "2026-10-20T00:00:00Z", createdAt: "2026-10-20T00:00:00Z",
   };
   const base = { debriefs: [], stakeholders: [], facts: [], statements: [], sources: [source("S1", { verifiedAt: "2026-10-15" })] };

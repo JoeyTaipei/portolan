@@ -7,7 +7,7 @@ import type { BriefDraft } from "@/lib/db/briefs";
 import { MODELS } from "@/lib/limits/prices";
 import { normaliseName } from "@/lib/research/filter";
 import { briefMetrics, briefStatus, contactFirst, quadrant, resistant, scoreStakeholders, sourcesFor } from "@/lib/scoring";
-import type { Brief, Dossier, IcdTerm, KeyJudgment, MeetItem, PlanAction, Sentence } from "@/lib/types";
+import { REQUIREMENT_TOPICS, type Brief, type Dossier, type EntryRequirement, type IcdTerm, type KeyJudgment, type MeetItem, type PlanAction, type Sentence } from "@/lib/types";
 import { callStructured, claudeLive, type LedgerContext } from "./client";
 import { relabel } from "./mock";
 import { attr, fence, sourceBlocks, type PromptSource } from "./prompts";
@@ -56,6 +56,9 @@ export const BriefOutput = z.object({
   }),
   summary: z.array(Cited).describe("Executive summary for the one-page report, at most 70 words"),
   risks: z.array(Cited).describe("At most 3 key risks"),
+  requirements: z
+    .array(Cited.extend({ topic: z.enum(REQUIREMENT_TOPICS).describe("Which rule this is") }))
+    .describe("Entry requirements: at most one sentence per topic, only where a source states the rule"),
 });
 export type BriefOutput = z.infer<typeof BriefOutput>;
 
@@ -71,7 +74,8 @@ Write (docs/scoring.md §6):
 - path_reasons: for each stakeholder in <contact_order>, one sentence on why to contact them at that step (e.g. influence High, support +30). Don't reorder.
 - reduce_opposition: for each stakeholder in <blockers>, one concrete step to reduce their opposition.
 - plan: the 7-day entry plan in four boxes. Every action names one stakeholder (its key) and cites a source; drop an action you can't source. Day 5 is empty unless <events> has a sourced event that week.
-- summary: an executive summary of at most 70 words; risks: at most 3 key risks.`;
+- summary: an executive summary of at most 70 words; risks: at most 3 key risks.
+- requirements: the rules a foreign firm like the client must meet to sell to these buyers, one sentence per topic: who_can_bid (who may bid or be the prime), local_content (made-in-Taiwan or no-China rules), screening (security vetting, qualification, tests), import_permit, procurement_route (e.g. domestic tender, FMS, direct commercial sale), cybersecurity, export_control. Each sentence is short (at most 18 words). Write a topic only when a source states the rule; leave the rest out (code marks missing export control for a specialist check).`;
 
 interface Inputs {
   d: Dossier;
@@ -200,10 +204,19 @@ function mockOutput(d: Dossier): BriefOutput {
     },
     summary: brief.summary.map(one),
     risks: brief.risks.map(one),
+    requirements: (brief.requirements ?? []).map((x) => ({ ...one(x), topic: x.topic })),
   };
 }
 
 // ─── Shared post-processing ──────────────────────────────────────────────────
+
+/** BRIEF-9: one requirement per topic (the first that passed the check), in topic order. */
+export function orderRequirements(xs: EntryRequirement[]): EntryRequirement[] {
+  return REQUIREMENT_TOPICS.flatMap((topic) => {
+    const hit = xs.find((x) => x.topic === topic);
+    return hit ? [hit] : [];
+  });
+}
 
 const words = (t: string) => t.trim().split(/\s+/).filter(Boolean).length;
 function capWords<T extends Sentence>(xs: T[], max: number): T[] {
@@ -333,6 +346,7 @@ export async function writeBrief(args: Inputs & { ledger: LedgerContext }): Prom
     plan: { prep: actions(out.plan.prep), contact: actions(out.plan.contact), event: actions(out.plan.event), followUp: actions(out.plan.follow_up) },
     summary: capWords(check(out.summary.map(sentence)), SUMMARY_WORDS),
     risks: check(out.risks.map(sentence)).slice(0, MAX_RISKS),
+    requirements: orderRequirements(check(out.requirements.map((x) => ({ ...sentence(x), topic: x.topic })))),
     meet,
     needs: needsFromYou(d),
     changesNote: changesNote(previous, d, now),

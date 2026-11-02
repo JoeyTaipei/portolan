@@ -11,6 +11,10 @@ import type { Brief, Category, Dossier, IcdTerm, Confidence } from "@/lib/types"
 
 export const TOP_N = 5;
 export const RISKS_N = 2;
+/** REP-9: entry requirements shown on the A4 (option B, replaces Key risks). */
+export const REQUIREMENTS_N = 4;
+/** REP-12: past this many characters the last requirement is dropped so the page still fits. */
+export const REQUIREMENTS_CHARS = 380;
 export const MEET_N = 3;
 export const ROW_SOURCES_N = 2;
 
@@ -41,6 +45,9 @@ export interface ReportVM {
   plan: { days: string; text: string; refs: SourceRef[] }[];
   meet: { title: string; date: string; mapped: number }[];
   risks: Cited[];
+  /** REP-9: up to 4 sourced entry requirements; when empty, Key risks shows instead. */
+  requirements: BriefVM["requirements"];
+  exportCheck: boolean;
   /** The numbered list at the foot: the sources cited in the table. */
   sources: SourceRef[];
   /** Every source the report cites; /s/[shareId]/sources lists exactly these. */
@@ -99,7 +106,10 @@ export function buildReportModel(d: Dossier, brief: Brief, now: Date): ReportVM 
     return a ? { days: box.days, text: `${a.text} (${a.who})`, refs: a.refs } : { days: box.days, text: box.empty, refs: [] };
   });
 
-  const risks = b.risks.slice(0, RISKS_N);
+  // REP-9 (option B): entry requirements take the Key risks spot; older briefs keep the risks.
+  const requirements = b.requirements.slice(0, REQUIREMENTS_N);
+  while (requirements.length > 1 && requirements.reduce((n, x) => n + x.label.length + x.text.length, 0) > REQUIREMENTS_CHARS) requirements.pop();
+  const risks = requirements.length > 0 ? [] : b.risks.slice(0, RISKS_N);
   const summary = b.summary;
   const judgment = b.judgments[0] ?? null;
   const sources = dedupe(top.flatMap((t) => t.refs));
@@ -110,6 +120,7 @@ export function buildReportModel(d: Dossier, brief: Brief, now: Date): ReportVM 
     ...b.path.flatMap((p) => p.why.refs),
     ...plan.flatMap((p) => p.refs),
     ...risks.flatMap((r) => r.refs),
+    ...requirements.flatMap((r) => r.refs),
   ]).map((r) => r.id);
 
   const confidence = b.metrics.find((m) => m.key === "confidence")!;
@@ -129,6 +140,8 @@ export function buildReportModel(d: Dossier, brief: Brief, now: Date): ReportVM 
     plan,
     meet,
     risks,
+    requirements,
+    exportCheck: requirements.length > 0 && b.exportCheck,
     sources,
     citedIds,
   };

@@ -22,6 +22,7 @@ function briefSentences(b: Brief): [string, Sentence][] {
     ...b.rationale.map((x, i): [string, Sentence] => [`rationale ${i}`, x]),
     ...b.summary.map((x, i): [string, Sentence] => [`summary ${i}`, x]),
     ...b.risks.map((x, i): [string, Sentence] => [`risk ${i}`, x]),
+    ...(b.requirements ?? []).map((x, i): [string, Sentence] => [`requirement ${i}`, x]),
     ...b.judgments.map((j, i): [string, Sentence] => [`judgment ${i}`, j]),
     ...b.path.map((p, i): [string, Sentence] => [`path ${i}`, p.why]),
     ...b.reduceOpposition.map((r, i): [string, Sentence] => [`reduce ${i}`, r.step]),

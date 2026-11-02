@@ -408,6 +408,35 @@
   border-radius: 50%;
 }
 
+/* REP-9 entry requirements: an act-colour diamond per sourced rule; the export-control check
+   line is grey with a dashed diamond (fixed code text, not a finding). */
+.rp-req {
+  gap: 3px;
+  font-size: 11px;
+  line-height: 1.32;
+}
+.rp-req li {
+  padding-left: 14px;
+  position: relative;
+}
+.rp-req li::before {
+  content: "";
+  position: absolute;
+  left: 1px;
+  top: 4px;
+  width: 7px;
+  height: 7px;
+  border: 1.5px solid var(--act);
+  transform: rotate(45deg);
+}
+.rp-req li.chk {
+  color: var(--ink2);
+}
+.rp-req li.chk::before {
+  border-style: dashed;
+  border-color: var(--ink2);
+}
+
 .rp-srcs {
   margin-top: auto;
   border-top: 1.5px solid var(--rule-strong);

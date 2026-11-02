@@ -13,11 +13,30 @@ import {
   type SourceRef,
 } from "@/components/score/explain";
 import { briefMetrics, briefStatus, citedSourceIds, STALE_SOURCE_DAYS, daysBetween } from "@/lib/scoring";
-import type { Brief, BriefMetrics, BriefStatus, Dossier, IcdTerm, Confidence, Sentence, Source } from "@/lib/types";
+import type { Brief, BriefMetrics, BriefStatus, Dossier, EntryRequirement, IcdTerm, Confidence, RequirementTopic, Sentence, Source } from "@/lib/types";
 
 export interface Cited {
   text: string;
   refs: SourceRef[];
+}
+
+/** BRIEF-9 topic names, shown before each requirement. */
+export const REQUIREMENT_LABEL: Record<RequirementTopic, string> = {
+  who_can_bid: "Who can bid",
+  local_content: "Local content",
+  screening: "Screening and tests",
+  import_permit: "Import permit",
+  procurement_route: "Procurement route",
+  cybersecurity: "Cybersecurity",
+  export_control: "Export control",
+};
+
+/** Fixed code text (never Claude's): shown when no source covers export control. */
+export const EXPORT_CHECK = "Needs a specialist check (no source found).";
+
+export interface RequirementVM extends Cited {
+  topic: RequirementTopic;
+  label: string;
 }
 
 export interface MetricVM {
@@ -68,6 +87,10 @@ export interface BriefVM {
   plan: PlanBoxVM[];
   summary: Cited[];
   risks: Cited[];
+  /** BRIEF-9: sourced requirements in topic order; empty on older briefs. */
+  requirements: RequirementVM[];
+  /** True when there are requirements but none on export control: show the check line. */
+  exportCheck: boolean;
   meet: { eventId: string; title: string; date: string; mapped: number; refs: SourceRef[] }[];
   needs: string[];
   changesNote: string[];
@@ -91,6 +114,14 @@ export function checkSentence(s: Sentence, ok: ReadonlyMap<string, Source>): Cit
   if (!s.text.trim() || PLACEHOLDER.test(s.text)) return null;
   if (s.sourceIds.length === 0 || !s.sourceIds.every((id) => ok.has(id))) return null;
   return { text: s.text, refs: s.sourceIds.map((id) => sourceRef(ok.get(id)!)) };
+}
+
+function requirementsVM(xs: EntryRequirement[], ok: ReadonlyMap<string, Source>): Pick<BriefVM, "requirements" | "exportCheck"> {
+  const requirements = xs.flatMap((x) => {
+    const c = checkSentence(x, ok);
+    return c ? [{ ...c, topic: x.topic, label: REQUIREMENT_LABEL[x.topic] }] : [];
+  });
+  return { requirements, exportCheck: requirements.length > 0 && !requirements.some((x) => x.topic === "export_control") };
 }
 
 function checkAll(xs: Sentence[], ok: ReadonlyMap<string, Source>): Cited[] {
@@ -286,6 +317,7 @@ export function buildBriefModel(d: Dossier, brief: Brief, now: Date): BriefVM {
     plan,
     summary: checkAll(brief.summary, ok),
     risks: checkAll(brief.risks, ok),
+    ...requirementsVM(brief.requirements ?? [], ok),
     meet: brief.meet
       .filter((m) => m.sourceIds.length > 0 && m.sourceIds.every((id) => ok.has(id)))
       .map((m) => ({ eventId: m.eventId, title: m.title, date: m.date, mapped: m.mappedStakeholders, refs: m.sourceIds.map((id) => sourceRef(ok.get(id)!)) })),
