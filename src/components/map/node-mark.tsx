@@ -1,4 +1,5 @@
 import { STANCE_LABEL } from "@/components/score/explain";
+import { BothX } from "@/lib/i18n/client";
 import type { Mark } from "./model";
 import { s } from "./marks";
 
@@ -41,7 +42,11 @@ export function MarkIcon({ mark, withText = false }: { mark: Mark; withText?: bo
       <svg viewBox="-8 -8 16 16" width="15" height="15" aria-hidden="true" className="shrink-0 overflow-visible">
         <NodeShape mark={mark} r={6} />
       </svg>
-      {withText && <span>{STANCE_LABEL[mark]}</span>}
+      {withText && (
+        <span>
+          <BothX en={STANCE_LABEL[mark]} />
+        </span>
+      )}
     </>
   );
 }

@@ -2,19 +2,21 @@
 
 import { useState, useTransition } from "react";
 import { refreshDossier } from "@/app/actions/research";
+import { useT } from "@/lib/i18n/client";
 
 // HOME-5: refresh. Spins while running; a failure shows the reason beside it and it can be
 // pressed again. The sample never refreshes (no request, no paid API).
 export function RefreshButton({ dossierId, isSample }: { dossierId: string; isSample: boolean }) {
   const [pending, start] = useTransition();
   const [msg, setMsg] = useState<string | null>(null);
-  const reason = "The sample doesn't refresh. Your own markets do.";
+  const t = useT();
+  const reason = t("The sample doesn't refresh. Your own markets do.");
   return (
     <div className="flex flex-col items-end gap-1">
       <button
         type="button"
-        aria-label={isSample ? `Refresh market (${reason})` : "Refresh market"}
-        title={isSample ? reason : "Refresh market"}
+        aria-label={isSample ? `${t("Refresh market")} (${reason})` : t("Refresh market")}
+        title={isSample ? reason : t("Refresh market")}
         aria-busy={pending}
         aria-disabled={isSample}
         onClick={() => {
@@ -25,7 +27,7 @@ export function RefreshButton({ dossierId, isSample }: { dossierId: string; isSa
           setMsg(null);
           start(async () => {
             const r = await refreshDossier(dossierId);
-            setMsg(r.ok ? "Refresh started." : r.error);
+            setMsg(r.ok ? t("Refresh started.") : t.x(r.error));
           });
         }}
         className="grid min-h-12 w-12 shrink-0 cursor-pointer place-items-center rounded-[var(--r-m)] border border-[var(--btn-line)] bg-panel text-ink hover:bg-panel2 aria-disabled:cursor-not-allowed aria-disabled:opacity-55"

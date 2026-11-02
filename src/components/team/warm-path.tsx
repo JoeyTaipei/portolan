@@ -1,5 +1,6 @@
 "use client";
 
+import { useT } from "@/lib/i18n/client";
 import { useState } from "react";
 import { IntroForm } from "@/components/network/intro-form";
 import { readOverlay, writeOverlay } from "@/lib/sample/overlay";
@@ -14,6 +15,7 @@ export function WarmPathCard({ target, onDraft }: { target: string; onDraft: (p:
   const team = useTeam()!;
   const [asking, setAsking] = useState(false);
   const [sent, setSent] = useState(false);
+  const t = useT();
   const paths = warmPaths(target, team.pathTies, team.data.edges, team.active);
   const best = paths[0];
   const name = team.name(target);
@@ -25,38 +27,38 @@ export function WarmPathCard({ target, onDraft }: { target: string; onDraft: (p:
       setSent(true);
       setAsking(false);
     }
-    return ok ? { ok: true, data: null } : { ok: false, error: NO_STORAGE };
+    return ok ? { ok: true, data: null } : { ok: false, error: t.k(NO_STORAGE) };
   }
 
   if (!best) {
     return (
-      <section aria-label="Warm path" className="flex flex-col gap-2 rounded-[var(--r-m)] border border-dashed border-rule-strong bg-panel p-3 text-[13px]">
-        <p className="m-0">No warm path from your team to {name} yet.</p>
+      <section aria-label={t("Warm path")} className="flex flex-col gap-2 rounded-[var(--r-m)] border border-dashed border-rule-strong bg-panel p-3 text-[13px]">
+        <p className="m-0">{t("No warm path from your team to {name} yet.", { name })}</p>
         {sent ? (
           <p role="status" className="m-0 font-semibold">
-            Request received — we&apos;ll update your tracker.
+            {t("Request received — we'll update your tracker.")}
           </p>
         ) : asking ? (
           <IntroForm name={name} onSend={request} onCancel={() => setAsking(false)} />
         ) : (
           <button type="button" className="btn btn-ghost btn-s self-start" onClick={() => setAsking(true)}>
-            Request a Portolan expert intro
+            {t("Request a Portolan expert intro")}
           </button>
         )}
       </section>
     );
   }
 
-  const member = team.state.team.find((m) => m.id === best.memberId)?.name ?? "your teammate";
+  const member = team.state.team.find((m) => m.id === best.memberId)?.name ?? t("your teammate");
   const via = team.name(best.via);
   const cites = best.edgeSourceIds.map((id) => team.data.sourceLabels[id]).filter(Boolean);
   return (
-    <section aria-label="Warm path" className="flex flex-col gap-2 rounded-[var(--r-m)] border-l-4 border-[var(--route)] bg-panel p-3 text-[13px]" data-testid="warm-path">
-      <p className="m-0 font-bold">Warm path to {name}</p>
+    <section aria-label={t("Warm path")} className="flex flex-col gap-2 rounded-[var(--r-m)] border-l-4 border-[var(--route)] bg-panel p-3 text-[13px]" data-testid="warm-path">
+      <p className="m-0 font-bold">{t("Warm path to {name}", { name })}</p>
       <ol className="m-0 flex list-none flex-col gap-0.5 p-0 leading-[1.4]">
-        <li>You → {member}</li>
+        <li>{t("You → {name}", { name: member })}</li>
         <li>
-          → someone {member} knows at {via} <Strength n={best.strength} />
+          {t("→ someone {member} knows at {via}", { member, via })} <Strength n={best.strength} />
         </li>
         {best.hops === 2 && (
           <li>
@@ -65,9 +67,9 @@ export function WarmPathCard({ target, onDraft }: { target: string; onDraft: (p:
           </li>
         )}
       </ol>
-      {paths.length > 1 && <p className="m-0 text-[12px] text-ink2">{paths.length - 1} more path{paths.length > 2 ? "s" : ""}, ranked lower by tie strength and sources.</p>}
+      {paths.length > 1 && <p className="m-0 text-[12px] text-ink2">{t(paths.length > 2 ? "{n} more paths, ranked lower by tie strength and sources." : "{n} more path, ranked lower by tie strength and sources.", { n: paths.length - 1 })}</p>}
       <button type="button" className="btn btn-act btn-s self-start" onClick={() => onDraft(best)}>
-        Ask {member} to start the intro
+        {t("Ask {name} to start the intro", { name: member })}
       </button>
     </section>
   );

@@ -1,4 +1,4 @@
--- TRK-9…12 meeting memo (spec §12 06, docs/scoring.md §3.2, plan S17).
+-- TRK-9…12 meeting memo (spec §12 06, docs/scoring.md §3.2, plan S18).
 -- The memo's answers live on the debrief; its influence answers become facts and its
 -- "who else must agree" answers become edges, both citing the debrief's own source.
 -- Deleting the debrief (Undo) removes them with it. Old rows read null.

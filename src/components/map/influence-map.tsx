@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTeam } from "@/components/team/team-context";
+import { useT } from "@/lib/i18n/client";
 import { TeamLayer } from "@/components/team/team-layer";
 import { TeamPanel } from "@/components/team/team-panel";
 import type { Category } from "@/lib/types";
@@ -61,6 +62,7 @@ export function InfluenceMap({
   const [hover, setHover] = useState(false);
   const drag = useRef<{ x: number; y: number; lx: number; id: string | null; member: string | null; moved: boolean } | null>(null);
   const team = useTeam();
+  const t = useT();
 
   // Reduced motion: paused by default (MAP-3).
   useEffect(() => {
@@ -157,7 +159,7 @@ export function InfluenceMap({
           className={s.svg}
           viewBox={`0 0 ${W} ${H}`}
           role="img"
-          aria-label="Stakeholder map. Drag or use the left and right arrow keys to rotate, click a stakeholder for details. The full list is beside the map."
+          aria-label={t("Stakeholder map. Drag or use the left and right arrow keys to rotate, click a stakeholder for details. The full list is beside the map.")}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
@@ -298,13 +300,13 @@ export function InfluenceMap({
             <span aria-hidden="true" className={`relative h-[18px] w-8 rounded-full border border-rule-strong ${team.on ? "bg-[var(--act)]" : "bg-panel2"}`}>
               <span className={`absolute top-[1px] size-[14px] rounded-full bg-panel ring-1 ring-[var(--rule-strong)] transition-[left] ${team.on ? "left-[15px]" : "left-[1px]"}`} />
             </span>
-            Your team
+            {t("Your team")}
           </button>
         )}
         <span className={s.hint}>
           {selected
-            ? "Press Esc or click it again to show all."
-            : "Deeper blue under a stakeholder = more influence. Drag to rotate."}
+            ? t("Press Esc or click it again to show all.")
+            : t("Deeper blue under a stakeholder = more influence. Drag to rotate.")}
         </span>
       </div>
       <TeamPanel selected={selected} />

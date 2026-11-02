@@ -1,5 +1,6 @@
 "use client";
 
+import { useT } from "@/lib/i18n/client";
 import { useId, useMemo, useState } from "react";
 import { matchContacts, orgTargets, type Matched, type ToConfirm } from "@/lib/team/match";
 import { manualContact, parseContactFile, type ParsedContact } from "@/lib/team/parse";
@@ -29,6 +30,7 @@ export function UploadPanel() {
   const [manual, setManual] = useState({ name: "", org: "", title: "", how: "", strength: "1" });
   const targets = useMemo(() => orgTargets(team.data.stakeholders, team.data.aliases), [team.data.stakeholders, team.data.aliases]);
   const ready = !!me && consent;
+  const t = useT();
 
   /** Add matched contacts as redacted contacts + ties, and mark the member connected. */
   function store(found: Matched[], how: (c: ParsedContact) => string, strength: Tie["strength"]): boolean {
@@ -62,17 +64,22 @@ export function UploadPanel() {
     const parsed = parseContactFile(new Uint8Array(await file.arrayBuffer()));
     setBusy(false);
     if (!parsed.ok) {
-      setError(parsed.error);
+      setError(t.x(parsed.error));
       return;
     }
     const m = matchContacts(parsed.contacts, targets);
     if (!store(m.matched, defaultHow, 1)) {
-      setError(NO_STORAGE);
+      setError(t.k(NO_STORAGE));
       return;
     }
     setPending(m.toConfirm.map((x, i) => ({ ...x, key: `${i}-${x.stakeholderId}` })));
     setResult(
-      `Read ${parsed.contacts.length} contacts. ${m.matched.length} work at an organisation on the map and were added; ${m.toConfirm.length} need your check; ${m.discarded} didn't match and were dropped.`,
+      t("Read {n} contacts. {m} work at an organisation on the map and were added; {k} need your check; {count} didn't match and were dropped.", {
+        n: parsed.contacts.length,
+        m: m.matched.length,
+        k: m.toConfirm.length,
+        count: m.discarded,
+      }),
     );
   }
 
@@ -82,25 +89,25 @@ export function UploadPanel() {
     setResult(null);
     const c = manualContact({ name: manual.name, org: manual.org, title: manual.title });
     if (!c) {
-      setError("Write the person's name and organisation.");
+      setError(t("Write the person's name and organisation."));
       return;
     }
     const m = matchContacts([c], targets);
     const strength = Number(manual.strength) as Tie["strength"];
     const how = () => manual.how.trim().slice(0, 200) || "Know each other";
     if (m.matched.length) {
-      if (!store(m.matched, how, strength)) return setError(NO_STORAGE);
-      setResult(`Added a tie at ${team.name(m.matched[0].stakeholderId)}.`);
+      if (!store(m.matched, how, strength)) return setError(t.k(NO_STORAGE));
+      setResult(t("Added a tie at {name}.", { name: team.name(m.matched[0].stakeholderId) }));
     } else if (m.toConfirm.length) {
       setPending([{ ...m.toConfirm[0], key: "manual" }]);
     } else {
-      setResult(`No organisation on the map matches "${c.orgText}", so nothing was kept.`);
+      setResult(t("No organisation on the map matches \"{org}\", so nothing was kept.", { org: c.orgText }));
     }
     setManual({ name: "", org: "", title: "", how: "", strength: "1" });
   }
 
   function answer(p: Pending, yes: boolean) {
-    if (yes && !store([p], defaultHow, 1)) return setError(NO_STORAGE);
+    if (yes && !store([p], defaultHow, 1)) return setError(t.k(NO_STORAGE));
     setPending((xs) => xs.filter((x) => x.key !== p.key));
   }
 
@@ -109,10 +116,10 @@ export function UploadPanel() {
   return (
     <section aria-labelledby={`${uid}-h`} className="flex flex-col gap-2.5 rounded-[var(--r-m)] border border-rule bg-panel p-3">
       <h3 id={`${uid}-h`} className="m-0 text-[14px] font-bold">
-        Add your connections
+        {t("Add your connections")}
       </h3>
       <label className="flex flex-col gap-1 text-[12.5px] font-semibold">
-        This is me
+        {t("This is me")}
         <select value={me} onChange={(e) => setMe(e.target.value)} className={field}>
           {eligible.map((m) => (
             <option key={m.id} value={m.id}>
@@ -123,13 +130,13 @@ export function UploadPanel() {
       </label>
       <label className="flex items-start gap-2 text-[12.5px] leading-[1.4]">
         <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 size-4 flex-none accent-[var(--ink)]" />
-        {CONSENT}
+        {t.k(CONSENT)}
       </label>
 
-      <div role="group" aria-label="How to add" className="grid grid-cols-2 gap-1">
+      <div role="group" aria-label={t("How to add")} className="grid grid-cols-2 gap-1">
         {(["file", "manual"] as const).map((m) => (
           <button key={m} type="button" aria-pressed={mode === m} onClick={() => setMode(m)} className="btn btn-ghost btn-s aria-pressed:bg-[var(--tile-on)] aria-pressed:text-[var(--tile-on-ink)]">
-            {m === "file" ? "Upload a file" : "I know someone"}
+            {m === "file" ? t("Upload a file") : t("I know someone")}
           </button>
         ))}
       </div>
@@ -137,30 +144,30 @@ export function UploadPanel() {
       {mode === "file" ? (
         <div className="flex flex-col gap-1">
           <label htmlFor={`${uid}-f`} className={`btn btn-main btn-s ${ready && !busy ? "" : "pointer-events-none opacity-50"}`} aria-disabled={!ready}>
-            {busy ? "Reading…" : "Choose a file"}
+            {busy ? t("Reading…") : t("Choose a file")}
           </label>
           <input id={`${uid}-f`} type="file" accept=".csv,.vcf,text/csv,text/vcard,text/x-vcard" className="sr-only" disabled={!ready || busy} onChange={onFile} />
-          <p className="m-0 text-[12px] text-ink2">LinkedIn Connections.csv, Google Contacts CSV or vCard, up to 2 MB. Read in this browser; emails and phone numbers are dropped.</p>
-          {!ready && <p className="m-0 text-[12px] font-semibold">Pick yourself and tick the box first.</p>}
+          <p className="m-0 text-[12px] text-ink2">{t("LinkedIn Connections.csv, Google Contacts CSV or vCard, up to 2 MB. Read in this browser; emails and phone numbers are dropped.")}</p>
+          {!ready && <p className="m-0 text-[12px] font-semibold">{t("Pick yourself and tick the box first.")}</p>}
         </div>
       ) : (
         <form onSubmit={onManual} className="flex flex-col gap-1.5">
-          <input aria-label="Their name" placeholder="Their name" value={manual.name} maxLength={200} onChange={(e) => setManual({ ...manual, name: e.target.value })} className={field} />
-          <input aria-label="Organisation" placeholder="Organisation" value={manual.org} maxLength={200} onChange={(e) => setManual({ ...manual, org: e.target.value })} className={field} />
-          <input aria-label="Title (optional)" placeholder="Title (optional)" value={manual.title} maxLength={200} onChange={(e) => setManual({ ...manual, title: e.target.value })} className={field} />
-          <input aria-label="How you know each other" placeholder="How you know each other" value={manual.how} maxLength={200} onChange={(e) => setManual({ ...manual, how: e.target.value })} className={field} />
+          <input aria-label={t("Their name")} placeholder={t("Their name")} value={manual.name} maxLength={200} onChange={(e) => setManual({ ...manual, name: e.target.value })} className={field} />
+          <input aria-label={t("Organisation")} placeholder={t("Organisation")} value={manual.org} maxLength={200} onChange={(e) => setManual({ ...manual, org: e.target.value })} className={field} />
+          <input aria-label={t("Title (optional)")} placeholder={t("Title (optional)")} value={manual.title} maxLength={200} onChange={(e) => setManual({ ...manual, title: e.target.value })} className={field} />
+          <input aria-label={t("How you know each other")} placeholder={t("How you know each other")} value={manual.how} maxLength={200} onChange={(e) => setManual({ ...manual, how: e.target.value })} className={field} />
           <label className="flex items-center justify-between gap-2 text-[12.5px] font-semibold">
-            Strength
+            {t("Strength")}
             <select value={manual.strength} onChange={(e) => setManual({ ...manual, strength: e.target.value })} className={`${field} w-auto`}>
-              <option value="1">1 · know of each other</option>
-              <option value="2">2 · worked together</option>
-              <option value="3">3 · close</option>
+              <option value="1">{t("1 · know of each other")}</option>
+              <option value="2">{t("2 · worked together")}</option>
+              <option value="3">{t("3 · close")}</option>
             </select>
           </label>
           <button type="submit" className="btn btn-main btn-s" disabled={!ready}>
-            Add tie
+            {t("Add tie")}
           </button>
-          <p className="m-0 text-[12px] text-ink2">Their name is never shown; it&apos;s only used to match the organisation.</p>
+          <p className="m-0 text-[12px] text-ink2">{t("Their name is never shown; it's only used to match the organisation.")}</p>
         </form>
       )}
 
@@ -176,18 +183,26 @@ export function UploadPanel() {
       )}
       {pending.length > 0 && (
         <div className="flex flex-col gap-1.5">
-          <h4 className="m-0 text-[13px] font-bold">Confirm matches</h4>
+          <h4 className="m-0 text-[13px] font-bold">{t("Confirm matches")}</h4>
           {pending.map((p) => (
             <div key={p.key} className="flex flex-col gap-1 rounded-[var(--r-m)] border border-rule bg-panel2 p-2 text-[12.5px]">
               <span>
-                &ldquo;{p.contact.orgText}&rdquo; is <b>{team.name(p.stakeholderId)}</b>?
+                {t.locale === "zh-TW" ? (
+                  <>
+                    「{p.contact.orgText}」就是 <b>{team.name(p.stakeholderId)}</b>？
+                  </>
+                ) : (
+                  <>
+                    &ldquo;{p.contact.orgText}&rdquo; is <b>{team.name(p.stakeholderId)}</b>?
+                  </>
+                )}
               </span>
               <span className="flex gap-1.5">
                 <button type="button" className="btn btn-main btn-s" onClick={() => answer(p, true)}>
-                  Same
+                  {t("Same")}
                 </button>
                 <button type="button" className="btn btn-ghost btn-s" onClick={() => answer(p, false)}>
-                  Different
+                  {t("Different")}
                 </button>
               </span>
             </div>

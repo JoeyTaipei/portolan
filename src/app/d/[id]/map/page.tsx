@@ -1,3 +1,4 @@
+import { getT } from "@/lib/i18n/server";
 import { notFound } from "next/navigation";
 import { connection } from "next/server";
 import { Suspense } from "react";
@@ -27,13 +28,14 @@ async function MapContent({ params }: Pick<PageProps<"/d/[id]/map">, "params">) 
   if (!d) notFound();
   await connection();
   if (d.stakeholders.length === 0) {
+    const t = await getT();
     return (
       <Nis
         kind="empty"
         headingLevel={1}
-        title="No stakeholders on the map yet"
-        desc="Research hasn't placed anyone yet. Follow its progress on the market page."
-        actions={[{ label: "See research progress", href: `/d/${d.id}` }]}
+        title={t("No stakeholders on the map yet")}
+        desc={t("Research hasn't placed anyone yet. Follow its progress on the market page.")}
+        actions={[{ label: t("See research progress"), href: `/d/${d.id}` }]}
       />
     );
   }

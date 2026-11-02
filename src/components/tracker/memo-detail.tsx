@@ -13,6 +13,7 @@ import {
   TIMELINE_LABEL,
   TOPIC_LABEL,
 } from "@/lib/tracker/memo";
+import { useT } from "@/lib/i18n/client";
 import type { DebriefMemo, MemoAsk, MemoTopic, StatementRating } from "@/lib/types";
 
 // TRK-9 meeting memo, layout A (design/memo-options, chosen by Erin 2026-11-02): "Add detail"
@@ -55,7 +56,9 @@ function Choice<T extends string | number>({
   options,
   onChange,
   cols = 2,
+  notSure,
 }: {
+  notSure: string;
   legend: string;
   hint?: string;
   value: T | null;
@@ -76,7 +79,7 @@ function Choice<T extends string | number>({
         ))}
       </div>
       <button type="button" aria-pressed={value === null} className={`${pill(value === null, true)} mt-1.5 w-full`} onClick={() => onChange(null)}>
-        Not sure
+        {notSure}
       </button>
     </fieldset>
   );
@@ -122,52 +125,57 @@ export function MemoDetail({
   others: { id: string; name: string }[];
   isChina: boolean;
 }) {
+  const t = useT();
+  const ns = t("Not sure");
+  const tagLabels = <K extends string>(labels: Record<K, string>) =>
+    Object.fromEntries(Object.entries(labels).map(([k, v]) => [k, t.k(v as string)])) as Record<K, string>;
   const set = <K extends keyof DebriefMemo>(k: K, v: DebriefMemo[K]) => onChange((m) => ({ ...m, [k]: v }));
   const picked = others.filter((o) => memo.alsoAgree.includes(o.id));
   const left = others.filter((o) => !memo.alsoAgree.includes(o.id));
 
   return (
     <div className="flex flex-col gap-4" data-testid="memo-detail">
-      <Section title="The meeting">
-        <Choice legend="Format" value={memo.format} cols={3} options={(["in_person", "video", "event"] as const).map((v) => ({ value: v, label: FORMAT_LABEL[v] }))} onChange={(v) => set("format", v)} />
+      <Section title={t("The meeting")}>
+        <Choice notSure={ns} legend={t("Format")} value={memo.format} cols={3} options={(["in_person", "video", "event"] as const).map((v) => ({ value: v, label: t.k(FORMAT_LABEL[v]) }))} onChange={(v) => set("format", v)} />
         {isChina ? (
-          <p className="m-0 text-[12.5px] text-ink2">China stakeholders are kept at organisation level, so who you met isn&rsquo;t recorded.</p>
+          <p className="m-0 text-[12.5px] text-ink2">{t("China stakeholders are kept at organisation level, so who you met isn't recorded.")}</p>
         ) : (
           <label className="flex flex-col gap-1 text-[13.5px] font-bold" htmlFor="memo-role">
             <span>
-              Who we met <span className="font-normal text-ink2">(role or seniority, not a name)</span>
+              {t("Who we met")} <span className="font-normal text-ink2">{t("(role or seniority, not a name)")}</span>
             </span>
-            <input id="memo-role" type="text" maxLength={MET_ROLE_MAX} className={`${field} min-h-10 font-normal`} placeholder="e.g. Deputy director, procurement" value={memo.metRole ?? ""} onChange={(e) => set("metRole", e.target.value || null)} />
+            <input id="memo-role" type="text" maxLength={MET_ROLE_MAX} className={`${field} min-h-10 font-normal`} placeholder={t("e.g. Deputy director, procurement")} value={memo.metRole ?? ""} onChange={(e) => set("metRole", e.target.value || null)} />
           </label>
         )}
-        <Choice legend="Who asked for the meeting?" value={memo.initiatedBy} cols={3} options={(["us", "them", "intro"] as const).map((v) => ({ value: v, label: INITIATOR_LABEL[v] }))} onChange={(v) => set("initiatedBy", v)} />
+        <Choice notSure={ns} legend={t("Who asked for the meeting?")} value={memo.initiatedBy} cols={3} options={(["us", "them", "intro"] as const).map((v) => ({ value: v, label: t.k(INITIATOR_LABEL[v]) }))} onChange={(v) => set("initiatedBy", v)} />
       </Section>
 
-      <Section title="Their influence">
+      <Section title={t("Their influence")}>
         {INFLUENCE_QUESTIONS.map((q) => (
           <Choice
+            notSure={ns}
             key={q.factor}
-            legend={q.question}
-            hint={FACTOR_WORD[q.factor]}
+            legend={t.k(q.question)}
+            hint={t.k(FACTOR_WORD[q.factor])}
             value={memo[q.factor]}
-            options={q.answers.map((a) => ({ value: a.rating, label: a.label }))}
+            options={q.answers.map((a) => ({ value: a.rating, label: t.k(a.label) }))}
             onChange={(v) => set(q.factor, v)}
           />
         ))}
         <fieldset className="m-0 border-0 p-0">
           <legend className="mb-1.5 p-0 text-[13.5px] font-bold">
-            Who else must agree, or did they mention? <span className="text-[12px] font-semibold text-[var(--stamp)]">→ Network</span>
+            {t("Who else must agree, or did they mention?")} <span className="text-[12px] font-semibold text-[var(--stamp)]">→ {t("Network")}</span>
           </legend>
           <div className="flex flex-wrap gap-1.5">
             {picked.map((o) => (
-              <button key={o.id} type="button" className={tag(true)} aria-label={`Remove ${o.name}`} onClick={() => onChange((m) => ({ ...m, alsoAgree: m.alsoAgree.filter((x) => x !== o.id) }))}>
+              <button key={o.id} type="button" className={tag(true)} aria-label={t("Remove {name}", { name: o.name })} onClick={() => onChange((m) => ({ ...m, alsoAgree: m.alsoAgree.filter((x) => x !== o.id) }))}>
                 {o.name} ✕
               </button>
             ))}
           </div>
           {memo.alsoAgree.length < ALSO_AGREE_MAX && left.length > 0 && (
             <select
-              aria-label="Add an organisation from the map"
+              aria-label={t("Add an organisation from the map")}
               className={`${field} mt-1.5 min-h-10`}
               value=""
               onChange={(e) => {
@@ -175,7 +183,7 @@ export function MemoDetail({
                 if (id) onChange((m) => ({ ...m, alsoAgree: m.alsoAgree.includes(id) ? m.alsoAgree : [...m.alsoAgree, id] }));
               }}
             >
-              <option value="">+ Pick from the map</option>
+              <option value="">{t("+ Pick from the map")}</option>
               {left.map((o) => (
                 <option key={o.id} value={o.id}>
                   {o.name}
@@ -186,20 +194,20 @@ export function MemoDetail({
         </fieldset>
       </Section>
 
-      <Section title="Attitude and priorities">
-        <Choice legend="Their stance on working with us" value={memo.stance} cols={5} options={STANCES.map((v) => ({ value: v, label: `${v > 0 ? "+" : ""}${v}` }))} onChange={(v) => set("stance", v)} />
-        {memo.stance !== null && <p className="m-0 -mt-2 text-[12.5px] text-ink2">{STANCE_LABEL[memo.stance]}: this replaces Overall when support is recalculated.</p>}
-        <Tags<MemoTopic> legend="What they care about" value={memo.priorities} labels={TOPIC_LABEL} onChange={(v) => set("priorities", v)} />
-        <Note id="memo-pri" label="Priorities, in their words (optional)" value={memo.prioritiesNote} onChange={(v) => set("prioritiesNote", v)} />
-        <Tags<MemoTopic> legend="Concerns or objections they raised" value={memo.concerns} labels={TOPIC_LABEL} onChange={(v) => set("concerns", v)} />
-        <Note id="memo-con" label="Concerns, in their words (optional)" value={memo.concernsNote} onChange={(v) => set("concernsNote", v)} />
+      <Section title={t("Attitude and priorities")}>
+        <Choice notSure={ns} legend={t("Their stance on working with us")} value={memo.stance} cols={5} options={STANCES.map((v) => ({ value: v, label: `${v > 0 ? "+" : ""}${v}` }))} onChange={(v) => set("stance", v)} />
+        {memo.stance !== null && <p className="m-0 -mt-2 text-[12.5px] text-ink2">{t("{stance}: this replaces Overall when support is recalculated.", { stance: t.k(STANCE_LABEL[memo.stance]) })}</p>}
+        <Tags<MemoTopic> legend={t("What they care about")} value={memo.priorities} labels={tagLabels(TOPIC_LABEL)} onChange={(v) => set("priorities", v)} />
+        <Note id="memo-pri" label={t("Priorities, in their words (optional)")} value={memo.prioritiesNote} onChange={(v) => set("prioritiesNote", v)} />
+        <Tags<MemoTopic> legend={t("Concerns or objections they raised")} value={memo.concerns} labels={tagLabels(TOPIC_LABEL)} onChange={(v) => set("concerns", v)} />
+        <Note id="memo-con" label={t("Concerns, in their words (optional)")} value={memo.concernsNote} onChange={(v) => set("concernsNote", v)} />
       </Section>
 
-      <Section title="What to expect">
-        <Choice legend="Their decision timeline" value={memo.timeline} options={(["quarter", "year", "next_budget", "unknown"] as const).map((v) => ({ value: v, label: TIMELINE_LABEL[v] }))} onChange={(v) => set("timeline", v)} />
-        <Choice legend="Budget status, as they described it" value={memo.budgetStatus} options={(["funded", "requested", "not_yet", "unknown"] as const).map((v) => ({ value: v, label: BUDGET_LABEL[v] }))} onChange={(v) => set("budgetStatus", v)} />
-        <Tags<MemoAsk> legend="What they asked us for" value={memo.asks} labels={ASK_LABEL} onChange={(v) => set("asks", v)} />
-        <Note id="memo-ask" label="Anything else they asked for (optional)" value={memo.asksNote} onChange={(v) => set("asksNote", v)} />
+      <Section title={t("What to expect")}>
+        <Choice notSure={ns} legend={t("Their decision timeline")} value={memo.timeline} options={(["quarter", "year", "next_budget", "unknown"] as const).map((v) => ({ value: v, label: t.k(TIMELINE_LABEL[v]) }))} onChange={(v) => set("timeline", v)} />
+        <Choice notSure={ns} legend={t("Budget status, as they described it")} value={memo.budgetStatus} options={(["funded", "requested", "not_yet", "unknown"] as const).map((v) => ({ value: v, label: t.k(BUDGET_LABEL[v]) }))} onChange={(v) => set("budgetStatus", v)} />
+        <Tags<MemoAsk> legend={t("What they asked us for")} value={memo.asks} labels={tagLabels(ASK_LABEL)} onChange={(v) => set("asks", v)} />
+        <Note id="memo-ask" label={t("Anything else they asked for (optional)")} value={memo.asksNote} onChange={(v) => set("asksNote", v)} />
       </Section>
     </div>
   );

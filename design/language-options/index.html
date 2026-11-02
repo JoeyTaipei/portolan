@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Language options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:ital,wght@0,400;0,500;0,600;0,700;1,600&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Admiralty tokens (src/app/globals.css). Latin in IBM Plex Sans Condensed, CJK falls back to Noto Sans TC. */
+:root{
+  --bg:#FCFDFB;--panel:#FFFFFF;--panel2:#EEF5FA;--ink:#14233A;--ink2:#53627A;--ink3:#8996A8;
+  --rule:#D3E0EA;--rule-strong:#14233A;--link:#A8136A;--tab-on:#C2187A;--act:#C2187A;
+  --sample-ink:#A8136A;--sample-line:#C2187A;--stamp:#1D4E89;--sup:#0F6E5A;--res:#B23B2E;
+  --icd-on:#5E9FD3;--grad-a:#14233A;--grad-b:#FFFFFF;
+  --font:"IBM Plex Sans Condensed","Noto Sans TC",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.45 var(--font);padding:32px 24px 80px}
+main{max-width:1180px;margin:0 auto}
+h1{font-size:28px;font-weight:700}
+h2{font-size:18px;font-weight:700;margin:40px 0 6px}
+h3{font-size:15px;font-weight:700}
+p.lead{color:var(--ink2);max-width:72ch;margin-top:6px}
+.opt{border:1px solid var(--rule);border-radius:8px;background:var(--panel);margin-top:16px;overflow:hidden}
+.opt-head{display:flex;gap:12px;align-items:baseline;padding:12px 16px;border-bottom:1px solid var(--rule)}
+.opt-head b{font-size:15px}
+.opt-head span{color:var(--ink2);font-size:13px}
+.pros{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:12px 16px;font-size:13px;color:var(--ink2);border-top:1px solid var(--rule)}
+.pros b{color:var(--ink)}
+.row{display:flex;gap:20px;padding:16px;flex-wrap:wrap;align-items:flex-start}
+.label{font-size:12px;font-weight:600;color:var(--ink2);margin-bottom:6px}
+
+/* the app's top bar */
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;height:58px;padding:0 24px;border:1px solid var(--rule);border-bottom-color:var(--rule-strong);background:#fff;width:760px;max-width:100%}
+.brand{font-size:17px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.tabs{display:flex;height:100%}
+.tabs a{display:flex;align-items:center;padding:0 12px;font-size:14px;font-weight:500;color:var(--ink2);text-decoration:none;position:relative}
+.tabs a.on{font-weight:700;color:var(--ink)}
+.tabs a.on:after{content:"";position:absolute;left:10px;right:10px;bottom:0;height:3px;background:var(--tab-on)}
+.right{display:flex;align-items:center;gap:12px}
+.sample{font-size:12px;font-weight:700;color:var(--sample-ink);border:1px solid var(--sample-line);padding:2px 7px;border-radius:2px}
+
+/* phone frame */
+.phone{width:300px;border:1px solid var(--rule);background:#fff}
+.phone .pbar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--rule-strong)}
+.phone .pbody{height:120px;padding:14px 16px;color:var(--ink2);font-size:13px}
+.phone .ptabs{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--rule-strong);font-size:11.5px;text-align:center}
+.phone .ptabs span{padding:12px 0;color:var(--ink2)}
+.phone .ptabs span.on{font-weight:700;color:var(--ink);box-shadow:inset 0 3px 0 var(--tab-on)}
+
+/* A: segmented text switch */
+.seg{display:inline-flex;border:1px solid var(--rule-strong);border-radius:6px;overflow:hidden;font-size:13px}
+.seg button{border:0;background:#fff;color:var(--ink2);font:inherit;font-weight:500;padding:4px 10px;min-height:30px;cursor:pointer}
+.seg button+button{border-left:1px solid var(--rule-strong)}
+.seg button[aria-pressed=true]{background:var(--ink);color:#fff;font-weight:700}
+
+/* B: globe menu */
+.globe{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--rule);border-radius:6px;background:#fff;font:inherit;font-size:13px;font-weight:600;color:var(--ink);padding:5px 10px;min-height:30px;cursor:pointer;position:relative}
+.globe svg{width:16px;height:16px}
+.menu{position:absolute;top:36px;right:0;background:#fff;border:1px solid var(--rule-strong);border-radius:6px;min-width:150px;z-index:2;text-align:left}
+.menu div{padding:8px 12px;font-weight:500;font-size:13px}
+.menu div.cur{font-weight:700}
+.menu div.cur:before{content:"✓ ";color:var(--act)}
+
+/* C: plain text links */
+.txt{font-size:13px;display:flex;gap:8px;align-items:center;color:var(--ink3)}
+.txt a{color:var(--ink2);text-decoration:none;font-weight:500}
+.txt a.cur{color:var(--ink);font-weight:700;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px;text-decoration-color:var(--tab-on)}
+
+/* A4 */
+.a4wrap{display:flex;gap:24px;flex-wrap:wrap;padding:16px}
+.sheet{width:794px;max-width:100%;background:#fff;border:6px solid;border-image:repeating-linear-gradient(90deg,var(--grad-a) 0 8px,var(--grad-b) 8px 16px) 6;padding:28px 30px 22px;font-size:11.5px;line-height:1.4;transform-origin:top left}
+.sheet .in{border:1px solid var(--ink);padding:14px 16px}
+.hdr{display:grid;grid-template-columns:1fr 220px;gap:16px;border-bottom:1px solid var(--ink);padding-bottom:10px}
+.kicker{font-size:11px;font-weight:600;color:var(--ink2)}
+.title{font-size:24px;font-weight:700;line-height:1.15;margin:2px 0}
+.verdict{border:1px solid var(--ink);padding:8px 10px}
+.vstamp{display:inline-block;border:3px double var(--stamp);color:var(--stamp);font-weight:700;padding:1px 6px;transform:rotate(-3deg);font-size:14px;margin:4px 0}
+.en{font-size:9.5px;color:var(--ink3);font-weight:500;display:block;line-height:1.1}
+.bl{margin-top:10px;font-size:12.5px}
+.bl b{font-weight:700}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:10px;border-top:1px solid var(--rule);padding-top:8px}
+.metric .n{font-size:22px;font-weight:600;font-style:italic;font-variant-numeric:tabular-nums}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:11px}
+th{text-align:left;font-weight:700;border-bottom:1px solid var(--ink);padding:3px 4px}
+td{border-bottom:1px solid var(--rule);padding:4px;vertical-align:top}
+th.next{color:var(--act)}
+.st{display:inline-block;border:2px double var(--stamp);color:var(--stamp);font-size:9.5px;font-weight:700;padding:0 3px;transform:rotate(-3deg)}
+.verb{background:var(--panel2);font-size:9.5px;padding:0 3px;border-radius:2px;color:var(--ink2)}
+.foot{display:flex;justify-content:space-between;margin-top:10px;font-size:10.5px;color:var(--ink2);border-top:1px dashed var(--ink3);padding-top:6px}
+.note{font-size:13px;color:var(--ink2);padding:0 16px 14px;max-width:80ch}
+@media (max-width:860px){.sheet{transform:scale(.45);margin-bottom:-55%}.pros{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<h1>語言切換：選一個位置和樣子</h1>
+<p class="lead">Portolan 加繁體中文版（spec SHELL-4）。語言記在這個瀏覽器的 cookie 裡，網址不變，所以 dossier 和分享連結兩種語言都一樣。來源摘錄、來源標題、網址、人名和機構名，以及研究產生的英文句子都維持原文（翻譯它們要另外付費呼叫 Claude）。字體：拉丁字母仍用 IBM Plex Sans Condensed，中文字用 Noto Sans TC。</p>
+
+<h2>第一題：切換放哪裡、長什麼樣</h2>
+
+<section class="opt">
+  <div class="opt-head"><b>A　上方列右側的「EN | 繁中」雙鍵</b><span>每頁都看得到，一鍵切換</span></div>
+  <div class="row">
+    <div>
+      <div class="label">電腦（1440）</div>
+      <div class="bar"><span class="brand">Portolan</span>
+        <nav class="tabs"><a class="on">市場</a><a>地圖</a><a>追蹤</a><a>人脈</a><a>文件</a></nav>
+        <div class="right"><div class="seg" role="group" aria-label="Language"><button aria-pressed="false">EN</button><button aria-pressed="true">繁中</button></div><span class="sample">範例資料</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="label">手機（390）</div>
+      <div class="phone"><div class="pbar"><span class="brand">Portolan</span><div class="right"><div class="seg"><button aria-pressed="false">EN</button><button aria-pressed="true">繁中</button></div><span class="sample">範例資料</span></div></div>
+        <div class="pbody">頁面內容…</div>
+        <div class="ptabs"><span class="on">市場</span><span>地圖</span><span>追蹤</span><span>人脈</span><span>文件</span></div></div>
+    </div>
+  </div>
+  <div class="pros"><div><b>好：</b>最顯眼；兩種語言同時寫出來，不懂另一種語言的人也找得到；一下就切。</div><div><b>壞：</b>上方列多一個實心深色塊，和「範例資料」章擠在一起；1280 寬時要確認分頁不被擠到。</div></div>
+</section>
+
+<section class="opt">
+  <div class="opt-head"><b>B　地球圖示 + 目前語言的下拉選單</b><span>一般網站常見做法</span></div>
+  <div class="row">
+    <div>
+      <div class="label">電腦（1440），選單打開</div>
+      <div class="bar" style="position:relative"><span class="brand">Portolan</span>
+        <nav class="tabs"><a class="on">市場</a><a>地圖</a><a>追蹤</a><a>人脈</a><a>文件</a></nav>
+        <div class="right"><button class="globe" aria-haspopup="menu" aria-expanded="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg>繁中<span aria-hidden="true">▾</span>
+          <span class="menu" role="menu"><div>English</div><div class="cur">繁體中文</div></span></button><span class="sample">範例資料</span></div>
+      </div>
+      <div style="height:80px"></div>
+    </div>
+    <div>
+      <div class="label">手機（390）</div>
+      <div class="phone"><div class="pbar"><span class="brand">Portolan</span><div class="right"><button class="globe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg>繁中</button><span class="sample">範例資料</span></div></div>
+        <div class="pbody">頁面內容…</div>
+        <div class="ptabs"><span class="on">市場</span><span>地圖</span><span>追蹤</span><span>人脈</span><span>文件</span></div></div>
+    </div>
+  </div>
+  <div class="pros"><div><b>好：</b>安靜，占位小；以後加簡中或日文不用改版面。</div><div><b>壞：</b>要點兩下；只看得到目前的語言，看不懂的人要認得地球圖示才找得到。</div></div>
+</section>
+
+<section class="opt">
+  <div class="opt-head"><b>C　品牌旁的「English · 繁中」文字連結</b><span>最輕，像網址列旁的小字</span></div>
+  <div class="row">
+    <div>
+      <div class="label">電腦（1440）</div>
+      <div class="bar"><span style="display:flex;gap:16px;align-items:center"><span class="brand">Portolan</span><span class="txt"><a>English</a>·<a class="cur">繁中</a></span></span>
+        <nav class="tabs"><a class="on">市場</a><a>地圖</a><a>追蹤</a><a>人脈</a><a>文件</a></nav>
+        <span class="sample">範例資料</span>
+      </div>
+    </div>
+    <div>
+      <div class="label">手機（390）</div>
+      <div class="phone"><div class="pbar"><span style="display:flex;gap:10px;align-items:center"><span class="brand">Portolan</span><span class="txt"><a>English</a>·<a class="cur">繁中</a></span></span><span class="sample">範例資料</span></div>
+        <div class="pbody">頁面內容…</div>
+        <div class="ptabs"><span class="on">市場</span><span>地圖</span><span>追蹤</span><span>人脈</span><span>文件</span></div></div>
+    </div>
+  </div>
+  <div class="pros"><div><b>好：</b>不加任何色塊，最符合海圖的細線風格；目前語言用粗體 + 洋紅底線標示（和分頁一樣）。</div><div><b>壞：</b>比 A 不顯眼；洋紅底線原本只給分頁和「下一步」，這裡算是第三種用法。</div></div>
+</section>
+
+<h2>第二題：A4 報告的中文長什麼樣</h2>
+<p class="lead">兩種都只換程式寫的標籤；研究內容（摘要、下一步、來源標題）維持英文原文，旁邊不另加說明。兩種都要能印成一頁 A4（e2e 會檢查）。</p>
+
+<section class="opt">
+  <div class="opt-head"><b>1　只有中文標籤</b><span>最乾淨</span></div>
+  <div class="a4wrap"><div class="sheet"><div class="in">
+    <div class="hdr"><div><div class="kicker">市場進入簡報 · 機密</div><div class="title">Taiwan · Uncrewed aerial systems</div><div class="kicker">為 Northwind Robotics · Survey drone 準備 · 2026年11月2日</div></div>
+      <div class="verdict"><div class="kicker">進入判斷</div><span class="vstamp">有條件進入</span><div style="font-size:10.5px;color:var(--ink2)">資料可信度 中 · 150 個來源；36 位利害關係人中 16 位有充分來源</div></div></div>
+    <p class="bl"><b>結論：</b>Entering through a local integrator is likely (55–80%) to reach a first pilot within two quarters.</p>
+    <div class="metrics"><div class="metric"><div class="kicker">進入準備度</div><div class="n">62</div></div><div class="metric"><div class="kicker">反對指數</div><div class="n">28</div></div><div class="metric"><div class="kicker">行動時機</div><div class="n">可能（55–80%）</div></div></div>
+    <table><tr><th>利害關係人</th><th>立場</th><th>影響力</th><th class="next">下一步</th><th>來源</th></tr>
+      <tr><td>Ministry of National Defense</td><td>支持</td><td>高</td><td>Request a supplier briefing via the procurement office</td><td>[13] <span class="st">A2</span></td></tr>
+      <tr><td>Taiwan Excellence Drone International Business Opportunities Alliance</td><td>中立</td><td>中</td><td>Join the alliance's December members' day</td><td>[4] <span class="st">B2</span></td></tr></table>
+    <div class="foot"><span>範例資料 · 每一項判斷都連到引用的來源</span><span>完整來源清單（150 個）見下方連結</span></div>
+  </div></div></div>
+  <div class="pros"><div><b>好：</b>台灣讀者讀起來最順；字數最少，最容易留在一頁。</div><div><b>壞：</b>把 PDF 轉給只讀英文的同事時，標籤看不懂。</div></div>
+</section>
+
+<section class="opt">
+  <div class="opt-head"><b>2　中文標籤下面加一行小英文</b><span>雙語，方便轉寄</span></div>
+  <div class="a4wrap"><div class="sheet"><div class="in">
+    <div class="hdr"><div><div class="kicker">市場進入簡報 · 機密 <span class="en">Market entry brief · Confidential</span></div><div class="title">Taiwan · Uncrewed aerial systems</div><div class="kicker">為 Northwind Robotics · Survey drone 準備 · 2026年11月2日</div></div>
+      <div class="verdict"><div class="kicker">進入判斷 <span class="en">Entry verdict</span></div><span class="vstamp">有條件進入</span><span class="en">Conditional go</span><div style="font-size:10.5px;color:var(--ink2)">資料可信度 中 · 150 個來源</div></div></div>
+    <p class="bl"><b>結論：</b>Entering through a local integrator is likely (55–80%) to reach a first pilot within two quarters.</p>
+    <div class="metrics"><div class="metric"><div class="kicker">進入準備度 <span class="en">Entry readiness</span></div><div class="n">62</div></div><div class="metric"><div class="kicker">反對指數 <span class="en">Opposition index</span></div><div class="n">28</div></div><div class="metric"><div class="kicker">行動時機 <span class="en">Window to act</span></div><div class="n">可能（55–80%）</div></div></div>
+    <table><tr><th>利害關係人<span class="en">Stakeholder</span></th><th>立場<span class="en">Stance</span></th><th>影響力<span class="en">Influence</span></th><th class="next">下一步<span class="en">Next move</span></th><th>來源<span class="en">Sources</span></th></tr>
+      <tr><td>Ministry of National Defense</td><td>支持</td><td>高</td><td>Request a supplier briefing via the procurement office</td><td>[13] <span class="st">A2</span></td></tr></table>
+    <div class="foot"><span>範例資料 · Sample data</span><span>完整來源清單見下方連結</span></div>
+  </div></div></div>
+  <div class="pros"><div><b>好：</b>中英讀者都看得懂，適合給海外總部看。</div><div><b>壞：</b>每個標籤多一行，A4 要再砍內容（例如來源清單少 1–2 筆）才放得進一頁；畫面比較擠。</div></div>
+</section>
+
+<p class="lead" style="margin-top:32px">建議：<b>A + 1</b>。A 最容易被找到（上台 demo 時一眼看得到），1 的 A4 最乾淨，也最不會超過一頁。</p>
+</main>
+<script>
+// Make the A segmented switches clickable so the feedback can be tried.
+document.querySelectorAll('.seg').forEach(function(g){g.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;g.querySelectorAll('button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});});});
+</script>
+</body>
+</html>

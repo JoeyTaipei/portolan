@@ -10,6 +10,8 @@ import { Stamp } from "@/components/score/stamp";
 import { Nis } from "@/components/shell/nis";
 import { OVERLAY_EVENT, readOverlay } from "@/lib/sample/overlay";
 import type { NoteSection, PortolanDocument } from "@/lib/types";
+import type { T } from "@/lib/i18n";
+import { useT } from "@/lib/i18n/client";
 import { fmtDay, NOT_REVIEWED, statusLabel } from "./model";
 import "./note.css";
 
@@ -36,8 +38,6 @@ const PAGES: { keys: string[]; label: string }[] = [
   { keys: ["risks"], label: "end of briefing" },
 ];
 
-const NONE = "Not enough sourced facts for this section.";
-
 function Cites({ ids, refs, dossierId }: { ids: string[]; refs: Record<string, SourceRef>; dossierId: string }) {
   const shown = ids.flatMap((id) => refs[id] ?? []);
   if (!shown.length) return null;
@@ -56,10 +56,11 @@ function Cites({ ids, refs, dossierId }: { ids: string[]; refs: Record<string, S
 }
 
 function Section({ s, n, refs, dossierId }: { s: NoteSection; n: number | null; refs: Record<string, SourceRef>; dossierId: string }) {
-  const title = n ? `Section ${n} · ${s.title}` : s.title;
+  const t = useT();
+  const title = n ? t("Section {n} · {title|t}", { n, title: t.k(s.title) }) : t.k(s.title);
   const body =
     s.sentences.length === 0 ? (
-      <p className="none">{NONE}</p>
+      <p className="none">{t("Not enough sourced facts for this section.")}</p>
     ) : s.kind === "bullets" ? (
       <ul>
         {s.sentences.map((x) => (
@@ -89,7 +90,7 @@ function Section({ s, n, refs, dossierId }: { s: NoteSection; n: number | null; 
       </p>
     );
   return (
-    <section className="bn-sec" aria-label={s.title}>
+    <section className="bn-sec" aria-label={t.k(s.title)}>
       <h2>{title}</h2>
       {body}
       {s.note && s.sentences.length > 0 && <p className="note">{s.note}</p>}
@@ -99,65 +100,67 @@ function Section({ s, n, refs, dossierId }: { s: NoteSection; n: number | null; 
 
 function Footer({ ids, refs, page, label, full }: { ids: string[]; refs: Record<string, SourceRef>; page: number; label: string; full: boolean }) {
   const shown = [...new Set(ids)].flatMap((id) => refs[id] ?? []);
+  const t = useT();
   return (
     <footer className="bn-foot">
       {shown.length > 0 && (
         <p className="src">
-          <b>{full ? "All sources" : "Sources on this page"}.</b>{" "}
+          <b>{full ? t("All sources") : t("Sources on this page")}{t(".")}</b>{" "}
           {shown.map((r, i) => (
             <span key={r.id}>
               {i > 0 && " · "}
               {r.label} {r.title.length > 70 ? `${r.title.slice(0, 68)}…` : r.title}
               <Stamp reliability={r.reliability} credibility={r.credibility} />
-              checked {fmtDay(r.verifiedAt) ?? "date unverified"}
+              {r.verifiedAt ? t("checked {date}", { date: t.date(r.verifiedAt) }) : t("date unverified")}
             </span>
           ))}
         </p>
       )}
       <p className="line m-0">
         <span>
-          Page {page} of {PAGES.length} · {label}
+          {t("Page {n} of {m} · {label|t}", { n: page, m: PAGES.length, label: t.k(label) })}
         </span>
-        <span>Portolan · research reference, not legal advice</span>
+        <span>{t("Portolan · research reference, not legal advice")}</span>
       </p>
     </footer>
   );
 }
 
-function reviewBox(doc: PortolanDocument, etaText: string) {
+function reviewBox(t: T, doc: PortolanDocument, etaText: string) {
   const label = statusLabel(doc);
-  const checked = fmtDay(doc.factsCheckedAt);
+  const checked = doc.factsCheckedAt ? t.date(doc.factsCheckedAt) : null;
   if (doc.status === "approved") {
     return (
       <div className="bn-review">
-        <b>✓ {label.text}</b>
+        <b>✓ {t.x(label.text)}</b>
         {doc.reviewerKind === "expert" && doc.reviewerName && <span className="block">{doc.reviewerName}</span>}
-        {checked && <span className="block">Facts checked {checked}</span>}
+        {checked && <span className="block">{t("Facts checked {date}", { date: checked })}</span>}
       </div>
     );
   }
   if (doc.status === "in_review" || doc.status === "changes_needed") {
     return (
       <div className="bn-review">
-        <b>{label.text}</b>
-        <span className="block">Expected finish {etaText}</span>
-        {checked && <span className="block">AI draft checked {checked}</span>}
+        <b>{t.x(label.text)}</b>
+        <span className="block">{t("Expected finish {eta|t}", { eta: t.k(etaText) })}</span>
+        {checked && <span className="block">{t("AI draft checked {date}", { date: checked })}</span>}
       </div>
     );
   }
   return (
     <div className="bn-review is-draft">
-      <b>AI draft · not reviewed</b>
-      <span className="block">Check names and dates before sharing.</span>
-      {checked && <span className="block">Facts checked {checked}</span>}
+      <b>{t("AI draft · not reviewed")}</b>
+      <span className="block">{t("Check names and dates before sharing.")}</span>
+      {checked && <span className="block">{t("Facts checked {date}", { date: checked })}</span>}
     </div>
   );
 }
 
 function Pages({ doc, refs, names, dossierId, isSample, etaText }: { doc: PortolanDocument; refs: Record<string, SourceRef>; names: Record<string, string>; dossierId: string; isSample: boolean; etaText: string }) {
   const c = doc.content!;
+  const t = useT();
   const who = (c.stakeholderId && names[c.stakeholderId]) || doc.title.replace(/: briefing note$/, "");
-  const meeting = c.meeting.at ? [fmtDay(c.meeting.at), c.meeting.place, c.meeting.length].filter(Boolean).join(" · ") : "Meeting time: needs from you";
+  const meeting = c.meeting.at ? [t.dt(fmtDay(c.meeting.at) ?? ""), c.meeting.place, c.meeting.length].filter(Boolean).join(" · ") : t("Meeting time: needs from you");
   const numbered = ["objective", "stakeholder", "views", "pitch"];
   return (
     <>
@@ -168,38 +171,38 @@ function Pages({ doc, refs, names, dossierId, isSample, etaText }: { doc: Portol
         return (
           <div key={p.label} className="bn-page">
             <PaperFit>
-              <article className="rp-sheet bn-sheet" aria-label={`Page ${i + 1} of ${PAGES.length}`}>
+              <article className="rp-sheet bn-sheet" aria-label={t("Page {n} of {m}", { n: i + 1, m: PAGES.length })}>
                 {i === 0 && (
                   <>
                     <header className="bn-head">
                       <div>
                         <p className="bn-kick">
-                          Strategic advisory · Confidential · Client briefing note {isSample && <span className="sample ml-1">Sample data</span>}
+                          {t("Strategic advisory · Confidential · Client briefing note")} {isSample && <span className="sample ml-1">{t("Sample data")}</span>}
                         </p>
-                        <h1>Stakeholder briefing: {who}</h1>
-                        <p className="sub">Ahead of a meeting with {who}</p>
+                        <h1>{t("Stakeholder briefing: {name}", { name: who })}</h1>
+                        <p className="sub">{t("Ahead of a meeting with {name}", { name: who })}</p>
                       </div>
-                      {reviewBox(doc, etaText)}
+                      {reviewBox(t, doc, etaText)}
                     </header>
                     <div className="bn-strip">
                       <div>
-                        <span className="k">Prepared for</span>
+                        <span className="k">{t("Prepared for")}</span>
                         {c.preparedFor}
                       </div>
                       <div>
-                        <span className="k">Meeting</span>
+                        <span className="k">{t("Meeting")}</span>
                         {meeting}
                       </div>
                       <div>
-                        <span className="k">After the meeting</span>
-                        Debrief in Portolan within 24 h
+                        <span className="k">{t("After the meeting")}</span>
+                        {t("Debrief in Portolan within 24 h")}
                       </div>
                     </div>
                   </>
                 )}
                 {i > 0 && (
                   <p className="bn-kick">
-                    Stakeholder briefing: {who} · {doc.status === "approved" ? statusLabel(doc).text : NOT_REVIEWED}
+                    {t("Stakeholder briefing: {name}", { name: who })} · {t.x(doc.status === "approved" ? statusLabel(doc).text : NOT_REVIEWED)}
                   </p>
                 )}
                 {sections.map((s) => (
@@ -216,16 +219,17 @@ function Pages({ doc, refs, names, dossierId, isSample, etaText }: { doc: Portol
 }
 
 function Toolbar({ dossierId, printable }: { dossierId: string; printable: boolean }) {
+  const t = useT();
   return (
     <div className="rp-toolbar">
-      <Link href={`/d/${dossierId}/docs`}>Back to documents</Link>
+      <Link href={`/d/${dossierId}/docs`}>{t("Back to documents")}</Link>
       <div className="acts">
         <Link href={`/d/${dossierId}/tracker`} className="btn btn-ghost btn-s">
-          Add debrief
+          {t("Add debrief")}
         </Link>
         {printable && (
           <button type="button" className="btn btn-main btn-s" onClick={() => window.print()}>
-            Print / Save as PDF
+            {t("Print / Save as PDF")}
           </button>
         )}
       </div>
@@ -240,6 +244,7 @@ export function BriefingNote({ dossierId, isSample, doc: initial, docId, refs, n
   const [local, setLocal] = useState<PortolanDocument | null>(null);
   const [looked, setLooked] = useState(initial !== null);
   const router = useRouter();
+  const t = useT();
   const doc = initial ?? local;
 
   useEffect(() => {
@@ -256,19 +261,19 @@ export function BriefingNote({ dossierId, isSample, doc: initial, docId, refs, n
 
   useEffect(() => {
     if (isSample || doc?.status !== "drafting") return;
-    const t = setInterval(() => router.refresh(), POLL_MS);
-    return () => clearInterval(t);
+    const id = setInterval(() => router.refresh(), POLL_MS);
+    return () => clearInterval(id);
   }, [isSample, doc?.status, router]);
 
-  if (!looked) return <Nis kind="loading" headingLevel={1} title="Opening the note…" desc="Reading this browser's copy of the sample." />;
+  if (!looked) return <Nis kind="loading" headingLevel={1} title={t("Opening the note…")} desc={t("Reading this browser's copy of the sample.")} />;
   if (!doc) {
     return (
       <Nis
         kind="empty"
         headingLevel={1}
-        title="This document isn't here"
-        desc={isSample ? "Sample requests stay in the browser that made them, and Reset sample removes them." : "It may have been removed. Your other documents are safe."}
-        actions={[{ label: "Back to documents", href: `/d/${dossierId}/docs` }]}
+        title={t("This document isn't here")}
+        desc={isSample ? t("Sample requests stay in the browser that made them, and Reset sample removes them.") : t("It may have been removed. Your other documents are safe.")}
+        actions={[{ label: t("Back to documents"), href: `/d/${dossierId}/docs` }]}
       />
     );
   }
@@ -278,20 +283,20 @@ export function BriefingNote({ dossierId, isSample, doc: initial, docId, refs, n
     <div className="rp-desk">
       <Toolbar dossierId={dossierId} printable={doc.content !== null} />
       {doc.status === "drafting" ? (
-        <Nis kind="loading" headingLevel={1} title="Drafting your briefing note…" desc="The AI draft takes about 10 minutes. This page updates when it's ready." />
+        <Nis kind="loading" headingLevel={1} title={t("Drafting your briefing note…")} desc={t("The AI draft takes about 10 minutes. This page updates when it's ready.")} />
       ) : doc.status === "failed" ? (
-        <Nis kind="error" headingLevel={1} title="The draft didn't finish" desc="Your request is safe. Go back to your documents and press Try again." actions={[{ label: "Back to documents", href: `/d/${dossierId}/docs` }]} />
+        <Nis kind="error" headingLevel={1} title={t("The draft didn't finish")} desc={t("Your request is safe. Go back to your documents and press Try again.")} actions={[{ label: t("Back to documents"), href: `/d/${dossierId}/docs` }]} />
       ) : doc.content ? (
         <Pages doc={doc} refs={refs} names={names} dossierId={dossierId} isSample={isSample} etaText={etaText} />
       ) : doc.storagePath ? (
         <>
           <iframe src={file} title={doc.title} className="bn-pdf" />
           <a href={`${file}?download=1`} className="btn btn-main btn-s">
-            Download PDF
+            {t("Download PDF")}
           </a>
         </>
       ) : (
-        <Nis kind="empty" headingLevel={1} title="The team is preparing this document" desc="The PDF appears here when it's ready; your documents page shows its status." actions={[{ label: "Back to documents", href: `/d/${dossierId}/docs` }]} />
+        <Nis kind="empty" headingLevel={1} title={t("The team is preparing this document")} desc={t("The PDF appears here when it's ready; your documents page shows its status.")} actions={[{ label: t("Back to documents"), href: `/d/${dossierId}/docs` }]} />
       )}
     </div>
   );

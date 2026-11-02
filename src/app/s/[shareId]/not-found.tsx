@@ -1,3 +1,4 @@
+import { Both } from "@/lib/i18n/client";
 import { Nis } from "@/components/shell/nis";
 import { SharedFrame } from "@/components/report/shared-frame";
 
@@ -8,9 +9,9 @@ export default function SharedNotFound() {
       <Nis
         kind="empty"
         headingLevel={1}
-        title="Report not found"
-        desc="This link doesn't open a shared report. Check the link with the person who sent it."
-        actions={[{ label: "Open the sample market", href: "/d/sample" }]}
+        title={<Both k="Report not found" />}
+        desc={<Both k="This link doesn't open a shared report. Check the link with the person who sent it." />}
+        actions={[{ label: <Both k="Open the sample market" />, href: "/d/sample" }]}
       />
     </SharedFrame>
   );

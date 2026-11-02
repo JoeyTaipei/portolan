@@ -6,8 +6,9 @@
    Every colour lives here as a token. Components and pages use var(--token) only. */
 
 @theme inline {
-  --font-sans: var(--font-plex-condensed), system-ui, sans-serif;
-  --font-heading: var(--font-plex-condensed), system-ui, sans-serif;
+  /* CJK characters fall back to Noto Sans TC (SHELL-4, I18N-6); Latin stays Plex Condensed. */
+  --font-sans: var(--font-plex-condensed), var(--font-noto-tc), system-ui, sans-serif;
+  --font-heading: var(--font-plex-condensed), var(--font-noto-tc), system-ui, sans-serif;
 
   /* Admiralty tokens as Tailwind colours (bg-ink, text-ink2, border-rule …) */
   --color-bg: var(--bg);
@@ -195,6 +196,16 @@
   [hidden] {
     display: none !important;
   }
+}
+
+/* SHELL-4: shell text rendered in both languages; <html lang> (set before paint) picks one */
+html:not([lang^="zh"]) .i18n-zh,
+html[lang^="zh"] .i18n-en {
+  display: none;
+}
+/* No slanted CJK (I18N-6): italics stay on Latin text and the .num soundings only. */
+html[lang^="zh"] :is(i, em, .italic) {
+  font-style: normal;
 }
 
 /* numbers: italic like chart soundings, tabular only on the digits */

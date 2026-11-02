@@ -1,11 +1,12 @@
 // The five main tabs (SHELL-1). Shared by the top bar (≥1024px) and bottom tabs (<1024px).
 import type { ReactNode } from "react";
+import type { Key } from "@/lib/i18n";
 
 export type TabKey = "dossiers" | "map" | "tracker" | "network" | "docs";
 
 export interface TabDef {
   key: TabKey;
-  label: string;
+  label: Key;
   /** Path under /d/[id]; "" is the dossier overview. */
   segment: string;
   icon: ReactNode;

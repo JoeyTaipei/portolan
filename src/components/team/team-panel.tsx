@@ -1,5 +1,6 @@
 "use client";
 
+import { useT } from "@/lib/i18n/client";
 import Link from "next/link";
 import { useState } from "react";
 import type { WarmPath } from "@/lib/team/warm-path";
@@ -19,15 +20,16 @@ export function TeamPanel({ selected }: { selected: string | null }) {
   const team = useTeam();
   const [draft, setDraft] = useState<WarmPath | null>(null);
   const [withdrawing, setWithdrawing] = useState(false);
+  const t = useT();
   if (!team?.on) return null;
 
   if (!team.data.isSample) {
     return (
-      <aside aria-label="Your team" className="flex flex-col gap-2 rounded-[var(--r-l)] border border-dashed border-rule-strong bg-panel p-4 text-[13.5px] lg:w-[300px] lg:flex-none">
-        <h2 className="m-0 text-[15px] font-bold">Your team</h2>
-        <p className="m-0 leading-[1.5]">Team connections open after our privacy review. Try it on the sample.</p>
+      <aside aria-label={t("Your team")} className="flex flex-col gap-2 rounded-[var(--r-l)] border border-dashed border-rule-strong bg-panel p-4 text-[13.5px] lg:w-[300px] lg:flex-none">
+        <h2 className="m-0 text-[15px] font-bold">{t("Your team")}</h2>
+        <p className="m-0 leading-[1.5]">{t("Team connections open after our privacy review. Try it on the sample.")}</p>
         <Link href="/d/sample/map?team=1" className="btn btn-ghost btn-s self-start">
-          Open the sample
+          {t("Open the sample")}
         </Link>
       </aside>
     );
@@ -42,25 +44,25 @@ export function TeamPanel({ selected }: { selected: string | null }) {
     body = (
       <>
         <button type="button" className="min-h-9 self-start border-0 bg-transparent px-0 text-[13px] font-semibold text-[var(--link)] underline" onClick={() => team.setMemberId(null)}>
-          ← All teammates
+          {t("← All teammates")}
         </button>
         <h3 className="m-0 text-[15px] font-bold">
-          {member.name}&apos;s ties <span className="num font-semibold text-ink2">{rows.length}</span>
+          {t("{name}'s ties", { name: member.name })} <span className="num font-semibold text-ink2">{rows.length}</span>
         </h3>
         <TieList rows={rows} by="member" />
         {member.status === "connected" && (
           <button type="button" className="btn btn-ghost btn-s self-start" onClick={() => setWithdrawing(true)}>
-            Withdraw my connections
+            {t("Withdraw my connections")}
           </button>
         )}
         {withdrawing && <WithdrawDialog memberId={member.id} name={member.name} onClose={() => setWithdrawing(false)} />}
       </>
     );
   } else if (isOrg) {
-    const rows = tieRows(team, (t) => t.stakeholderId === selected);
+    const rows = tieRows(team, (x) => x.stakeholderId === selected);
     body = (
       <>
-        <h3 className="m-0 text-[15px] font-bold">Who knows someone at {team.name(selected!)}</h3>
+        <h3 className="m-0 text-[15px] font-bold">{t("Who knows someone at {name}", { name: team.name(selected!) })}</h3>
         <TieList rows={rows} by="org" />
         {draft && draft.target === selected ? (
           <IntroDraft path={draft} onClose={() => setDraft(null)} />
@@ -74,16 +76,16 @@ export function TeamPanel({ selected }: { selected: string | null }) {
       <>
         <MemberList />
         <UploadPanel />
-        <p className="m-0 text-[12px] text-ink2">Click a teammate for their ties, or an organisation on the map to see who knows someone there.</p>
+        <p className="m-0 text-[12px] text-ink2">{t("Click a teammate for their ties, or an organisation on the map to see who knows someone there.")}</p>
       </>
     );
   }
 
   return (
-    <aside aria-label="Your team" data-testid="team-panel" className="flex flex-col gap-3 rounded-[var(--r-l)] border border-rule-strong bg-panel2 p-3.5 lg:min-h-0 lg:w-[300px] lg:flex-none lg:overflow-y-auto min-[1600px]:w-[330px]">
+    <aside aria-label={t("Your team")} data-testid="team-panel" className="flex flex-col gap-3 rounded-[var(--r-l)] border border-rule-strong bg-panel2 p-3.5 lg:min-h-0 lg:w-[300px] lg:flex-none lg:overflow-y-auto min-[1600px]:w-[330px]">
       <div className="flex flex-wrap items-center justify-between gap-1.5">
-        <h2 className="m-0 text-[15px] font-bold">Your team</h2>
-        <span className="rounded-[var(--r-s)] border border-[var(--act)] bg-panel px-1.5 text-[11.5px] font-bold text-[var(--act-text)]">{ILLUSTRATIVE}</span>
+        <h2 className="m-0 text-[15px] font-bold">{t("Your team")}</h2>
+        <span className="rounded-[var(--r-s)] border border-[var(--act)] bg-panel px-1.5 text-[11.5px] font-bold text-[var(--act-text)]">{t.k(ILLUSTRATIVE)}</span>
       </div>
       {body}
     </aside>

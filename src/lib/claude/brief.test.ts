@@ -31,7 +31,7 @@ describe("brief prompt fencing", () => {
 
 // Plan S11: entry requirements go through the same pre-display check as every brief sentence,
 // and the export-control check line is code's, shown only when no source covers it.
-// S17 TRK-12: memo free text goes into its own fenced <debrief> block; private notes never do.
+// S18 TRK-12: memo free text goes into its own fenced <debrief> block; private notes never do.
 describe("meeting memo in the brief prompt", () => {
   it("fences memo text and leaves the notes out", () => {
     const st = sampleDossier.stakeholders[0];

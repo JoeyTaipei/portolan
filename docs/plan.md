@@ -709,7 +709,7 @@ Why: a consultant says who pays first, through which channel, and whether the mo
 
 **Acceptance**: the shared block (§4) with routes `/d/sample/brief` and `/d/sample/report`; `PORT=3001 npx playwright test e2e/demo-path.spec.ts`.
 
-### S17 Meeting memo → influence score (added 2026-11-02, Erin)
+### S18 Meeting memo → influence score (added 2026-11-02, Erin)
 
 | Lane | Branch | Depends on | Estimate | Priority | Packages |
 |---|---|---|---|---|---|
@@ -733,6 +733,31 @@ Why: a meeting tells the team who really decides, who holds the money and what's
 **Acceptance**: the shared block (§4) with routes `/d/sample/tracker`, `/d/sample/map`, `/d/sample/brief`; `npx playwright test e2e/demo-path.spec.ts`.
 
 ---
+
+### S17 Traditional Chinese (繁中) version (added 2026-11-02, Erin)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| ui (one side session) | `claude/zh-tw-68e50f` | S16 merged | 5 h | P4 | none |
+
+Why: Erin asked for a Chinese version of the app beside the English one, with a visible switch. Spec SHELL-4 (I18N-1…7). Runs beside `feature/meeting-memo`, which touches `src/components/{tracker,score}/*`, `src/components/map/details-panel.tsx`, `src/lib/{tracker,scoring}/*` and `src/lib/types.ts`: in those files strings are only wrapped in `t(…)`, nothing is restructured.
+
+**Approach** (Next.js 16 i18n guide read; no package): the guide's `app/[lang]` routing would move every route and change every dossier and share URL, so the locale is a cookie instead. A typed dictionary keyed by the English text (`src/lib/i18n/zh-TW.ts`); `t("Add to tracker")` only compiles when the key exists, and English is the fallback. Server components call `await getT()` (reads the cookie inside the existing `<Suspense>` boundaries; `cacheComponents` stays on); client components call `useT()` from a provider in the root layout. Code-written sentences built in model files are translated where they are shown with `tx()`, which matches dictionary patterns such as `Based on {n} of {m} factors` and keeps the `{…}` values verbatim, so model files do not change.
+
+**Risky changes — list before code** (sources and Unverified marks; share links):
+- *A source excerpt, title, quote or name gets translated or changed.* `tx()` is only applied to code-written strings; placeholder values are copied as they are. Verify: unit test that `tx` leaves a sample excerpt and an organisation name unchanged and that every `{…}` value survives; e2e checks a sample excerpt is identical in both languages.
+- *An "Unverified" mark or "Sample data" stamp disappears in Chinese.* They become 未驗證 / 範例資料 with the English word kept in `data-*`/`title`. Verify: e2e checks 範例資料 on the Chinese A4; screenshots.
+- *The Chinese A4 runs past one page.* Verify: e2e prints the Chinese A4 and expects one page.
+- *Share or dossier URLs change.* The locale never enters a URL. Verify: e2e share link text is the same in both languages.
+- *Static shell shows the wrong language.* Locale-dependent text renders inside `<Suspense>`; the static shell only holds skeletons. Verify: build passes with `cacheComponents`; screenshots in Chinese with a cold load.
+- *Research text mistranslated by a paid call.* No paid call is made; research text stays in its language.
+- No migration, no `src/lib/types.ts` change.
+
+**Files**: new `src/lib/i18n/{index.ts,server.ts,client.tsx,zh-TW.ts,i18n.test.ts}`, `src/components/shell/lang-switch.tsx`, `src/components/brief/evidence-card.tsx` (the evidence card moved out of `evidence.tsx` so the sources page, a client component, can still use it); string wrapping in `src/app/**/*.tsx` (pages, layouts, loading, error, not-found), `src/components/**/*.tsx`, `src/components/report/report.css` and `src/app/globals.css` (CJK font stack, A4 fit), `src/app/layout.tsx` (Noto Sans TC, provider), `e2e/demo-path.spec.ts` (Chinese check), `design/language-options/index.html`, `docs/spec.md`, `docs/plan.md`. Model `.ts` files and `src/lib/**` (other than `src/lib/i18n/`) are not changed, except the date formatter calls listed in their components.
+
+**Tests added**: `i18n.test.ts`: `tx` exact and pattern matches, values kept verbatim, English fallback, Chinese dates. `demo-path.spec.ts`: switch to 繁中 on `/d/sample`, tabs read 市場/地圖, the A4 prints on one page with 範例資料, switch back to English.
+
+**Acceptance**: the shared block (§4) with routes `/`, `/d/sample`, `/d/sample/{map,brief,report,tracker,network,docs,sources}`, `/s/<sample share id>`, `/privacy`, `/waitlist`, in both languages; `PORT=3001 npx playwright test e2e/demo-path.spec.ts`.
 
 ## 6. Risks
 

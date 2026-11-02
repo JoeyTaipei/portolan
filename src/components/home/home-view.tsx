@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { PickFirstNotice } from "@/components/shell/pick-first";
+import { getT } from "@/lib/i18n/server";
 import { AlertCard } from "./alert-card";
 import { TAGLINE } from "./brand-bar";
 import { ChartInset } from "./chart-inset";
@@ -16,7 +17,8 @@ import { QuickNav } from "./quick-nav";
 // evidence, then next moves + side column. Phone order: header → evidence → next moves → key
 // judgments → alert → chart inset → workspace → your markets.
 
-export function HomeView({ m, sample, atHome = false }: { m: HomeModel; atHome?: boolean; sample: { id: string; name: string; level: HomeModel["confidence"]["level"]; sources: number } }) {
+export async function HomeView({ m, sample, atHome = false }: { m: HomeModel; atHome?: boolean; sample: { id: string; name: string; level: HomeModel["confidence"]["level"]; sources: number } }) {
+  const t = await getT();
   return (
     <div className="mx-auto flex w-full max-w-[1360px] flex-col gap-7 px-[18px] pt-[22px] pb-10 lg:gap-9 lg:px-10 lg:pt-9 lg:pb-14">
       <Suspense fallback={null}>
@@ -24,7 +26,7 @@ export function HomeView({ m, sample, atHome = false }: { m: HomeModel; atHome?:
       </Suspense>
       {atHome && m.isSample && (
         <Link href="/d/sample" className="btn btn-ghost btn-s self-start">
-          Open the sample market
+          {t("Open the sample market")}
         </Link>
       )}
       <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:gap-10 min-[1600px]:grid-cols-[minmax(0,1fr)_380px]">
@@ -42,7 +44,7 @@ export function HomeView({ m, sample, atHome = false }: { m: HomeModel; atHome?:
           <QuickNav m={m} />
           <div className="flex flex-col gap-2">
             <DossierSelect selectedId={m.id} sample={sample} />
-            <p className="m-0 text-[13.5px] leading-[1.45] text-ink2">{TAGLINE}</p>
+            <p className="m-0 text-[13.5px] leading-[1.45] text-ink2">{t(TAGLINE)}</p>
           </div>
         </div>
       </div>

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useRef, useState, useTransition } from "react";
 import { createDossier, type CreateDossierInput } from "@/app/actions/research";
 import { rememberDossier } from "@/lib/browser-dossiers";
+import type { Key } from "@/lib/i18n";
+import { useT } from "@/lib/i18n/client";
 
 // HOME-8 (spec §7.1). Required: company, product, goal, email; optional fields feed the
 // brief's "Needs from you". Lengths match the server-side check. Taiwan only for now; China is
@@ -11,7 +13,7 @@ import { rememberDossier } from "@/lib/browser-dossiers";
 
 export const LIMITS = { company: 120, product: 200, goal: 300, email: 254, optional: 200 } as const;
 
-const REQUIRED: { name: "company" | "product" | "goal" | "email"; label: string; what: string; placeholder: string }[] = [
+const REQUIRED: { name: "company" | "product" | "goal" | "email"; label: Key; what: Key; placeholder: Key }[] = [
   { name: "company", label: "Your company", what: "your company", placeholder: "e.g. Skyward Robotics" },
   { name: "product", label: "Product or service", what: "the product or service", placeholder: "e.g. Counter-UAS sensor kit" },
   { name: "goal", label: "Goal", what: "a goal", placeholder: "e.g. First government pilot within 12 months" },
@@ -29,6 +31,7 @@ export function NewDossierForm() {
   const [created, setCreated] = useState<{ id: string; url: string } | null>(null);
   const [copied, setCopied] = useState(false);
   const [pending, start] = useTransition();
+  const t = useT();
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -39,7 +42,7 @@ export function NewDossierForm() {
       const ok = val && (r.name !== "email" || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val));
       if (!ok) {
         setInvalid(r.name);
-        setError(r.name === "email" && val ? "Enter a valid email to start research." : `Fill in ${r.what} to start research.`);
+        setError(r.name === "email" && val ? t("Enter a valid email to start research.") : t("Fill in {what|t} to start research.", { what: t(r.what) }));
         (e.currentTarget.elements.namedItem(r.name) as HTMLInputElement | null)?.focus();
         return;
       }
@@ -62,7 +65,7 @@ export function NewDossierForm() {
     start(async () => {
       const r = await createDossier(input);
       if (!r.ok) {
-        setError(r.error);
+        setError(t.x(r.error));
         return;
       }
       rememberDossier(r.data.id, input.company); // the user's own words; the real name replaces it on first visit
@@ -74,9 +77,9 @@ export function NewDossierForm() {
   if (created) {
     return (
       <div className="flex flex-col gap-2.5 rounded-[var(--r-m)] border border-rule-strong bg-panel p-3.5" role="status">
-        <p className="m-0 text-[15px] font-bold">Research started</p>
+        <p className="m-0 text-[15px] font-bold">{t("Research started")}</p>
         <p className="m-0 text-[14px] font-semibold text-[var(--notice-text)]">
-          This link is the only key to your market. Save it now.
+          {t("This link is the only key to your market. Save it now.")}
         </p>
         <code className="block break-all rounded-[var(--r-s)] bg-panel2 px-2 py-1.5 text-[13px]">{created.url}</code>
         <div className="flex gap-2">
@@ -92,10 +95,10 @@ export function NewDossierForm() {
               }
             }}
           >
-            {copied ? "Copied" : "Copy link"}
+            {copied ? t("Copied") : t("Copy link")}
           </button>
           <Link href={`/d/${created.id}`} className="btn btn-main btn-s flex-1">
-            Open the market
+            {t("Open the market")}
           </Link>
         </div>
       </div>
@@ -107,56 +110,56 @@ export function NewDossierForm() {
       ref={formRef}
       noValidate
       onSubmit={submit}
-      aria-label="New market"
+      aria-label={t("New market")}
       className="flex flex-col gap-2.5 rounded-[var(--r-m)] border border-dashed border-rule-strong bg-panel p-3.5"
     >
       {REQUIRED.slice(0, 2).map((r) => (
         <label key={r.name} className={lab}>
-          {r.label}
-          <input name={r.name} required maxLength={LIMITS[r.name]} placeholder={r.placeholder} aria-invalid={invalid === r.name || undefined} className={field} />
+          {t(r.label)}
+          <input name={r.name} required maxLength={LIMITS[r.name]} placeholder={t(r.placeholder)} aria-invalid={invalid === r.name || undefined} className={field} />
         </label>
       ))}
       <label className={lab}>
-        Target market
+        {t("Target market")}
         <select name="market" defaultValue="TW" className={field}>
-          <option value="TW">Taiwan</option>
-          <option disabled>United States (coming soon)</option>
-          <option disabled>Japan (coming soon)</option>
-          <option disabled>Singapore (coming soon)</option>
+          <option value="TW">{t("Taiwan")}</option>
+          <option disabled>{t("United States (coming soon)")}</option>
+          <option disabled>{t("Japan (coming soon)")}</option>
+          <option disabled>{t("Singapore (coming soon)")}</option>
         </select>
       </label>
       {REQUIRED.slice(2).map((r) => (
         <label key={r.name} className={lab}>
-          {r.label}
+          {t(r.label)}
           <input
             name={r.name}
             type={r.name === "email" ? "email" : "text"}
             autoComplete={r.name === "email" ? "email" : "off"}
             required
             maxLength={LIMITS[r.name]}
-            placeholder={r.placeholder}
+            placeholder={t(r.placeholder)}
             aria-invalid={invalid === r.name || undefined}
             className={field}
           />
         </label>
       ))}
       <details className="text-[13px] text-ink2">
-        <summary className="min-h-8 cursor-pointer py-1 font-semibold text-ink">Optional: details that sharpen the brief</summary>
+        <summary className="min-h-8 cursor-pointer py-1 font-semibold text-ink">{t("Optional: details that sharpen the brief")}</summary>
         <div className="mt-2 flex flex-col gap-2.5">
           <label className={lab}>
-            Product certifications
+            {t("Product certifications")}
             <input name="certifications" maxLength={LIMITS.optional} className={field} />
           </label>
           <label className={lab}>
-            Price range
+            {t("Price range")}
             <input name="priceRange" maxLength={LIMITS.optional} className={field} />
           </label>
           <label className={lab}>
-            Partners you already have in Taiwan
+            {t("Partners you already have in Taiwan")}
             <input name="twPartners" maxLength={LIMITS.optional} className={field} />
           </label>
           <label className={lab}>
-            Your own deadline
+            {t("Your own deadline")}
             <input name="clientDeadline" type="date" className={field} />
           </label>
         </div>
@@ -169,7 +172,7 @@ export function NewDossierForm() {
         </label>
       </div>
       <button type="submit" className="btn btn-main" disabled={pending}>
-        {pending ? "Starting research…" : "Start research"}
+        {pending ? t("Starting research…") : t("Start research")}
       </button>
       {error && (
         <p role="alert" className="m-0 text-[13px] font-bold text-[var(--res-text)]">
