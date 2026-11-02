@@ -54,6 +54,15 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
 
       <div className="rp-row">
         <section>
+          {r.judgment && (
+            <section className="rp-bottom" aria-label="Bottom line">
+              <p>
+                <b>Bottom line:</b> {r.judgment.text} <span className="t">{icdText(r.judgment.icd)}, {r.judgment.confidence.toLowerCase()} confidence.</span>
+                <Cite refs={r.judgment.refs} />
+              </p>
+              <IcdScale term={r.judgment.icd} />
+            </section>
+          )}
           <p className="rp-lab">Executive summary</p>
           <p className="rp-summary">
             {r.summary.length === 0
@@ -76,14 +85,6 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
               </div>
             ))}
           </div>
-          {r.judgment && (
-            <div className="rp-judg">
-              <b>Key judgment.</b> {r.judgment.text} <b>{icdText(r.judgment.icd)}</b>, {r.judgment.confidence.toLowerCase()}{" "}
-              confidence.
-              <Cite refs={r.judgment.refs} />
-              <IcdScale term={r.judgment.icd} />
-            </div>
-          )}
         </section>
         <MapExhibit exhibit={r.exhibit} takeaway={takeaway} />
       </div>
@@ -96,7 +97,7 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
               <th>Stakeholder</th>
               <th>Stance</th>
               <th>Influence</th>
-              <th>Next move</th>
+              <th className="nx">Next move</th>
               <th>Sources</th>
             </tr>
           </thead>
@@ -115,9 +116,8 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
                 <td className={t.nextVerified ? undefined : "un"}>{t.next}</td>
                 <td className="src">
                   {t.refs.map((s) => (
-                    <span key={s.id} className="mr-1 inline-block">
+                    <span key={s.id} className="mr-1 inline-block" title={s.title}>
                       {s.label}
-                      <Stamp reliability={s.reliability} credibility={s.credibility} />
                     </span>
                   ))}
                 </td>
@@ -193,7 +193,7 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
         <ol aria-label="Sources in the table">
           {r.sources.map((s) => (
             <li key={s.id} title={s.title}>
-              [{s.label}]<Stamp reliability={s.reliability} credibility={s.credibility} />
+              [{s.label}] <Stamp reliability={s.reliability} credibility={s.credibility} />
               {s.verifiedAt ? `checked ${fmtDay(s.verifiedAt)}` : "date unverified"} · {s.title}
             </li>
           ))}

@@ -3,7 +3,7 @@ import { icdText } from "@/components/score/icd-scale";
 import { BrandLine } from "./brand-bar";
 import type { HomeModel } from "./model";
 import { RelativeTime } from "./relative-time";
-import { SourceStamps } from "./source-stamps";
+import { SourceChips } from "@/components/score/source-chip";
 
 // HOME-3 market header: stamps, country + refreshed, name, the bottom line (first sourced key
 // judgment) and the two main actions.
@@ -37,7 +37,7 @@ export function MarketHeader({ m }: { m: HomeModel }) {
       {line ? (
         <p className="m-0 max-w-[50ch] text-[19px] leading-[1.4] lg:text-[23px]">
           <b>Bottom line:</b> {line.text} <span className="text-ink2">{icdText(line.icd)}.</span>{" "}
-          <SourceStamps dossierId={m.id} sources={line.sources} />
+          <SourceChips dossierId={m.id} sources={line.sources} />
         </p>
       ) : (
         <p className="m-0 text-[16px] text-ink2">No bottom line yet. It comes from the strategy brief.</p>

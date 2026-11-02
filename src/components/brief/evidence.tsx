@@ -60,7 +60,7 @@ export function Evidence({
   return (
     <section aria-labelledby="evi-h" className="flex flex-col gap-3">
       <div className="flex items-baseline justify-between gap-2">
-        <h2 id="evi-h" className="m-0 text-[15px] font-bold">
+        <h2 id="evi-h" className="m-0 scroll-mt-4 text-[22px] font-bold">
           Evidence
         </h2>
         <p className="m-0 text-[13px] text-ink2">

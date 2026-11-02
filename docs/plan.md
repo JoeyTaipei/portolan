@@ -560,8 +560,23 @@ Joey picked option C "Briefing room" and the word "Markets" on 2026-11-02 (spec 
 **Tasks**
 - **S9-T1 Wording** — every on-screen "dossier" → "market"; code names, routes, tables, events unchanged. Server action error strings stay (engine lane; follow-up).
 - **S9-T2 Layout** — HOME-1…9 as in spec §12 01: header + evidence panel, next moves, side column (alert, key judgments, chart inset, workspace links, your markets).
+- **S9-T3 Source chips** — SRC-CHIP: `src/components/score/{grade.ts,source-chip.tsx,stamp.tsx,explain.ts}`, `src/components/brief/model.ts`, `src/components/map/details-panel.tsx`, `src/components/report/a4-report.tsx`, `src/app/globals.css`. Risk: a grade must never disappear or point at the wrong source. Verify: every chip's card shows the same label and grade as the source list; e2e checks `data-grade` on every evidence row; A4 still one page.
 
 **Tests added**: none (copy and layout; e2e strings updated).
+
+---
+
+### S10 Briefing room layout for Map, Brief, A4 report, Tracker
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| ui | `feature/pages-briefing-room` (stacked on `feature/dossier-page`) | S9 | 2 h | P4 | none |
+
+**Risky changes — list before code**: sources (brief citations become chips; evidence cards stay; A4 stays one page). Verify: e2e evidence-row grade check, A4 one-page check, chips open the right source.
+
+**Files**: `src/components/{map,brief,report,tracker}/**` (layout and styling), `src/app/d/[id]/brief/page.tsx`, `e2e/demo-path.spec.ts` (only if a label moves), `docs/spec.md`, `docs/plan.md`.
+
+**Tests added**: none.
 
 ---
 

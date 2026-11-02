@@ -58,8 +58,8 @@ export function NextSteps({
 
   return (
     <section aria-labelledby="steps-h" className="flex flex-col gap-2">
-      <div className="flex items-baseline justify-between gap-2">
-        <h2 id="steps-h" className="m-0 text-[13px] font-bold text-ink2">
+      <div className="flex items-baseline justify-between gap-2 border-b-2 border-rule-strong pb-2">
+        <h2 id="steps-h" className="m-0 text-[22px] font-bold">
           {filter ? (
             <>
               {STAGE_LABEL[filter]} · <span className="num">{rows.length}</span> shown of <span className="num">{total}</span>
@@ -115,14 +115,14 @@ function Row({
   const due = fmtDate(item.dueDate);
   const meeting = fmtDate(item.meetingAt);
   return (
-    <li className="border-t border-rule py-3 first:border-t-rule-strong last:border-b last:border-b-rule-strong" data-testid="tracker-row">
+    <li className="border-b border-rule py-4" data-testid="tracker-row">
       <div className="grid grid-cols-[18px_minmax(0,1fr)_auto] items-start gap-x-2.5 gap-y-1">
         <span className="mt-1 flex" title={`Support ${row.support}`}>
           <MarkIcon mark={row.mark} />
         </span>
         <div className="min-w-0">
-          <p className="m-0 text-[15.5px] font-bold leading-snug">{row.name}</p>
-          <p className="m-0 mt-0.5 text-[14px] leading-[1.45] text-ink2">{item.nextStep ?? "No next step yet"}</p>
+          <p className="m-0 text-[17px] font-bold leading-snug">{row.name}</p>
+          <p className="m-0 mt-1 text-[16px] leading-[1.45] text-ink">{item.nextStep ?? "No next step yet"}</p>
           <p className="m-0 mt-1 flex flex-wrap gap-x-3 text-[12.5px] text-ink2">
             <span>
               Support <span className="num font-semibold text-ink">{row.support}</span>
@@ -135,18 +135,18 @@ function Row({
           <span className="num text-[12.5px] text-ink2">{due ? `Due ${due}` : "No due date"}</span>
         </div>
       </div>
-      <div className="mt-2 flex flex-wrap gap-x-1 pl-[28px]">
-        <button type="button" className={linkBtn} aria-expanded={open === "step"} onClick={() => onOpen(open ? null : "step")}>
-          {open ? "Close" : "Edit"}
-        </button>
+      <div className="mt-3 flex flex-wrap items-center gap-2 pl-[28px]">
         {!open && (
-          <button type="button" className={linkBtn} onClick={() => onOpen("meeting")}>
+          <button type="button" className="btn btn-main btn-s" onClick={() => onOpen("meeting")}>
             {item.meetingAt ? "Change meeting date" : "Set meeting date"}
           </button>
         )}
-        <Link href={`/d/${dossierId}/docs?item=${encodeURIComponent(item.id)}`} className={`${linkBtn} inline-flex items-center`}>
+        <Link href={`/d/${dossierId}/docs?item=${encodeURIComponent(item.id)}`} className="btn btn-ghost btn-s">
           Briefing note
         </Link>
+        <button type="button" className={linkBtn} aria-expanded={open === "step"} onClick={() => onOpen(open ? null : "step")}>
+          {open ? "Close" : "Edit"}
+        </button>
       </div>
       {open && <Editor row={row} focus={open} onDone={() => onOpen(null)} onSave={onSave} onRemove={onRemove} />}
     </li>
