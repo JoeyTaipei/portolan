@@ -117,3 +117,11 @@ Power Matrix 四象限：影響力 ≥ 50 且支持 ≥ 0 = Champions；影響�
 - 新的會後回報、改過的利害關係人、或來源超過 90 天 → 簡報標「Out of date」。
 - 客戶按 RE-BRIEF 才重寫：先顯示預估費用，確認後產生新版本（v2）。舊版保留。
 - 新版本開頭 2–4 行寫「改了什麼、為什麼」。
+
+## 8. 進場結論（Go / Conditional go / No-go；2026-11-02 Joey 選定，固定規則，不由 Claude 決定）
+- **還沒有結論**：Entry readiness 或 Opposition index 算不出來。
+- **No-go**：執照檢查 = 0（法規禁止外國公司）、或 Entry readiness 等級 Low、或 Opposition index 等級 High。
+- **Go**：Entry readiness High、Opposition Low、錢 = 3、執照 = 3、支持 ≥ 2、至少有一個建議先接觸的人（第 5 節）、Data confidence 不是 Low。
+- **Conditional go**：其他所有情況。
+- 條件（「To move to Go」）和阻擋原因（「Blocked by」）由程式從沒拿滿分的檢查列出，用固定文字；錢和執照的原因附該檢查的來源。Claude 不寫結論、也不寫條件。
+- 畫面（A4 右上角、首頁標題）只顯示結論和原因；Bottom line 句子仍是簡報的第一個關鍵判斷。

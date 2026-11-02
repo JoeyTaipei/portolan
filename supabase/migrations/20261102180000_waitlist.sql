@@ -1,4 +1,4 @@
--- S12 waitlist (spec §12 "09 Waitlist", §13). People who leave their details after a pitch.
+-- S13 waitlist (spec §12 "09 Waitlist", §13). People who leave their details after a pitch.
 -- Not tied to any dossier. The team reads it in the Supabase dashboard; the app only writes,
 -- from the server with the secret key. RLS on, no policies, no grants to the public roles.
 create table public.waitlist (

@@ -311,7 +311,7 @@ A claim that fails is sent back to Claude once with the failure reason. If it fa
 - On the sample: clear that member's data from localStorage.
 
 ### 10.8 Privacy page (`/privacy`, S2 shell, S8 content)
-Plain English: what we store; that research inputs and fetched pages are sent to Parallel and Anthropic for processing; that the dossier link is the only key; how team ties are stored (fields kept, fields dropped, only matched contacts), who sees them (this dossier only), and how withdrawal deletes them; that the upload declaration is self-certified; how to ask for a dossier to be deleted; and that documents are research references, not legal or investment advice. Waitlist (S12): what is stored (company, email, phone, consent time, which page they came from), that the team sees it in Supabase and gets a Slack notification, and how to be removed.
+Plain English: what we store; that research inputs and fetched pages are sent to Parallel and Anthropic for processing; that the dossier link is the only key; how team ties are stored (fields kept, fields dropped, only matched contacts), who sees them (this dossier only), and how withdrawal deletes them; that the upload declaration is self-certified; how to ask for a dossier to be deleted; and that documents are research references, not legal or investment advice. Waitlist (S13): what is stored (company, email, phone, consent time, which page they came from), that the team sees it in Supabase and gets a Slack notification, and how to be removed.
 
 ---
 
@@ -405,7 +405,7 @@ Layout "Briefing room" (Joey picked option C on 2026-11-02, canvas https://claud
 - **Phone (<1024px)**, one column: header → evidence → next moves → key judgments → alert → chart inset → workspace links → your markets.
 - **HOME-1** Brand line: "Market entry intelligence" and the plan label (Pro, display only) as a small line above the market name; the tagline sits under "Your markets". The large wordmark is gone (the top bar already shows Portolan). Never "ATLAS".
 - **HOME-2** Workspace links in the side column: Stakeholder map, Tracker, Network, Documents, Strategy brief, each with its short count, linking to the selected market's pages.
-- **HOME-3** Market header: Verified market stamp (only when `ready` and data confidence ≥ Medium; otherwise "Partial"), Sample data on the sample, country and "refreshed 2h ago" (relative; hover for the exact time), name as the page h1. **Bottom line**: the first sourced key judgment as a large sentence with its ICD term and source stamps; none → "No bottom line yet. It comes from the strategy brief." Buttons: "Open stakeholder map" (main) and "One-page A4 report". Evidence panel: four numbers (stakeholders, cited sources, upcoming events, network leads).
+- **HOME-3** Market header: Verified market stamp (only when `ready` and data confidence ≥ Medium; otherwise "Partial"), Sample data on the sample, country and "refreshed 2h ago" (relative; hover for the exact time), name as the page h1, and the entry verdict stamp (`docs/scoring.md` §8) beside the bottom line. **Bottom line**: the first sourced key judgment as a large sentence with its ICD term and source stamps; none → "No bottom line yet. It comes from the strategy brief." Buttons: "Open stakeholder map" (main) and "One-page A4 report". Evidence panel: four numbers (stakeholders, cited sources, upcoming events, network leads).
 - **HOME-4** Confidence in the evidence panel: "Confidence: High · 126 sources" with "16 of 36 stakeholders rest on two or more independent sources"; opens SCORE-X. No percentages.
 - **HOME-5** Refresh button in the evidence panel: §7.6. Spins while running, then "refreshed just now"; over the limit it shows why.
 - **HOME-9 Next moves**: up to 5 stakeholders, the contact-first three (scoring §5) first, then the rest by influence, skipping events. Each row: number, the stakeholder's sourced next step, its name, and its source stamps; it links to that stakeholder on the map. A stakeholder with no sourced step shows "Find a sourced contact route first" marked Unverified. None → empty state with "Open the map".
@@ -457,7 +457,7 @@ Layout "Briefing room" (Joey picked option C on 2026-11-02, canvas https://claud
 
 ### 05 One-page A4 report (`/d/[id]/report`, `/s/[shareId]`) — S2
 - **REP-1** "Market entry brief · Confidential", dossier name, "Prepared for <company> · <product> · <date>" (from the form and the generation date; if missing, the whole line is hidden — never a placeholder).
-- **REP-2** Confidence and source count ("High · 126 sources").
+- **REP-2** Entry verdict (`docs/scoring.md` §8; option A picked by Joey 2026-11-02, `design/verdict-options/`): the right header box shows "Entry verdict" and a Go / Conditional go / No-go stamp, then one line with data confidence and source count ("Data confidence Medium · 150 sources; 16 of 36 stakeholders well sourced"). Under the bottom line: "To move to Go:" or "Blocked by:" with the reasons code listed (money and licence reasons cite their check's sources). The ICD bar under the bottom line is dropped on the A4 to make room; the ICD term and range stay in the sentence.
 - **REP-3** Executive summary.
 - **REP-4** Three metrics: Entry readiness, Opposition index, Window to act (with the ICD scale).
 - **REP-5** Map exhibit: fixed-angle SVG with Government / Industry / Capital & Legal zones, "Exhibit 1" + a one-line takeaway, and below it "size = influence" and "Source: Portolan analysis of N sources".
@@ -510,7 +510,7 @@ Layout "Briefing room" (Joey picked option C on 2026-11-02, canvas https://claud
 - All accepted sources, filterable by stakeholder or type. Each: number S12, title, URL, type, grade stamp, verified date, verbatim excerpt (Taiwanese sources: original + translation), and which facts cite it; verified over 90 days ago → "Recheck due". A second tab "Rejected sources" lists what the quality filter blocked and why (for transparency).
 
 
-### 09 Waitlist (`/waitlist`) — S12 (added 2026-11-02, Joey)
+### 09 Waitlist (`/waitlist`) — S13 (added 2026-11-02, Joey)
 After a pitch, an interested person leaves their details so the team can follow up. Decisions settled with Joey on 2026-11-02 (grilling, one question at a time):
 - **Where**: its own page `/waitlist`, outside the five tabs (no sixth tab). It is opened directly after a demo (URL or QR code). One "Join the waitlist" link sits at the bottom of the Docs tab (`/d/[id]/docs`) and one at the bottom of the share page (`/s/[shareId]`), outside the A4 sheet so the report still prints as one page. Links add `?from=docs` or `?from=share`; anything else counts as `direct`.
 - **Fields (all required)**: company name (1–200 characters), contact email (valid, ≤254), phone (7–20 digits; may contain `+`, spaces, `-`, `(`, `)`). No name field.
@@ -556,7 +556,7 @@ Main columns only; types and indexes are set in the migration. Every table has `
 | `org_aliases` | `id`, `dossier_id` nullable (null = site-wide seed), `alias`, `stakeholder_key` |
 | `email_outbox` | `id`, `dossier_id`, `to_email`, `kind`, `status` (pending/sent_manually) |
 | `ops_log` | `id`, `action`, `target_id`, `actor`, `note` |
-| `waitlist` (S12) | `id`, `company`, `email` (lower-cased, unique), `phone`, `came_from` (direct/docs/share), `consent_version`, `consented_at`, `updated_at` — not tied to any dossier |
+| `waitlist` (S13) | `id`, `company`, `email` (lower-cased, unique), `phone`, `came_from` (direct/docs/share), `consent_version`, `consented_at`, `updated_at` — not tied to any dossier |
 
 - Support, influence and the metrics are **never stored as the truth**: each read recomputes them with `scoring` from facts, support_statements, debriefs and edges (`briefs.metrics` is a snapshot for that version).
 - The sample and real dossiers share one set of TypeScript types (the `Dossier` aggregate in `src/lib/types.ts`); the sample file exports the same shape.

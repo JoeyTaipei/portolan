@@ -4,7 +4,7 @@ import { type CameFrom, normaliseFrom, type WaitlistField } from "./shared";
 
 export { normaliseFrom, waitlistEventProps, type CameFrom, type WaitlistField } from "./shared";
 
-// Waitlist (spec §12 "09 Waitlist", plan S12). Pure core so it can be tested without a
+// Waitlist (spec §12 "09 Waitlist", plan S13). Pure core so it can be tested without a
 // database: validation, honeypot, daily limits, then save and notify through injected deps.
 
 export const CONSENT_VERSION = "v1";

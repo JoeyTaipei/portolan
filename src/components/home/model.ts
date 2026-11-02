@@ -2,6 +2,7 @@
 // Scores come only from src/lib/scoring; judgments and alerts are shown only with accepted sources.
 import { buildMapModel, byInfluence, type Mark } from "@/components/map/model";
 import { dataConfidenceExplanation, refsFor, sourceRef, type Explanation, type SourceRef } from "@/components/score/explain";
+import { buildVerdict, type VerdictVM } from "@/components/score/verdict";
 import { briefMetrics, taipeiDay } from "@/lib/scoring";
 import type { DataConfidenceResult, DossierStatus, IcdTerm, Confidence, Dossier } from "@/lib/types";
 
@@ -25,6 +26,8 @@ export interface HomeModel {
   counts: { stakeholders: number; sources: number; alerts: number };
   confidence: DataConfidenceResult;
   confidenceX: Explanation;
+  /** HOME-3: the entry verdict (scoring §8) beside the bottom line. */
+  verdict: VerdictVM;
   judgments: { text: string; icd: IcdTerm; confidence: Confidence; sources: SourceRef[] }[];
   alert: { title: string; days: number; date: string; sources: SourceRef[]; url: string | null } | null;
   /** HOME-9: contact-first three, then by influence; events skipped. */
@@ -93,6 +96,7 @@ export function buildHomeModel(d: Dossier, now: Date): HomeModel {
     },
     confidence: metrics.dataConfidence,
     confidenceX: dataConfidenceExplanation(metrics.dataConfidence),
+    verdict: buildVerdict(d, now, map.contactFirst.length),
     judgments,
     alert,
     moves,

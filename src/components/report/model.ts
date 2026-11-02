@@ -6,6 +6,7 @@
 import { buildBriefModel, fmtDay, type BriefVM, type Cited, type MetricVM } from "@/components/brief/model";
 import { buildMapModel, byInfluence, MAP_LIMIT, NO_ROUTE, type Mark } from "@/components/map/model";
 import { influenceText, sourceRef, type SourceRef } from "@/components/score/explain";
+import { buildVerdict, type VerdictVM } from "@/components/score/verdict";
 import { isEligible, sourcesFor } from "@/lib/scoring";
 import type { Brief, Category, Dossier, IcdTerm, Confidence } from "@/lib/types";
 
@@ -35,6 +36,8 @@ export interface ReportVM {
   /** "Prepared for …" pieces; null hides the whole line (never a placeholder). */
   preparedFor: { company: string; product: string; date: string } | null;
   confidence: MetricVM;
+  /** REP-2: the entry verdict (scoring §8), shown in the right header box. */
+  verdict: VerdictVM;
   stakeholderCount: number;
   summary: Cited[];
   judgment: { text: string; icd: IcdTerm; confidence: Confidence; refs: SourceRef[] } | null;
@@ -112,6 +115,7 @@ export function buildReportModel(d: Dossier, brief: Brief, now: Date): ReportVM 
   const risks = requirements.length > 0 ? [] : b.risks.slice(0, RISKS_N);
   const summary = b.summary;
   const judgment = b.judgments[0] ?? null;
+  const verdict = buildVerdict(d, now, map.contactFirst.length);
   const sources = dedupe(top.flatMap((t) => t.refs));
   const citedIds = dedupe([
     ...summary.flatMap((s) => s.refs),
@@ -121,6 +125,7 @@ export function buildReportModel(d: Dossier, brief: Brief, now: Date): ReportVM 
     ...plan.flatMap((p) => p.refs),
     ...risks.flatMap((r) => r.refs),
     ...requirements.flatMap((r) => r.refs),
+    ...verdict.reasons.flatMap((r) => r.refs),
   ]).map((r) => r.id);
 
   const confidence = b.metrics.find((m) => m.key === "confidence")!;
@@ -130,6 +135,7 @@ export function buildReportModel(d: Dossier, brief: Brief, now: Date): ReportVM 
     preparedFor:
       d.company.trim() && d.product.trim() ? { company: d.company.trim(), product: d.product.trim(), date: fmtDay(brief.createdAt) } : null,
     confidence,
+    verdict,
     stakeholderCount: eligible.size,
     summary,
     judgment,

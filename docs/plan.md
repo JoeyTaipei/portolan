@@ -597,8 +597,25 @@ Why: three AI-written entry reports (Gemini, ChatGPT-style) all lead with "what 
 
 **Tests added**: `brief.test.ts` — an uncited requirement is removed; the export-control line appears only without a sourced export-control item. Fixture test covers requirements.
 
+### S12 Entry verdict on the A4 and home (added 2026-11-02, Joey)
 
-### S12 Waitlist page (added 2026-11-02, Joey)
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| ui (one session) | `feature/entry-verdict` | S11 | 2 h | P4 | none |
+
+Why: research (`reports/顧問級進場報告改進建議.md`) found consulting entry reports lead with a Go / Conditional-Go / No-Go call and its conditions. Joey chose a fixed code rule (not Claude) and layout A.
+
+**Risky changes — list before code** (a new scored output; `docs/scoring.md` §8 thresholds approved by Joey when picking option A):
+- *A verdict that overstates the evidence* (Go on thin data) could push a user into a market. Verify: Go needs every check at 3, opposition Low, a contact-first pick and data confidence not Low; unit tests cover each branch.
+- *Reasons without sources read as facts.* Money and licence reasons cite their check's sources; the others are computed from scores and say so in their wording. No Claude text, no new prompt, no paid call.
+- *A4 runs past one page.* Verify: e2e one-page check.
+- No migration and no `src/lib/types.ts` change: the verdict is computed on each read like the metrics.
+
+**Files**: `src/lib/scoring/{verdict.ts,index.ts,scoring.test.ts}`, `src/components/report/{model.ts,a4-report.tsx,report.css}`, `src/components/home/{model.ts,market-header.tsx}`, `src/components/score/verdict.ts`, `src/app/globals.css` (stamp), `design/verdict-options/index.html`, `docs/{scoring,spec,plan}.md`.
+
+**Tests added**: `scoring.test.ts` — one case per verdict (none, no-go by licence 0, no-go by opposition High, go, conditional with reasons) and the sample gives Conditional go.
+
+### S13 Waitlist page (added 2026-11-02, Joey)
 
 | Lane | Branch | Depends on | Estimate | Priority | Packages |
 |---|---|---|---|---|---|
