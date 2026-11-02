@@ -286,6 +286,23 @@ export interface Sentence {
   sourceIds: string[];
 }
 
+/** Entry requirement topics (BRIEF-9), in display order. */
+export const REQUIREMENT_TOPICS = [
+  "who_can_bid",
+  "local_content",
+  "screening",
+  "import_permit",
+  "procurement_route",
+  "cybersecurity",
+  "export_control",
+] as const;
+export type RequirementTopic = (typeof REQUIREMENT_TOPICS)[number];
+
+/** One rule a foreign firm must meet to sell here, cited like any brief sentence. */
+export interface EntryRequirement extends Sentence {
+  topic: RequirementTopic;
+}
+
 export type IcdTerm =
   | "almost_no_chance"
   | "very_unlikely"
@@ -350,6 +367,8 @@ export interface Brief {
   plan: SevenDayPlan;
   summary: Sentence[];
   risks: Sentence[];
+  /** BRIEF-9; empty on briefs made before 2026-11-02. */
+  requirements: EntryRequirement[];
   meet: MeetItem[];
   /** "Needs from you: …" lines for optional form fields the brief needed. */
   needs: string[];

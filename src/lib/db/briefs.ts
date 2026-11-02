@@ -36,6 +36,7 @@ export async function insertBrief(dossierId: string, draft: BriefDraft, removed:
         plan: draft.plan as unknown as Json,
         summary: draft.summary as unknown as Json,
         risks: draft.risks as unknown as Json,
+        requirements: draft.requirements as unknown as Json,
         meet: draft.meet as unknown as Json,
         needs: draft.needs,
         changes_note: draft.changesNote,

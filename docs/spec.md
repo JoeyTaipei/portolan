@@ -320,6 +320,7 @@ Plain English: what we store; that research inputs and fetched pages are sent to
 ### 11.1 Strategy brief (BRIEF-*, S4)
 - Opus 5.5, effort high, structured output. Input: sourced facts, scores computed in code, the contact-first three (order set in code), and the form. Writing follows `docs/scoring.md` section 6: position rationale ≤ 120 words with every sentence cited; recommended executive path in 3–5 steps in section 5 order, with Claude writing only the reasons and a separate "How to reduce opposition" for blockers; the 7-day plan in four fixed boxes; missing optional fields become "Needs from you: …".
 - Also produces, for the A4 report: an executive summary (≤ 70 words), key risks (≤ 3, each cited) and where to meet them (only sourced events with future dates).
+- **Entry requirements (BRIEF-9, added 2026-11-02 at Joey's request)**: the rules a foreign firm must meet to sell here, one cited sentence per topic, topics in this fixed order: who can bid, local content, screening and tests, import permits, procurement route, cybersecurity, export control. Only what a source states; a topic no source covers is left out. Same pre-display check (BRIEF-6). Code (not Claude) adds one fixed line "Export control · Needs a specialist check (no source found)" when no sourced export-control item exists; it is shown in grey with a dashed mark and is never written as a finding.
 - **Pre-display check (BRIEF-6)**, per sentence, in code: cited source ids exist in this dossier and pass §7.7; people and organisations mentioned are on the map; no placeholders (regex `\[[A-Z _-]+\]`, `TBD`, `lorem`); no individuals in China. Failing sentences are removed and written to `brief_check_log`; they are not shown with a warning. If a section ends up empty it says "Not enough sourced facts for this section".
 - **Versions**: each run adds a `briefs` row (v1, v2…); older versions are kept and viewable with `?v=`. A new version starts with 2–4 lines of "What changed and why".
 - **Out of date** (`docs/scoring.md` section 7): after the brief was made there is a new debrief, a changed stakeholder (refresh merge, new ratings), or a cited source whose verified date is over 90 days old → an Out of date label at the top with the reasons. Nothing is rewritten automatically.
@@ -441,6 +442,7 @@ Layout "Briefing room" (Joey picked option C on 2026-11-02, canvas https://claud
 - **BRIEF-5** 7-day entry plan in four boxes; every action names one stakeholder and a source; Day 5 with no event says "No sourced event this week".
 - **BRIEF-6** Pre-display check (§11.1).
 - **BRIEF-7** Evidence dossier: source title, type (Government gazette, Legislative record, News…), Admiralty stamp (this is the source's "score" from intent 03, shown as a grade instead of a %), verbatim excerpt; Taiwanese sources show the Chinese original + translation (labelled machine translation); "3 of 126 · Show all" → sources page. No "Score 98%".
+- **BRIEF-9** Entry requirements (§11.1): a list after the 7-day plan, each item with its topic, sentence and source chips, then the export-control check line. Briefs made before this existed have none: the section is hidden.
 - **BRIEF-8** "Export one-page A4 PDF" → `/d/[id]/report`.
 - States: loading skeleton; empty = brief still being written (link to research progress); error = "The brief failed to generate. Your research is saved." + retry (RE-BRIEF flow, cost shown first).
 
@@ -462,7 +464,7 @@ Layout "Briefing room" (Joey picked option C on 2026-11-02, canvas https://claud
 - **REP-6** Top 5 stakeholders table: stance, influence level, next move, source numbers + grade stamps (top 5 = the five scored stakeholders with the highest influence).
 - **REP-7** Recommended entry path and 7-day plan.
 - **REP-8** Where to meet them: event, date, how many mapped stakeholders will be there.
-- **REP-9** Key risks.
+- **REP-9** Entry requirements (BRIEF-9; option B picked by Joey 2026-11-02, `design/entry-requirements-options/`): the first 4 sourced items + the export-control check line, in the right column where Key risks used to be. A brief without entry requirements shows Key risks there instead.
 - **REP-10** Source list (number, title, grade stamp, verified date) and "Full list of N sources at the link below" → `/s/[shareId]/sources`.
 - **REP-11** Share link (§9) and "Sample data · every claim links to a cited source" (on the sample); toolbar "Copy share link" → "Copied".
 - **REP-12** `@page { size: A4; margin: 0 }`, 794×1123, padding 42/46/32px, 6px tick border; the toolbar is hidden in `@media print`; "Print / Save as PDF" calls `window.print()`. If content runs past one page, code shortens lists (top 5 unchanged; risks 3 → 2; sources limited to those in the table) rather than shrinking the font.
@@ -526,7 +528,7 @@ Main columns only; types and indexes are set in the migration. Every table has `
 | `support_statements` | `id`, `stakeholder_id`, `run_id` or `debrief_id`, `rating` (−2..2), `summary`, `quote`, `source_id`, `stated_at` |
 | `edges` | `id`, `dossier_id`, `a_id`, `b_id`, `relation`, `source_ids`, `status` |
 | `timed_events` | `id`, `dossier_id`, `title`, `kind` (budget_vote/tender_close/committee_review/event), `date`, `stakeholder_ids`, `source_ids`, `relevant_to_goal` bool |
-| `briefs` | `id`, `dossier_id`, `version`, `metrics` jsonb (the four metrics computed in code + basis), `rationale` / `path` / `plan` / `summary` / `risks` / `meet` jsonb (each sentence with `source_ids`), `changes_note`, `inputs_at` (data timestamp at generation, for Out of date) |
+| `briefs` | `id`, `dossier_id`, `version`, `metrics` jsonb (the four metrics computed in code + basis), `rationale` / `path` / `plan` / `summary` / `risks` / `requirements` / `meet` jsonb (each sentence with `source_ids`), `changes_note`, `inputs_at` (data timestamp at generation, for Out of date) |
 | `brief_check_log` | `id`, `brief_id` or `document_id`, `sentence`, `reason` |
 | `leads` | `id`, `dossier_id`, `type` (investor/lawyer/event), `stakeholder_id` nullable, `name`, `kind`, `match` jsonb (checks and level, or attendee count), `meta`, `why`, `route`, `event_date`, `source_ids`, `status` |
 | `tracker_items` | `id`, `dossier_id`, `stakeholder_id` or `lead_id`, `stage`, `next_step`, `due_date`, `meeting_at`, `origin` (map/network/debrief/intro/manual) |
@@ -718,7 +720,7 @@ export function influenceScore(r: InfluenceRatings): Banded | null {
 | 05 | Top 5 stakeholders table | REP-6 | S2 |
 | 05 | Recommended entry path, 7-day plan | REP-7 | S2 |
 | 05 | Where to meet them | REP-8 | S2 |
-| 05 | Key risks | REP-9 | S2 |
+| 05 | Entry requirements (Key risks when none) | REP-9, BRIEF-9 | S2, S11 |
 | 05 | Source list and full-list link | REP-10 | S2 |
 | 05 | Share link, Sample data line | REP-11, §9 | S2 |
 | 05 | A4 print styles | REP-12 | S2 |
