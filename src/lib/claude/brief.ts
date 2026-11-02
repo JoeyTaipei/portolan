@@ -1,13 +1,13 @@
 import "server-only";
 import { z } from "zod";
 import { sampleDossier } from "@/fixtures/sample-dossier";
-import { preDisplay, type Removed } from "@/lib/checks/pre-display";
-import { indexSources } from "@/lib/checks/source-check";
+import { preDisplay, sentenceProblem, type Removed } from "@/lib/checks/pre-display";
+import { indexSources, normaliseText } from "@/lib/checks/source-check";
 import type { BriefDraft } from "@/lib/db/briefs";
 import { MODELS } from "@/lib/limits/prices";
 import { normaliseName } from "@/lib/research/filter";
 import { briefMetrics, briefStatus, contactFirst, quadrant, resistant, scoreStakeholders, sourcesFor } from "@/lib/scoring";
-import { REQUIREMENT_TOPICS, type Brief, type Dossier, type EntryRequirement, type IcdTerm, type KeyJudgment, type MeetItem, type PlanAction, type Sentence } from "@/lib/types";
+import { MONEY_STATUSES, REQUIREMENT_TOPICS, ROUTE_KINDS, type Brief, type Dossier, type EntryRequirement, type IcdTerm, type KeyJudgment, type MeetItem, type PlanAction, type ProcurementRoute, type Sentence } from "@/lib/types";
 import { callStructured, claudeLive, type LedgerContext } from "./client";
 import { relabel } from "./mock";
 import { attr, fence, sourceBlocks, type PromptSource } from "./prompts";
@@ -59,6 +59,23 @@ export const BriefOutput = z.object({
   requirements: z
     .array(Cited.extend({ topic: z.enum(REQUIREMENT_TOPICS).describe("Which rule this is") }))
     .describe("Entry requirements: at most one sentence per topic, only where a source states the rule"),
+  routes: z
+    .array(
+      Cited.extend({
+        route: z.enum(ROUTE_KINDS).describe("Which procurement route this is"),
+        buyer_key: z.string().nullable().describe("The key of a Government <stakeholder> who buys through this route, or null"),
+        access: z.enum(["direct", "via_local_partner", "no", "unclear"]).describe("Can a foreign firm like the client use it; unclear unless a cited source says"),
+        money: z
+          .object({
+            amount: z.string().describe("The amount copied exactly from the cited source"),
+            as_of: z.string().nullable().describe("YYYY-MM-DD the source gives for this amount, else null"),
+            status: z.enum(MONEY_STATUSES).nullable().describe("The amount's status as the source states it, else null"),
+            source_ids: z.array(z.string()),
+          })
+          .nullable(),
+      }),
+    )
+    .describe("Procurement routes: at most one row per route, only where a source describes it"),
 });
 export type BriefOutput = z.infer<typeof BriefOutput>;
 
@@ -76,7 +93,8 @@ Write (docs/scoring.md §6):
 - reduce_opposition: for each stakeholder in <blockers>, one concrete step to reduce their opposition.
 - plan: the 7-day entry plan in four boxes. Every action names one stakeholder (its key) and cites a source; drop an action you can't source. Day 5 is empty unless <events> has a sourced event that week.
 - summary: an executive summary of at most 70 words; risks: at most 3 key risks.
-- requirements: the rules a foreign firm like the client must meet to sell to these buyers, one sentence per topic: who_can_bid (who may bid or be the prime), local_content (made-in-Taiwan or no-China rules), screening (security vetting, qualification, tests), import_permit, procurement_route (e.g. domestic tender, FMS, direct commercial sale), cybersecurity, export_control. Each sentence is short (at most 18 words). Write a topic only when a source states the rule; leave the rest out (code marks missing export control for a specialist check).`;
+- requirements: the rules a foreign firm like the client must meet to sell to these buyers, one sentence per topic: who_can_bid (who may bid or be the prime), local_content (made-in-Taiwan or no-China rules), screening (security vetting, qualification, tests), import_permit, procurement_route (e.g. domestic tender, FMS, direct commercial sale), cybersecurity, export_control. Each sentence is short (at most 18 words). Write a topic only when a source states the rule; leave the rest out (code marks missing export control for a specialist check).
+- routes: how buyers here purchase, one row per route: domestic_tender (a domestic tender, e.g. the Armaments Bureau's), police_ci (police and critical-infrastructure procurement), ncsist (NCSIST co-development or subcontract), fms (Foreign Military Sales), dcs (direct commercial sale). Each row: the Government stakeholder who buys (its key, or null), whether a foreign firm like the client can use it (direct, via_local_partner, no, or unclear when no source says), and one sentence of at most 18 words. Add money only when a source states an amount for this route: copy the amount exactly, give the date the source gives (else null) and its status (proposed, in_committee, passed, open_tender, awarded; else null). Code picks the most likely first buyer; do not say which it is. Write a route only when a source describes it.`;
 
 interface Inputs {
   d: Dossier;
@@ -206,6 +224,13 @@ function mockOutput(d: Dossier): BriefOutput {
     summary: brief.summary.map(one),
     risks: brief.risks.map(one),
     requirements: (brief.requirements ?? []).map((x) => ({ ...one(x), topic: x.topic })),
+    routes: (brief.routes ?? []).map((x) => ({
+      ...one(x),
+      route: x.route,
+      buyer_key: x.buyerId ? (idFor.get(x.buyerId) ?? null) : null,
+      access: x.access,
+      money: x.money ? { amount: x.money.amount, as_of: x.money.asOf, status: x.money.status, source_ids: cite(x.money.sourceIds) } : null,
+    })),
   };
 }
 
@@ -215,6 +240,14 @@ function mockOutput(d: Dossier): BriefOutput {
 export function orderRequirements(xs: EntryRequirement[]): EntryRequirement[] {
   return REQUIREMENT_TOPICS.flatMap((topic) => {
     const hit = xs.find((x) => x.topic === topic);
+    return hit ? [hit] : [];
+  });
+}
+
+/** BRIEF-12: one route per kind (the first that passed the check), in route order. */
+export function orderRoutes(xs: ProcurementRoute[]): ProcurementRoute[] {
+  return ROUTE_KINDS.flatMap((route) => {
+    const hit = xs.find((x) => x.route === route);
     return hit ? [hit] : [];
   });
 }
@@ -298,6 +331,20 @@ export async function writeBrief(args: Inputs & { ledger: LedgerContext }): Prom
     offMapNames: args.offMapNames,
     chinaPeople: d.stakeholders.filter((s) => s.isChina && s.isPerson).map((s) => s.name),
   };
+  const govOnMap = new Set(d.stakeholders.filter((s) => s.category === "gov").map((s) => s.id));
+  // Money is kept only when its own sources pass the same check and the amount is in a cited excerpt.
+  const routeMoney = (m: BriefOutput["routes"][number]["money"]): ProcurementRoute["money"] => {
+    if (!m) return null;
+    const ids = [...new Set(m.source_ids.flatMap((l) => (byLabel.has(l) ? [byLabel.get(l)!] : [])))];
+    const amount = m.amount.trim();
+    if (!amount || ids.length === 0 || sentenceProblem({ text: "", sourceIds: ids }, ctx)) return null;
+    if (!ids.some((id) => normaliseText(d.sources.find((s) => s.id === id)?.excerpt ?? "").includes(normaliseText(amount)))) {
+      removed.push({ sentence: amount, reason: "Amount not in the cited excerpt" });
+      return null;
+    }
+    const asOf = m.as_of && /^\d{4}-\d{2}-\d{2}$/.test(m.as_of) ? m.as_of : null;
+    return { amount, asOf, status: m.status, sourceIds: ids };
+  };
   const removed: Removed[] = [];
   const check = <T extends Sentence>(xs: T[]): T[] => {
     const r = preDisplay(xs, ctx);
@@ -348,6 +395,14 @@ export async function writeBrief(args: Inputs & { ledger: LedgerContext }): Prom
     summary: capWords(check(out.summary.map(sentence)), SUMMARY_WORDS),
     risks: check(out.risks.map(sentence)).slice(0, MAX_RISKS),
     requirements: orderRequirements(check(out.requirements.map((x) => ({ ...sentence(x), topic: x.topic })))),
+    routes: orderRoutes(
+      check(
+        out.routes.map((x): ProcurementRoute => {
+          const buyer = x.buyer_key && govOnMap.has(x.buyer_key) ? x.buyer_key : null;
+          return { ...sentence(x), route: x.route, buyerId: buyer, access: x.access, money: routeMoney(x.money) };
+        }),
+      ),
+    ),
     meet,
     needs: needsFromYou(d),
     changesNote: changesNote(previous, d, now),
