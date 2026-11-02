@@ -469,7 +469,7 @@ Layout "Briefing room" (Joey picked option C on 2026-11-02, canvas https://claud
 - **REP-7** Recommended entry path and 7-day plan.
 - **REP-8** Where to meet them: event, date, how many mapped stakeholders will be there.
 - **REP-9** Entry requirements (BRIEF-9; option B picked by Joey 2026-11-02, `design/entry-requirements-options/`): the first 4 sourced items + the export-control check line, in the right column where Key risks used to be. A brief without entry requirements shows Key risks there instead.
-- **REP-13** What we could not verify (BRIEF-11): one line of the box's short items, cut to fit with "and N more in the strategy brief"; placement per `design/unverified-options/`.
+- **REP-13** What we could not verify (BRIEF-11): one line of the box's short items, cut to fit with "and N more in the strategy brief"; the export-control item is left out when the check line already shows under Entry requirements; placement per `design/unverified-options/` (option A recommended: a dashed line above the source list, which drops to the first 6 sources of the table to keep one page).
 - **REP-10** Source list (number, title, grade stamp, verified date) and "Full list of N sources at the link below" → `/s/[shareId]/sources`.
 - **REP-11** Share link (§9) and "Sample data · every claim links to a cited source" (on the sample); toolbar "Copy share link" → "Copied".
 - **REP-12** `@page { size: A4; margin: 0 }`, 794×1123, padding 42/46/32px, 6px tick border; the toolbar is hidden in `@media print`; "Print / Save as PDF" calls `window.print()`. If content runs past one page, code shortens lists (top 5 unchanged; risks 3 → 2; sources limited to those in the table) rather than shrinking the font.

@@ -13,7 +13,19 @@ import {
   type SourceRef,
 } from "@/components/score/explain";
 import { suggestsSpecIn } from "@/lib/checks/pre-display";
-import { briefMetrics, briefStatus, citedSourceIds, STALE_SOURCE_DAYS, daysBetween } from "@/lib/scoring";
+import { buildMapModel } from "@/components/map/model";
+import {
+  briefMetrics,
+  briefStatus,
+  citedSourceIds,
+  daysBetween,
+  influenceBreakdown,
+  isEligible,
+  scoreStakeholders,
+  STALE_SOURCE_DAYS,
+  structuralZeros,
+} from "@/lib/scoring";
+import { REQUIREMENT_TOPICS } from "@/lib/types";
 import type { Brief, BriefMetrics, BriefStatus, Dossier, EntryRequirement, IcdTerm, Confidence, RequirementTopic, Sentence, Source } from "@/lib/types";
 
 export interface Cited {
@@ -39,6 +51,17 @@ export interface RequirementVM extends Cited {
   topic: RequirementTopic;
   label: string;
 }
+
+/** BRIEF-11: one gap behind the brief. Fixed code text with a count; never names a person. */
+export interface GapVM {
+  key: "requirements" | "export" | "readiness" | "window" | "support" | "influence" | "unscored" | "next" | "events";
+  /** The sentence on the brief page. */
+  text: string;
+  /** The short form joined into one line on the A4 (REP-13). */
+  short: string;
+}
+
+export const NO_GAPS = "Every item in this brief has a source.";
 
 export interface MetricVM {
   key: "readiness" | "opposition" | "window" | "confidence";
@@ -95,6 +118,8 @@ export interface BriefVM {
   meet: { eventId: string; title: string; date: string; mapped: number; refs: SourceRef[] }[];
   needs: string[];
   changesNote: string[];
+  /** BRIEF-11: what we could not verify, in a fixed order; empty = everything has a source. */
+  gaps: GapVM[];
   evidence: EvidenceVM[];
   acceptedCount: number;
 }
@@ -254,6 +279,94 @@ export function metricVMs(
   ];
 }
 
+// ─── What we could not verify (BRIEF-11) ─────────────────────────────────────
+
+const RATED_FACTORS = ["authority", "budget", "access", "recent"] as const;
+const plural = (n: number, one: string, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
+
+/**
+ * The gaps behind a brief, counted from the same data and rules as the marks on the map and the
+ * metrics: requirement topics no source covers, readiness checks and deadline with no source,
+ * Unknown support, influence ratings with no source, next steps with no source, undated events.
+ */
+export function couldNotVerify(
+  d: Dossier,
+  now: Date,
+  shown: { requirements: RequirementVM[]; exportCheck: boolean; metrics: BriefMetrics },
+): GapVM[] {
+  const gaps: GapVM[] = [];
+  if (shown.requirements.length > 0) {
+    const have = new Set(shown.requirements.map((r) => r.topic));
+    const missing = REQUIREMENT_TOPICS.filter((t) => t !== "export_control" && !have.has(t)).map((t) => REQUIREMENT_LABEL[t]);
+    if (missing.length)
+      gaps.push({
+        key: "requirements",
+        text: `Entry requirements: no source found for ${missing.join(", ").toLowerCase()}.`,
+        short: `${missing.join(", ").toLowerCase()} rules`,
+      });
+  }
+  if (shown.exportCheck) gaps.push({ key: "export", text: `${REQUIREMENT_LABEL.export_control}: ${EXPORT_CHECK.charAt(0).toLowerCase()}${EXPORT_CHECK.slice(1)}`, short: "export control (needs a specialist)" });
+
+  const r = shown.metrics.entryReadiness;
+  const checks = (["money", "licence", "support"] as const).filter((k) => !r || r.checks[k] === null);
+  if (checks.length)
+    gaps.push({
+      key: "readiness",
+      text: `Entry readiness: no sourced ${checks.join(" or ")} check, so ${checks.length === 1 ? "it is" : "they are"} left out of the score.`,
+      short: `${checks.join(" and ")} check${checks.length === 1 ? "" : "s"}`,
+    });
+  if (!shown.metrics.window.found) gaps.push({ key: "window", text: "Window to act: no sourced deadline, so no number is shown.", short: "a deadline" });
+
+  const people = d.stakeholders.filter(isEligible);
+  const ids = new Set(people.map((s) => s.id));
+  const scored = scoreStakeholders(d, now).filter((s) => ids.has(s.id));
+  const n = people.length;
+  const unknown = scored.filter((s) => s.support.kind === "unknown").length;
+  if (unknown)
+    gaps.push({
+      key: "support",
+      text: `Support: Unknown for ${unknown} of ${plural(n, "stakeholder")}, with no sourced statement about firms like yours.`,
+      short: `support of ${unknown} of ${n} stakeholders`,
+    });
+
+  // Influence: Claude-rated factors with no sourced rating. A 0 set by the category rule is not a gap.
+  let missing = 0;
+  let total = 0;
+  for (const s of people) {
+    const zeros = structuralZeros(s.id, d.facts, s.category);
+    const sourced = new Set(influenceBreakdown(s.id, d.facts, d.edges, s.category).filter((f) => f.sourceIds.length > 0).map((f) => f.factor));
+    for (const f of RATED_FACTORS) {
+      if (zeros.includes(f)) continue;
+      total++;
+      if (!sourced.has(f)) missing++;
+    }
+  }
+  if (missing)
+    gaps.push({
+      key: "influence",
+      text: `Influence: ${missing} of ${total} ratings have no source, so those stakeholders show a wider range.`,
+      short: `${missing} of ${total} influence ratings`,
+    });
+  const unscored = scored.filter((s) => s.influence === null).length;
+  if (unscored)
+    gaps.push({
+      key: "unscored",
+      text: `Influence: no score for ${plural(unscored, "stakeholder")}, with fewer than two sourced ratings.`,
+      short: `influence of ${plural(unscored, "stakeholder")}`,
+    });
+
+  const noRoute = buildMapModel(d, now).nodes.filter((x) => ids.has(x.id) && !x.action.verified).length;
+  if (noRoute)
+    gaps.push({
+      key: "next",
+      text: `Next step: no sourced contact route for ${noRoute} of ${plural(n, "stakeholder")}.`,
+      short: `a next step for ${noRoute} of ${n}`,
+    });
+  const undated = d.events.filter((e) => e.status !== "sourced" || e.date === null).length;
+  if (undated) gaps.push({ key: "events", text: `Events: ${plural(undated, "event")} with no sourced date.`, short: `${plural(undated, "event date")}` });
+  return gaps;
+}
+
 // ─── The brief ───────────────────────────────────────────────────────────────
 
 const PLAN_BOXES: Omit<PlanBoxVM, "actions">[] = [
@@ -275,6 +388,8 @@ export function buildBriefModel(d: Dossier, brief: Brief, now: Date): BriefVM {
   const nameOf = new Map(d.stakeholders.map((s) => [s.id, s.short ?? s.name]));
   const onMap = (id: string) => nameOf.has(id);
   const latest = d.briefs.at(-1)!;
+  const metrics = briefMetrics(d, now);
+  const reqs = requirementsVM(brief.requirements ?? [], ok);
 
   const plan = PLAN_BOXES.map((box) => ({
     ...box,
@@ -302,7 +417,7 @@ export function buildBriefModel(d: Dossier, brief: Brief, now: Date): BriefVM {
       brief.version === latest.version
         ? briefStatus(brief, d, now)
         : { outOfDate: true, reasons: [`A newer version (v${latest.version}) exists.`] },
-    metrics: metricVMs(briefMetrics(d, now), d, ok),
+    metrics: metricVMs(metrics, d, ok),
     rationale: checkAll(brief.rationale, ok),
     judgments: brief.judgments
       .filter((j) => !PLACEHOLDER.test(j.text) && !suggestsSpecIn(j.text) && j.sourceIds.length > 0 && j.sourceIds.every((id) => ok.has(id)))
@@ -318,12 +433,13 @@ export function buildBriefModel(d: Dossier, brief: Brief, now: Date): BriefVM {
     plan,
     summary: checkAll(brief.summary, ok),
     risks: checkAll(brief.risks, ok),
-    ...requirementsVM(brief.requirements ?? [], ok),
+    ...reqs,
     meet: brief.meet
       .filter((m) => m.sourceIds.length > 0 && m.sourceIds.every((id) => ok.has(id)))
       .map((m) => ({ eventId: m.eventId, title: m.title, date: m.date, mapped: m.mappedStakeholders, refs: m.sourceIds.map((id) => sourceRef(ok.get(id)!)) })),
     needs: brief.needs.filter((n) => !PLACEHOLDER.test(n)),
     changesNote: brief.changesNote.filter((n) => !PLACEHOLDER.test(n)),
+    gaps: couldNotVerify(d, now, { ...reqs, metrics }),
     evidence,
     acceptedCount: d.sources.filter((s) => s.accepted).length,
   };

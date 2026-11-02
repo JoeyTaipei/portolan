@@ -9,6 +9,7 @@ import { Metrics } from "@/components/brief/metrics";
 import { buildBriefModel, pickBrief } from "@/components/brief/model";
 import { Rationale } from "@/components/brief/rationale";
 import { Requirements } from "@/components/brief/requirements";
+import { Unverified } from "@/components/brief/unverified";
 import { SevenDay } from "@/components/brief/seven-day";
 import { Versions } from "@/components/brief/versions";
 import { Nis } from "@/components/shell/nis";
@@ -51,6 +52,7 @@ async function BriefContent({ params, searchParams }: Pick<PageProps<"/d/[id]/br
     { id: "path-h", label: "Executive path" },
     { id: "plan-h", label: "7-day plan" },
     ...(m.requirements.length > 0 ? [{ id: "req-h", label: "Entry requirements" }] : []),
+    { id: "gap-h", label: "Not verified" },
     { id: "evi-h", label: "Evidence" },
   ];
 
@@ -82,6 +84,7 @@ async function BriefContent({ params, searchParams }: Pick<PageProps<"/d/[id]/br
           <ExecPath path={m.path} reduce={m.reduce} dossierId={m.dossierId} />
           <SevenDay plan={m.plan} dossierId={m.dossierId} />
           <Requirements items={m.requirements} exportCheck={m.exportCheck} dossierId={m.dossierId} />
+          <Unverified gaps={m.gaps} />
           {m.needs.length > 0 && (
             <section aria-labelledby="needs-h" className="rounded-[var(--r-l)] border border-dashed border-rule-strong p-3">
               <h2 id="needs-h" className="m-0 mb-1 text-[14.5px] font-bold">

@@ -500,6 +500,24 @@
   border-color: var(--ink2);
 }
 
+/* REP-13 what we could not verify: one grey line with a dashed border, fixed code text. It sits
+   just above the source list, so it takes the free space and the list stays at the foot. */
+.rp-gaps {
+  margin: auto 0 0;
+  border: 1px dashed var(--rule-strong);
+  border-radius: 3px;
+  padding: 4px 8px;
+  font-size: 10.6px;
+  line-height: 1.35;
+  color: var(--ink2);
+}
+.rp-gaps b {
+  color: var(--ink);
+}
+.rp-gaps + .rp-srcs {
+  margin-top: 0;
+}
+
 .rp-srcs {
   margin-top: auto;
   border-top: 1.5px solid var(--rule-strong);
