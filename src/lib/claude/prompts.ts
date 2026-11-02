@@ -18,11 +18,11 @@ export interface PromptClient {
 }
 
 /** Escape anything that could close or open a data block from inside an excerpt. */
-function fence(text: string): string {
-  return text.replace(/<\/?\s*(source|entity|client)\b/gi, (m) => m.replace("<", "‹"));
+export function fence(text: string): string {
+  return text.replace(/<\/?\s*(source|entity|client|stakeholder|events|contact_order|blockers)\b/gi, (m) => m.replace("<", "‹"));
 }
 
-const attr = (s: string) => s.replace(/[\r\n"<>]/g, " ");
+export const attr = (s: string) => s.replace(/[\r\n"<>]/g, " ");
 
 export function sourceBlocks(sources: PromptSource[]): string {
   return sources

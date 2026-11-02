@@ -2,48 +2,61 @@ import Link from "next/link";
 
 export const metadata = { title: "Privacy · Portolan" };
 
-// Privacy notice (spec §10.8). S2 ships the structure with what is already true; S8 completes
-// the wording before the URL goes to users.
+// Privacy notice (spec §10.8), in plain English. Every sentence describes what the code does today.
 
 const SECTIONS: { id: string; title: string; body: string[] }[] = [
   {
     id: "what-we-store",
     title: "What we store",
     body: [
-      "For each dossier: the company, product, goal and optional details you enter, your email address, the research results with their sources, and anything you add, such as tracker items, meeting debriefs and documents.",
+      "For each dossier: the company, product, goal and optional details you enter, your email address, the research results with their sources, and anything you add later, such as tracker items, meeting debriefs, lead and intro requests, and documents.",
+      "Your email address is used to send you the dossier link and to count today's research requests. It is never shown on the share link or sent to our analytics.",
+      "We count page views and three actions (dossier created, report exported, debrief saved) with PostHog. Dossier and share links are removed from those records before they leave your browser, and no email address is sent.",
+      "When you save a debrief, an anonymised outcome (the type of stakeholder, the route and how the meeting went) is kept to improve advice for everyone. It contains no names, notes or quotes from the meeting.",
+      "Changes you make to the sample dossier stay in your own browser and are never sent to us.",
     ],
   },
   {
     id: "processors",
     title: "Who processes your research",
     body: [
-      "Your research inputs and the web pages fetched for them are sent to Parallel (web research) and Anthropic (analysis and writing) to produce the dossier. Fetched pages are treated as data, never as instructions.",
+      "Your research inputs (company, product, goal and optional details) and the web pages fetched for them are sent to Parallel, for web research, and to Anthropic, for analysis and writing. They process this data to produce your dossier.",
+      "Text from fetched pages is treated as data, never as instructions. Every stakeholder, score and recommendation points to the source it came from, or is marked Unverified.",
     ],
   },
   {
     id: "link",
     title: "Your dossier link is the only key",
     body: [
-      "There is no login. Anyone with the dossier link can view and change that dossier, so keep it private. The share link opens only the one-page report and the sources it cites: not the tracker, debriefs, team contacts or documents.",
+      "There is no login. Anyone with the dossier link can view and change that dossier, so keep it private. Links are long random codes that can't be guessed, and dossier pages are kept out of search engines.",
+      "The share link is a separate link. It opens only the one-page report and the sources it cites: never the tracker, debriefs, team contacts or documents, and it doesn't reveal the dossier link.",
     ],
   },
   {
     id: "team-ties",
     title: "Team contacts",
     body: [
-      "If teammates upload a LinkedIn or contacts export, only name, title, organisation and LinkedIn URL are read; email addresses and phone numbers are dropped. Only contacts that match an organisation on the map are kept, and they belong to that dossier alone.",
-      "Each teammate confirms they may share their contacts (self-certified). Withdrawing deletes that teammate's contacts and ties from the dossier.",
+      "Teammates can add their own work connections to a dossier, from a LinkedIn or contacts export or by typing them in. The file is read in the teammate's browser and is never uploaded or stored.",
+      "Only four fields are kept: name, job title, organisation and LinkedIn profile link. Email addresses, phone numbers, postal addresses and notes are always dropped. For organisations in China, no contact names are kept.",
+      "Only contacts at an organisation on the dossier's map are kept; everyone else is discarded. Contact names are shown as hidden bars, never in full.",
+      "These contacts belong to that one dossier. They are seen only by people with the dossier link, never on the share link, never shown to other clients and never used for anyone else's research.",
+      "There is no login, so we can't check who uploads. Each teammate confirms that the export is their own and that they agree to share these connections (self-certified).",
+      "A teammate can choose “Withdraw my connections” at any time. Their contacts and ties are deleted from our database at once and disappear from the map. Intro drafts already copied out of Portolan can't be recalled.",
     ],
   },
   {
     id: "deletion",
     title: "Deleting a dossier",
-    body: ["To have a dossier deleted, email the team from the address you used to create it and include the dossier link."],
+    body: [
+      "To have a dossier deleted, reply to the email that sent you its link, from the address you used to create it. We delete the dossier and everything in it, including tracker items, debriefs, documents and team contacts.",
+    ],
   },
   {
     id: "not-advice",
     title: "Research, not advice",
-    body: ["Dossiers, reports and documents are research references. They are not legal or investment advice."],
+    body: [
+      "Dossiers, reports and documents are research references drawn from public sources. They are not legal or investment advice. Check anything important with a qualified adviser before you act on it.",
+    ],
   },
 ];
 
