@@ -1,5 +1,6 @@
 "use client";
 
+import { useT } from "@/lib/i18n/client";
 import { useSearchParams } from "next/navigation";
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { OVERLAY_EVENT, readOverlay, writeOverlay } from "@/lib/sample/overlay";
@@ -101,8 +102,9 @@ export function useTeam(): TeamCtx | null {
 
 /** ●●○ for strength 2 of 3, with the number for screen readers. */
 export function Strength({ n }: { n: 1 | 2 | 3 }) {
+  const t = useT();
   return (
-    <span className="whitespace-nowrap tracking-[.08em] text-[var(--act-text)]" aria-label={`Tie strength ${n} of 3`}>
+    <span className="whitespace-nowrap tracking-[.08em] text-[var(--act-text)]" aria-label={t("Tie strength {n} of 3", { n })}>
       {"●".repeat(n)}
       <span className="text-rule">{"●".repeat(3 - n)}</span>
     </span>
@@ -111,5 +113,6 @@ export function Strength({ n }: { n: 1 | 2 | 3 }) {
 
 /** Contact names are never shown: a solid bar with an accessible label. */
 export function Redacted() {
-  return <span className="ins-redact" role="img" aria-label="name withheld" />;
+  const t = useT();
+  return <span className="ins-redact" role="img" aria-label={t("name withheld")} />;
 }

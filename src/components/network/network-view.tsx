@@ -13,9 +13,9 @@ import type {
   TrackerItem,
 } from "@/lib/types";
 import { PartnerCard } from "@/components/partners/partner-card";
+import type { Key } from "@/lib/i18n";
 import { LeadCard } from "./lead-card";
 import {
-  fmtDay,
   INTRO_LABEL,
   TABS,
   type LeadVM,
@@ -23,6 +23,7 @@ import {
   type NetworkVM,
 } from "./model";
 import { NetworkTabs } from "./tabs";
+import { useT } from "@/lib/i18n/client";
 
 // 04 Network (spec §12). Three columns from 1024px (260 | 1fr | 360, ≥1600 280 | 1fr | 400): tabs
 // and note / card grid (2 columns at 1440, 3 at 1920) / saved leads, each scrolling on its own.
@@ -31,7 +32,7 @@ import { NetworkTabs } from "./tabs";
 const NO_STORAGE =
   "This browser won't save changes. Allow site storage and try again.";
 
-const EMPTY: Record<NetworkTab, { title: string; desc: string }> = {
+const EMPTY: Record<NetworkTab, { title: Key; desc: Key }> = {
   partners: {
     title: "No partner candidates yet",
     desc: "Candidates appear once research finds Taiwanese firms with public, sourced evidence.",
@@ -53,6 +54,7 @@ const EMPTY: Record<NetworkTab, { title: string; desc: string }> = {
 export function NetworkView({ vm, tab }: { vm: NetworkVM; tab: NetworkTab }) {
   const [overlay, setOverlay] = useState<SampleOverlay | null>(null);
   const ref = useFillHeight<HTMLDivElement>();
+  const t = useT();
   const { dossierId, isSample } = vm;
 
   useEffect(() => {
@@ -66,7 +68,7 @@ export function NetworkView({ vm, tab }: { vm: NetworkVM; tab: NetworkTab }) {
   const tracker = (isSample && overlay?.tracker) || vm.tracker;
   const intros = (isSample && overlay?.intros) || vm.intros;
   const savedIds = useMemo(
-    () => new Set(tracker.flatMap((t) => (t.leadId ? [t.leadId] : []))),
+    () => new Set(tracker.flatMap((x) => (x.leadId ? [x.leadId] : []))),
     [tracker],
   );
   const introFor = (stakeholderId: string | null) =>
@@ -74,13 +76,13 @@ export function NetworkView({ vm, tab }: { vm: NetworkVM; tab: NetworkTab }) {
       ? (intros.filter((i) => i.stakeholderId === stakeholderId).at(-1) ?? null)
       : null;
 
-  const type = TABS.find((t) => t.key === tab)!.type;
+  const type = TABS.find((x) => x.key === tab)!.type;
   const shown = type ? vm.leads.filter((l) => l.type === type) : [];
   const counts = Object.fromEntries(
-    TABS.map((t) => [
-      t.key,
-      t.type
-        ? vm.leads.filter((l) => l.type === t.type).length
+    TABS.map((x) => [
+      x.key,
+      x.type
+        ? vm.leads.filter((l) => l.type === x.type).length
         : vm.partners.length,
     ]),
   ) as Record<NetworkTab, number>;
@@ -103,7 +105,7 @@ export function NetworkView({ vm, tab }: { vm: NetworkVM; tab: NetworkTab }) {
       createdAt: new Date().toISOString(),
     };
     const current = readOverlay().tracker ?? vm.tracker;
-    if (current.some((t) => t.leadId === lead.id))
+    if (current.some((x) => x.leadId === lead.id))
       return { ok: true, data: null };
     return writeOverlay("tracker", [...current, item])
       ? { ok: true, data: null }
@@ -115,7 +117,7 @@ export function NetworkView({ vm, tab }: { vm: NetworkVM; tab: NetworkTab }) {
     purpose: string,
   ): Promise<ActionResult<unknown>> {
     if (!lead.stakeholderId)
-      return { ok: false, error: "This lead isn't on the map yet." };
+      return { ok: false, error: t("This lead isn't on the map yet.") };
     if (!isSample)
       return requestIntro(dossierId, {
         stakeholderId: lead.stakeholderId,
@@ -142,26 +144,26 @@ export function NetworkView({ vm, tab }: { vm: NetworkVM; tab: NetworkTab }) {
     >
       <div className="flex flex-col gap-4 lg:min-h-0 lg:overflow-y-auto lg:border-r lg:border-rule-strong lg:px-5 lg:py-[22px]">
         <header>
-          <p className="m-0 text-[13px] text-ink2">Network</p>
+          <p className="m-0 text-[13px] text-ink2">{t("Network")}</p>
           <h1 className="mt-0.5 mb-0 text-[28px] font-extrabold leading-[1.02] min-[1600px]:text-[31px]">
-            Who to meet, and where
+            {t("Who to meet, and where")}
           </h1>
-          <p className="m-0 mt-1 text-[14px] text-ink2">Matched to {vm.name}</p>
+          <p className="m-0 mt-1 text-[14px] text-ink2">{t("Matched to {name}", { name: vm.name })}</p>
         </header>
         <NetworkTabs dossierId={dossierId} tab={tab} counts={counts} />
       </div>
 
       <section
-        aria-label={`${TABS.find((t) => t.key === tab)!.label}`}
+        aria-label={t.k(TABS.find((x) => x.key === tab)!.label)}
         className="lg:min-h-0 lg:overflow-y-auto lg:px-6 lg:py-[22px] min-[1600px]:px-8"
       >
         {empty ? (
           <Nis
             kind="empty"
             inline
-            title={EMPTY[tab].title}
-            desc={EMPTY[tab].desc}
-            actions={[{ label: "Open the map", href: `/d/${dossierId}/map` }]}
+            title={t(EMPTY[tab].title)}
+            desc={t(EMPTY[tab].desc)}
+            actions={[{ label: t("Open the map"), href: `/d/${dossierId}/map` }]}
           />
         ) : tab === "partners" ? (
           <div
@@ -202,13 +204,12 @@ export function NetworkView({ vm, tab }: { vm: NetworkVM; tab: NetworkTab }) {
         className="flex flex-col gap-3 lg:min-h-0 lg:overflow-y-auto lg:border-l lg:border-rule-strong lg:bg-panel2 lg:px-5 lg:py-[18px] min-[1600px]:px-6"
       >
         <h2 id="saved-h" className="m-0 text-[15px] font-bold">
-          Saved leads{" "}
+          {t("Saved leads")}{" "}
           <span className="num font-semibold text-ink2">{saved.length}</span>
         </h2>
         {saved.length === 0 ? (
           <p className="m-0 text-[13.5px] leading-[1.45] text-ink2">
-            Save a lead or add an event to your plan; it goes into your tracker
-            as Found.
+            {t("Save a lead or add an event to your plan; it goes into your tracker as Found.")}
           </p>
         ) : (
           <ul className="m-0 flex list-none flex-col p-0">
@@ -223,14 +224,14 @@ export function NetworkView({ vm, tab }: { vm: NetworkVM; tab: NetworkTab }) {
                     {l.name}
                   </p>
                   <p className="m-0 text-[12.5px] text-ink2">
-                    {l.kind}
+                    {t.k(l.kind)}
                     {l.type === "event" && l.eventDate ? (
                       <>
                         {" "}
-                        · <span className="num">{fmtDay(l.eventDate)}</span>
+                        · <span className="num">{t.date(l.eventDate)}</span>
                       </>
                     ) : null}
-                    {i ? ` · ${INTRO_LABEL[i.status]}` : ""}
+                    {i ? ` · ${t.k(INTRO_LABEL[i.status])}` : ""}
                   </p>
                 </li>
               );
@@ -241,7 +242,7 @@ export function NetworkView({ vm, tab }: { vm: NetworkVM; tab: NetworkTab }) {
           href={`/d/${dossierId}/tracker`}
           className="btn btn-ghost btn-s self-start"
         >
-          Open the tracker
+          {t("Open the tracker")}
         </Link>
       </aside>
     </div>

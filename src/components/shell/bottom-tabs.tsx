@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Both } from "@/lib/i18n/client";
 import { currentTab, tabHref, TABS } from "./tabs";
 
 // SHELL-1 phone tabs (<1024px): fixed at the bottom, 44px+ targets, the current tab is
@@ -28,7 +29,7 @@ export function BottomTabs({ dossierId }: { dossierId: string | null }) {
             }`}
           >
             {t.icon}
-            {t.label}
+            <Both k={t.label} />
           </Link>
         );
       })}

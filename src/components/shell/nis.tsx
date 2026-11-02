@@ -3,13 +3,15 @@
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
+import type { Key } from "@/lib/i18n";
+import { Both } from "@/lib/i18n/client";
 
 // SHELL-2 non-ideal states: icon + title + one-sentence reason + one or two actions.
 // `?state=loading|empty|error` previews them on /d/sample and in development.
 
 export type NisKind = "loading" | "empty" | "error";
 
-export type NisAction = { label: string; href: string } | { label: string; retry: true };
+export type NisAction = { label: ReactNode; href: string } | { label: ReactNode; retry: true };
 
 const ICONS: Record<NisKind, ReactNode> = {
   loading: (
@@ -37,7 +39,7 @@ const ICONS: Record<NisKind, ReactNode> = {
   ),
 };
 
-function RetryButton({ label, primary }: { label: string; primary: boolean }) {
+function RetryButton({ label, primary }: { label: ReactNode; primary: boolean }) {
   const [busy, setBusy] = useState(false);
   return (
     <button
@@ -49,7 +51,7 @@ function RetryButton({ label, primary }: { label: string; primary: boolean }) {
         window.location.reload();
       }}
     >
-      {busy ? "Retrying…" : label}
+      {busy ? <Both k="Retrying…" /> : label}
     </button>
   );
 }
@@ -64,8 +66,8 @@ export function Nis({
   children,
 }: {
   kind: NisKind;
-  title: string;
-  desc: string;
+  title: ReactNode;
+  desc: ReactNode;
   actions?: NisAction[];
   inline?: boolean;
   headingLevel?: 1 | 2 | 3;
@@ -86,11 +88,11 @@ export function Nis({
         <div className="acts">
           {actions.map((a, i) =>
             "href" in a ? (
-              <Link key={a.label} href={a.href} className={`btn ${i === 0 ? "btn-main" : "btn-ghost"}`}>
+              <Link key={i} href={a.href} className={`btn ${i === 0 ? "btn-main" : "btn-ghost"}`}>
                 {a.label}
               </Link>
             ) : (
-              <RetryButton key={a.label} label={a.label} primary={i === 0} />
+              <RetryButton key={i} label={a.label} primary={i === 0} />
             ),
           )}
         </div>
@@ -103,7 +105,7 @@ export function Nis({
 export const STILL_LOADING_MS = 8000;
 
 /** Loading: skeleton shaped like the page (no jump) and the 8-second "Still loading…" fallback. */
-export function LoadingState({ label = "Loading…", skeleton }: { label?: string; skeleton?: ReactNode }) {
+export function LoadingState({ label = <Both k="Loading…" />, skeleton }: { label?: ReactNode; skeleton?: ReactNode }) {
   const [slow, setSlow] = useState(false);
   useEffect(() => {
     const t = setTimeout(() => setSlow(true), STILL_LOADING_MS);
@@ -114,12 +116,12 @@ export function LoadingState({ label = "Loading…", skeleton }: { label?: strin
       {slow ? (
         <Nis
           kind="loading"
-          title="Still loading…"
-          desc="This is taking longer than usual. Your data is safe."
-          actions={[{ label: "Try again", retry: true }]}
+          title={<Both k="Still loading…" />}
+          desc={<Both k="This is taking longer than usual. Your data is safe." />}
+          actions={[{ label: <Both k="Try again" />, retry: true }]}
         />
       ) : (
-        <Nis kind="loading" title={label} desc="Fetching the market and its sources." />
+        <Nis kind="loading" title={label} desc={<Both k="Fetching the market and its sources." />} />
       )}
       {skeleton ?? <PageSkeleton />}
     </div>
@@ -144,7 +146,7 @@ export function PageSkeleton() {
   );
 }
 
-const PREVIEW_COPY: Record<Exclude<NisKind, "loading">, { title: string; desc: string }> = {
+const PREVIEW_COPY: Record<Exclude<NisKind, "loading">, { title: Key; desc: Key }> = {
   empty: {
     title: "Nothing here yet",
     desc: "This page has no data to show yet. Open the sample market to see it filled in.",
@@ -175,12 +177,12 @@ export function StatePreview({ children }: { children: ReactNode }) {
   return (
     <Nis
       kind={state}
-      title={copy.title}
-      desc={copy.desc}
+      title={<Both k={copy.title} />}
+      desc={<Both k={copy.desc} />}
       actions={
         state === "error"
-          ? [{ label: "Try again", href: pathname }]
-          : [{ label: "Open the sample market", href: "/d/sample" }]
+          ? [{ label: <Both k="Try again" />, href: pathname }]
+          : [{ label: <Both k="Open the sample market" />, href: "/d/sample" }]
       }
     />
   );

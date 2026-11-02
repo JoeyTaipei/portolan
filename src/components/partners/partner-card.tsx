@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Stamp } from "@/components/score/stamp";
 import type { SourceRef } from "@/components/score/explain";
+import { useT } from "@/lib/i18n/client";
 import type { PartnerVM } from "./model";
 
 // NET-7 partner candidate card. Every line is sourced text from the dossier; the flags show the
@@ -19,6 +20,7 @@ function Cite({ dossierId, refs }: { dossierId: string; refs: SourceRef[] }) {
 }
 
 export function PartnerCard({ p, rank, dossierId }: { p: PartnerVM; rank: number; dossierId: string }) {
+  const t = useT();
   const best = [...(p.role?.refs ?? []), ...p.evidence.flatMap((e) => e.refs)].sort(
     (a, b) => a.reliability.localeCompare(b.reliability) || a.credibility - b.credibility,
   )[0];
@@ -27,7 +29,7 @@ export function PartnerCard({ p, rank, dossierId }: { p: PartnerVM; rank: number
       <header className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
         <div className="min-w-0">
           <p className="m-0 text-[12.5px] font-semibold text-ink2">
-            <span className="num">{rank}</span> · Candidate
+            <span className="num">{rank}</span> · {t("Candidate")}
           </p>
           <h3 id={`partner-${p.id}`} className="m-0 mt-0.5 text-[18px] font-bold leading-tight">
             {p.name}
@@ -37,7 +39,7 @@ export function PartnerCard({ p, rank, dossierId }: { p: PartnerVM; rank: number
         <p className="m-0 text-right text-[12.5px] text-ink2">
           <span className="num text-[22px] font-semibold text-ink">{p.sourceCount}</span>
           <br />
-          source{p.sourceCount === 1 ? "" : "s"}
+          {t(p.sourceCount === 1 ? "source" : "sources")}
         </p>
       </header>
 
@@ -50,14 +52,14 @@ export function PartnerCard({ p, rank, dossierId }: { p: PartnerVM; rank: number
 
       {p.flags.map((f) => (
         <p key={f.kind} className="m-0 rounded-[var(--r-m)] border border-dashed border-rule-strong px-3 py-2 text-[13.5px] leading-[1.4]" data-testid={`flag-${f.kind}`}>
-          <b>{f.label}.</b> <span className="text-ink2">The source says: “{f.quote}”</span>
+          <b>{t.k(f.label)}.</b> <span className="text-ink2">{t("The source says:")} “{f.quote}”</span>
           <Cite dossierId={dossierId} refs={f.refs} />
         </p>
       ))}
 
       {p.evidence.length > 0 && (
         <div>
-          <p className="m-0 mb-1 text-[13px] font-bold">Public evidence</p>
+          <p className="m-0 mb-1 text-[13px] font-bold">{t("Public evidence")}</p>
           <ul className="m-0 flex flex-col gap-1 pl-4 text-[13.5px] leading-[1.4]">
             {p.evidence.map((e) => (
               <li key={e.text}>
@@ -72,20 +74,20 @@ export function PartnerCard({ p, rank, dossierId }: { p: PartnerVM; rank: number
       <p className={`m-0 flex gap-2 rounded-[var(--r-m)] border-l-4 border-[var(--route)] bg-panel2 px-3 py-2 text-[13.5px] ${p.next.verified ? "" : "text-ink2"}`}>
         <span aria-hidden="true" className="text-[var(--route)]">→</span>
         <span>
-          <span className="sr-only">Next step: </span>
-          {p.next.text}
-          {p.next.verified ? <Cite dossierId={dossierId} refs={p.next.refs} /> : <b className="ml-1 text-ink">Unverified</b>}
+          <span className="sr-only">{t("Next step: ")}</span>
+          {t.k(p.next.text)}
+          {p.next.verified ? <Cite dossierId={dossierId} refs={p.next.refs} /> : <b className="ml-1 text-ink">{t("Unverified")}</b>}
         </span>
       </p>
 
       <details className="group text-[13.5px]">
         <summary className="cursor-pointer list-none font-semibold text-[var(--link)] underline underline-offset-2 [&::-webkit-details-marker]:hidden">
-          <span className="group-open:hidden">Questions to ask them ({p.questions.length})</span>
-          <span className="hidden group-open:inline">Hide the questions</span>
+          <span className="group-open:hidden">{t("Questions to ask them ({n})", { n: p.questions.length })}</span>
+          <span className="hidden group-open:inline">{t("Hide the questions")}</span>
         </summary>
         <ol className="m-0 mt-1.5 flex flex-col gap-1 pl-5 leading-[1.4]">
           {p.questions.map((q) => (
-            <li key={q}>{q}</li>
+            <li key={q}>{t.k(q)}</li>
           ))}
         </ol>
       </details>
@@ -94,11 +96,11 @@ export function PartnerCard({ p, rank, dossierId }: { p: PartnerVM; rank: number
         {best && (
           <p className="m-0 flex items-center gap-2 text-[12.5px] text-ink2">
             <Stamp reliability={best.reliability} credibility={best.credibility} />
-            best source {best.label}
+            {t("best source {label}", { label: best.label })}
           </p>
         )}
         <Link href={`/d/${dossierId}/map?s=${encodeURIComponent(p.id)}`} className="btn btn-ghost btn-s">
-          Show on map
+          {t("Show on map")}
         </Link>
       </div>
     </article>

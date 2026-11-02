@@ -1,18 +1,20 @@
 import { dataConfidenceText } from "@/components/score/explain";
 import { ScoreX } from "@/components/score/score-x";
+import { getT } from "@/lib/i18n/server";
 import type { HomeModel } from "./model";
 import { RefreshButton } from "./refresh-button";
 
 // HOME-3 numbers, HOME-4 confidence (opens SCORE-X, no %), HOME-5 refresh.
-export function EvidencePanel({ m }: { m: HomeModel }) {
+export async function EvidencePanel({ m }: { m: HomeModel }) {
+  const t = await getT();
   const nums = [
-    { n: m.counts.stakeholders, l: "Stakeholders" },
-    { n: m.counts.sources, l: "Cited sources" },
-    { n: m.counts.alerts, l: "Upcoming events", alert: true },
-    { n: m.nav.leads, l: "Network leads" },
+    { n: m.counts.stakeholders, l: t("Stakeholders") },
+    { n: m.counts.sources, l: t("Cited sources") },
+    { n: m.counts.alerts, l: t("Upcoming events"), alert: true },
+    { n: m.nav.leads, l: t("Network leads") },
   ];
   return (
-    <section aria-label="Evidence" className="flex flex-col gap-3.5 rounded-[var(--r-m)] border border-rule bg-panel p-4 lg:p-5">
+    <section aria-label={t("Evidence")} className="flex flex-col gap-3.5 rounded-[var(--r-m)] border border-rule bg-panel p-4 lg:p-5">
       <dl className="m-0 grid grid-cols-2 gap-x-4 gap-y-3.5 max-sm:grid-cols-4 max-[420px]:grid-cols-2">
         {nums.map((c) => (
           <div key={c.l} className="flex flex-col-reverse">
@@ -25,13 +27,13 @@ export function EvidencePanel({ m }: { m: HomeModel }) {
         <ScoreX
           explanation={m.confidenceX}
           dossierId={m.id}
-          label={`Confidence ${dataConfidenceText(m.confidence)}. Show how it is scored`}
+          label={t("Confidence {value}. Show how it is scored", { value: t.x(dataConfidenceText(m.confidence)) })}
           className="flex min-h-11 flex-1 items-center justify-between gap-2.5 rounded-[var(--r-m)] border border-rule-strong bg-panel px-3 py-2.5 text-left font-[inherit] text-ink hover:bg-panel2"
         >
           <span>
-            <b className="block text-[15px] font-bold text-[var(--good)]">Confidence: {dataConfidenceText(m.confidence)}</b>
+            <b className="block text-[15px] font-bold text-[var(--good)]">{t("Confidence: {name}", { name: t.x(dataConfidenceText(m.confidence)) })}</b>
             <small className="mt-0.5 block text-[12.5px] text-ink2">
-              {m.confidence.qualifying} of {m.confidence.of} stakeholders rest on two or more independent sources.
+              {t("{n} of {m} stakeholders rest on two or more independent sources.", { n: m.confidence.qualifying, m: m.confidence.of })}
             </small>
           </span>
           <svg viewBox="0 0 24 24" aria-hidden="true" className="size-[18px] shrink-0 fill-none stroke-current stroke-[1.8]">

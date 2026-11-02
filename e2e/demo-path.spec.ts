@@ -220,3 +220,52 @@ test("report → tracker: debrief changes support, marks the brief out of date, 
   expect(sent).toEqual([]);
   expect(errors).toEqual([]);
 });
+
+test("繁中: the switch changes the app, the A4 still prints on one page and sources stay verbatim", async ({ page, context }) => {
+  const errors = watchErrors(page);
+
+  // A source title in English mode, to compare after switching.
+  await page.goto("/d/sample/sources");
+  const firstTitle = (await page.getByTestId("evidence-row").first().locator("h3").textContent())?.trim();
+  expect(firstTitle).toBeTruthy();
+
+  await page.goto("/d/sample");
+  await page.getByTestId("lang-switch").click();
+  await page.getByRole("menuitemradio", { name: "繁體中文" }).click();
+  const nav = page.getByRole("navigation", { name: "Main" });
+  await expect(nav.getByRole("link", { name: "市場" })).toBeVisible();
+  await expect(nav.getByRole("link", { name: "地圖" })).toBeVisible();
+  await expect(page.locator("html")).toHaveAttribute("lang", "zh-Hant-TW");
+  await expect(page.getByRole("link", { name: "打開利害關係人地圖" })).toBeVisible();
+  expect((await context.cookies()).find((c) => c.name === "portolan_lang")?.value).toBe("zh-TW");
+  await expectNoSideScroll(page);
+
+  // Remembered on the next page load; the source title is unchanged.
+  await page.goto("/d/sample/sources");
+  await expect(page.getByRole("heading", { name: "來源", level: 1 })).toBeVisible();
+  await expect(page.getByTestId("evidence-row").first().locator("h3")).toHaveText(firstTitle!);
+
+  // The Chinese A4: labels in Chinese, Sample data stamp, one printed page.
+  await page.goto("/d/sample/report");
+  const sheet = page.getByTestId("a4-sheet");
+  await expect(sheet).toBeVisible();
+  await expect(sheet).toContainText("市場進入簡報");
+  await expect(sheet).toContainText("範例資料");
+  await expect(sheet).toContainText(`/s/${SAMPLE_SHARE_ID}/sources`);
+  expect(await sheet.evaluate((el) => el.scrollHeight - el.clientHeight)).toBeLessThanOrEqual(0);
+  await expectNoSideScroll(page);
+  const pdf = await page.pdf({ preferCSSPageSize: true, printBackground: true });
+  expect((pdf.toString("latin1").match(/\/Type\s*\/Page(?!s)/g) ?? []).length).toBe(1);
+
+  // The share link follows the viewer's language, and the URL is the same.
+  await page.goto(`/s/${SAMPLE_SHARE_ID}`);
+  await expect(page.getByTestId("a4-sheet")).toContainText("市場進入簡報");
+
+  // And back to English.
+  await page.getByTestId("lang-switch").click();
+  await page.getByRole("menuitemradio", { name: "English" }).click();
+  await expect(page.getByTestId("a4-sheet")).toContainText("Market entry brief");
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+
+  expect(errors).toEqual([]);
+});

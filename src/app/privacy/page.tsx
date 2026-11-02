@@ -1,10 +1,14 @@
 import Link from "next/link";
+import { LangSwitch } from "@/components/shell/lang-switch";
+import type { Key } from "@/lib/i18n";
+import { Both } from "@/lib/i18n/client";
 
 export const metadata = { title: "Privacy · Portolan" };
 
-// Privacy notice (spec §10.8), in plain English. Every sentence describes what the code does today.
+// Privacy notice (spec §10.8), in plain English (and 繁中, SHELL-4). Every sentence describes what
+// the code does today. Static page: both languages are rendered and <html lang> picks one.
 
-const SECTIONS: { id: string; title: string; body: string[] }[] = [
+const SECTIONS: { id: string; title: Key; body: Key[] }[] = [
   {
     id: "what-we-store",
     title: "What we store",
@@ -14,6 +18,7 @@ const SECTIONS: { id: string; title: string; body: string[] }[] = [
       "We count page views and four actions (market created, report exported, debrief saved, waitlist joined) with PostHog. Market and share links are removed from those records before they leave your browser, and no email address is sent.",
       "When you save a debrief, an anonymised outcome (the type of stakeholder, the route and how the meeting went) is kept to improve advice for everyone. It contains no names, notes or quotes from the meeting.",
       "Changes you make to the sample market stay in your own browser and are never sent to us.",
+      "Your language choice (English or 繁中) is kept in a cookie in your browser so pages open in that language. It holds nothing else and is not sent to our analytics.",
     ],
   },
   {
@@ -76,28 +81,37 @@ export default function PrivacyPage() {
         <Link href="/" className="text-[17px] font-bold uppercase tracking-[.12em] text-[var(--bar-ink)] no-underline">
           Portolan
         </Link>
+        <span className="ml-auto">
+          <LangSwitch />
+        </span>
       </header>
       <main className="flex-1 px-4 pt-8 pb-16 lg:grid lg:grid-cols-[240px_minmax(0,68ch)] lg:gap-12 lg:px-12 min-[1600px]:px-24">
         <nav aria-label="On this page" className="hidden lg:block">
           <ol className="sticky top-6 m-0 flex list-none flex-col gap-1.5 border-l border-rule-strong p-0 pl-3 text-[14px]">
             {SECTIONS.map((s) => (
               <li key={s.id}>
-                <a href={`#${s.id}`}>{s.title}</a>
+                <a href={`#${s.id}`}>
+                  <Both k={s.title} />
+                </a>
               </li>
             ))}
           </ol>
         </nav>
         <article className="max-w-[68ch]">
-          <h1 className="m-0 text-[31px] font-extrabold leading-[1.05]">Privacy</h1>
-          <p className="mt-2 mb-6 text-[15px] text-ink2">What Portolan keeps, who processes it and how to have it removed.</p>
+          <h1 className="m-0 text-[31px] font-extrabold leading-[1.05]">
+            <Both k="Privacy" />
+          </h1>
+          <p className="mt-2 mb-6 text-[15px] text-ink2">
+            <Both k="What Portolan keeps, who processes it and how to have it removed." />
+          </p>
           {SECTIONS.map((s) => (
             <section key={s.id} id={s.id} aria-labelledby={`${s.id}-h`} className="scroll-mt-6 border-t border-rule py-4">
               <h2 id={`${s.id}-h`} className="m-0 mb-1.5 text-[17px] font-bold">
-                {s.title}
+                <Both k={s.title} />
               </h2>
               {s.body.map((p) => (
                 <p key={p} className="m-0 mb-2 text-[15px] leading-[1.55]">
-                  {p}
+                  <Both k={p} />
                 </p>
               ))}
             </section>

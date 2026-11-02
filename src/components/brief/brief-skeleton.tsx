@@ -1,10 +1,11 @@
 import { LoadingState } from "@/components/shell/nis";
+import { Both } from "@/lib/i18n/client";
 
 // Brief loading: the same three columns as the brief, so nothing jumps when it arrives.
 export function BriefSkeleton() {
   return (
     <LoadingState
-      label="Loading the strategy brief…"
+      label={<Both k="Loading the strategy brief…" />}
       skeleton={
         <div
           aria-hidden="true"
