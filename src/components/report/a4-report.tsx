@@ -1,7 +1,7 @@
 import { EXPORT_CHECK, fmtDay, REQUIREMENT_LABEL } from "@/components/brief/model";
 import { MarkIcon } from "@/components/map/node-mark";
 import { STANCE_LABEL, type SourceRef } from "@/components/score/explain";
-import { IcdScale, icdText } from "@/components/score/icd-scale";
+import { icdText } from "@/components/score/icd-scale";
 import { Stamp } from "@/components/score/stamp";
 import { MapExhibit } from "./map-exhibit";
 import type { ReportVM } from "./model";
@@ -44,9 +44,12 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
         <div className="rp-brand">
           <span className="wm">Portolan</span>
           <div>
-            <b>{r.confidence.value}</b>
+            <span className="vk">Entry verdict</span>
+            <b className={`rp-verdict ${r.verdict.kind}`} data-testid="a4-verdict">
+              {r.verdict.label}
+            </b>
             <span>
-              Data confidence. {r.stakeholderCount} stakeholders mapped; {r.confidence.note}.
+              Data confidence {r.confidence.value}; {r.confidence.note}.
             </span>
           </div>
         </div>
@@ -60,7 +63,19 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
                 <b>Bottom line:</b> {r.judgment.text} <span className="t">{icdText(r.judgment.icd)}, {r.judgment.confidence.toLowerCase()} confidence.</span>
                 <Cite refs={r.judgment.refs} />
               </p>
-              <IcdScale term={r.judgment.icd} />
+              {r.verdict.lead && (
+                <>
+                  <p className="rp-vlead">{r.verdict.lead}</p>
+                  <ul className="rp-vreasons">
+                    {r.verdict.reasons.map((x) => (
+                      <li key={x.text}>
+                        {x.text}
+                        <Cite refs={x.refs} />
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
             </section>
           )}
           <p className="rp-lab">Executive summary</p>
