@@ -22,6 +22,12 @@ describe("partner candidates", () => {
     expect(partnerQuestions(["exclusive"])).toContain("Does your existing exclusive deal cover our product's category?");
   });
 
+  it("does not flag a non-exclusive deal as exclusive", () => {
+    const ne = (q: string | null) => q && q.replace(/exclusive/gi, "non-exclusive");
+    const d = { ...sampleDossier, facts: sampleDossier.facts.map((f) => ({ ...f, quote: ne(f.quote) })), statements: sampleDossier.statements.map((s) => ({ ...s, quote: ne(s.quote) ?? s.quote })) };
+    expect(buildPartners(d, now).flatMap((c) => c.flags.filter((f) => f.kind === "exclusive"))).toEqual([]);
+  });
+
   it("cites a usable source for every evidence item", () => {
     const ok = new Set(sampleDossier.sources.filter((s) => s.accepted && s.verifiedAt).map((s) => s.id));
     for (const c of cards) for (const e of [...(c.role ? [c.role] : []), ...c.evidence]) expect(e.refs.length > 0 && e.refs.every((r) => ok.has(r.id))).toBe(true);

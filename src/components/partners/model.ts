@@ -25,7 +25,7 @@ export const FLAG_LABEL: Record<FlagKind, string> = {
 };
 
 const FLAG_RE: Record<FlagKind, RegExp> = {
-  exclusive: /\bexclusive|獨家/i,
+  exclusive: /(?<!non-)\bexclusive|獨家/i,
   contract: /\bannul|\bterminat|\bcancel|failed to meet|解約|終止/i,
 };
 
