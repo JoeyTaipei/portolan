@@ -686,6 +686,29 @@ Why: the founder approved slices A, B, C, D and F on 2026-11-02 (not E, G, H). T
 
 **Acceptance**: the shared block (§4) with routes `/d/sample/network?tab=partners` and `/d/sample/report`; `PORT=3001 npx playwright test e2e/demo-path.spec.ts`.
 
+### S16 Procurement routes and the first buyer (added 2026-11-02, slice D of the consulting-report handover)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| ui + engine (one session) | `feature/procurement-routes` (stacked on S15) | S15 | 4 h | P4 | none |
+
+Why: a consultant says who pays first, through which channel, and whether the money is there. The research report found the 2026 budget changed sharply, so every amount carries a date and a status. Joey chose a code rule for the first buyer (`docs/scoring.md` §9). Spec BRIEF-12, REP-15.
+
+**Risky changes: list before code** (sources and Unverified marks; brief prompt of a paid call; `types.ts` + migration, approved with this plan by Joey 2026-11-02):
+- *An out-of-date amount read as current.* No amount without `as_of` and `status`; the status is printed next to it. Verify: unit test.
+- *A route said to be open to foreign firms when it is not.* The access value is part of a cited row; an uncited row is removed. Verify: test.
+- *First buyer overstated.* Code rule with its explanation, worded "most likely". Verify: one test per ranking step.
+- *Spec-in.* Route sentences go through BRIEF-10.
+- *Migration not applied before deploy.* `briefs.routes jsonb default '[]'`; old rows read `[]` and the section hides. Verify: Joey runs `npx supabase@2 db push` before merging.
+- *Paid call.* None in this slice; the next user-triggered brief (~US$0.30, cost shown first) writes routes.
+- *A4 past one page.* Verify: e2e one-page check.
+
+**Files**: `supabase/migrations/20261102200000_brief_routes.sql`, `src/lib/types.ts`, `src/lib/db/{briefs,read}.ts`, `src/lib/claude/brief.ts`, `src/lib/scoring/{first-buyer.ts,index.ts,brief-status.ts,scoring.test.ts}`, `src/fixtures/sample-dossier.ts`, `src/components/brief/{model.ts,routes.tsx}`, `src/app/d/[id]/brief/page.tsx`, `src/components/report/{model.ts,a4-report.tsx,report.css}`, `src/lib/claude/brief.test.ts`, `design/route-options/index.html`, `docs/{spec,scoring,plan}.md`.
+
+**Tests added**: `scoring.test.ts`: first-buyer ranking steps and the none case. `brief.test.ts`: sample routes in order; an uncited route is removed; an undated amount is hidden; a missing route shows in What we could not verify.
+
+**Acceptance**: the shared block (§4) with routes `/d/sample/brief` and `/d/sample/report`; `PORT=3001 npx playwright test e2e/demo-path.spec.ts`.
+
 ---
 
 ## 6. Risks

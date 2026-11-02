@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { sampleDossier } from "@/lib/sample/reader";
 import { buildBriefModel } from "@/components/brief/model";
-import { gapLine } from "@/components/report/model";
+import { buildReportModel, gapLine } from "@/components/report/model";
 import { isEligible, scoreStakeholders } from "@/lib/scoring";
 import { briefPrompt, writeBrief } from "./brief";
 
@@ -63,7 +63,7 @@ describe("what we could not verify", () => {
 
   it("lists the sample's gaps with counts that match scoring", () => {
     const m = buildBriefModel(sampleDossier, brief, now);
-    expect(m.gaps.map((g) => g.key)).toEqual(["requirements", "export", "window", "support", "influence", "unscored", "events"]);
+    expect(m.gaps.map((g) => g.key)).toEqual(["requirements", "export", "money", "window", "support", "influence", "unscored", "events"]);
     const eligible = sampleDossier.stakeholders.filter(isEligible).map((s) => s.id);
     const unknown = scoreStakeholders(sampleDossier, now).filter((s) => eligible.includes(s.id) && s.support.kind === "unknown").length;
     expect(m.gaps.find((g) => g.key === "support")!.text).toContain(`Unknown for ${unknown} of ${eligible.length} stakeholders`);
@@ -76,6 +76,46 @@ describe("what we could not verify", () => {
   });
 
   it("keeps the A4 line to whole items and counts the rest", () => {
-    expect(gapLine(["a".repeat(100), "b".repeat(60), "c".repeat(30)])).toEqual({ items: ["a".repeat(100), "b".repeat(60)], more: 1 });
+    expect(gapLine(["a".repeat(50), "b".repeat(40), "c".repeat(30)])).toEqual({ items: ["a".repeat(50), "b".repeat(40)], more: 1 });
+  });
+});
+
+// Plan S16 (BRIEF-12, scoring §9): procurement routes are cited rows; amounts need a date and a
+// status; the first buyer is code's pick.
+describe("procurement routes", () => {
+  const now = new Date("2026-11-02T00:00:00Z");
+  const ledger = {} as Parameters<typeof writeBrief>[0]["ledger"];
+  const brief = sampleDossier.briefs.at(-1)!;
+
+  it("keeps the sample's five routes in order, hides the undated amount, and picks the NPA", () => {
+    const m = buildBriefModel(sampleDossier, brief, now);
+    expect(m.routes.map((r) => r.route)).toEqual(["domestic_tender", "police_ci", "ncsist", "fms", "dcs"]);
+    const domestic = m.routes[0];
+    expect(domestic.money).toBeNull();
+    expect(domestic.undated).toBe(true);
+    expect(m.routes[1].money).toMatchObject({ amount: "36億7000 萬元", status: "open tender", asOf: "2026-07-11" });
+    expect(m.firstBuyer).toMatchObject({ who: "National Police Agency", how: "through a Taiwanese partner" });
+  });
+
+  it("removes a route whose source is gone and lists it as a gap", async () => {
+    const zhu = sampleDossier.sources.find((s) => s.url?.includes("zhupiter"))!;
+    const d = { ...sampleDossier, sources: sampleDossier.sources.map((s) => (s.id === zhu.id ? { ...s, accepted: false } : s)) };
+    const w = await writeBrief({ d, now, offMapNames: [], ledger });
+    if (!w.ok) throw new Error(w.reason);
+    expect(w.brief.draft.routes.map((r) => r.route)).not.toContain("ncsist");
+    const m = buildBriefModel(d, { ...brief, routes: w.brief.draft.routes }, now);
+    expect(m.gaps.find((g) => g.key === "routes")?.text).toContain("NCSIST co-development or subcontract");
+  });
+
+  it("shows the first buyer on the A4 with its sources in the shared list", () => {
+    const r = buildReportModel(sampleDossier, brief, now);
+    expect(r.firstBuyer?.who).toBe("National Police Agency");
+    for (const ref of r.firstBuyer!.refs) expect(r.citedIds).toContain(ref.id);
+  });
+
+  it("drops an amount that is not in its cited excerpt", async () => {
+    const w = await writeBrief({ d: sampleDossier, now, offMapNames: [], ledger });
+    if (!w.ok) throw new Error(w.reason);
+    expect(w.brief.draft.routes.find((r) => r.route === "police_ci")?.money?.amount).toBe("36億7000 萬元");
   });
 });

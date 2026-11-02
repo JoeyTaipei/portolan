@@ -125,3 +125,15 @@ Power Matrix 四象限：影響力 ≥ 50 且支持 ≥ 0 = Champions；影響�
 - **Conditional go**：其他所有情況。
 - 條件（「To move to Go」）和阻擋原因（「Blocked by」）由程式從沒拿滿分的檢查列出，用固定文字；錢和執照的原因附該檢查的來源。Claude 不寫結論、也不寫條件。
 - 畫面（A4 右上角、首頁標題）只顯示結論和原因；Bottom line 句子仍是簡報的第一個關鍵判斷。
+
+## 9. 最可能的第一個買家（2026-11-02 Joey 選定，固定規則，不由 Claude 決定）
+- 候選：簡報裡每一條採購管道（BRIEF-12），外國公司能不能進（foreign_access）不是 `no`，而且買方是地圖上的政府類利害關係人。
+- 排序：
+  1. 錢的狀態：`open_tender` 或 `awarded` ＞ `passed` ＞ `in_committee` ＞ `proposed` ＞ 沒有可顯示的金額（金額要有日期和狀態才算）。
+  2. 同狀態時，外國公司能直接進（`direct`）＞ 透過台灣夥伴（`via_local_partner`）＞ 不清楚（`unclear`）。
+  3. 再同，該買方最近一個有來源、未來的期限（預算表決、截標、委員會審查；同第 4.3 節的事件）較近的優先；沒有期限排後面。
+  4. 再同，買方的影響力分數高的優先。
+  5. 再同，照管道的固定順序（國內標案、警政與關鍵基礎設施、中科院、FMS、DCS）。
+- 顯示「Most likely first buyer: <買方>, <direct / through a Taiwanese partner / access unclear>」和理由一行（錢的狀態、金額、日期、來源）；點開看這個規則。沒有符合的管道：「No sourced route with money yet」。
+- 只是「最可能」，不是保證；Claude 不寫、不改這個結果。
+

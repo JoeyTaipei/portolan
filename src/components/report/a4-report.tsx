@@ -1,4 +1,9 @@
-import { EXPORT_CHECK, fmtDay, REQUIREMENT_LABEL } from "@/components/brief/model";
+import {
+  EXPORT_CHECK,
+  fmtDay,
+  NO_FIRST_BUYER,
+  REQUIREMENT_LABEL,
+} from "@/components/brief/model";
 import { MarkIcon } from "@/components/map/node-mark";
 import { STANCE_LABEL, type SourceRef } from "@/components/score/explain";
 import { icdText } from "@/components/score/icd-scale";
@@ -16,7 +21,9 @@ function dedupeRefs(refs: SourceRef[]): SourceRef[] {
 
 function Cite({ refs }: { refs: SourceRef[] }) {
   if (refs.length === 0) return null;
-  return <span className="rp-cite"> [{refs.map((r) => r.label).join(", ")}]</span>;
+  return (
+    <span className="rp-cite"> [{refs.map((r) => r.label).join(", ")}]</span>
+  );
 }
 
 export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
@@ -24,10 +31,16 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
     .map((id) => r.exhibit.nodes.find((n) => n.id === id)?.short)
     .filter((n): n is string => !!n);
   const takeaway =
-    route.length > 0 ? `Contact ${route.length === 1 ? route[0] : `${route.slice(0, -1).join(", ")} and ${route.at(-1)}`} first.` : "No stakeholder is ready to contact first yet.";
+    route.length > 0
+      ? `Contact ${route.length === 1 ? route[0] : `${route.slice(0, -1).join(", ")} and ${route.at(-1)}`} first.`
+      : "No stakeholder is ready to contact first yet.";
 
   return (
-    <article className="rp-sheet" aria-label="One-page market entry brief" data-testid="a4-sheet">
+    <article
+      className="rp-sheet"
+      aria-label="One-page market entry brief"
+      data-testid="a4-sheet"
+    >
       <header className="rp-head">
         <div className="rp-cart">
           <div className="k">
@@ -37,7 +50,8 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
           <h1>{r.name}</h1>
           {r.preparedFor && (
             <p>
-              Prepared for <b>{r.preparedFor.company}</b>, {r.preparedFor.product}, {r.preparedFor.date}
+              Prepared for <b>{r.preparedFor.company}</b>,{" "}
+              {r.preparedFor.product}, {r.preparedFor.date}
             </p>
           )}
         </div>
@@ -45,7 +59,10 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
           <span className="wm">Portolan</span>
           <div>
             <span className="vk">Entry verdict</span>
-            <b className={`rp-verdict ${r.verdict.kind}`} data-testid="a4-verdict">
+            <b
+              className={`rp-verdict ${r.verdict.kind}`}
+              data-testid="a4-verdict"
+            >
               {r.verdict.label}
             </b>
             <span>
@@ -60,7 +77,11 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
           {r.judgment && (
             <section className="rp-bottom" aria-label="Bottom line">
               <p>
-                <b>Bottom line:</b> {r.judgment.text} <span className="t">{icdText(r.judgment.icd)}, {r.judgment.confidence.toLowerCase()} confidence.</span>
+                <b>Bottom line:</b> {r.judgment.text}{" "}
+                <span className="t">
+                  {icdText(r.judgment.icd)},{" "}
+                  {r.judgment.confidence.toLowerCase()} confidence.
+                </span>
                 <Cite refs={r.judgment.refs} />
               </p>
               {r.verdict.lead && (
@@ -95,7 +116,9 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
                 {m.value ? <b>{m.value}</b> : <b className="none">{m.note}</b>}
                 <span>
                   {m.label}
-                  {m.value ? `, ${m.note.charAt(0).toLowerCase()}${m.note.slice(1)}` : ""}
+                  {m.value
+                    ? `, ${m.note.charAt(0).toLowerCase()}${m.note.slice(1)}`
+                    : ""}
                 </span>
               </div>
             ))}
@@ -120,7 +143,14 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
             {r.top.map((t) => (
               <tr key={t.id}>
                 <td className="nm">
-                  {t.first && <span className="k" aria-label={`Contact ${t.first}${t.first === 1 ? "st" : t.first === 2 ? "nd" : "rd"}`}>{t.first}</span>}
+                  {t.first && (
+                    <span
+                      className="k"
+                      aria-label={`Contact ${t.first}${t.first === 1 ? "st" : t.first === 2 ? "nd" : "rd"}`}
+                    >
+                      {t.first}
+                    </span>
+                  )}
                   {t.name}
                 </td>
                 <td className="st">
@@ -131,7 +161,11 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
                 <td className={t.nextVerified ? undefined : "un"}>{t.next}</td>
                 <td className="src">
                   {t.refs.map((s) => (
-                    <span key={s.id} className="mr-1 inline-block" title={s.title}>
+                    <span
+                      key={s.id}
+                      className="mr-1 inline-block"
+                      title={s.title}
+                    >
                       {s.label}
                     </span>
                   ))}
@@ -144,20 +178,42 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
 
       <div className="rp-cols">
         <section>
-          <p className="rp-lab">Recommended entry path</p>
-          {r.path.length === 0 ? (
-            <p className="rp-path">Not enough sourced facts for this section.</p>
+          {r.hasRoutes ? (
+            <>
+              <p className="rp-lab">Most likely first buyer</p>
+              {r.firstBuyer ? (
+                <p className="rp-path" data-testid="a4-first-buyer">
+                  <b>{r.firstBuyer.who}</b>, {r.firstBuyer.how}. Why:{" "}
+                  {r.firstBuyer.why}.
+                  <Cite refs={r.firstBuyer.refs} />
+                </p>
+              ) : (
+                <p className="rp-path">{NO_FIRST_BUYER}.</p>
+              )}
+            </>
           ) : (
-            <p className="rp-path">
-              {r.path.map((p, i) => (
-                <span key={p.stakeholderId}>
-                  {i > 0 && " → "}
-                  <b>{p.who}</b>
-                </span>
-              ))}
-              <Cite refs={dedupeRefs(r.path.flatMap((p) => p.why.refs))} />
-              <span className="sub">In this order; the reasons for each step are in the strategy brief.</span>
-            </p>
+            <>
+              <p className="rp-lab">Recommended entry path</p>
+              {r.path.length === 0 ? (
+                <p className="rp-path">
+                  Not enough sourced facts for this section.
+                </p>
+              ) : (
+                <p className="rp-path">
+                  {r.path.map((p, i) => (
+                    <span key={p.stakeholderId}>
+                      {i > 0 && " → "}
+                      <b>{p.who}</b>
+                    </span>
+                  ))}
+                  <Cite refs={dedupeRefs(r.path.flatMap((p) => p.why.refs))} />
+                  <span className="sub">
+                    In this order; the reasons for each step are in the strategy
+                    brief.
+                  </span>
+                </p>
+              )}
+            </>
           )}
           <p className="rp-lab">7-day plan</p>
           <ol className="rp-wps">
@@ -175,16 +231,23 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
         <section>
           <p className="rp-lab">Partner candidates</p>
           {r.partners.length === 0 ? (
-            <p className="rp-list">No Taiwanese firm with sourced evidence yet.</p>
+            <p className="rp-list">
+              No Taiwanese firm with sourced evidence yet.
+            </p>
           ) : (
-            <ul className="rp-list" aria-label="Partner candidates" data-testid="a4-partners">
+            <ul
+              className="rp-list"
+              aria-label="Partner candidates"
+              data-testid="a4-partners"
+            >
               {r.partners.map((p, i) => (
                 <li key={p.id}>
                   <b>
                     {i + 1}. {p.short}
                   </b>
                   , {p.sources} source{p.sources === 1 ? "" : "s"}
-                  {p.buyers > 0 && `, tied to ${p.buyers} buyer${p.buyers === 1 ? "" : "s"}`}
+                  {p.buyers > 0 &&
+                    `, tied to ${p.buyers} buyer${p.buyers === 1 ? "" : "s"}`}
                   {p.flags.length > 0 && `; ${p.flags.join(", ")}`}
                   <Cite refs={p.refs} />
                 </li>
@@ -205,7 +268,8 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
                 ))}
                 {r.exportCheck && (
                   <li className="chk">
-                    <b>{REQUIREMENT_LABEL.export_control}.</b> <i>{EXPORT_CHECK}</i>
+                    <b>{REQUIREMENT_LABEL.export_control}.</b>{" "}
+                    <i>{EXPORT_CHECK}</i>
                   </li>
                 )}
               </ul>
@@ -216,7 +280,9 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
                 Key risks
               </p>
               {r.risks.length === 0 ? (
-                <p className="rp-list">Not enough sourced facts for this section.</p>
+                <p className="rp-list">
+                  Not enough sourced facts for this section.
+                </p>
               ) : (
                 <ul className="rp-list rp-haz">
                   {r.risks.map((s, i) => (
@@ -243,16 +309,23 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
         <ol aria-label="Sources in the table">
           {r.sources.map((s) => (
             <li key={s.id} title={s.title}>
-              [{s.label}] <Stamp reliability={s.reliability} credibility={s.credibility} />
-              {s.verifiedAt ? `checked ${fmtDay(s.verifiedAt)}` : "date unverified"} · {s.title}
+              [{s.label}]{" "}
+              <Stamp reliability={s.reliability} credibility={s.credibility} />
+              {s.verifiedAt
+                ? `checked ${fmtDay(s.verifiedAt)}`
+                : "date unverified"}{" "}
+              · {s.title}
             </li>
           ))}
         </ol>
         <div className="rp-foot">
           <span>
-            Full list of {r.citedIds.length} cited sources: <b>{shareUrl}/sources</b>
+            Full list of {r.citedIds.length} cited sources:{" "}
+            <b>{shareUrl}/sources</b>
           </span>
-          {r.isSample && <span>Sample data · every claim links to a cited source</span>}
+          {r.isSample && (
+            <span>Sample data · every claim links to a cited source</span>
+          )}
         </div>
       </footer>
     </article>

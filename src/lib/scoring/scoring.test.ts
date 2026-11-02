@@ -1,6 +1,6 @@
 // One example per section of docs/scoring.md (spec §17).
 import { describe, expect, it } from "vitest";
-import type { Banded, Brief, BriefMetrics, Edge, Fact, MarketCheck, Rating03, Source, SupportResult, SupportStatement, TimedEvent } from "@/lib/types";
+import type { Banded, Brief, BriefMetrics, Edge, Fact, MarketCheck, MoneyStatus, ProcurementRoute, Rating03, Source, SupportResult, SupportStatement, TimedEvent } from "@/lib/types";
 import { briefStatus } from "./brief-status";
 import { centralityRating, influenceFor, influenceScore } from "./influence";
 import { dataConfidence, entryReadiness, oppositionIndex, stakeholderConfidence, windowToAct, type Scored } from "./metrics";
@@ -8,6 +8,7 @@ import { contactFirst, quadrant, resistant } from "./ranking";
 import { recencyFactor, sourceWeight } from "./source-weight";
 import { debriefRating, supportFor } from "./support";
 import { entryVerdict } from "./verdict";
+import { firstBuyer } from "./first-buyer";
 import { briefMetrics } from "./index";
 import { sampleDossier } from "@/fixtures/sample-dossier";
 
@@ -274,7 +275,7 @@ describe("§7 brief Out of date", () => {
     id: "b1", dossierId: "d", version: 1,
     metrics: { entryReadiness: null, opposition: null, window: { found: false, text: "No sourced deadline found" }, dataConfidence: { level: "Low", sourceCount: 0, qualifying: 0, of: 0 } },
     rationale: [{ text: "t", sourceIds: ["S1"] }], judgments: [], path: [], reduceOpposition: [],
-    plan: { prep: [], contact: [], event: [], followUp: [] }, summary: [], risks: [], requirements: [], meet: [], needs: [], changesNote: [],
+    plan: { prep: [], contact: [], event: [], followUp: [] }, summary: [], risks: [], requirements: [], routes: [], meet: [], needs: [], changesNote: [],
     inputsAt: "2026-10-20T00:00:00Z", createdAt: "2026-10-20T00:00:00Z",
   };
   const base = { debriefs: [], stakeholders: [], facts: [], statements: [], sources: [source("S1", { verifiedAt: "2026-10-15" })] };
@@ -323,5 +324,32 @@ describe("entry verdict", () => {
   it("gives the sample Conditional go", () => {
     const m = briefMetrics(sampleDossier, NOW);
     expect(entryVerdict(m, sampleDossier.marketChecks, 3).kind).toBe("conditional");
+  });
+});
+
+// docs/scoring.md §9: the most likely first buyer, one case per ranking step.
+describe("first buyer (scoring §9)", () => {
+  const route = (over: Partial<ProcurementRoute>): ProcurementRoute => ({
+    route: "fms", text: "x", sourceIds: ["s1"], buyerId: "a", access: "direct", money: null, ...over,
+  });
+  const money = (status: MoneyStatus, asOf: string | null = "2026-07-01") => ({ amount: "1", asOf, status, sourceIds: ["s1"] });
+  const base = { govOnMap: new Set(["a", "b"]), influence: new Map([["a", 50], ["b", 80]]), events: [] as TimedEvent[], now: NOW };
+
+  it("ranks by money status, and an undated amount counts as none", () => {
+    const r = firstBuyer({ ...base, routes: [route({ buyerId: "b", money: money("proposed") }), route({ route: "dcs", buyerId: "a", money: money("open_tender") })] });
+    expect(r?.buyerId).toBe("a");
+    const u = firstBuyer({ ...base, routes: [route({ buyerId: "b", money: money("proposed") }), route({ route: "dcs", buyerId: "a", money: money("open_tender", null) })] });
+    expect(u?.buyerId).toBe("b");
+  });
+
+  it("then access, then the nearest deadline, then influence", () => {
+    expect(firstBuyer({ ...base, routes: [route({ buyerId: "b", access: "unclear" }), route({ route: "dcs", buyerId: "a", access: "via_local_partner" })] })?.buyerId).toBe("a");
+    const ev = { id: "e", dossierId: "d", title: "Vote", kind: "budget_vote", date: "2026-12-01", stakeholderIds: ["a"], sourceIds: ["s1"], status: "sourced", relevantToGoal: true, createdAt: "" } as TimedEvent;
+    expect(firstBuyer({ ...base, events: [ev], routes: [route({ buyerId: "b" }), route({ route: "dcs", buyerId: "a" })] })?.buyerId).toBe("a");
+    expect(firstBuyer({ ...base, routes: [route({ buyerId: "a" }), route({ route: "dcs", buyerId: "b" })] })?.buyerId).toBe("b");
+  });
+
+  it("skips closed routes and buyers not on the map", () => {
+    expect(firstBuyer({ ...base, routes: [route({ access: "no" }), route({ buyerId: "zzz" })] })).toBeNull();
   });
 });

@@ -11,6 +11,7 @@ export * from "./metrics";
 export * from "./ranking";
 export * from "./brief-status";
 export * from "./verdict";
+export * from "./first-buyer";
 
 export interface ScoredStakeholder extends Scored {
   confidence: Level;

@@ -303,6 +303,30 @@ export interface EntryRequirement extends Sentence {
   topic: RequirementTopic;
 }
 
+/** BRIEF-12 procurement routes, in display order (fixed by code). */
+export const ROUTE_KINDS = ["domestic_tender", "police_ci", "ncsist", "fms", "dcs"] as const;
+export type RouteKind = (typeof ROUTE_KINDS)[number];
+export type ForeignAccess = "direct" | "via_local_partner" | "no" | "unclear";
+export const MONEY_STATUSES = ["proposed", "in_committee", "passed", "open_tender", "awarded"] as const;
+export type MoneyStatus = (typeof MONEY_STATUSES)[number];
+
+/** An amount copied from a source, with its date and status; shown only when both are set. */
+export interface RouteMoney {
+  amount: string;
+  asOf: string | null;
+  status: MoneyStatus | null;
+  sourceIds: string[];
+}
+
+/** One procurement route (BRIEF-12): the sentence and its sources also back the buyer and access. */
+export interface ProcurementRoute extends Sentence {
+  route: RouteKind;
+  /** A Government stakeholder on the map, or null when the source names none on it. */
+  buyerId: string | null;
+  access: ForeignAccess;
+  money: RouteMoney | null;
+}
+
 export type IcdTerm =
   | "almost_no_chance"
   | "very_unlikely"
@@ -369,6 +393,8 @@ export interface Brief {
   risks: Sentence[];
   /** BRIEF-9; empty on briefs made before 2026-11-02. */
   requirements: EntryRequirement[];
+  /** BRIEF-12; empty on briefs made before S16. */
+  routes: ProcurementRoute[];
   meet: MeetItem[];
   /** "Needs from you: …" lines for optional form fields the brief needed. */
   needs: string[];

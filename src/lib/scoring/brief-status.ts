@@ -8,7 +8,7 @@ export const STALE_SOURCE_DAYS = 90;
 export function citedSourceIds(brief: Brief): Set<string> {
   const ids = new Set<string>();
   const add = (xs: string[]) => xs.forEach((i) => ids.add(i));
-  [...brief.rationale, ...brief.summary, ...brief.risks, ...(brief.requirements ?? [])].forEach((s) => add(s.sourceIds));
+  [...brief.rationale, ...brief.summary, ...brief.risks, ...(brief.requirements ?? []), ...(brief.routes ?? []), ...(brief.routes ?? []).flatMap((r) => (r.money ? [r.money] : []))].forEach((s) => add(s.sourceIds));
   brief.judgments.forEach((j) => add(j.sourceIds));
   brief.path.forEach((p) => add(p.why.sourceIds));
   brief.reduceOpposition.forEach((r) => add(r.step.sourceIds));

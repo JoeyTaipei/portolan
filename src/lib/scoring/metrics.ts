@@ -91,7 +91,7 @@ export function entryReadiness(checks: MarketChecks, scored: Scored[]): Readines
 
 // ─── §4.3 Window to act ──────────────────────────────────────────────────────
 
-const DEADLINE_KINDS = new Set<TimedEvent["kind"]>(["budget_vote", "tender_close", "committee_review"]);
+export const DEADLINE_KINDS = new Set<TimedEvent["kind"]>(["budget_vote", "tender_close", "committee_review"]);
 
 /** Taipei (UTC+8) calendar date of an instant, "YYYY-MM-DD". */
 export function taipeiDay(at: Date): string {
