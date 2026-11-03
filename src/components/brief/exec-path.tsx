@@ -18,7 +18,7 @@ export async function ExecPath({ path, reduce, dossierId, zh }: Pick<BriefVM, "p
         <ol className="relative m-0 flex max-w-[68ch] list-none flex-col gap-3 p-0 before:absolute before:top-3 before:bottom-3 before:left-[13px] before:border-l-[1.5px] before:border-dashed before:border-[var(--route)]">
           {path.map((p, i) => (
             <li key={p.stakeholderId} className="relative grid grid-cols-[28px_1fr] gap-2.5">
-              <span className="grid size-[27px] place-items-center rounded-full border-[1.5px] border-[var(--act)] bg-bg text-[12px] font-extrabold text-[var(--act-text)]">
+              <span className="grid size-[27px] place-items-center rounded-full border-[1.5px] border-[var(--act)] bg-panel text-[12px] font-extrabold text-[var(--act-text)]">
                 {i + 1}
               </span>
               <p className="m-0 text-[17px] leading-[1.5]">

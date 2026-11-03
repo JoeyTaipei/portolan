@@ -120,7 +120,7 @@ export function DetailsPanel({
       </dl>
 
       <h3 className="mt-4 mb-1.5 flex items-center gap-2 text-[14px] font-bold">
-        <span aria-hidden="true" className="inline-block size-2 rotate-45 bg-[var(--act)]" />
+        <span aria-hidden="true" className="inline-block size-2 rotate-45 border-[1.5px] border-ink bg-[var(--hi)]" />
         {t("Next step")}
       </h3>
       <div>

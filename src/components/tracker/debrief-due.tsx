@@ -37,7 +37,7 @@ export function DebriefDue({
   return (
     <section aria-labelledby="debrief-h" data-testid="debrief-due" className="flex flex-col gap-3 rounded-[var(--r-l)] border border-rule-strong bg-panel p-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <span className="rounded-[var(--r-s)] bg-[var(--act)] px-2 py-0.5 text-[12px] font-bold tracking-[0.04em] text-[var(--act-ink)]">{t("Debrief due")}</span>
+        <span className="rounded-[var(--r-s)] bg-[var(--hi)] px-2 py-0.5 text-[12px] font-bold tracking-[0.04em] text-[var(--act-ink)]">{t("Debrief due")}</span>
         <span className="text-[13px] text-ink2">
           {t.x(meetingWhen(first.daysAgo))}
           {due.length > 1 && (

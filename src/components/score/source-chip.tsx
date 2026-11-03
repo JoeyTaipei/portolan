@@ -13,7 +13,7 @@ import { CREDIBILITY_WORDS, RELIABILITY_WORDS } from "./grade";
 const W = 360;
 
 function dot(level: "good" | "mid" | "weak" | "none") {
-  const bg = { good: "bg-[var(--good)]", mid: "bg-ink2", weak: "bg-[var(--notice)]", none: "bg-ink3" }[level];
+  const bg = { good: "bg-[var(--good)]", mid: "bg-ink2", weak: "bg-rule", none: "bg-ink3" }[level];
   return <span aria-hidden="true" className={`mt-[6px] inline-block size-2 shrink-0 rounded-full ${bg}`} />;
 }
 const relLevel = (r: Reliability) => (r === "A" || r === "B" ? "good" : r === "C" ? "mid" : r === "F" ? "none" : "weak");

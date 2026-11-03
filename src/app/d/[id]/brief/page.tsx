@@ -67,7 +67,7 @@ async function BriefContent({ params, searchParams }: Pick<PageProps<"/d/[id]/br
       <header className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <p className="m-0 text-[14px] text-ink2">{t("Strategy brief")}</p>
-          <h1 className="mt-1 mb-0 text-[32px] font-bold leading-[1.05] lg:text-[40px]">{t.r(m.name, m.zh)}</h1>
+          <h1 className="mt-1 mb-0 text-[32px] font-black leading-[1.05] tracking-[-0.02em] lg:text-[40px]">{t.r(m.name, m.zh)}</h1>
         </div>
         <Link href={`/d/${m.dossierId}/report`} className="btn btn-main">
           {t("Export one-page A4 PDF")}

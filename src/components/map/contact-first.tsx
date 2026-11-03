@@ -31,9 +31,9 @@ export function ContactFirst({
                 type="button"
                 onClick={() => onSelect(n.id)}
                 aria-current={selected === n.id ? "true" : undefined}
-                className="flex w-full cursor-pointer gap-2.5 border-0 border-b border-rule bg-transparent px-1 py-2 text-left font-[inherit] text-ink hover:bg-panel2 aria-[current=true]:bg-panel2"
+                className="flex w-full cursor-pointer gap-2.5 border-0 border-b border-rule bg-transparent px-1 py-2 text-left font-[inherit] text-ink hover:bg-[var(--hi2)] aria-[current=true]:bg-[var(--hi2)]"
               >
-                <span className="grid size-6 shrink-0 place-items-center rounded-full bg-[var(--act)] text-[12.5px] font-extrabold text-[var(--act-ink)]">
+                <span className="grid size-6 shrink-0 place-items-center bg-[var(--hi)] font-[family-name:var(--font-type)] text-[13px] font-bold text-[var(--act-ink)]">
                   {i + 1}
                 </span>
                 <span className="flex flex-col text-[13px] leading-[1.4] text-ink2">
