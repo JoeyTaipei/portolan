@@ -6,11 +6,34 @@ import { citable } from "@/components/brief/model";
 import { buildMapModel, NO_ROUTE } from "@/components/map/model";
 import { sourceRef, type SourceRef } from "@/components/score/explain";
 import { isEligible } from "@/lib/scoring";
-import type { Dossier, Source } from "@/lib/types";
+import { marketInfo } from "@/lib/markets";
+import type { Dossier, Market, Source } from "@/lib/types";
 
 /** NET-7: the fixed line under the cards (shown as the Partners tab note). */
 export const PARTNER_NOTE =
   "No public list of MND-qualified suppliers or TEDIBOA members was found, so this list may be incomplete. Ranked by public evidence, not endorsed.";
+
+/** MKT-1: the Partners note for a market (Taiwan keeps PARTNER_NOTE). */
+export function partnerNote(market: Market): string {
+  return market === "TW" ? PARTNER_NOTE : "No public list of qualified local partners was checked, so this list may be incomplete. Ranked by public evidence, not endorsed.";
+}
+
+/** MKT-1: the empty Partners tab, "…finds Vietnamese firms…". */
+export function partnersEmpty(market: Market): string {
+  return `Candidates appear once research finds ${marketInfo(market).adjective} firms with public, sourced evidence.`;
+}
+
+/** MKT-1: the A4's empty partner line, "No Vietnamese firm…". */
+export function partnersEmptyA4(market: Market): string {
+  return `No ${marketInfo(market).adjective} firm with sourced evidence yet.`;
+}
+
+/** Questions that only make sense in Taiwan (MND list, made-in-Taiwan rules, NCC). */
+const TAIWAN_ONLY = new Set([
+  "Are you on the MND list of qualified military suppliers?",
+  "Can you assemble or integrate in Taiwan to meet made-in-Taiwan rules?",
+  "Have you handled NCC approval and import of RF equipment?",
+]);
 
 export interface PartnerEvidence {
   text: string;
@@ -54,9 +77,9 @@ export interface PartnerVM {
 }
 
 /** trade.gov "Choosing a foreign representative", as questions; a flag swaps its question. */
-export function partnerQuestions(flags: FlagKind[]): string[] {
+export function partnerQuestions(flags: FlagKind[], market: Market = "TW"): string[] {
   const has = (k: FlagKind) => flags.includes(k);
-  return [
+  const all = [
     "How many sales and engineering staff work on government or defence projects?",
     has("contract")
       ? "What happened with the contract the source describes, and is it resolved?"
@@ -69,6 +92,7 @@ export function partnerQuestions(flags: FlagKind[]): string[] {
     "Can you assemble or integrate in Taiwan to meet made-in-Taiwan rules?",
     "Have you handled NCC approval and import of RF equipment?",
   ];
+  return market === "TW" ? all : all.filter((q) => !TAIWAN_ONLY.has(q));
 }
 
 const text = (v: unknown) => (typeof v === "string" ? v.trim() : "");
@@ -133,7 +157,7 @@ export function buildPartners(d: Dossier, now: Date): PartnerVM[] {
         sourceCount: ids.size,
         flags,
         next: { text: verified ? node!.action.text : NO_ROUTE, verified, refs: verified ? node!.action.sources : [] },
-        questions: partnerQuestions(flags.map((f) => f.kind)),
+        questions: partnerQuestions(flags.map((f) => f.kind), d.market),
         influence: node?.influence?.score ?? -1,
       };
     })

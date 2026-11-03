@@ -1,6 +1,6 @@
 import "server-only";
 import type { AliasRow } from "@/lib/research/filter";
-import type { Category, StakeholderStatus } from "@/lib/types";
+import type { Category, Market, StakeholderStatus } from "@/lib/types";
 import { db } from "./research";
 
 // Dossier rows, the email outbox and the refresh bookkeeping (spec §7.1, §7.6, §13).
@@ -27,6 +27,7 @@ export interface NewDossier {
   priceRange: string | null;
   twPartners: string | null;
   clientDeadline: string | null;
+  market: Market;
 }
 
 /** Insert one dossier. Returns false on an id or share-id clash so the caller draws new ids. */
@@ -37,7 +38,7 @@ export async function insertDossier(d: NewDossier): Promise<boolean> {
     name: d.name,
     company: d.company,
     product: d.product,
-    market: "TW",
+    market: d.market,
     goal: d.goal,
     email: d.email,
     email_hash: d.emailHash,

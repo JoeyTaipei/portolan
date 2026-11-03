@@ -11,11 +11,12 @@ import { getDossierState, insertDossier, insertOutbox, keepPending, mergePending
 import { readDossier } from "@/lib/db/read";
 import { bumpUsage, ledgerStore, listSteps } from "@/lib/db/research";
 import { isDossierId, newDossierId, newShareId } from "@/lib/ids";
+import { MARKETS } from "@/lib/markets";
 // The counters' "use…" names are not React hooks; aliased so the hooks lint rule stays quiet.
 import { hashEmail, LIMITS, taipeiDay, useDossierAi as countDossierAi, useResearch as countResearch } from "@/lib/limits/counters";
 import { startResearch } from "@/lib/research/start";
 import { offMapNames } from "@/lib/research/steps";
-import type { ActionResult } from "@/lib/types";
+import type { ActionResult, Market } from "@/lib/types";
 
 // Research Server Actions (spec §7.1, §7.6, §8, §11.1). Engine lane. Every action is a public
 // POST: inputs are validated here, the dossier id is the only key (spec §9) and is format-checked
@@ -31,7 +32,7 @@ export interface CreateDossierInput {
   product: string;
   goal: string;
   email: string;
-  market: "TW";
+  market: Market;
   certifications?: string;
   priceRange?: string;
   twPartners?: string;
@@ -63,7 +64,7 @@ const CreateSchema = z.object({
   product: required("the product or service"),
   goal: required("a goal"),
   email: z.string().trim().max(254).pipe(z.email("Enter a valid email to start research.")),
-  market: z.literal("TW", "Taiwan is the only market open for now."),
+  market: z.enum(["TW", "VN", "TH"], "Pick Taiwan, Vietnam or Thailand."),
   certifications: optional,
   priceRange: optional,
   twPartners: optional,
@@ -107,7 +108,7 @@ export async function createDossier(input: CreateDossierInput): Promise<ActionRe
       const ok = await insertDossier({
         id: candidate,
         shareId: newShareId(),
-        name: `${v.company} · Taiwan entry`,
+        name: `${v.company} · ${MARKETS[v.market].name} entry`,
         company: v.company,
         product: v.product,
         goal: v.goal,
@@ -117,6 +118,7 @@ export async function createDossier(input: CreateDossierInput): Promise<ActionRe
         priceRange: v.priceRange,
         twPartners: v.twPartners,
         clientDeadline: v.clientDeadline,
+        market: v.market,
       });
       if (ok) id = candidate;
     }

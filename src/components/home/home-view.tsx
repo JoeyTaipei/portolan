@@ -40,7 +40,8 @@ export async function HomeView({ m, sample, atHome = false }: { m: HomeModel; at
             <AlertCard m={m} />
           </div>
           <KeyJudgments m={m} />
-          <ChartInset m={m} />
+          {/* MKT-1: the inset draws Taiwan's coast, so only Taiwan markets show it. */}
+          {m.market === "TW" && <ChartInset m={m} />}
           <QuickNav m={m} />
           <div className="flex flex-col gap-2">
             <DossierSelect selectedId={m.id} sample={sample} />

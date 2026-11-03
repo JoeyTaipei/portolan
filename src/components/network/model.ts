@@ -2,7 +2,7 @@
 // gets what the cards show. No score is computed here: investor and lawyer matches are the
 // sourced checks research stored (spec §16 Q4, simpler version: "3 of 4 checks", no level word).
 import { refsFor, sourceRef, type SourceRef } from "@/components/score/explain";
-import { buildPartners, PARTNER_NOTE, type PartnerVM } from "@/components/partners/model";
+import { buildPartners, PARTNER_NOTE, partnerNote, type PartnerVM } from "@/components/partners/model";
 import type { Dossier, IntroRequest, Lead, LeadType, TrackerItem } from "@/lib/types";
 
 export type NetworkTab = "partners" | "investors" | "lawyers" | "events";
@@ -22,6 +22,9 @@ export const TAB_NOTE: Record<NetworkTab, string> = {
   lawyers: "Matches are for introductions only. Portolan does not give legal advice.",
   events: "Ranked by how many of your mapped stakeholders are expected to attend.",
 };
+
+/** MKT-1: the tab note for a market (only Partners changes). */
+export const tabNote = (tab: NetworkTab, market: Dossier["market"]): string => (tab === "partners" ? partnerNote(market) : TAB_NOTE[tab]);
 
 /** NET-6: one line of purpose. */
 export const PURPOSE_MAX = 300;
@@ -60,6 +63,7 @@ export interface NetworkVM {
   dossierId: string;
   isSample: boolean;
   name: string;
+  market: Dossier["market"];
   leads: LeadVM[];
   /** NET-7: partner candidates, built by code from the map's Industry stakeholders. */
   partners: PartnerVM[];
@@ -113,7 +117,7 @@ function order(a: LeadVM, b: LeadVM, d: Dossier): number {
 export function buildNetworkModel(d: Dossier, now: Date): NetworkVM {
   const byId = new Map(d.sources.filter((s) => s.accepted).map((s) => [s.id, sourceRef(s)]));
   const leads = d.leads.map((l) => leadVM(l, d, byId)).sort((a, b) => order(a, b, d));
-  return { dossierId: d.id, isSample: d.isSample, name: d.name, leads, partners: buildPartners(d, now), tracker: d.tracker, intros: d.intros };
+  return { dossierId: d.id, isSample: d.isSample, name: d.name, market: d.market, leads, partners: buildPartners(d, now), tracker: d.tracker, intros: d.intros };
 }
 
 /** "23 Sep 2027" from "2027-09-23" (calendar date, no time-zone shift). */

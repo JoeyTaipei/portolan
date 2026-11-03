@@ -187,7 +187,7 @@ Column widths per page:
 
 ### 7.1 Creating a dossier (HOME-8)
 1. The user fills in the form and presses "Start research" → Server Action `createDossier`.
-2. Validation (zod): company, product and goal are required, each ≤ 200 characters; email format; target market can only be `TW`. Optional: product certifications, price range, existing Taiwan partners, the client's own deadline. If the hidden honeypot field has a value, drop the request silently.
+2. Validation (zod): company, product and goal are required, each ≤ 200 characters; email format; target market is `TW`, `VN` or `TH` (MKT-1). Optional: product certifications, price range, existing partners in the target market, the client's own deadline. If the hidden honeypot field has a value, drop the request silently.
 3. Limit check (§8). Over the limit → home error state (SHELL-2): "Today's research limit is reached. Your link still works; try again after 00:00 Taipei time."
 4. Generate the dossier id (`crypto.randomBytes(16)` → base64url, 22 characters, 128 bits) and write `dossiers`, `research_runs` and `email_outbox`.
 5. Right after: show the dossier link + "Copy link" + "This link is the only key to your dossier. Save it now." (D3), store the id in the browser's dossier list, and go to `/d/[id]`.
@@ -429,7 +429,8 @@ Layout "Briefing room" (Joey picked option C on 2026-11-02, canvas https://claud
 - **HOME-6** Time-sensitive alert (side column, above key judgments): the next sourced deadline related to the client's goal within 30 days, with a grade stamp and a link to the source. None → hidden (not an error).
 - **Chart inset** (side column): a small Taiwan chart with the placed marks and "N of M stakeholders placed by a sourced address", linking to the Map tab.
 - **HOME-7** Your markets: the markets this browser remembers plus the sample, each with its confidence level. Markets the server can't find are hidden (simpler version).
-- **HOME-8** "+ New market" / "Close" opens the form (§7.1). Target market dropdown: Taiwan selectable; United States, Japan, Singapore shown as "coming soon" and disabled; China not listed. Any industry.
+- **HOME-8** "+ New market" / "Close" opens the form (§7.1). Target market dropdown: Taiwan, Vietnam and Thailand selectable (MKT-1); United States, Japan, Singapore shown as "coming soon" and disabled; China not listed. Any industry.
+- **MKT-1 Vietnam and Thailand, demo version (added 2026-11-03, Joey: 「先做展示版」).** A new market can target Taiwan (`TW`), Vietnam (`VN`) or Thailand (`TH`), so a South-East Asian startup (e.g. a travel agency) can see a map, brief and A4 for its own target country. What changes with the market: the research and every Claude prompt name the chosen country (no "Taiwan" left in a VN/TH prompt); the dossier name ("… · Vietnam entry"); the home header's country line (Socialist Republic of Viet Nam, Kingdom of Thailand); the optional "Partners you already have in …" field and its "Needs from you" line; the partner and A4 empty states ("No Vietnamese firm with sourced evidence yet"); the "Through a … partner" route label; the risk deck title; and source grading, where the country's government domains (`gov.vn`, `go.th`) are A and its wire services and national papers are B, like Taiwan's. Taiwan-only parts are left out for VN/TH: the home chart inset (it draws Taiwan's coast), and the three Taiwan-specific partner questions and the MND/TEDIBOA note. Not changed (demo scope): the scoring rules, the procurement-route kinds and first-buyer rule, the entry-requirement topics, and the defence-leaning wording of the prompts' examples, so a travel dossier may still read partly like public procurement. The sample stays Taiwan. China stays organisation level only. Dates stay in Taipei time.
 - **RES-1** Research progress screen (§7.3).
 - Middle column Taiwan chart: stakeholders with a city are drawn on a fixed Taiwan outline (ochre land); those without an address aren't drawn; clicking one opens the map with it selected.
 - Right column key judgments: 3 numbered paragraphs (`.paras`) using ICD terms + ranges (e.g. "Likely (55–80%)") with confidence stated separately; each cited; taken from the brief's rationale.
@@ -561,7 +562,7 @@ Main columns only; types and indexes are set in the migration. Every table has `
 
 | Table | Main columns |
 |---|---|
-| `dossiers` | `id` text pk (22 chars), `share_id` text unique, `name`, `company`, `product`, `market` ('TW'), `goal`, `email`, `email_hash`, `certifications`, `price_range`, `tw_partners`, `client_deadline` (all optional), `status` (researching/partial/ready/failed), `refreshed_at`, `current_run_id` |
+| `dossiers` | `id` text pk (22 chars), `share_id` text unique, `name`, `company`, `product`, `market` ('TW', 'VN' or 'TH'; MKT-1), `goal`, `email`, `email_hash`, `certifications`, `price_range`, `tw_partners`, `client_deadline` (all optional), `status` (researching/partial/ready/failed), `refreshed_at`, `current_run_id` |
 | `research_runs` | `id`, `dossier_id`, `kind` (initial/refresh), `status`, `started_at`, `deadline_at`, `finished_at`, `error` |
 | `research_steps` | `id`, `run_id`, `kind` (discover/enrich/rate/check/leads/brief), `entity_key`, `parallel_run_id` unique, `status` (queued/running/done/failed/skipped), `attempts`, `locked_at`, `result` jsonb |
 | `cost_ledger` | `id`, `run_id` or `dossier_id`, `provider` (parallel/anthropic), `purpose`, `estimated_usd`, `actual_usd`, `model`, `tokens_in/out` |

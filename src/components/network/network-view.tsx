@@ -24,6 +24,7 @@ import {
 } from "./model";
 import { NetworkTabs } from "./tabs";
 import { useT } from "@/lib/i18n/client";
+import { partnersEmpty } from "@/components/partners/model";
 
 // 04 Network (spec §12). Three columns from 1024px (260 | 1fr | 360, ≥1600 280 | 1fr | 400): tabs
 // and note / card grid (2 columns at 1440, 3 at 1920) / saved leads, each scrolling on its own.
@@ -150,7 +151,7 @@ export function NetworkView({ vm, tab }: { vm: NetworkVM; tab: NetworkTab }) {
           </h1>
           <p className="m-0 mt-1 text-[14px] text-ink2">{t("Matched to {name}", { name: vm.name })}</p>
         </header>
-        <NetworkTabs dossierId={dossierId} tab={tab} counts={counts} />
+        <NetworkTabs dossierId={dossierId} tab={tab} counts={counts} market={vm.market} />
       </div>
 
       <section
@@ -162,7 +163,7 @@ export function NetworkView({ vm, tab }: { vm: NetworkVM; tab: NetworkTab }) {
             kind="empty"
             inline
             title={t(EMPTY[tab].title)}
-            desc={t(EMPTY[tab].desc)}
+            desc={tab === "partners" ? t.x(partnersEmpty(vm.market)) : t(EMPTY[tab].desc)}
             actions={[{ label: t("Open the map"), href: `/d/${dossierId}/map` }]}
           />
         ) : tab === "partners" ? (

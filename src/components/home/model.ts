@@ -4,6 +4,7 @@ import { zhMap, type ZhMap } from "@/lib/i18n/dossier";
 import { buildMapModel, byInfluence, type Mark } from "@/components/map/model";
 import { dataConfidenceExplanation, refsFor, sourceRef, type Explanation, type SourceRef } from "@/components/score/explain";
 import { buildVerdict, type VerdictVM } from "@/components/score/verdict";
+import { marketInfo } from "@/lib/markets";
 import { briefMetrics, taipeiDay } from "@/lib/scoring";
 import type { DataConfidenceResult, DossierStatus, IcdTerm, Confidence, Dossier } from "@/lib/types";
 
@@ -21,6 +22,7 @@ export interface HomeModel {
   isSample: boolean;
   name: string;
   country: string;
+  market: Dossier["market"];
   status: DossierStatus;
   verified: boolean;
   refreshedAt: string | null;
@@ -40,7 +42,6 @@ export interface HomeModel {
   nav: { mapTotal: number; nextSteps: number; leads: number; documents: number; briefVersion: number | null };
 }
 
-const COUNTRY: Record<Dossier["market"], string> = { TW: "Republic of China (Taiwan)" };
 
 export function buildHomeModel(d: Dossier, now: Date): HomeModel {
   const accepted = d.sources.filter((s) => s.accepted);
@@ -90,7 +91,8 @@ export function buildHomeModel(d: Dossier, now: Date): HomeModel {
     isSample: d.isSample,
     name: d.name,
     zh: zhMap(d, brief),
-    country: COUNTRY[d.market],
+    country: marketInfo(d.market).country,
+    market: d.market,
     status: d.status,
     verified: d.status === "ready" && metrics.dataConfidence.level !== "Low",
     refreshedAt: d.refreshedAt,

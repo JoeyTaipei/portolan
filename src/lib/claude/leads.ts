@@ -5,7 +5,7 @@ import { MODELS } from "@/lib/limits/prices";
 import type { Category, Level, MatchCheck } from "@/lib/types";
 import { callStructured, claudeLive, type LedgerContext } from "./client";
 import { mockLeads } from "./mock";
-import { LEADS_SYSTEM, leadsPrompt, type PromptClient } from "./prompts";
+import { experienceCheck, leadsSystem, leadsPrompt, type PromptClient } from "./prompts";
 import type { RateSource } from "./rate";
 import { LeadsOutput } from "./schemas";
 
@@ -51,7 +51,7 @@ export async function writeLeads(args: {
     for (let attempt = 0; attempt < 3 && !out; attempt++) {
       const r = await callStructured({
         model: MODELS.sonnet,
-        system: LEADS_SYSTEM,
+        system: leadsSystem(args.client.market),
         user: leadsPrompt({
           client: args.client,
           entities: entities.map((e) => ({ key: e.stakeholderId, name: e.name, category: e.category, sources: e.sources })),
@@ -95,7 +95,8 @@ export async function writeLeads(args: {
         const c = l.checks.find((x) => x.label === label);
         const cids = c ? ids(c.source_ids) : [];
         const ok = !!c?.passed && cids.length > 0 && claimProblems("check", cids, null, byId, { runId: args.runId }).length === 0;
-        return { label: c?.note?.trim() || CHECK_TEXT[label], passed: ok, sourceIds: ok ? cids : [] };
+        const fallback = label === "experience" ? experienceCheck(args.client.market) : CHECK_TEXT[label];
+        return { label: c?.note?.trim() || fallback, passed: ok, sourceIds: ok ? cids : [] };
       });
       match = { type: "checks", checks, level: matchLevel(checks.filter((c) => c.passed).length) };
     }

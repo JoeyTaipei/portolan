@@ -1,0 +1,38 @@
+import type { Market } from "@/lib/types";
+
+// MKT-1: the words that change with a dossier's target market.
+export interface MarketInfo {
+  /** "Vietnam" — used in prompts, Parallel inputs and UI copy (an i18n key). */
+  name: string;
+  /** "Vietnamese" — "No Vietnamese firm…", "Through a Vietnamese partner" (an i18n key). */
+  adjective: string;
+  /** Official country name for the home header. */
+  country: string;
+  /** The procurement law the no-spec-in rule cites. */
+  procurementLaw: string;
+}
+
+export const MARKETS: Record<Market, MarketInfo> = {
+  TW: {
+    name: "Taiwan",
+    adjective: "Taiwanese",
+    country: "Republic of China (Taiwan)",
+    procurementLaw: "Taiwan Government Procurement Act Art. 26 and Art. 88",
+  },
+  VN: {
+    name: "Vietnam",
+    adjective: "Vietnamese",
+    country: "Socialist Republic of Viet Nam",
+    procurementLaw: "Vietnam's Law on Bidding",
+  },
+  TH: {
+    name: "Thailand",
+    adjective: "Thai",
+    country: "Kingdom of Thailand",
+    procurementLaw: "Thailand's Public Procurement and Supplies Administration Act B.E. 2560",
+  },
+};
+
+export const MARKET_CODES = Object.keys(MARKETS) as Market[];
+
+export const marketInfo = (m: Market | null | undefined): MarketInfo => MARKETS[m ?? "TW"] ?? MARKETS.TW;

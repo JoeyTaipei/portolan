@@ -1,4 +1,5 @@
-import type { Category } from "@/lib/types";
+import { marketInfo } from "@/lib/markets";
+import type { Category, Market } from "@/lib/types";
 import type { TaskSpec } from "@/lib/parallel/types";
 import type { DiscoveredEntity } from "./filter";
 
@@ -14,6 +15,8 @@ export interface ResearchClient {
   company: string;
   product: string;
   goal: string;
+  /** MKT-1; missing means Taiwan. */
+  market?: Market;
 }
 
 export const DISCOVER_SPEC: TaskSpec = {
@@ -58,7 +61,7 @@ export const DISCOVER_SPEC: TaskSpec = {
 };
 
 export function discoverInput(c: ResearchClient): Record<string, unknown> {
-  return { company: c.company, product: c.product, goal: c.goal, market: "Taiwan" };
+  return { company: c.company, product: c.product, goal: c.goal, market: marketInfo(c.market).name };
 }
 
 /** Parse discover output defensively: anything malformed is skipped, never guessed. */
@@ -144,6 +147,6 @@ export function enrichInput(e: { name: string; category: Category }, c: Research
   return {
     entity_name: e.name,
     entity_kind: KIND[e.category],
-    context: `${c.company}; product: ${c.product}; market: Taiwan; goal: ${c.goal}`,
+    context: `${c.company}; product: ${c.product}; market: ${marketInfo(c.market).name}; goal: ${c.goal}`,
   };
 }
