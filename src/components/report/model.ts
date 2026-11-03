@@ -10,6 +10,7 @@ import { buildPartners } from "@/components/partners/model";
 import { buildVerdict, type VerdictVM } from "@/components/score/verdict";
 import { isEligible, sourcesFor } from "@/lib/scoring";
 import type { Brief, Category, Dossier, IcdTerm, Confidence } from "@/lib/types";
+import { partnersEmptyA4 } from "@/components/partners/model";
 
 export const TOP_N = 5;
 export const RISKS_N = 2;
@@ -39,6 +40,8 @@ export interface ExhibitNode {
 
 export interface ReportVM {
   isSample: boolean;
+  /** MKT-1: the A4's empty partner line, "No Vietnamese firm…". */
+  partnersEmpty: string;
   name: string;
   /** I18N-9: checked 繁中 for this version's sentences and the stakeholders' sourced names. */
   zh: BriefVM["zh"];
@@ -159,6 +162,7 @@ export function buildReportModel(d: Dossier, brief: Brief, now: Date): ReportVM 
   const confidence = b.metrics.find((m) => m.key === "confidence")!;
   return {
     isSample: d.isSample,
+    partnersEmpty: partnersEmptyA4(d.market),
     name: d.name,
     zh: b.zh,
     preparedFor:

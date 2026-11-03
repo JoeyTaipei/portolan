@@ -2,7 +2,7 @@ import type { Reliability, SourceType } from "@/lib/types";
 import { hostOf } from "./quality";
 
 // Starting Admiralty reliability A–F from the domain (spec §7.5). Editable: add domains here.
-// .gov.tw and Legislative Yuan gazettes = A; wire services and major newspapers = B;
+// .gov.tw and Legislative Yuan gazettes = A (and, for MKT-1, .gov.vn and .go.th); wire services and major newspapers = B;
 // trade press and company sites = C; blogs and aggregators = D; unknown = F.
 
 interface Rule {
@@ -15,6 +15,8 @@ const RULES: Rule[] = [
   { domains: ["ly.gov.tw", "lis.ly.gov.tw"], reliability: "A", sourceType: "legislative_record" },
   { domains: ["gazette.nat.gov.tw", "gazette2.nat.gov.tw"], reliability: "A", sourceType: "government_gazette" },
   { domains: ["gov.tw", "mil.tw", "gov.taipei", "nat.gov.tw"], reliability: "A", sourceType: "government_site" },
+  // MKT-1: Vietnam (government portal, ministries, National Assembly) and Thailand (go.th covers ministries and agencies).
+  { domains: ["gov.vn", "chinhphu.vn", "quochoi.vn", "go.th"], reliability: "A", sourceType: "government_site" },
   {
     domains: [
       "cna.com.tw", "focustaiwan.tw", "reuters.com", "apnews.com", "bloomberg.com", "afp.com",
@@ -22,6 +24,9 @@ const RULES: Rule[] = [
       "asia.nikkei.com", "ft.com", "wsj.com", "nytimes.com", "bbc.com", "bbc.co.uk",
       "theguardian.com", "taiwannews.com.tw", "upmedia.mg", "storm.mg", "rti.org.tw", "pts.org.tw",
       "economist.com", "scmp.com",
+      // MKT-1: Vietnam and Thailand wire services and national papers.
+      "vietnamplus.vn", "vnexpress.net", "tuoitre.vn", "thanhnien.vn", "vietnamnews.vn", "vir.com.vn",
+      "bangkokpost.com", "nationthailand.com", "thaipbs.or.th", "thaipbsworld.com", "khaosodenglish.com",
     ],
     reliability: "B",
     sourceType: "news",

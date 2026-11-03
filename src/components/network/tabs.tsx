@@ -1,10 +1,11 @@
 import { useT } from "@/lib/i18n/client";
 import Link from "next/link";
-import { TAB_NOTE, TABS, type NetworkTab } from "./model";
+import { tabNote, TABS, type NetworkTab } from "./model";
+import type { Market } from "@/lib/types";
 
 // NET-1 tabs (Partners, Investors, Lawyers, Events) as links, so `?tab=lawyers` can be shared and the
 // back button works; NET-2 the note for the open tab.
-export function NetworkTabs({ dossierId, tab, counts }: { dossierId: string; tab: NetworkTab; counts: Record<NetworkTab, number> }) {
+export function NetworkTabs({ dossierId, tab, counts, market = "TW" }: { dossierId: string; tab: NetworkTab; counts: Record<NetworkTab, number>; market?: Market }) {
   const t = useT();
   return (
     <div className="flex flex-col gap-3">
@@ -32,7 +33,7 @@ export function NetworkTabs({ dossierId, tab, counts }: { dossierId: string; tab
           <circle cx="8" cy="8" r="6.5" />
           <path d="M8 7v4.5M8 4.6v.4" />
         </svg>
-        {t.k(TAB_NOTE[tab])}
+        {t.k(tabNote(tab, market))}
       </p>
     </div>
   );

@@ -28,6 +28,7 @@ import {
   STALE_SOURCE_DAYS,
   structuralZeros,
 } from "@/lib/scoring";
+import { marketInfo } from "@/lib/markets";
 import { REQUIREMENT_TOPICS, ROUTE_KINDS } from "@/lib/types";
 import type { Brief, BriefMetrics, BriefStatus, Dossier, EntryRequirement, ForeignAccess, MoneyStatus, ProcurementRoute, RouteKind, IcdTerm, Confidence, RequirementTopic, Sentence, Source } from "@/lib/types";
 
@@ -65,6 +66,11 @@ export const ACCESS_LABEL: Record<ForeignAccess, string> = {
   no: "Closed to foreign firms",
   unclear: "Access unclear",
 };
+
+/** MKT-1: "Through a Vietnamese partner" for a Vietnam market. */
+export function accessLabel(access: ForeignAccess, market: Dossier["market"]): string {
+  return access === "via_local_partner" ? `Through a ${marketInfo(market).adjective} partner` : ACCESS_LABEL[access];
+}
 
 export const MONEY_STATUS_LABEL: Record<MoneyStatus, string> = {
   proposed: "proposed",
@@ -436,7 +442,7 @@ export function couldNotVerify(
 
 // ─── Procurement routes and the first buyer (BRIEF-12, scoring §9) ──────────
 
-function routeVMs(xs: ProcurementRoute[], ok: ReadonlyMap<string, Source>, nameOf: ReadonlyMap<string, string>): RouteVM[] {
+function routeVMs(xs: ProcurementRoute[], ok: ReadonlyMap<string, Source>, nameOf: ReadonlyMap<string, string>, market: Dossier["market"]): RouteVM[] {
   return ROUTE_KINDS.flatMap((kind) => {
     const x = xs.find((r) => r.route === kind);
     const c = x ? checkSentence(x, ok) : null;
@@ -450,7 +456,7 @@ function routeVMs(xs: ProcurementRoute[], ok: ReadonlyMap<string, Source>, nameO
         label: ROUTE_LABEL[kind],
         buyer: x.buyerId ? (nameOf.get(x.buyerId) ?? null) : null,
         access: x.access,
-        accessLabel: ACCESS_LABEL[x.access],
+        accessLabel: accessLabel(x.access, market),
         money: moneyOk ? { amount: dm.amount, asOf: dm.asOf, status: MONEY_STATUS_LABEL[dm.status], refs: dm.sourceIds.map((id) => sourceRef(ok.get(id)!)) } : null,
         undated: !!x.money && !moneyOk,
       },
@@ -522,7 +528,7 @@ export function buildBriefModel(d: Dossier, brief: Brief, now: Date): BriefVM {
   const metrics = briefMetrics(d, now);
   const reqs = requirementsVM(brief.requirements ?? [], ok);
   const govName = new Map(d.stakeholders.map((s) => [s.id, s.short ?? s.name]));
-  const routes = routeVMs(brief.routes ?? [], ok, govName);
+  const routes = routeVMs(brief.routes ?? [], ok, govName, d.market);
 
   const plan = PLAN_BOXES.map((box) => ({
     ...box,

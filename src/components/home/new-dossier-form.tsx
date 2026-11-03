@@ -5,11 +5,13 @@ import { useRef, useState, useTransition } from "react";
 import { createDossier, type CreateDossierInput } from "@/app/actions/research";
 import { rememberDossier } from "@/lib/browser-dossiers";
 import type { Key } from "@/lib/i18n";
+import { MARKETS } from "@/lib/markets";
+import type { Market } from "@/lib/types";
 import { useT } from "@/lib/i18n/client";
 
 // HOME-8 (spec §7.1). Required: company, product, goal, email; optional fields feed the
-// brief's "Needs from you". Lengths match the server-side check. Taiwan only for now; China is
-// not offered. The email is sent once with the request and never kept in this browser.
+// brief's "Needs from you". Lengths match the server-side check. Taiwan, Vietnam or Thailand (MKT-1);
+// China is not offered. The email is sent once with the request and never kept in this browser.
 
 export const LIMITS = { company: 120, product: 200, goal: 300, email: 254, optional: 200 } as const;
 
@@ -31,6 +33,7 @@ export function NewDossierForm() {
   const [created, setCreated] = useState<{ id: string; url: string } | null>(null);
   const [copied, setCopied] = useState(false);
   const [pending, start] = useTransition();
+  const [market, setMarket] = useState<Market>("TW");
   const t = useT();
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
@@ -55,7 +58,7 @@ export function NewDossierForm() {
       product: v("product"),
       goal: v("goal"),
       email: v("email"),
-      market: "TW",
+      market,
       certifications: opt("certifications"),
       priceRange: opt("priceRange"),
       twPartners: opt("twPartners"),
@@ -121,8 +124,10 @@ export function NewDossierForm() {
       ))}
       <label className={lab}>
         {t("Target market")}
-        <select name="market" defaultValue="TW" className={field}>
+        <select name="market" value={market} onChange={(e) => setMarket(e.target.value as Market)} className={field}>
           <option value="TW">{t("Taiwan")}</option>
+          <option value="VN">{t("Vietnam")}</option>
+          <option value="TH">{t("Thailand")}</option>
           <option disabled>{t("United States (coming soon)")}</option>
           <option disabled>{t("Japan (coming soon)")}</option>
           <option disabled>{t("Singapore (coming soon)")}</option>
@@ -155,7 +160,7 @@ export function NewDossierForm() {
             <input name="priceRange" maxLength={LIMITS.optional} className={field} />
           </label>
           <label className={lab}>
-            {t("Partners you already have in Taiwan")}
+            {t.x(`Partners you already have in ${MARKETS[market].name}`)}
             <input name="twPartners" maxLength={LIMITS.optional} className={field} />
           </label>
           <label className={lab}>

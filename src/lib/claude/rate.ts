@@ -5,7 +5,7 @@ import { MODELS } from "@/lib/limits/prices";
 import type { Credibility, FactField, FactStatus, Rating03, Reliability, StatementRating } from "@/lib/types";
 import { callStructured, claudeLive, type LedgerContext } from "./client";
 import { mockRate } from "./mock";
-import { RATE_SYSTEM, ratePrompt, type PromptClient } from "./prompts";
+import { rateSystem, ratePrompt, type PromptClient } from "./prompts";
 import { RatingOutput } from "./schemas";
 
 // The `rate` step (spec §7.2) with the source-check loop (§7.7) folded in. Live (decision 0004):
@@ -200,7 +200,7 @@ export async function rateEntity(args: {
     if (!live) return mockRate(args.entity, args.sources);
     const r = await callStructured({
       model: MODELS.sonnet,
-      system: RATE_SYSTEM,
+      system: rateSystem(args.client.market),
       user: ratePrompt({ client: args.client, entity: args.entity, sources: shown, today: args.today }),
       schema: RatingOutput,
       maxTokens: MAX_TOKENS,

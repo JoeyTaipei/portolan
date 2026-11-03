@@ -2,6 +2,7 @@ import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { DocumentType } from "@/lib/types";
 import { getDb } from "./client";
+import { marketInfo } from "@/lib/markets";
 
 // Document writes and reads for real dossiers (spec §11.3, DOC-6, DOC-9). Briefing note drafts
 // go through startBriefingDraft (engine); this file covers the manual services and the PDF
@@ -21,11 +22,15 @@ const TITLE: Record<Exclude<DocumentType, "briefing_note">, { title: string; pag
 
 /** DOC-6 for the manual services (risk deck, watch list): a request and a document in Requested. */
 export async function requestManual(dossierId: string, type: Exclude<DocumentType, "briefing_note">): Promise<string> {
+  // MKT-1: the risk deck names the dossier's market ("Vietnam market and policy risk").
+  const m = await db().from("dossiers").select("market").eq("id", dossierId).maybeSingle();
+  const market = m.data?.market === "VN" || m.data?.market === "TH" ? m.data.market : "TW";
+  const title = type === "risk_deck" ? `${marketInfo(market).name} market and policy risk` : TITLE[type].title;
   const req = await db().from("document_requests").insert({ dossier_id: dossierId, type, expert_review: false }).select("id").single();
   if (req.error) throw new Error(`add request: ${req.error.message}`);
   const doc = await db()
     .from("documents")
-    .insert({ dossier_id: dossierId, request_id: req.data.id, type, title: TITLE[type].title, pages: TITLE[type].pages, status: "requested" })
+    .insert({ dossier_id: dossierId, request_id: req.data.id, type, title, pages: TITLE[type].pages, status: "requested" })
     .select("id")
     .single();
   if (doc.error) throw new Error(`add document: ${doc.error.message}`);

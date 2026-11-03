@@ -801,6 +801,29 @@ Why: spec I18N-9. Erin picked option B from PR #28 and approved the migration an
 
 **Acceptance**: `npm test`, `npm run build`, `npx playwright test e2e/demo-path.spec.ts` (mock mode). No paid call.
 
+### S20 Vietnam and Thailand, demo version (added 2026-11-03, Joey)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| engine + ui (this session) | `feature/market-choice` | main @ 363738e | 3 h | P4 | none |
+
+Why: spec MKT-1. Joey wants to show a South-East Asian travel-agency startup how it could enter Vietnam or Thailand, and picked the demo version over a full travel-industry profile. Joey approved the migration and the `src/lib/types.ts` change (`Market`).
+
+**Risky changes — list before code** (sources and grades; a migration; the China rule):
+- *A VN/TH prompt still says Taiwan*, so research looks in the wrong country. Every prompt and Parallel input takes the market from the dossier. Verify: unit test that the VN prompts and discover/enrich inputs name Vietnam and contain no "Taiwan".
+- *VN/TH government sources graded F*, which would hide official sources and lower data confidence. Add `gov.vn`, `chinhphu.vn`, `go.th` as A and their wire services and national papers as B. Verify: unit test on `gradeSource`.
+- *A Taiwan sentence leaks into a VN/TH page* (made-in-Taiwan question, "Taiwanese partner"). Code-written strings take the market. Verify: unit tests on the partner questions and brief needs for VN.
+- *China rule.* Unchanged: the filter and prompt rule do not depend on the market. Verify: existing tests pass.
+- *Taiwan dossiers change.* Taiwan keeps its exact wording where it named Taiwan; the sample stays the same. Verify: e2e demo path (one-page A4) passes.
+- *Migration not applied before deploy* → creating a VN/TH market fails (TW still works). Verify: Joey runs `npx supabase@2 db push` before merging.
+- *Cost.* No paid call in this slice. A live VN or TH run costs about US$4.50 Parallel plus Claude; it is run only after Joey confirms the estimate.
+
+**Files**: `supabase/migrations/20261103120000_market_vn_th.sql`, `src/lib/types.ts` (`Market`), `src/lib/markets.ts` (new: names per market), `src/app/actions/research.ts`, `src/lib/db/{dossiers,read}.ts`, `src/lib/research/{discover,reliability}.ts`, `src/lib/claude/{prompts,brief,briefing-note,leads}.ts`, `src/components/home/{new-dossier-form,model,home-view}.tsx|ts`, `src/components/brief/*`, `src/components/partners/model.ts`, `src/components/network/network-view.tsx`, `src/components/report/{model.ts,a4-report.tsx}`, `src/components/docs/docs-view.tsx`, `src/lib/db/documents.ts`, `src/lib/i18n/zh-TW.ts`, tests next to them, `docs/spec.md`, `docs/plan.md`.
+
+**Tests added**: `markets.test.ts` — VN prompts and Parallel inputs name Vietnam with no "Taiwan"; VN/TH government domains grade A; VN partner questions and needs have no Taiwan wording.
+
+**Acceptance**: `npm test`, `npm run build`, `PORT=3001 npx playwright test e2e/demo-path.spec.ts` (mock mode). No paid call.
+
 ## 6. Risks
 
 | Risk | Impact | Mitigation |

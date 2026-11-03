@@ -236,7 +236,7 @@ export async function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string 
           <p className="rp-lab">{t("Partner candidates")}</p>
           {r.partners.length === 0 ? (
             <p className="rp-list">
-              {t("No Taiwanese firm with sourced evidence yet.")}
+              {t.x(r.partnersEmpty)}
             </p>
           ) : (
             <ul

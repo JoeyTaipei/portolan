@@ -402,7 +402,7 @@ async function readBy(column: "id" | "share_id", value: string): Promise<Dossier
     name: d.name as string,
     company: d.company as string,
     product: d.product as string,
-    market: "TW",
+    market: d.market === "VN" || d.market === "TH" ? d.market : "TW",
     goal: d.goal as string,
     certifications: s(d.certifications),
     priceRange: s(d.price_range),
