@@ -30,7 +30,7 @@ export async function NextMoves({ m }: { m: HomeModel }) {
               <span className="num pt-0.5 text-[15px] font-semibold text-[var(--act)]">{String(i + 1).padStart(2, "0")}</span>
               <div className="flex min-w-0 flex-col gap-1">
                 <p className="m-0 text-[17px] leading-[1.4]">
-                  <span data-testid="conclusion">{t.r(mv.step)}</span>
+                  <span data-testid="conclusion">{t.r(mv.step, m.zh)}</span>
                   {!mv.verified && <span className="ml-2 align-middle text-[12px] font-bold text-ink2">{t("Unverified")}</span>}
                 </p>
                 <p className="m-0 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[13.5px] text-ink2">

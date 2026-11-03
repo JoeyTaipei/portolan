@@ -58,3 +58,16 @@ export async function insertBrief(dossierId: string, draft: BriefDraft, removed:
   }
   throw new Error("insert brief: version clash");
 }
+
+/** I18N-9: store the checked translations for one version, plus the pairs that fell back to English. */
+export async function saveBriefZh(dossierId: string, version: number, zh: Record<string, string>, failed: { sentence: string; reason: string }[]): Promise<void> {
+  const r = await db().from("briefs").update({ zh: zh as unknown as Json }).eq("dossier_id", dossierId).eq("version", version).select("id").single();
+  if (r.error) throw new Error(`save brief zh: ${r.error.message}`);
+  if (failed.length) {
+    const briefId = (r.data as Row).id as string;
+    const log = await db()
+      .from("brief_check_log")
+      .insert(failed.map((x) => ({ brief_id: briefId, sentence: x.sentence.slice(0, 2000), reason: `zh: ${x.reason}`.slice(0, 500) })));
+    if (log.error) throw new Error(`brief zh log: ${log.error.message}`);
+  }
+}

@@ -5,7 +5,7 @@ import type { BriefVM } from "./model";
 
 // BRIEF-4: the recommended executive path, in the fixed contact order (scoring §5), joined by
 // the dashed route line, then "How to reduce opposition" for resistant stakeholders.
-export async function ExecPath({ path, reduce, dossierId }: Pick<BriefVM, "path" | "reduce" | "dossierId">) {
+export async function ExecPath({ path, reduce, dossierId, zh }: Pick<BriefVM, "path" | "reduce" | "dossierId" | "zh">) {
   const t = await getT();
   return (
     <section aria-labelledby="path-h" className="flex flex-col gap-3">
@@ -23,9 +23,9 @@ export async function ExecPath({ path, reduce, dossierId }: Pick<BriefVM, "path"
               </span>
               <p className="m-0 text-[17px] leading-[1.5]">
                 <Link href={`/d/${dossierId}/map?s=${p.stakeholderId}`} className="font-bold text-ink">
-                  {t.n(p.who)}
+                  {t.n(p.who, zh)}
                 </Link>
-                {t(".")} <span data-testid="conclusion">{t.r(p.why.text)}</span>
+                {t(".")} <span data-testid="conclusion">{t.r(p.why.text, zh)}</span>
                 <Cites refs={p.why.refs} dossierId={dossierId} />
               </p>
             </li>
@@ -38,7 +38,7 @@ export async function ExecPath({ path, reduce, dossierId }: Pick<BriefVM, "path"
           <ul className="m-0 flex list-none flex-col gap-1.5 p-0">
             {reduce.map((r) => (
               <li key={r.stakeholderId} className="text-[17px] leading-[1.5]">
-                <b>{t.n(r.who)}{t(".")}</b> <span data-testid="conclusion">{t.r(r.step.text)}</span>
+                <b>{t.n(r.who, zh)}{t(".")}</b> <span data-testid="conclusion">{t.r(r.step.text, zh)}</span>
                 <Cites refs={r.step.refs} dossierId={dossierId} />
               </li>
             ))}

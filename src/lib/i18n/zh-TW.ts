@@ -1156,4 +1156,10 @@ export const zhTW = {
   "{name|n}, {route|t}": "{name}，{route}",
   "{route|t} · {name|n}": "{route} · {name}",
   "NCSIST co-development or subcontract": "與國家中山科學研究院共同開發或分包",
+
+  // brief: code-written lines (needs, what changed)
+  "Needs from you: the product's certifications": "需要你提供：產品的認證",
+  "Needs from you: your own deadline, if you have one": "需要你提供：你自己的截止日（如果有）",
+  "Rewritten from version {n} with the latest research and debriefs.": "以最新的研究和會後回報，從第 {n} 版重寫。",
+  "Nothing had changed since the last version; the sentences were written again.": "自上一版以來沒有變動；句子重新寫過一次。",
 } as const satisfies Record<string, string>;

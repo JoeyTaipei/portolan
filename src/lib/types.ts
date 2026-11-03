@@ -400,6 +400,8 @@ export interface Brief {
   needs: string[];
   /** 2–4 lines of "What changed and why" from v2 on. */
   changesNote: string[];
+  /** I18N-9: English sentence → checked 繁中, from the pass after the brief; null/absent = English only. */
+  zh?: Record<string, string> | null;
   /** Data timestamp when generated, for Out of date (scoring §7). */
   inputsAt: Iso;
   createdAt: Iso;

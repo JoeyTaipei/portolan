@@ -24,10 +24,13 @@ export interface LedgerStore {
 
 export type Reservation = { ok: true; id: string } | { ok: false; reason: string };
 
-/** The cap that applies to one call. Claude calls other than the brief leave the brief reserve. */
+/**
+ * The cap that applies to one call. Claude calls other than the brief leave the brief reserve;
+ * the 繁中 pass (I18N-9) runs after the brief is written, so it may use the reserve too.
+ */
 export function capFor(provider: CostProvider, purpose: string): number {
   if (provider === "parallel") return CAPS.parallelUsd;
-  return purpose === "brief" ? CAPS.claudeUsd : CAPS.claudeUsd - CAPS.briefReserveUsd;
+  return purpose === "brief" || purpose === "brief_zh" ? CAPS.claudeUsd : CAPS.claudeUsd - CAPS.briefReserveUsd;
 }
 
 /**

@@ -29,9 +29,9 @@ export interface T {
    * Research-written text with a hand-made translation (the sample's sentences, I18N-8);
    * exact match only, so real dossiers' Claude-written sentences come back unchanged.
    */
-  r: (s: string) => string;
+  r: (s: string, dossier?: Record<string, string> | null) => string;
   /** A sample stakeholder's name → its sourced Chinese name (nameZh); anything else unchanged. */
-  n: (s: string) => string;
+  n: (s: string, dossier?: Record<string, string> | null) => string;
   /** Exact key only (enum labels like "Supportive"); anything else unchanged. */
   k: (s: string) => string;
   /** English dates inside a code-built string, in Chinese ("2 Nov 2026" → "2026年11月2日"). */
@@ -166,8 +166,9 @@ export function makeT(locale: Locale): T {
   const t = ((key: Key, vars?: Vars) => fill(zh ? (DICT[key] ?? key) : key, vars)) as T;
   t.x = (s: string) => (zh ? translateRuntime(s) : s);
   t.k = (s: string) => (zh ? (DICT[s] ?? s) : s);
-  t.r = (s: string) => (zh ? (SAMPLE_ZH[s] ?? DICT[s] ?? s) : s);
-  t.n = (s: string) => (zh ? (SAMPLE_NAMES_ZH[s] ?? s) : s);
+  // `dossier` is a real dossier's checked translations and sourced names (I18N-9, ./dossier.ts).
+  t.r = (s: string, dossier?: Record<string, string> | null) => (zh ? (dossier?.[s] ?? SAMPLE_ZH[s] ?? DICT[s] ?? s) : s);
+  t.n = (s: string, dossier?: Record<string, string> | null) => (zh ? (dossier?.[s] ?? SAMPLE_NAMES_ZH[s] ?? s) : s);
   t.dt = (s: string) => (zh ? zhDates(s) : s);
   t.date = (iso, opts) => formatDate(locale, iso, opts);
   t.locale = locale;

@@ -34,7 +34,7 @@ export async function MarketHeader({ m }: { m: HomeModel }) {
         </span>
       </div>
       <h1 id="mk-h" className="m-0 text-[34px] font-bold leading-[1.05] tracking-[-.01em] lg:text-[46px]">
-        {t.r(m.name)}
+        {t.r(m.name, m.zh)}
       </h1>
       <p className="m-0 flex flex-wrap items-baseline gap-x-2 text-[13px] text-ink2">
         {t("Entry verdict")}
@@ -44,7 +44,7 @@ export async function MarketHeader({ m }: { m: HomeModel }) {
       </p>
       {line ? (
         <p className="m-0 max-w-[50ch] text-[19px] leading-[1.4] lg:text-[23px]">
-          <b>{t("Bottom line:")}</b> <span data-testid="conclusion">{t.r(line.text)}</span> <span className="text-ink2">{t.k(icdText(line.icd))}{t(".")}</span>{" "}
+          <b>{t("Bottom line:")}</b> <span data-testid="conclusion">{t.r(line.text, m.zh)}</span> <span className="text-ink2">{t.k(icdText(line.icd))}{t(".")}</span>{" "}
           <SourceChips dossierId={m.id} sources={line.sources} />
         </p>
       ) : (

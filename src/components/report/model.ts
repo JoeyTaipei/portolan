@@ -40,6 +40,8 @@ export interface ExhibitNode {
 export interface ReportVM {
   isSample: boolean;
   name: string;
+  /** I18N-9: checked 繁中 for this version's sentences and the stakeholders' sourced names. */
+  zh: BriefVM["zh"];
   /** "Prepared for …" pieces; null hides the whole line (never a placeholder). */
   preparedFor: { company: string; product: string; date: string } | null;
   confidence: MetricVM;
@@ -158,6 +160,7 @@ export function buildReportModel(d: Dossier, brief: Brief, now: Date): ReportVM 
   return {
     isSample: d.isSample,
     name: d.name,
+    zh: b.zh,
     preparedFor:
       d.company.trim() && d.product.trim() ? { company: d.company.trim(), product: d.product.trim(), date: fmtDay(brief.createdAt) } : null,
     confidence,
