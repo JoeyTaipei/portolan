@@ -1152,6 +1152,17 @@ export const zhTW = {
   "AI draft · not reviewed — check names and dates before sharing": "AI 草稿 · 未經審閱，分享前請檢查姓名和日期",
   "AI draft · not reviewed — check names and dates before sharing · facts checked {date}": "AI 草稿 · 未經審閱，分享前請檢查姓名和日期 · 事實查證於 {date}",
 
+  // first buyer rule (sample names via |n)
+  "{name|n}, {route|t}": "{name}，{route}",
+  "{route|t} · {name|n}": "{route} · {name}",
+  "NCSIST co-development or subcontract": "與國家中山科學研究院共同開發或分包",
+
+  // brief: code-written lines (needs, what changed)
+  "Needs from you: the product's certifications": "需要你提供：產品的認證",
+  "Needs from you: your own deadline, if you have one": "需要你提供：你自己的截止日（如果有）",
+  "Rewritten from version {n} with the latest research and debriefs.": "以最新的研究和會後回報，從第 {n} 版重寫。",
+  "Nothing had changed since the last version; the sentences were written again.": "自上一版以來沒有變動；句子重新寫過一次。",
+
   // tracker: meeting memo (TRK-9…12)
   "Takes 30 seconds. Your answers update this stakeholder and your next briefing note; add detail to update their influence score.": "只要 30 秒。你的回答會更新這位利害關係人和下一份會前簡報；補充細節還會更新他們的影響力分數。",
   "Debrief removed. Support, influence, stage and next step are back as they were.": "會後回報已移除。支持度、影響力、階段和下一步都已還原。",

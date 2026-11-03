@@ -5,7 +5,7 @@ import { NO_FIRST_BUYER, UNDATED_AMOUNT, type BriefVM } from "./model";
 
 // BRIEF-12: procurement routes, one cited row each; amounts only with a date and a status. The
 // most likely first buyer above them is code's pick (scoring §9) and opens its rule.
-export async function Routes({ routes, firstBuyer, dossierId }: { routes: BriefVM["routes"]; firstBuyer: BriefVM["firstBuyer"]; dossierId: string }) {
+export async function Routes({ routes, firstBuyer, dossierId, zh }: { routes: BriefVM["routes"]; firstBuyer: BriefVM["firstBuyer"]; dossierId: string; zh: BriefVM["zh"] }) {
   if (routes.length === 0) return null;
   const t = await getT();
   return (
@@ -17,12 +17,12 @@ export async function Routes({ routes, firstBuyer, dossierId }: { routes: BriefV
         <ScoreX
           explanation={firstBuyer.explain}
           dossierId={dossierId}
-          label={t("Most likely first buyer: {name}. Show how this is worked out", { name: firstBuyer.who })}
+          label={t("Most likely first buyer: {name}. Show how this is worked out", { name: t.n(firstBuyer.who, zh) })}
           className="flex w-full flex-col items-start gap-0.5 rounded-[var(--r-l)] border border-rule-strong bg-panel px-3 py-2.5 text-left font-[inherit] text-ink hover:bg-panel2"
         >
           <span className="text-[12.5px] font-semibold text-ink2">{t("Most likely first buyer")}</span>
           <span className="text-[18px] font-bold leading-tight" data-testid="first-buyer">
-            {firstBuyer.who}, {t.k(firstBuyer.how)}
+            {t.n(firstBuyer.who, zh)}{t.locale === "zh-TW" ? "，" : ", "}{t.k(firstBuyer.how)}
           </span>
           <span className="text-[13.5px] text-ink2">{t("Why:")} {t.x(firstBuyer.why)}</span>
         </ScoreX>
@@ -35,12 +35,12 @@ export async function Routes({ routes, firstBuyer, dossierId }: { routes: BriefV
             <span>
               <span className="font-bold">{t.k(r.label)}</span>
               <span className="block text-[13px] text-ink2">
-                {r.buyer ? `${r.buyer} · ` : ""}
+                {r.buyer ? `${t.n(r.buyer, zh)} · ` : ""}
                 {t.k(r.accessLabel)}
               </span>
             </span>
             <span>
-              {r.text}
+              <span data-testid="conclusion">{t.r(r.text, zh)}</span>
               <Cites refs={r.refs} dossierId={dossierId} />
               {r.money ? (
                 <span className="block text-[13.5px]">

@@ -759,6 +759,48 @@ Why: Erin asked for a Chinese version of the app beside the English one, with a 
 
 **Acceptance**: the shared block (§4) with routes `/`, `/d/sample`, `/d/sample/{map,brief,report,tracker,network,docs,sources}`, `/s/<sample share id>`, `/privacy`, `/waitlist`, in both languages; `PORT=3001 npx playwright test e2e/demo-path.spec.ts`.
 
+### S18 Market conclusions, brief and A4 in 繁中 (added 2026-11-02, Erin; brief and A4 added the same day)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| ui (one side session) | `feature/zh-sample-conclusions` | S17 merged | 1.5 h | P4 | none |
+
+Why: spec I18N-8. Sample only; real dossiers need a paid step, so the options and costs go to Erin in the PR (not built).
+
+**Risky changes — list before code** (sources and Unverified marks; sample data):
+- *A translation changes a fact* (a number, a date, who decides). Verify: unit test that every number in each Chinese sentence matches the English (NT$210 billion → 2,100 億, 27 August 2026 → 2026年8月27日); organisation names are the stakeholders' sourced `nameZh`.
+- *A translation stands in for a real dossier's sentence.* `t.r` is an exact-match lookup on the sample's sentences only. Verify: unit test that an unknown sentence comes back unchanged.
+- *A home conclusion is missed.* Verify: unit test that every bottom line, key judgment and next step on `/d/sample` has an entry; e2e that no conclusion on `/d/sample` in 繁中 has a run of English words.
+- No paid call, no migration, no `src/lib/types.ts` change; tracker and memo files untouched.
+
+**Files**: `src/fixtures/sample-dossier.zh.ts` (new), `src/lib/i18n/{index.ts,zh-TW.ts,i18n.test.ts}`, `src/components/home/{model.ts,market-header.tsx,key-judgments.tsx,next-moves.tsx,dossier-select.tsx}`, `src/components/brief/{rationale,exec-path,seven-day,requirements,routes}.tsx`, `src/app/d/[id]/brief/page.tsx`, `src/components/report/a4-report.tsx`, `e2e/demo-path.spec.ts`, `docs/spec.md`, `docs/plan.md`.
+
+**Acceptance**: `npm test`, `npm run build`, `npx playwright test e2e/demo-path.spec.ts` (no English sentence on the sample's home, brief and A4 in 繁中; the A4 prints on one page); screenshots of `/d/sample`, `/d/sample/brief`, `/d/sample/report` in 繁中 at 1440 and 390.
+
+### S19 繁中 for real dossiers: translation pass after the brief (option B, Erin 2026-11-03)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| engine + ui (one side session) | `feature/zh-real-dossiers` (stacked on S18's `feature/zh-sample-conclusions`) | S18 | 4 h | P4 | none |
+
+Why: spec I18N-9. Erin picked option B from PR #28 and approved the migration and `src/lib/types.ts` change. (S18 here is the 繁中 sample slice; PR #26's meeting memo also says S18, so this is S19.)
+
+**Risky changes — list before code** (a paid API call; sources and Unverified marks; a migration):
+- *A translation changes a fact* (number, date, amount). Code compares the numbers in each pair; a mismatch falls back to English. Verify: unit tests for a changed number, a dropped number, and billion/億 and date conversions passing.
+- *A translation cites differently or invents a name.* The output carries the item's source ids, which must equal the English ones; names travel as tokens that must all come back, and the raw output may not contain any stakeholder's Chinese name outside a token. A translated abbreviation (e.g. 警政署 for "NPA") can't be caught by code; the prompt says names that aren't tokens stay in their original letters. Verify: unit tests for a missing token, an extra source id and a raw Chinese name.
+- *An unchecked sentence gets translated.* Input is built only from the stored brief (already through the pre-display check) and sourced action facts. Verify: unit test that a removed sentence isn't sent.
+- *Prompt injection from data.* Each sentence is fenced as data; no excerpt, title or URL is sent. Verify: prompt test.
+- *China organisation-level rule.* Person stakeholders in China are never tokenised with a name (their token stays the English organisation-level label) and the sentences come from text that already passed the check. Verify: unit test.
+- *Cost.* One Sonnet call per brief version: input ≈ 4–10k tokens, output ≈ 3–7k → ≈ US$0.05–0.10, worst case (max_tokens 12,000) ≈ US$0.14. Estimate written to `cost_ledger` before the call (purpose `brief_zh`); inside a run it is capped like the brief (the brief reserve is free once the brief is written); RE-BRIEF is limited by the daily AI counter, and its shown estimate rises to US$0.40. No live call is made in this slice; tests use mock mode.
+- *Translation failure breaks the brief.* It runs after the brief row is inserted, inside try/catch; failure only logs. Verify: unit test with a failing call.
+- *Migration not applied before deploy* → inserts/updates fail. `briefs.zh jsonb null`; the update is skipped on error and logged. Verify: Joey runs `npx supabase@2 db push` before merging.
+
+**Files**: `supabase/migrations/20261103090000_brief_zh.sql`, `src/lib/types.ts` (`Brief.zh`), `src/lib/db/{briefs,read}.ts`, `src/lib/claude/{translate.ts,translate.test.ts,brief.ts}`, `src/lib/limits/ledger.ts` (`brief_zh` uses the brief's cap), `src/lib/research/steps.ts`, `src/app/actions/research.ts`, `src/lib/i18n/{index.ts,zh-TW.ts}`, `src/components/home/*`, `src/components/brief/*`, `src/components/report/{model.ts,a4-report.tsx}`, `src/app/d/[id]/brief/page.tsx`, `docs/spec.md`, `docs/plan.md`. Tracker and memo files untouched.
+
+**Tests added**: `translate.test.ts` — the checks (numbers, ids, tokens, raw names, Chinese present), mock output on the sample, failure leaves `zh` null, fenced prompt with no excerpts.
+
+**Acceptance**: `npm test`, `npm run build`, `npx playwright test e2e/demo-path.spec.ts` (mock mode). No paid call.
+
 ## 6. Risks
 
 | Risk | Impact | Mitigation |

@@ -264,6 +264,7 @@ async function readBy(column: "id" | "share_id", value: string): Promise<Dossier
     meet: json(x.meet, []),
     needs: json<string[]>(x.needs, []),
     changesNote: json<string[]>(x.changes_note, []),
+    zh: json<Record<string, string> | null>(x.zh, null),
     inputsAt: x.inputs_at as string,
     createdAt: x.created_at as string,
   }));

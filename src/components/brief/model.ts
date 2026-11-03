@@ -4,6 +4,7 @@
 // Sourcing rule: a sentence is shown only when every source it cites is an accepted source of
 // this dossier with a verified date, and it has no placeholder (BRIEF-6 pre-display check).
 // Failing sentences are dropped, never shown with a warning.
+import { zhMap, type ZhMap } from "@/lib/i18n/dossier";
 import {
   dataConfidenceExplanation,
   dataConfidenceText,
@@ -149,6 +150,8 @@ export interface BriefVM {
   dossierId: string;
   isSample: boolean;
   name: string;
+  /** I18N-9: checked 繁中 for this version's sentences and the stakeholders' sourced names. */
+  zh: ZhMap;
   version: number;
   versions: { version: number; createdAt: string; current: boolean }[];
   status: BriefStatus;
@@ -538,6 +541,7 @@ export function buildBriefModel(d: Dossier, brief: Brief, now: Date): BriefVM {
     dossierId: d.id,
     isSample: d.isSample,
     name: d.name,
+    zh: zhMap(d, brief),
     version: brief.version,
     versions: [...d.briefs]
       .reverse()

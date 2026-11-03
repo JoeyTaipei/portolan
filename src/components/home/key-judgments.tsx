@@ -30,7 +30,7 @@ export async function KeyJudgments({ m }: { m: HomeModel }) {
             body: (
               <>
                 <p className="m-0 text-[15px] leading-[1.45]">
-                  {j.text} <b>{t.k(icdText(j.icd))}</b>{t(".")}
+                  <span data-testid="conclusion">{t.r(j.text, m.zh)}</span> <b>{t.k(icdText(j.icd))}</b>{t(".")}
                 </p>
                 <IcdScale term={j.icd} />
                 <p className="m-0 text-[12.5px] text-ink2">

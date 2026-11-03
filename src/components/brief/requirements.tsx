@@ -4,7 +4,7 @@ import { EXPORT_CHECK, REQUIREMENT_LABEL, type BriefVM } from "./model";
 
 // BRIEF-9: the rules a foreign firm must meet to sell here, one cited line per topic. The
 // export-control line is fixed code text, shown only when no source covers it.
-export async function Requirements({ items, exportCheck, dossierId }: { items: BriefVM["requirements"]; exportCheck: boolean; dossierId: string }) {
+export async function Requirements({ items, exportCheck, dossierId, zh }: { items: BriefVM["requirements"]; exportCheck: boolean; dossierId: string; zh: BriefVM["zh"] }) {
   if (items.length === 0) return null;
   const t = await getT();
   return (
@@ -18,7 +18,7 @@ export async function Requirements({ items, exportCheck, dossierId }: { items: B
           <li key={x.topic} className="grid gap-x-4 border-b border-rule py-2.5 text-[14.5px] leading-[1.45] sm:grid-cols-[160px_minmax(0,1fr)]">
             <span className="font-bold">{t.k(x.label)}</span>
             <span>
-              {x.text}
+              <span data-testid="conclusion">{t.r(x.text, zh)}</span>
               <Cites refs={x.refs} dossierId={dossierId} />
             </span>
           </li>

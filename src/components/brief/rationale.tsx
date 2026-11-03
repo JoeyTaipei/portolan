@@ -1,10 +1,11 @@
+import type { ZhMap } from "@/lib/i18n/dossier";
 import { Paras } from "@/components/score/paras";
 import { getT } from "@/lib/i18n/server";
 import { Cites } from "./cites";
 import type { Cited } from "./model";
 
 // BRIEF-3: position rationale, numbered so a meeting can ask for "the source for point 2".
-export async function Rationale({ items, changesNote, dossierId }: { items: Cited[]; changesNote: string[]; dossierId: string }) {
+export async function Rationale({ items, changesNote, dossierId, zh }: { items: Cited[]; changesNote: string[]; dossierId: string; zh: ZhMap }) {
   const t = await getT();
   return (
     <section aria-labelledby="rat-h" className="flex flex-col gap-3">
@@ -13,7 +14,7 @@ export async function Rationale({ items, changesNote, dossierId }: { items: Cite
           <p className="m-0 font-bold">{t("What changed and why")}</p>
           <ul className="m-0 pl-4">
             {changesNote.map((n) => (
-              <li key={n}>{n}</li>
+              <li key={n}>{t.x(n)}</li>
             ))}
           </ul>
         </div>
@@ -30,7 +31,7 @@ export async function Rationale({ items, changesNote, dossierId }: { items: Cite
             key: String(i),
             body: (
               <p className="m-0 text-[17px] leading-[1.55]">
-                {s.text}
+                <span data-testid="conclusion">{t.r(s.text, zh)}</span>
                 <Cites refs={s.refs} dossierId={dossierId} />
               </p>
             ),

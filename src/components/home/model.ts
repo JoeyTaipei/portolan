@@ -1,5 +1,6 @@
 // What the home screen (01 Markets) shows for the selected dossier. Server-side, explicit `now`.
 // Scores come only from src/lib/scoring; judgments and alerts are shown only with accepted sources.
+import { zhMap, type ZhMap } from "@/lib/i18n/dossier";
 import { buildMapModel, byInfluence, type Mark } from "@/components/map/model";
 import { dataConfidenceExplanation, refsFor, sourceRef, type Explanation, type SourceRef } from "@/components/score/explain";
 import { buildVerdict, type VerdictVM } from "@/components/score/verdict";
@@ -31,7 +32,9 @@ export interface HomeModel {
   judgments: { text: string; icd: IcdTerm; confidence: Confidence; sources: SourceRef[] }[];
   alert: { title: string; days: number; date: string; sources: SourceRef[]; url: string | null } | null;
   /** HOME-9: contact-first three, then by influence; events skipped. */
-  moves: { id: string; name: string; step: string; verified: boolean; sources: SourceRef[] }[];
+  moves: { id: string; name: string; nameZh: string | null; step: string; verified: boolean; sources: SourceRef[] }[];
+  /** I18N-9: checked 繁中 for this dossier's sentences and names. */
+  zh: ZhMap;
   placed: PlacedStakeholder[];
   mapShown: number;
   nav: { mapTotal: number; nextSteps: number; leads: number; documents: number; briefVersion: number | null };
@@ -76,6 +79,7 @@ export function buildHomeModel(d: Dossier, now: Date): HomeModel {
   const moves = [...first, ...rest].slice(0, 5).map((n) => ({
     id: n.id,
     name: n.name,
+    nameZh: n.nameZh,
     step: n.action.text,
     verified: n.action.verified,
     sources: n.action.sources,
@@ -85,6 +89,7 @@ export function buildHomeModel(d: Dossier, now: Date): HomeModel {
     id: d.id,
     isSample: d.isSample,
     name: d.name,
+    zh: zhMap(d, brief),
     country: COUNTRY[d.market],
     status: d.status,
     verified: d.status === "ready" && metrics.dataConfidence.level !== "Low",

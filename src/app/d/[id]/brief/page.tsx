@@ -67,7 +67,7 @@ async function BriefContent({ params, searchParams }: Pick<PageProps<"/d/[id]/br
       <header className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <p className="m-0 text-[14px] text-ink2">{t("Strategy brief")}</p>
-          <h1 className="mt-1 mb-0 text-[32px] font-bold leading-[1.05] lg:text-[40px]">{m.name}</h1>
+          <h1 className="mt-1 mb-0 text-[32px] font-bold leading-[1.05] lg:text-[40px]">{t.r(m.name, m.zh)}</h1>
         </div>
         <Link href={`/d/${m.dossierId}/report`} className="btn btn-main">
           {t("Export one-page A4 PDF")}
@@ -90,11 +90,11 @@ async function BriefContent({ params, searchParams }: Pick<PageProps<"/d/[id]/br
           </nav>
         </aside>
         <article className="flex min-w-0 flex-col gap-10">
-          <Rationale items={m.rationale} changesNote={m.changesNote} dossierId={m.dossierId} />
-          <ExecPath path={m.path} reduce={m.reduce} dossierId={m.dossierId} />
-          <SevenDay plan={m.plan} dossierId={m.dossierId} />
-          <Requirements items={m.requirements} exportCheck={m.exportCheck} dossierId={m.dossierId} />
-          <Routes routes={m.routes} firstBuyer={m.firstBuyer} dossierId={m.dossierId} />
+          <Rationale items={m.rationale} changesNote={m.changesNote} dossierId={m.dossierId} zh={m.zh} />
+          <ExecPath path={m.path} reduce={m.reduce} dossierId={m.dossierId} zh={m.zh} />
+          <SevenDay plan={m.plan} dossierId={m.dossierId} zh={m.zh} />
+          <Requirements items={m.requirements} exportCheck={m.exportCheck} dossierId={m.dossierId} zh={m.zh} />
+          <Routes routes={m.routes} firstBuyer={m.firstBuyer} dossierId={m.dossierId} zh={m.zh} />
           <Unverified gaps={m.gaps} />
           {m.needs.length > 0 && (
             <section aria-labelledby="needs-h" className="rounded-[var(--r-l)] border border-dashed border-rule-strong p-3">
@@ -103,7 +103,7 @@ async function BriefContent({ params, searchParams }: Pick<PageProps<"/d/[id]/br
               </h2>
               <ul className="m-0 pl-4 text-[14px] leading-[1.5]">
                 {m.needs.map((n) => (
-                  <li key={n}>{n}</li>
+                  <li key={n}>{t.r(n, m.zh)}</li>
                 ))}
               </ul>
             </section>
