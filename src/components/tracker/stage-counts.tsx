@@ -51,7 +51,7 @@ export function StageCounts({
                 <span className="flex w-full items-center">
                   <span
                     className={`num grid size-9 shrink-0 place-items-center rounded-full border-2 border-[var(--act)] text-[15px] font-bold group-hover:ring-2 group-hover:ring-[var(--act)]/30 ${
-                      filled ? "bg-[var(--act)] text-[var(--act-ink)]" : "bg-panel text-[var(--act-text)]"
+                      filled ? "bg-[var(--hi)] text-[var(--act-ink)]" : "bg-panel text-[var(--act-text)]"
                     } ${on ? "outline outline-2 outline-offset-2 outline-ink" : ""}`}
                   >
                     {counts[st]}

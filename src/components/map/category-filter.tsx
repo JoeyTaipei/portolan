@@ -23,7 +23,7 @@ export function CategoryFilter({
           type="button"
           aria-pressed={value === c}
           onClick={() => onChange(c)}
-          className="min-h-[38px] cursor-pointer rounded-[var(--r-chip)] border border-rule bg-panel px-[13px] text-[13.5px] font-medium text-ink aria-pressed:border-[var(--tile-on)] aria-pressed:bg-[var(--tile-on)] aria-pressed:text-[var(--tile-on-ink)] max-lg:min-h-11"
+          className="min-h-[38px] cursor-pointer rounded-[var(--r-chip)] border border-rule bg-panel px-[13px] text-[13.5px] font-medium text-ink aria-pressed:border-ink aria-pressed:bg-[var(--hi)] aria-pressed:font-extrabold aria-pressed:shadow-[inset_0_0_0_1px_var(--ink)] max-lg:min-h-11"
         >
           {c === "all" ? t("All") : t.k(CATEGORY_LABEL[c])}
         </button>

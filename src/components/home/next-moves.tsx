@@ -11,7 +11,7 @@ export async function NextMoves({ m }: { m: HomeModel }) {
   return (
     <section aria-labelledby="nm-h" className="flex flex-col">
       <h2 id="nm-h" className="m-0 flex items-center gap-2.5 text-[22px] font-bold">
-        <span aria-hidden="true" className="inline-block size-2.5 rotate-45 bg-[var(--act)]" />
+        <span aria-hidden="true" className="inline-block size-2.5 rotate-45 border-[1.5px] border-ink bg-[var(--hi)]" />
         {t("Next moves")}
       </h2>
       <p className="m-0 mt-1 mb-3 text-[14.5px] text-ink2">{t("Who to contact first, then the rest by influence. Each step traces to a source.")}</p>

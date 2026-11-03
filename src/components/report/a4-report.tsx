@@ -312,7 +312,7 @@ export async function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string 
         <ol aria-label={t("Sources in the table")}>
           {r.sources.map((s) => (
             <li key={s.id} title={s.title}>
-              [{s.label}]{" "}
+              <span className="type">[{s.label}]</span>{" "}
               <Stamp reliability={s.reliability} credibility={s.credibility} />
               {s.verifiedAt
                 ? t("checked {date}", { date: t.date(s.verifiedAt, { utc: true }) })

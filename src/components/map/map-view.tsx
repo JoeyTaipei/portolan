@@ -86,7 +86,7 @@ export function MapView({ model, tracker }: { model: MapModel; tracker: TrackerI
   }, []);
 
   const iconBtn =
-    "grid size-[46px] shrink-0 cursor-pointer place-items-center rounded-[var(--r-m)] border border-[var(--btn-line)] bg-panel text-ink hover:bg-panel2 [&_svg]:size-5 [&_svg]:fill-none [&_svg]:stroke-current [&_svg]:stroke-[1.8]";
+    "grid size-[46px] shrink-0 cursor-pointer place-items-center rounded-[var(--r-m)] border-2 border-[var(--btn-line)] bg-panel text-ink hover:bg-[var(--hi2)] [&_svg]:size-5 [&_svg]:fill-none [&_svg]:stroke-current [&_svg]:stroke-[1.8]";
 
   return (
     <div className="mx-auto flex w-full max-w-[1680px] flex-col gap-4 px-4 pt-[18px] pb-8 lg:px-8 lg:pt-6 lg:pb-12">
@@ -94,20 +94,20 @@ export function MapView({ model, tracker }: { model: MapModel; tracker: TrackerI
         <div>
           <h1 className="m-0 text-[28px] font-bold leading-[1.05] lg:text-[32px]">{t("Who decides")}</h1>
           <p className="m-0 mt-1 text-[14.5px] text-ink2" data-testid="shown-count">
-            {t("{name}. {n} of {m} stakeholders shown; size and depth show influence.", { name: model.name, n: inFilter.length, m: model.nodes.length })}
+            {t("{name}. {n} of {m} stakeholders shown; size shows influence.", { name: model.name, n: inFilter.length, m: model.nodes.length })}
           </p>
         </div>
       </header>
 
       <div className="flex flex-wrap items-center gap-2">
-        <div role="group" aria-label={t("View")} className="inline-flex overflow-hidden rounded-[var(--r-m)] border border-rule-strong">
+        <div role="group" aria-label={t("View")} className="inline-flex overflow-hidden rounded-[var(--r-m)] border-2 border-ink">
           {(["3d", "matrix"] as const).map((v) => (
             <button
               key={v}
               type="button"
               aria-pressed={view === v}
               onClick={() => setView(v)}
-              className="min-h-10 cursor-pointer border-0 bg-panel px-4 text-[14px] font-semibold text-ink max-lg:min-h-11 aria-pressed:bg-[var(--tile-on)] aria-pressed:text-[var(--tile-on-ink)]"
+              className="min-h-10 cursor-pointer border-0 bg-panel px-4 text-[14px] font-semibold text-ink max-lg:min-h-11 aria-pressed:bg-[var(--tile-on)] aria-pressed:text-[var(--tile-on-ink)] aria-pressed:shadow-[inset_0_-4px_0_var(--hi)]"
             >
               {v === "3d" ? t("3D map") : t("Power matrix")}
             </button>
@@ -141,8 +141,14 @@ export function MapView({ model, tracker }: { model: MapModel; tracker: TrackerI
       </div>
 
       <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-7 min-[1600px]:grid-cols-[minmax(0,1fr)_420px]">
-        <div className="flex flex-col gap-2.5">
-          <div className="flex flex-col lg:h-[max(520px,calc(100dvh-300px))]">
+        <figure className="exhibit" data-testid="map-exhibit">
+          <figcaption className="ex-t">
+            <span>{t("Exhibit {n}", { n: 1 })}</span>
+            {route.length > 0
+              ? t("Contact these {n} first, in order: {names}.", { n: route.length, names: route.map((r) => r.short).join(", ") })
+              : t("No contact route is sourced yet; start with the full list and its sources.")}
+          </figcaption>
+          <div className="flex flex-col px-3 pt-2 pb-3 lg:h-[max(520px,calc(100dvh-340px))]">
             {inFilter.length === 0 ? (
               <div className="nis inline flex-1" role="status" data-state="empty">
                 <h2>{t("No stakeholders in this category")}</h2>
@@ -154,7 +160,7 @@ export function MapView({ model, tracker }: { model: MapModel; tracker: TrackerI
                 </div>
               </div>
             ) : view === "matrix" ? (
-              <PowerMatrix nodes={inFilter} selected={selected} onSelect={select} />
+              <PowerMatrix nodes={inFilter} route={model.contactFirst} selected={selected} onSelect={select} />
             ) : (
               <InfluenceMap
                 nodes={drawn}
@@ -168,8 +174,14 @@ export function MapView({ model, tracker }: { model: MapModel; tracker: TrackerI
               />
             )}
           </div>
-          <Legend />
-        </div>
+          <div className="ex-src flex flex-col gap-1.5">
+            <Legend />
+            <p className="m-0">
+              {t("Size shows influence; fill shows stance. Source: Portolan analysis of {n} sources.", { n: model.sourceCount })}
+              {model.isSample && <> {t("Sample data.")}</>}
+            </p>
+          </div>
+        </figure>
 
         <aside aria-label={t("Stakeholders")} className="flex flex-col gap-6 lg:border-l lg:border-rule lg:pl-7">
           <div ref={detailsRef} className="scroll-mt-4">

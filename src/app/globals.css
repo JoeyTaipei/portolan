@@ -2,16 +2,23 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-/* Portolan · Admiralty chart (design/direction.md).
+/* Portolan · Estimate (design/direction.md).
    Every colour lives here as a token. Components and pages use var(--token) only. */
 
 @theme inline {
-  /* CJK characters fall back to Noto Sans TC (SHELL-4, I18N-6); Latin stays Plex Condensed. */
-  --font-sans: var(--font-plex-condensed), var(--font-noto-tc), system-ui, sans-serif;
-  --font-heading: var(--font-plex-condensed), var(--font-noto-tc), system-ui, sans-serif;
+  /* CJK characters fall back to Noto Sans TC (SHELL-4, I18N-6); Latin is Public Sans.
+     Courier Prime (--font-type) only for grades, source numbers, citations, the banner, Exhibit labels. */
+  --font-sans: var(--font-public-sans), var(--font-noto-tc), system-ui, sans-serif;
+  --font-heading: var(--font-public-sans), var(--font-noto-tc), system-ui, sans-serif;
+  --font-type: var(--font-courier-prime), "Courier New", var(--font-noto-tc), monospace;
 
-  /* Admiralty tokens as Tailwind colours (bg-ink, text-ink2, border-rule …) */
+  /* Estimate tokens as Tailwind colours (bg-ink, text-ink2, border-rule …) */
   --color-bg: var(--bg);
+  --color-desk: var(--desk);
+  --color-paper: var(--paper);
+  --color-faint: var(--faint);
+  --color-hi: var(--hi);
+  --color-hi2: var(--hi2);
   --color-stage: var(--stage);
   --color-panel: var(--panel);
   --color-panel2: var(--panel2);
@@ -39,7 +46,7 @@
   --color-redact: var(--redact);
 
   /* shadcn primitives take the same palette (no default grey cards) */
-  --color-background: var(--bg);
+  --color-background: var(--paper);
   --color-foreground: var(--ink);
   --color-card: var(--panel);
   --color-card-foreground: var(--ink);
@@ -63,112 +70,126 @@
   --radius-lg: var(--r-l);
 }
 
+/* Estimate (design/direction.md): white paper on a grey desk, black ink, one yellow
+   highlighter. --hi is the only accent: no red, green or blue anywhere. The older token
+   names below are kept as aliases so every component picks up the new look. */
 :root {
-  /* radii: 2px stamp, 4px chip, 6px button/field, 8px card/map frame */
+  /* Estimate base */
+  --desk: #E2E5E8;
+  --paper: #FFFFFF;
+  --ink: #1A1C20;
+  --ink2: #565B62;
+  --ink3: #8E949B;
+  --rule: #C8CCD1;
+  --faint: #F2F3F5;
+  --hi: #FFE14A;
+  --hi2: #FFF3A8;
+  --hi-edge: #F5D21F;
+
+  /* radii: 2px everywhere; 8px only on the binder-tab lower edge */
   --r-s: 2px;
-  --r-chip: 4px;
-  --r-m: 6px;
-  --r-l: 8px;
+  --r-chip: 2px;
+  --r-m: 2px;
+  --r-l: 2px;
+  --r-tab: 8px;
   --r-pill: 999px;
-  --radius: 8px;
+  --radius: 2px;
 
-  /* water, panels, ink */
-  --bg: #FCFDFB;
-  --stage: #FCFDFB;
-  --panel: #FFFFFF;
-  --panel2: #EEF5FA;
-  --field: #FFFFFF;
-  --field-line: #B4C6D6;
-  --ink: #14233A;
-  --ink2: #53627A;
-  --ink3: #8996A8;
-  --rule: #D3E0EA;
-  --rule-strong: #14233A;
-  --halo: #FCFDFB;
-  --link: #A8136A;
-  --focus: #C2187A;
+  /* surfaces */
+  --bg: var(--desk);
+  --stage: var(--paper);
+  --panel: var(--paper);
+  --panel2: var(--faint);
+  --field: var(--paper);
+  --field-line: var(--ink);
+  --rule-strong: var(--ink);
+  --halo: var(--paper);
+  --link: var(--ink);
+  --focus: var(--ink);
 
-  /* tick border (chart graticule) */
-  --grad-w: 7px;
-  --grad-a: #14233A;
-  --grad-b: #FFFFFF;
+  /* old chart tick border: now a plain ink rule */
+  --grad-w: 0px;
+  --grad-a: var(--ink);
+  --grad-b: var(--ink);
 
   /* bars and tabs */
-  --bar: #FFFFFF;
-  --bar-ink: #14233A;
-  --bar-ink2: #53627A;
-  --tab-on: #C2187A;
-  --sample-ink: #A8136A;
-  --sample-bg: transparent;
-  --sample-line: #C2187A;
-  --plan-ink: #FFFFFF;
-  --plan-bg: #14233A;
+  --bar: var(--paper);
+  --bar-ink: var(--ink);
+  --bar-ink2: var(--ink2);
+  --tab-on: var(--hi);
+  --sample-ink: var(--ink);
+  --sample-bg: var(--hi);
+  --sample-line: var(--ink);
+  --plan-ink: var(--paper);
+  --plan-bg: var(--ink);
 
-  /* buttons and actions */
-  --btn-line: #14233A;
-  --btn-bg: #14233A;
-  --btn-ink: #FFFFFF;
-  --btn-hover: #253A5A;
-  --hot: #14233A;
-  --act: #C2187A;
-  --act-ink: #FFFFFF;
-  --act-text: #A8136A;
-  --route: #C2187A;
+  /* buttons and actions (yellow = act on this; text on yellow is always ink) */
+  --btn-line: var(--ink);
+  --btn-bg: var(--ink);
+  --btn-ink: var(--paper);
+  --btn-hover: var(--ink);
+  --hot: var(--ink);
+  --act: var(--ink);       /* action lines, borders, numbers */
+  --act-ink: var(--ink);   /* text on --hi fills */
+  --act-text: var(--ink);
+  --route: var(--ink);
 
   /* trust elements */
-  --stamp: #1D4E89;
-  --redact: #14233A;
-  --icd-line: #14233A;
-  --icd-off: #FFFFFF;
-  --icd-on: #5E9FD3;
+  --stamp: var(--ink);
+  --redact: var(--ink);
+  --icd-line: var(--ink);
+  --icd-off: var(--paper);
+  --icd-on: repeating-linear-gradient(135deg, var(--hi) 0 6px, var(--hi-edge) 6px 8px);
 
-  /* chart */
-  --water0: #FCFDFB;
-  --water1: #DCEBF5;
-  --water2: #B5D3EA;
-  --land: #EAD58A;
-  --coast: #14233A;
-  --rhumb: #4F7396;
+  /* chart: no sea, land or depth colours, only paper and fine rules */
+  --water0: var(--paper);
+  --water1: var(--paper);
+  --water2: var(--faint);
+  --land: var(--faint);
+  --coast: var(--ink);
+  --rhumb: var(--rule);
 
-  /* stance */
-  --sup: #0F6E5A;
-  --res: #B23B2E;
-  --neu: #14233A;
-  --neu-fill: #FFFFFF;
-  --evt: #14233A;
-  --mark-edge: #FFFFFF;
-  --sup-text: #0F6E5A;
-  --res-text: #A3352A;
-  --edge: #5C6F86;
-  --tie: #14233A;
-  --unknown: #8996A8;
+  /* stance is shape and fill, never colour (direction.md) */
+  --sup: var(--ink);
+  --res: var(--ink);
+  --neu: var(--ink);
+  --neu-fill: var(--paper);
+  --evt: var(--ink);
+  --mark-edge: var(--ink);
+  --sup-text: var(--ink);
+  --res-text: var(--ink);
+  --edge: var(--ink3);
+  --tie: var(--ink);
+  --unknown: var(--ink3);
 
-  /* influence depth */
-  --floor1: #F1F7FB;
-  --floor2: #E6F0F7;
-  --depth1: #D6E8F5;
-  --depth2: #8DBDE2;
-  --depth3: #2F6FAE;
-  --stem: #8FA6BC;
-  --qband1: #F1F7FB;
-  --qband2: #DCEBF6;
-  --qband3: #C2DCF0;
+  /* former influence depth: flat paper */
+  --floor1: var(--paper);
+  --floor2: var(--paper);
+  --depth1: var(--paper);
+  --depth2: var(--rule);
+  --depth3: var(--ink2);
+  --stem: var(--rule);
+  --qband1: var(--paper);
+  --qband2: var(--paper);
+  --qband3: var(--paper);
 
   /* tiles, tags, notices */
-  --tile-gap-bg: #D3E0EA;
-  --tile-on: #14233A;
-  --tile-on-ink: #FFFFFF;
-  --tile-on-ink2: #B5D3EA;
-  --tag-bg: #14233A;
-  --tag-ink: #FFFFFF;
-  --good: #0F6E5A;
-  --notice-text: #C2187A;
-  --notice-bg: transparent;
-  --notice: #C2187A;
-  --done: #0F6E5A;
-  --done-ink: #FFFFFF;
-  --desk: #C9D6E0;
-  --skel: #E6F0F7;
+  --tile-gap-bg: var(--rule);
+  --tile-on: var(--ink);
+  --tile-on-ink: var(--paper);
+  --tile-on-ink2: var(--rule);
+  --tag-bg: var(--ink);
+  --tag-ink: var(--paper);
+  --good: var(--ink);
+  --notice-text: var(--ink);
+  --notice-bg: var(--hi2);
+  --notice: var(--ink);
+  --done: var(--hi);
+  --done-ink: var(--ink);
+  --skel: var(--faint);
+
+  /* paper stack: offset rules, never a blurred shadow */
+  --paper-stack: 0 1px 0 var(--rule), 0 3px 0 -1px var(--paper), 0 4px 0 -1px var(--rule);
 }
 
 @layer base {
@@ -190,8 +211,14 @@
     color: var(--link);
   }
   :focus-visible {
-    outline: 2px solid var(--focus);
+    outline: 3px solid var(--focus);
     outline-offset: 2px;
+    box-shadow: 0 0 0 6px var(--hi);
+  }
+  mark {
+    background: linear-gradient(transparent 12%, var(--hi) 12%, var(--hi) 88%, transparent 88%);
+    color: inherit;
+    padding: 0 2px;
   }
   [hidden] {
     display: none !important;
@@ -208,10 +235,25 @@ html[lang^="zh"] :is(i, em, .italic) {
   font-style: normal;
 }
 
-/* numbers: italic like chart soundings, tabular only on the digits */
+/* numbers: tabular digits */
 .num {
-  font-style: italic;
   font-variant-numeric: tabular-nums;
+}
+
+/* typewriter face: grades, source numbers, citations, banner, Exhibit labels */
+.type {
+  font-family: var(--font-type);
+}
+
+/* Admiralty grade stamp (A–F / 1–6) */
+.grade {
+  display: inline-block;
+  font: 700 12px var(--font-type);
+  border: 1.5px solid var(--ink);
+  border-radius: var(--r-s);
+  padding: 0 4px;
+  line-height: 1.35;
+  vertical-align: 1px;
 }
 
 /* chart tick border: top edge on phones, all four edges from 1024px */
@@ -235,9 +277,9 @@ html[lang^="zh"] :is(i, em, .italic) {
   gap: 8px;
   min-height: 44px;
   padding: 0 16px;
-  border: 1px solid var(--btn-line);
+  border: 2px solid var(--btn-line);
   border-radius: var(--r-m);
-  font: 600 15px var(--font-sans);
+  font: 700 15px var(--font-sans);
   text-decoration: none;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
@@ -248,23 +290,23 @@ html[lang^="zh"] :is(i, em, .italic) {
   border-color: var(--btn-bg);
 }
 .btn-main:hover {
-  background: var(--btn-hover);
+  box-shadow: inset 0 -4px 0 var(--hi);
 }
 .btn-main:disabled {
   opacity: 0.6;
   cursor: progress;
 }
 .btn-act {
-  background: var(--act);
+  background: var(--hi);
   color: var(--act-ink);
-  border-color: var(--act);
+  border-color: var(--ink);
 }
 .btn-ghost {
   background: var(--panel);
   color: var(--ink);
 }
 .btn-ghost:hover {
-  background: var(--panel2);
+  background: var(--hi2);
 }
 .btn-s {
   min-height: 38px;
@@ -276,8 +318,7 @@ html[lang^="zh"] :is(i, em, .italic) {
 /* Sample data stamp */
 .sample {
   display: inline-block;
-  font-size: 12px;
-  font-weight: 700;
+  font: 700 12px var(--font-type);
   color: var(--sample-ink);
   background: var(--sample-bg);
   border: 1px solid var(--sample-line);
@@ -289,6 +330,7 @@ html[lang^="zh"] :is(i, em, .italic) {
 /* Admiralty grade in words (code in the tooltip) */
 .stamp {
   display: inline;
+  font-family: var(--font-type);
   font-size: 0.92em;
   color: var(--ink2);
   margin: 0 4px;
@@ -297,21 +339,19 @@ html[lang^="zh"] :is(i, em, .italic) {
 /* redaction bar for withheld contact names */
 .ins-redact {
   display: inline-block;
-  width: 4.4em;
+  width: 4.6em;
   height: 0.95em;
   background: var(--redact);
   vertical-align: -1px;
-  border-radius: 1px;
 }
 
 /* ICD probability scale: seven segments, one lit */
 .icd {
   display: grid;
   grid-template-columns: 5fr 15fr 25fr 10fr 25fr 15fr 4fr;
-  height: 12px;
+  height: 14px;
   margin: 6px 0 3px;
-  border: 1px solid var(--icd-line);
-  border-radius: var(--r-s);
+  border: 1.5px solid var(--icd-line);
   overflow: hidden;
 }
 .icd span {
@@ -328,7 +368,7 @@ html[lang^="zh"] :is(i, em, .italic) {
   display: flex;
   justify-content: space-between;
   gap: 8px;
-  font-size: 11.5px;
+  font: 11.5px var(--font-type);
   color: var(--ink2);
 }
 .icd-k b {
@@ -356,6 +396,7 @@ html[lang^="zh"] :is(i, em, .italic) {
 }
 .paras li::before {
   content: counter(p) ".";
+  font-family: var(--font-type);
   font-weight: 700;
   font-size: 13px;
   padding-top: 2px;
@@ -364,9 +405,8 @@ html[lang^="zh"] :is(i, em, .italic) {
 /* Exhibit frame for maps and charts */
 .exhibit {
   margin: 0;
-  background: var(--panel);
-  border: 1px solid var(--rule-strong);
-  border-radius: var(--r-l);
+  background: var(--paper);
+  border: 1px solid var(--rule);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -375,21 +415,19 @@ html[lang^="zh"] :is(i, em, .italic) {
   margin: 0;
   padding: 10px 12px 0;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.3;
 }
 .ex-t span {
   display: block;
-  font-size: 12.5px;
-  font-weight: 700;
+  font: 700 12.5px var(--font-type);
   color: var(--ink2);
 }
 .ex-src {
   margin: 0;
   padding: 8px 12px 10px;
   border-top: 1px solid var(--rule);
-  font-size: 12px;
-  line-height: 1.45;
+  font: 12px/1.45 var(--font-type);
   color: var(--ink2);
 }
 
@@ -407,7 +445,6 @@ html[lang^="zh"] :is(i, em, .italic) {
 .nis.inline {
   padding: 22px 16px;
   border: 1px dashed var(--rule-strong);
-  border-radius: var(--r-l);
   background: var(--panel);
 }
 .nis .ic {
@@ -417,8 +454,11 @@ html[lang^="zh"] :is(i, em, .italic) {
   stroke: var(--ink2);
   stroke-width: 1.5;
 }
+.nis.is-error {
+  border: 2px solid var(--ink);
+}
 .nis.is-error .ic {
-  stroke: var(--res);
+  stroke: var(--ink);
 }
 .nis .ic.spin .needle {
   transform-origin: 24px 24px;
@@ -486,10 +526,12 @@ html[lang^="zh"] :is(i, em, .italic) {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   border: 1.5px solid currentColor;
-  border-radius: 3px;
+  border-radius: var(--r-s);
   padding: 2px 6px;
+  font-family: var(--font-type);
+  color: var(--ink);
 }
-.verdict-stamp.go { color: var(--good); }
-.verdict-stamp.conditional { color: var(--notice-text); }
-.verdict-stamp.no_go { color: var(--res); }
+.verdict-stamp.go { background: var(--hi); }
+.verdict-stamp.conditional { background: var(--hi2); }
+.verdict-stamp.no_go { background: var(--paper); }
 .verdict-stamp.none { color: var(--ink2); border-style: dashed; }

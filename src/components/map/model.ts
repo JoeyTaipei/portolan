@@ -46,6 +46,8 @@ export interface MapModel {
   dossierId: string;
   isSample: boolean;
   name: string;
+  /** Accepted sources behind this map (Exhibit source line). */
+  sourceCount: number;
   nodes: NodeVM[];
   /** Sourced ties only. */
   edges: { a: string; b: string }[];
@@ -140,6 +142,7 @@ export function buildMapModel(d: Dossier, now: Date): MapModel {
     dossierId: d.id,
     isSample: d.isSample,
     name: d.name,
+    sourceCount: accepted.length,
     nodes,
     edges: d.edges
       .filter((e) => e.status === "sourced" && e.sourceIds.some((id) => byId.has(id)))
