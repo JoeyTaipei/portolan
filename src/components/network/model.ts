@@ -2,11 +2,14 @@
 // gets what the cards show. No score is computed here: investor and lawyer matches are the
 // sourced checks research stored (spec §16 Q4, simpler version: "3 of 4 checks", no level word).
 import { refsFor, sourceRef, type SourceRef } from "@/components/score/explain";
+import { buildPartners, PARTNER_NOTE, type PartnerVM } from "@/components/partners/model";
 import type { Dossier, IntroRequest, Lead, LeadType, TrackerItem } from "@/lib/types";
 
-export type NetworkTab = "investors" | "lawyers" | "events";
+export type NetworkTab = "partners" | "investors" | "lawyers" | "events";
 
-export const TABS: { key: NetworkTab; label: string; type: LeadType }[] = [
+/** NET-1 + NET-7: Partners is first and the default; its cards are not leads (type null). */
+export const TABS: { key: NetworkTab; label: string; type: LeadType | null }[] = [
+  { key: "partners", label: "Partners", type: null },
   { key: "investors", label: "Investors", type: "investor" },
   { key: "lawyers", label: "Lawyers", type: "lawyer" },
   { key: "events", label: "Events", type: "event" },
@@ -14,6 +17,7 @@ export const TABS: { key: NetworkTab; label: string; type: LeadType }[] = [
 
 /** NET-2: one note per tab. */
 export const TAB_NOTE: Record<NetworkTab, string> = {
+  partners: PARTNER_NOTE,
   investors: "Portolan shows contact routes only. It does not broker investments or take success fees.",
   lawyers: "Matches are for introductions only. Portolan does not give legal advice.",
   events: "Ranked by how many of your mapped stakeholders are expected to attend.",
@@ -23,7 +27,7 @@ export const TAB_NOTE: Record<NetworkTab, string> = {
 export const PURPOSE_MAX = 300;
 
 export function parseTab(v: string | string[] | undefined): NetworkTab {
-  return v === "lawyers" || v === "events" ? v : "investors";
+  return v === "investors" || v === "lawyers" || v === "events" ? v : "partners";
 }
 
 export interface CheckVM {
@@ -57,6 +61,8 @@ export interface NetworkVM {
   isSample: boolean;
   name: string;
   leads: LeadVM[];
+  /** NET-7: partner candidates, built by code from the map's Industry stakeholders. */
+  partners: PartnerVM[];
   tracker: TrackerItem[];
   intros: IntroRequest[];
 }
@@ -104,10 +110,10 @@ function order(a: LeadVM, b: LeadVM, d: Dossier): number {
   return count(b) - count(a) || (a.eventDate ?? "9999").localeCompare(b.eventDate ?? "9999");
 }
 
-export function buildNetworkModel(d: Dossier): NetworkVM {
+export function buildNetworkModel(d: Dossier, now: Date): NetworkVM {
   const byId = new Map(d.sources.filter((s) => s.accepted).map((s) => [s.id, sourceRef(s)]));
   const leads = d.leads.map((l) => leadVM(l, d, byId)).sort((a, b) => order(a, b, d));
-  return { dossierId: d.id, isSample: d.isSample, name: d.name, leads, tracker: d.tracker, intros: d.intros };
+  return { dossierId: d.id, isSample: d.isSample, name: d.name, leads, partners: buildPartners(d, now), tracker: d.tracker, intros: d.intros };
 }
 
 /** "23 Sep 2027" from "2027-09-23" (calendar date, no time-zone shift). */

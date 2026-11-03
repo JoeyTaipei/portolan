@@ -60,6 +60,18 @@ test("home → sample → map → Add to tracker stays in this browser", async (
   expect(errors).toEqual([]);
 });
 
+/** Every `conclusion` on the page has Chinese and no run of three English words. */
+async function expectAllChinese(page: Page, atLeast: number) {
+  const items = page.getByTestId("conclusion");
+  await expect(items.first()).toBeVisible();
+  expect(await items.count()).toBeGreaterThanOrEqual(atLeast);
+  for (const c of await items.all()) {
+    const text = (await c.textContent()) ?? "";
+    expect(text, text).toMatch(/[\u4e00-\u9fff]/);
+    expect(text, text).not.toMatch(/[A-Za-z]+(?:[\s,'-]+[A-Za-z]+){2,}/);
+  }
+}
+
 function watchErrors(page: Page): string[] {
   const errors: string[] = [];
   page.on("console", (m) => {
@@ -217,6 +229,138 @@ test("report → tracker: debrief changes support, marks the brief out of date, 
   expect(await page.evaluate(() => localStorage.getItem("portolan.sample.playbook"))).toBe("[]");
 
   await expectNoSideScroll(page);
+  expect(sent).toEqual([]);
+  expect(errors).toEqual([]);
+});
+
+test("繁中: the switch changes the app, the A4 still prints on one page and sources stay verbatim", async ({ page, context }) => {
+  const errors = watchErrors(page);
+
+  // A source title in English mode, to compare after switching.
+  await page.goto("/d/sample/sources");
+  const firstTitle = (await page.getByTestId("evidence-row").first().locator("h3").textContent())?.trim();
+  expect(firstTitle).toBeTruthy();
+
+  await page.goto("/d/sample");
+  await page.getByTestId("lang-switch").click();
+  await page.getByRole("menuitemradio", { name: "繁體中文" }).click();
+  const nav = page.getByRole("navigation", { name: "Main" });
+  await expect(nav.getByRole("link", { name: "市場" })).toBeVisible();
+  await expect(nav.getByRole("link", { name: "地圖" })).toBeVisible();
+  await expect(page.locator("html")).toHaveAttribute("lang", "zh-Hant-TW");
+  await expect(page.getByRole("link", { name: "打開利害關係人地圖" })).toBeVisible();
+  // I18N-8: every research-written sentence on the sample reads in Chinese, with no run of
+  // English words left (source chips and abbreviations like NCSIST are fine).
+  await expectAllChinese(page, 8);
+  await expect(page.getByRole("heading", { level: 1, name: "台灣反無人機市場進入" })).toBeVisible();
+  expect((await context.cookies()).find((c) => c.name === "portolan_lang")?.value).toBe("zh-TW");
+  await expectNoSideScroll(page);
+
+  // Remembered on the next page load; the source title is unchanged.
+  await page.goto("/d/sample/sources");
+  await expect(page.getByRole("heading", { name: "來源", level: 1 })).toBeVisible();
+  await expect(page.getByTestId("evidence-row").first().locator("h3")).toHaveText(firstTitle!);
+
+  // The Chinese A4: labels in Chinese, Sample data stamp, one printed page.
+  await page.goto("/d/sample/brief");
+  await expect(page.getByRole("heading", { level: 1, name: "台灣反無人機市場進入" })).toBeVisible();
+  await expectAllChinese(page, 20);
+
+  await page.goto("/d/sample/report");
+  const sheet = page.getByTestId("a4-sheet");
+  await expectAllChinese(page, 12);
+  await expect(sheet).toBeVisible();
+  await expect(sheet).toContainText("市場進入簡報");
+  await expect(sheet).toContainText("範例資料");
+  await expect(sheet).toContainText(`/s/${SAMPLE_SHARE_ID}/sources`);
+  expect(await sheet.evaluate((el) => el.scrollHeight - el.clientHeight)).toBeLessThanOrEqual(0);
+  await expectNoSideScroll(page);
+  const pdf = await page.pdf({ preferCSSPageSize: true, printBackground: true });
+  expect((pdf.toString("latin1").match(/\/Type\s*\/Page(?!s)/g) ?? []).length).toBe(1);
+
+  // The share link follows the viewer's language, and the URL is the same.
+  await page.goto(`/s/${SAMPLE_SHARE_ID}`);
+  await expect(page.getByTestId("a4-sheet")).toContainText("市場進入簡報");
+
+  // And back to English.
+  await page.getByTestId("lang-switch").click();
+  await page.getByRole("menuitemradio", { name: "English" }).click();
+  await expect(page.getByTestId("a4-sheet")).toContainText("Market entry brief");
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+
+  expect(errors).toEqual([]);
+});
+
+test("meeting memo → influence on the map and Out of date on the brief; Undo restores it (S18)", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("console", (m) => {
+    if (m.type() === "error") errors.push(m.text());
+  });
+  page.on("pageerror", (e) => errors.push(e.message));
+  const sent: string[] = [];
+  page.on("request", (r) => {
+    if (r.method() !== "GET") sent.push(`${r.method()} ${r.url()}`);
+  });
+
+  // The first tracked item is the Ministry of National Defense (id "mnd").
+  await page.goto("/d/sample/map?s=mnd");
+  const details = page.getByTestId("details");
+  const influenceBefore = (await details.getByRole("button", { name: /^Influence / }).getAttribute("aria-label")) ?? "";
+
+  await page.goto("/d/sample/tracker");
+  const row = page.getByTestId("tracker-row").first();
+  await expect(row).toContainText("Ministry of National Defense");
+  await row.getByRole("button", { name: "Set meeting date" }).click();
+  const yesterday = await page.evaluate(() => {
+    const d = new Date();
+    d.setDate(d.getDate() - 1);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  });
+  await row.getByLabel("Meeting date").fill(yesterday);
+  await row.getByRole("button", { name: "Save", exact: true }).click();
+
+  const fill = async () => {
+    const due = page.getByTestId("debrief-due");
+    await due.getByRole("button", { name: "Positive" }).click();
+    await due.getByTestId("memo").locator("summary").click();
+    const memo = due.getByTestId("memo-detail");
+    await memo.getByRole("group", { name: /approve or decide/ }).getByRole("button", { name: "Input only" }).click();
+    await memo.getByRole("group", { name: /control the money/ }).getByRole("button", { name: "Indirect" }).click();
+    await memo.getByRole("button", { name: "No PRC parts" }).first().click();
+    await memo.getByLabel(/Concerns, in their words/).fill("PRIVATE-CONCERN-TEXT");
+    await due.getByRole("button", { name: "Save debrief" }).click();
+  };
+
+  // TRK-10: influence old → new on the result card; Undo puts it back.
+  await fill();
+  const result = page.getByTestId("debrief-result");
+  await expect(result.getByTestId("influence-change")).toContainText("authority, budget");
+  const change = (await result.getByTestId("influence-change").locator("b").textContent()) ?? "";
+  const [from, to] = change.split("→").map((s) => s.trim());
+  expect(to).not.toBe(from);
+  await result.getByRole("button", { name: "Undo" }).click();
+  await expect(page.getByTestId("debrief-result")).toHaveCount(0);
+  expect(await page.evaluate(() => localStorage.getItem("portolan.sample.facts"))).not.toContain("debriefId\":\"db-");
+
+  // Save it again and follow it to the map and the brief (TRK-11).
+  await fill();
+  await expect(page.getByTestId("debrief-result")).toBeVisible();
+
+  await page.goto("/d/sample/map?s=mnd");
+  const infl = page.getByTestId("details").getByRole("button", { name: /^Influence / });
+  await expect(infl).not.toHaveAttribute("aria-label", influenceBefore);
+  await infl.click();
+  await expect(page.getByText(/From your meeting, \d+ \w+/).first()).toBeVisible();
+  await expectNoSideScroll(page);
+
+  await page.goto("/d/sample/brief");
+  await expect(page.getByTestId("out-of-date-reasons")).toContainText("A debrief was saved after this brief was written.");
+  await expect(page.getByTestId("out-of-date-reasons")).not.toContainText("Stakeholders changed");
+
+  // The memo never reaches the share link (TRK-12).
+  await page.goto(`/s/${SAMPLE_SHARE_ID}`);
+  expect(await page.content()).not.toContain("PRIVATE-CONCERN-TEXT");
+
   expect(sent).toEqual([]);
   expect(errors).toEqual([]);
 });

@@ -1,4 +1,5 @@
 import "server-only";
+import { SPEC_IN_REASON, suggestsSpecIn } from "@/lib/checks/pre-display";
 import { claimProblems, type CheckSource } from "@/lib/checks/source-check";
 import { MODELS } from "@/lib/limits/prices";
 import type { Credibility, FactField, FactStatus, Rating03, Reliability, StatementRating } from "@/lib/types";
@@ -169,6 +170,8 @@ function check(claims: ReturnType<typeof collect>, sources: Map<string, RateSour
     const p = c.fact
       ? claimProblems(c.where, c.fact.sourceIds, c.fact.quote, sources, { runId })
       : claimProblems(c.where, [c.statement!.sourceId], c.statement!.quote, sources, { runId });
+    // BRIEF-10: a next step that suggests spec-in fails and ends up Unverified.
+    if (c.fact?.field === "action" && suggestsSpecIn(c.fact.value)) p.push(`${c.where}: ${SPEC_IN_REASON}`);
     if (p.length) failed.push({ claim: c, problems: p });
     else passed.push(c);
   }

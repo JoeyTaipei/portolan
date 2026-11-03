@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { after } from "next/server";
 import { z } from "zod";
 import { BRIEF_TYPICAL_USD, writeBrief } from "@/lib/claude/brief";
+import { translateAfterBrief, ZH_TYPICAL_USD } from "@/lib/claude/translate";
 import { insertBrief } from "@/lib/db/briefs";
 import { getDb } from "@/lib/db/client";
 import { getDossierState, insertDossier, insertOutbox, keepPending, mergePending, usageCount } from "@/lib/db/dossiers";
@@ -200,7 +201,7 @@ export async function estimateRebrief(dossierId: string): Promise<ActionResult<R
     if (remainingToday === 0) return { ok: false, error: "Today's AI limit for this dossier is reached. Try again after 00:00 Taipei time." };
     return {
       ok: true,
-      data: { usd: BRIEF_TYPICAL_USD, text: `Rewriting the brief costs about US$${BRIEF_TYPICAL_USD.toFixed(2)}. Continue?`, remainingToday },
+      data: { usd: BRIEF_TYPICAL_USD + ZH_TYPICAL_USD, text: `Rewriting the brief costs about US$${(BRIEF_TYPICAL_USD + ZH_TYPICAL_USD).toFixed(2)}. Continue?`, remainingToday },
     };
   } catch (err) {
     console.error(`[estimateRebrief] ${(err as Error).message}`);
@@ -229,7 +230,11 @@ export async function rebrief(dossierId: string): Promise<ActionResult<{ version
           ledger: { store: ledgerStore, runId: null, dossierId, purpose: "rebrief" },
         });
         if (!r.ok) console.error(`[rebrief] ${r.reason}`);
-        else await insertBrief(dossierId, r.brief.draft, r.brief.removed);
+        else {
+          const v = await insertBrief(dossierId, r.brief.draft, r.brief.removed);
+          // I18N-9: re-brief translates again; a failure only logs.
+          await translateAfterBrief({ d, version: v, draft: r.brief.draft, ledger: { store: ledgerStore, runId: null, dossierId, purpose: "brief_zh" } });
+        }
       } catch (err) {
         console.error(`[rebrief] ${(err as Error).message}`);
       }

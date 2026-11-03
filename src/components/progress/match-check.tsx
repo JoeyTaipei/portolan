@@ -1,5 +1,6 @@
 "use client";
 
+import { useT } from "@/lib/i18n/client";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { resolveMatch } from "@/app/actions/research";
@@ -22,6 +23,7 @@ export function MatchCheck({ dossierId, item }: { dossierId: string; item: Pendi
   const [pending, start] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState<string | null>(null);
+  const t = useT();
 
   const decide = (same: boolean) =>
     start(async () => {
@@ -32,10 +34,10 @@ export function MatchCheck({ dossierId, item }: { dossierId: string; item: Pendi
         same ? { same: true, existingStakeholderId: item.existingId } : { same: false },
       );
       if (!r.ok) {
-        setError(r.error);
+        setError(t.x(r.error));
         return;
       }
-      setDone(same ? `Kept as ${item.existingName}.` : `Added ${item.pendingName} as a new stakeholder.`);
+      setDone(same ? t("Kept as {name}.", { name: item.existingName }) : t("Added {name} as a new stakeholder.", { name: item.pendingName }));
       router.refresh();
     });
 
@@ -43,7 +45,7 @@ export function MatchCheck({ dossierId, item }: { dossierId: string; item: Pendi
     <li className="flex flex-col gap-2 border-t border-rule py-2.5 text-[13.5px] last:border-b">
       <p className="m-0">
         <span className="font-semibold">{item.pendingName}</span>
-        {item.pendingNameZh && <span className="text-ink2"> ({item.pendingNameZh})</span>} looks like{" "}
+        {item.pendingNameZh && <span className="text-ink2"> ({item.pendingNameZh})</span>} {t("looks like")}{" "}
         <span className="font-semibold">{item.existingName}</span>.
       </p>
       {done ? (
@@ -53,10 +55,10 @@ export function MatchCheck({ dossierId, item }: { dossierId: string; item: Pendi
       ) : (
         <div className="flex flex-wrap gap-2">
           <button type="button" className="btn btn-ghost btn-s" disabled={pending} onClick={() => decide(true)}>
-            Same as {item.existingName}
+            {t("Same as {name}", { name: item.existingName })}
           </button>
           <button type="button" className="btn btn-ghost btn-s" disabled={pending} onClick={() => decide(false)}>
-            Different
+            {t("Different")}
           </button>
         </div>
       )}

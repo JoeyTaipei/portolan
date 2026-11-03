@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { preDisplay } from "./pre-display";
+import { sampleDossier } from "@/lib/sample/reader";
+import { preDisplay, SPEC_IN_REASON, suggestsSpecIn } from "./pre-display";
 import { claimProblems, indexSources, type CheckSource } from "./source-check";
 
 const src = (id: string, over: Partial<CheckSource> = {}): CheckSource => ({
@@ -71,5 +72,49 @@ describe("pre-display check (spec §11.1)", () => {
       "Names an individual in China (Zhang Wei)",
       "number 50,000 not in cited excerpts",
     ]);
+  });
+});
+
+// BRIEF-10: Claude never suggests spec-in or 綁標 (Government Procurement Act Art. 26/88).
+describe("no spec-in (spec BRIEF-10)", () => {
+  const ctx = { sources, offMapNames: [], chinaPeople: [], runId: "run1" };
+
+  it("removes sentences that suggest spec-in, in English and Chinese", () => {
+    const bad = [
+      "Spec-in the radar range before the tender opens.",
+      "Work to get specced in with the National Police Agency.",
+      "Help the bureau write the technical specification around your detection range.",
+      "Offer to draft the tender requirements for the agency.",
+      "Tailor the tender so your system is the only fit.",
+      "Lock out rivals by setting a 5 km threshold.",
+      "Get your brand named in the tender documents.",
+      "Push for specifications that only your product meets.",
+      "建議與警政署合作綁標。",
+      "協助機關撰寫規格，加入貴公司的獨家功能。",
+    ];
+    const { kept, removed } = preDisplay(bad.map((text) => ({ text, sourceIds: ["s1"] })), ctx);
+    expect(kept).toEqual([]);
+    expect(removed.map((r) => r.reason)).toEqual(bad.map(() => SPEC_IN_REASON));
+  });
+
+  it("keeps the lawful alternative and facts about the law", () => {
+    const ok = [
+      "Offer performance data, test results and the international standards the agency can use to write functional requirements.",
+      "Article 26 bars technical specifications that restrict competition.",
+      "The National Police Agency limits the tender to domestic firms.",
+      "Read the spec in the tender notice before the briefing.",
+    ];
+    expect(ok.filter(suggestsSpecIn)).toEqual([]);
+  });
+
+  it("matches nothing in the sample brief, next steps or facts", () => {
+    const b = sampleDossier.briefs.at(-1)!;
+    const texts = [
+      ...b.rationale, ...b.judgments, ...b.summary, ...b.risks, ...(b.requirements ?? []),
+      ...b.path.map((p) => p.why), ...b.reduceOpposition.map((r) => r.step),
+      ...Object.values(b.plan).flat(),
+    ].map((s) => s.text);
+    const facts = sampleDossier.facts.map((f) => (typeof f.value === "string" ? f.value : ""));
+    expect([...texts, ...facts].filter(suggestsSpecIn)).toEqual([]);
   });
 });

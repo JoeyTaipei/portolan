@@ -1,3 +1,4 @@
+import { Both } from "@/lib/i18n/client";
 import type { IcdTerm } from "@/lib/types";
 
 // ICD 203 probability scale: seven segments, one lit, always with the term and its range.
@@ -26,9 +27,15 @@ export function IcdScale({ term }: { term: IcdTerm }) {
         ))}
       </div>
       <div className="icd-k" aria-hidden="true">
-        <span>remote</span>
-        <span>even</span>
-        <span>certain</span>
+        <span>
+          <Both k="remote" />
+        </span>
+        <span>
+          <Both k="even" />
+        </span>
+        <span>
+          <Both k="certain" />
+        </span>
       </div>
     </div>
   );

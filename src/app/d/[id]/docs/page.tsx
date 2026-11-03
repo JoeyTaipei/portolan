@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { DocsSkeleton } from "@/components/docs/docs-skeleton";
 import { DocsView } from "@/components/docs/docs-view";
 import { buildDocsModel } from "@/components/docs/model";
+import { WaitlistLink } from "@/components/waitlist/waitlist-link";
 import { loadDossier } from "@/lib/db/load-dossier";
 
 export const metadata = { title: "Documents · Portolan" };
@@ -25,5 +26,11 @@ async function DocsContent({ params, searchParams }: Pick<PageProps<"/d/[id]/doc
   await connection();
   const sp = await searchParams;
   const eta = process.env.EXPERT_REVIEW_ETA_TEXT || "within 4 weeks";
-  return <DocsView vm={buildDocsModel(d, eta, new Date())} preselect={typeof sp.item === "string" ? sp.item : null} />;
+  return (
+    <DocsView
+      vm={buildDocsModel(d, eta, new Date())}
+      preselect={typeof sp.item === "string" ? sp.item : null}
+      footer={<WaitlistLink from="docs" className="mt-auto" />}
+    />
+  );
 }

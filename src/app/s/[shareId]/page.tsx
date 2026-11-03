@@ -3,6 +3,7 @@ import { connection } from "next/server";
 import { Suspense } from "react";
 import { ReportScreen, ReportSkeleton } from "@/components/report/report-page";
 import { SharedFrame } from "@/components/report/shared-frame";
+import { WaitlistLink } from "@/components/waitlist/waitlist-link";
 import { loadByShareId } from "@/lib/db/load-dossier";
 
 // Titles never contain an id (spec §9).
@@ -28,6 +29,7 @@ async function Content({ params }: Pick<PageProps<"/s/[shareId]">, "params">) {
   return (
     <SharedFrame isSample={d.isSample}>
       <ReportScreen d={d} shared />
+      <WaitlistLink from="share" className="mx-4 mb-6 lg:mx-6" />
     </SharedFrame>
   );
 }

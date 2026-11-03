@@ -1,5 +1,6 @@
 "use client";
 
+import { useT } from "@/lib/i18n/client";
 import { quadrant } from "@/lib/scoring/ranking";
 import type { NodeVM } from "./model";
 import { MarkIcon, NodeShape } from "./node-mark";
@@ -8,19 +9,23 @@ import { placeLabels } from "./matrix-labels";
 import { useSize } from "./use-size";
 import { s } from "./marks";
 
-// MAP-6: x = support −100…+100, y = influence; three depth bands (deepest on top); quadrants
+// MAP-6: x = support −100…+100, y = influence; Champions quadrant lightly highlighted; quadrants
 // from docs/scoring.md §5. Stakeholders with Unknown support or no influence sit beside it.
 
 export function PowerMatrix({
   nodes,
+  route = [],
   selected,
   onSelect,
 }: {
   nodes: NodeVM[];
+  /** Contact-first ids in order: yellow halo plus number. */
+  route?: string[];
   selected: string | null;
   onSelect: (id: string | null) => void;
 }) {
   const [ref, { w: W, h: H }] = useSize<HTMLDivElement>();
+  const t = useT();
   const placed = nodes.filter((n) => quadrant({ id: n.id, influence: n.influence, support: n.support }) !== null);
   const beside = nodes.filter((n) => !placed.includes(n));
   const px = 34;
@@ -28,7 +33,6 @@ export function PowerMatrix({
   const bt = H - py - 14;
   const x0 = W / 2;
   const y0 = py + (bt - py) / 2;
-  const h3 = (bt - py) / 3;
   const pos = (n: NodeVM) => {
     const sup = n.support.kind === "known" ? n.support.score : 0;
     return {
@@ -53,26 +57,25 @@ export function PowerMatrix({
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-2">
       <div ref={ref} className={s.stage} style={{ cursor: "default" }}>
-        <svg className={s.svg} viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Power matrix: support from left to right, influence from bottom to top.">
+        <svg className={s.svg} viewBox={`0 0 ${W} ${H}`} role="img" aria-label={t("Power matrix: support from left to right, influence from bottom to top.")}>
           <g aria-hidden="true">
-            <rect className={s.qb3} x={px} y={py} width={W - 2 * px} height={h3} />
-            <rect className={s.qb2} x={px} y={py + h3} width={W - 2 * px} height={h3} />
-            <rect className={s.qb1} x={px} y={py + 2 * h3} width={W - 2 * px} height={h3} />
+            <rect className={s.qHi} x={x0} y={py} width={W - px - x0} height={y0 - py} />
             <line className={s.qLine} x1={x0} y1={py} x2={x0} y2={bt} />
             <line className={s.qLine} x1={px} y1={y0} x2={W - px} y2={y0} />
-            <text className={s.qLabRes} x={px + 6} y={py + 15}>Blockers</text>
-            <text className={s.qLabSup} x={W - px - 6} y={py + 15} textAnchor="end">Champions</text>
-            <text className={s.qLab} x={px + 6} y={bt - 7}>Monitor</text>
-            <text className={s.qLab} x={W - px - 6} y={bt - 7} textAnchor="end">Allies to grow</text>
-            <text className={s.qAx} x={px} y={H - 8}>Support −100</text>
+            <text className={s.qLab} x={px + 6} y={py + 15}>{t("Blockers")}</text>
+            <text className={s.qLab} x={W - px - 6} y={py + 15} textAnchor="end">{t("Champions")}</text>
+            <text className={s.qLab} x={px + 6} y={bt - 7}>{t("Monitor")}</text>
+            <text className={s.qLab} x={W - px - 6} y={bt - 7} textAnchor="end">{t("Allies to grow")}</text>
+            <text className={s.qAx} x={px} y={H - 8}>{t("Support −100")}</text>
             <text className={s.qAx} x={x0} y={H - 8} textAnchor="middle">0</text>
             <text className={s.qAx} x={W - px} y={H - 8} textAnchor="end">+100</text>
-            <text className={s.qAx} transform={`translate(14,${y0}) rotate(-90)`} textAnchor="middle">Influence</text>
+            <text className={s.qAx} transform={`translate(14,${y0}) rotate(-90)`} textAnchor="middle">{t("Influence")}</text>
           </g>
           {placed.map((n) => {
             const p = pos(n);
             const r = nodeRadius(n.influence?.score ?? null);
             const isSel = selected === n.id;
+            const rank = route.indexOf(n.id);
             const lab = labels.get(n.id)!;
             return (
               <g
@@ -86,7 +89,13 @@ export function PowerMatrix({
                 <title>{n.short}</title>
                 {lab.dy !== 0 && <line className={s.edge} x1={0} y1={0} x2={lab.dx} y2={lab.dy} pointerEvents="none" />}
                 <g className={s.shape}>
+                  {(rank >= 0 || isSel) && <circle className={s.hl} r={r + 7} />}
                   <NodeShape mark={n.mark} r={r} />
+                  {rank >= 0 && (
+                    <text className={s.recN} x={-r - 6} y={-r - 3} textAnchor="end">
+                      {rank + 1}
+                    </text>
+                  )}
                   <circle r={Math.max(r + 4, 10)} fill="transparent" />
                 </g>
                 <text className={s.label} dy="0.35em" x={lab.dx} y={lab.dy} textAnchor={lab.anchor}>

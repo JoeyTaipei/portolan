@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, useTransition } from "react";
 import { estimateRebrief, rebrief, type RebriefEstimate } from "@/app/actions/research";
 import type { BriefStatus } from "@/lib/types";
-import { fmtDay } from "./model";
+import { useT } from "@/lib/i18n/client";
 
 // BRIEF-1: version list, Out of date with its reasons, and RE-BRIEF (cost shown first, then
 // confirm). The sample never rewrites: no request, no paid API.
@@ -24,7 +24,8 @@ export function Versions({
   const [pending, start] = useTransition();
   const [estimate, setEstimate] = useState<RebriefEstimate | null>(null);
   const [msg, setMsg] = useState<string | null>(null);
-  const sampleReason = "The sample brief can't be rewritten. Your own markets can.";
+  const t = useT();
+  const sampleReason = t("The sample brief can't be rewritten. Your own markets can.");
 
   const ask = () => {
     if (isSample) {
@@ -35,14 +36,14 @@ export function Versions({
     start(async () => {
       const r = await estimateRebrief(dossierId);
       if (r.ok) setEstimate(r.data);
-      else setMsg(r.error);
+      else setMsg(t.x(r.error));
     });
   };
   const confirm = () => {
     start(async () => {
       const r = await rebrief(dossierId);
       setEstimate(null);
-      setMsg(r.ok ? `Writing version ${r.data.version}…` : r.error);
+      setMsg(r.ok ? t("Writing version {n}…", { n: r.data.version }) : t.x(r.error));
     });
   };
 
@@ -50,33 +51,33 @@ export function Versions({
     <section aria-labelledby="ver-h" className="flex flex-col gap-2.5">
       <div className="flex items-baseline justify-between gap-2">
         <h2 id="ver-h" className="m-0 text-[15px] font-bold">
-          Version <span className="num">{version}</span>
+          {t("Version")} <span className="num">{version}</span>
         </h2>
         {status.outOfDate ? (
           <span className="rounded-[var(--r-s)] border border-[var(--notice)] px-1.5 text-[12px] font-bold text-[var(--notice-text)]">
-            Out of date
+            {t("Out of date")}
           </span>
         ) : (
-          <span className="text-[12.5px] text-ink2">Up to date</span>
+          <span className="text-[12.5px] text-ink2">{t("Up to date")}</span>
         )}
       </div>
       {status.outOfDate && (
         <ul className="m-0 flex list-none flex-col gap-1 p-0 text-[13px] leading-snug text-ink2" data-testid="out-of-date-reasons">
           {status.reasons.map((r) => (
-            <li key={r}>{r}</li>
+            <li key={r}>{t.x(r)}</li>
           ))}
         </ul>
       )}
-      <ol className="m-0 flex list-none flex-col p-0 text-[13.5px]" aria-label="Versions">
+      <ol className="m-0 flex list-none flex-col p-0 text-[13.5px]" aria-label={t("Versions")}>
         {versions.map((v) => (
           <li key={v.version} className="border-t border-rule py-1.5 last:border-b">
             {v.current ? (
               <span className="font-semibold" aria-current="page">
-                v{v.version} · {fmtDay(v.createdAt)} (showing)
+                {t("v{n} · {date} (showing)", { n: v.version, date: t.date(v.createdAt, { utc: true }) })}
               </span>
             ) : (
               <Link href={`/d/${dossierId}/brief?v=${v.version}`}>
-                v{v.version} · {fmtDay(v.createdAt)}
+                {t("v{n} · {date}", { n: v.version, date: t.date(v.createdAt, { utc: true }) })}
               </Link>
             )}
           </li>
@@ -84,14 +85,14 @@ export function Versions({
       </ol>
       {estimate ? (
         <div className="flex flex-col gap-2 rounded-[var(--r-m)] border border-rule-strong bg-panel p-3 text-[13.5px]">
-          <p className="m-0">{estimate.text}</p>
-          <p className="m-0 text-ink2">{estimate.remainingToday} rewrites left today.</p>
+          <p className="m-0">{t.x(estimate.text)}</p>
+          <p className="m-0 text-ink2">{t("{n} rewrites left today.", { n: estimate.remainingToday })}</p>
           <div className="flex gap-2">
             <button type="button" className="btn btn-main btn-s" disabled={pending} onClick={confirm}>
-              {pending ? "Starting…" : "Rewrite the brief"}
+              {pending ? t("Starting…") : t("Rewrite the brief")}
             </button>
             <button type="button" className="btn btn-ghost btn-s" onClick={() => setEstimate(null)}>
-              Cancel
+              {t("Cancel")}
             </button>
           </div>
         </div>
@@ -104,7 +105,7 @@ export function Versions({
           title={isSample ? sampleReason : undefined}
           onClick={ask}
         >
-          {pending ? "Checking the cost…" : "Re-brief"}
+          {pending ? t("Checking the cost…") : t("Re-brief")}
         </button>
       )}
       {msg && (

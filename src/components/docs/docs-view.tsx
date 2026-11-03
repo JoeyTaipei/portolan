@@ -1,7 +1,8 @@
 "use client";
 
+import { useT } from "@/lib/i18n/client";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { sampleBriefingNote } from "@/app/actions/drafts";
 import { requestDocument, retryDraft } from "@/app/d/[id]/docs/actions";
 import { useFillHeight } from "@/components/map/fill-height";
@@ -21,10 +22,11 @@ const NO_STORAGE = "This browser won't save changes. Allow site storage and try 
 /** Real dossiers: while a draft is being written, look again every few seconds. */
 const POLL_MS = 5000;
 
-export function DocsView({ vm, preselect }: { vm: DocsVM; preselect: string | null }) {
+export function DocsView({ vm, preselect, footer }: { vm: DocsVM; preselect: string | null; footer?: ReactNode }) {
   const [overlay, setOverlay] = useState<SampleOverlay | null>(null);
   const ref = useFillHeight<HTMLDivElement>();
   const router = useRouter();
+  const t = useT();
   const { dossierId, isSample } = vm;
 
   useEffect(() => {
@@ -44,19 +46,19 @@ export function DocsView({ vm, preselect }: { vm: DocsVM; preselect: string | nu
 
   useEffect(() => {
     if (isSample || !drafting) return;
-    const t = setInterval(() => router.refresh(), POLL_MS);
-    return () => clearInterval(t);
+    const id = setInterval(() => router.refresh(), POLL_MS);
+    return () => clearInterval(id);
   }, [isSample, drafting, router]);
 
   async function request(input: RequestInput): Promise<ActionResult<{ received: string }>> {
     const isNote = input.type === "briefing_note";
     const received = isNote
       ? input.expertReview
-        ? `AI draft in about 10 minutes, then expert review ${vm.etaText}.`
-        : "AI draft in about 10 minutes. Not reviewed — check names and dates before sharing."
-      : "The Portolan team prepares it and uploads the PDF here.";
+        ? t("AI draft in about 10 minutes, then expert review {eta|t}.", { eta: t.k(vm.etaText) })
+        : t("AI draft in about 10 minutes. Not reviewed — check names and dates before sharing.")
+      : t("The Portolan team prepares it and uploads the PDF here.");
     if (!isSample) {
-      if (isNote && !input.trackerItemId) return { ok: false, error: "Pick the meeting first." };
+      if (isNote && !input.trackerItemId) return { ok: false, error: t("Pick the meeting first.") };
       const r = isNote
         ? await requestDocument(dossierId, { type: "briefing_note", trackerItemId: input.trackerItemId as string, expertReview: input.expertReview })
         : await requestDocument(dossierId, { type: input.type as "risk_deck" | "watch_list" });
@@ -97,7 +99,7 @@ export function DocsView({ vm, preselect }: { vm: DocsVM; preselect: string | nu
   }
 
   async function retry(id: string): Promise<ActionResult<unknown>> {
-    if (isSample) return { ok: false, error: "Sample drafts don't fail. Reset the sample to start again." };
+    if (isSample) return { ok: false, error: t("Sample drafts don't fail. Reset the sample to start again.") };
     return retryDraft(dossierId, id);
   }
 
@@ -109,19 +111,19 @@ export function DocsView({ vm, preselect }: { vm: DocsVM; preselect: string | nu
       <div className="flex flex-col gap-4 lg:min-h-0 lg:overflow-y-auto lg:border-r lg:border-rule-strong lg:px-5 lg:py-[22px]">
         <header>
           <div className="flex items-start justify-between gap-2">
-            <p className="m-0 text-[13px] text-ink2">Documents</p>
-            <span className="rounded-[var(--r-s)] bg-[var(--btn-bg)] px-1.5 py-px text-[12px] font-bold text-[var(--btn-ink)]" title="Plan labels are shown only; there is no payment yet">
-              Connect plan
+            <p className="m-0 text-[13px] text-ink2">{t("Documents")}</p>
+            <span className="rounded-[var(--r-s)] bg-[var(--btn-bg)] px-1.5 py-px text-[12px] font-bold text-[var(--btn-ink)]" title={t("Plan labels are shown only; there is no payment yet")}>
+              {t("Connect plan")}
             </span>
           </div>
-          <h1 className="mt-0.5 mb-0 text-[28px] font-extrabold leading-[1.02] min-[1600px]:text-[31px]">Advisory documents</h1>
-          <p className="m-0 mt-1 text-[14px] text-ink2">AI-drafted, expert-reviewed · {vm.name}</p>
+          <h1 className="mt-0.5 mb-0 text-[28px] font-extrabold leading-[1.02] min-[1600px]:text-[31px]">{t("Advisory documents")}</h1>
+          <p className="m-0 mt-1 text-[14px] text-ink2">{t("AI-drafted, expert-reviewed · {name}", { name: vm.name })}</p>
         </header>
         <RequestForm dossierId={dossierId} meetings={meetings} preselect={preselect} etaText={vm.etaText} onRequest={request} />
         <ul className="m-0 hidden list-none flex-col gap-1.5 p-0 text-[13px] text-ink2 lg:flex">
-          {(["briefing_note", "risk_deck", "watch_list"] as const).map((t) => (
-            <li key={t}>
-              <b className="text-ink">{TYPE_INFO[t].label}</b> · {TYPE_INFO[t].pages} · {TYPE_INFO[t].desc.toLowerCase()}
+          {(["briefing_note", "risk_deck", "watch_list"] as const).map((k) => (
+            <li key={k}>
+              <b className="text-ink">{t.k(TYPE_INFO[k].label)}</b> · {t.k(TYPE_INFO[k].pages)} · {t.k(TYPE_INFO[k].desc.toLowerCase())}
             </li>
           ))}
         </ul>
@@ -129,7 +131,7 @@ export function DocsView({ vm, preselect }: { vm: DocsVM; preselect: string | nu
 
       <section aria-labelledby="docs-h" className="flex flex-col gap-3 lg:min-h-0 lg:overflow-y-auto lg:px-6 lg:py-[22px] min-[1600px]:px-8">
         <h2 id="docs-h" className="m-0 text-[13px] font-bold text-ink2">
-          Your documents
+          {t("Your documents")}
         </h2>
         <div className="grid grid-cols-1 gap-3 min-[1360px]:grid-cols-2" data-testid="doc-grid">
           {docs.map((d) => (
@@ -137,11 +139,12 @@ export function DocsView({ vm, preselect }: { vm: DocsVM; preselect: string | nu
           ))}
           <ReportCard dossierId={dossierId} name={vm.name} hasBrief={vm.hasBrief} />
         </div>
-        {docs.length === 0 && <p className="m-0 text-[13.5px] text-ink2">Request a briefing note before your next meeting; it appears here.</p>}
+        {docs.length === 0 && <p className="m-0 text-[13.5px] text-ink2">{t("Request a briefing note before your next meeting; it appears here.")}</p>}
       </section>
 
       <aside className="flex flex-col gap-3 lg:min-h-0 lg:overflow-y-auto lg:border-l lg:border-rule-strong lg:bg-panel2 lg:px-5 lg:py-[18px] min-[1600px]:px-6">
         <WatchList dossierId={dossierId} items={vm.watch} nextUpdate={vm.nextUpdate} />
+        {footer}
       </aside>
     </div>
   );

@@ -1,12 +1,16 @@
 // One example per section of docs/scoring.md (spec §17).
 import { describe, expect, it } from "vitest";
-import type { Banded, Brief, Edge, Fact, MarketCheck, Rating03, Source, SupportResult, SupportStatement, TimedEvent } from "@/lib/types";
+import type { Banded, Brief, BriefMetrics, Edge, Fact, MarketCheck, MoneyStatus, ProcurementRoute, Rating03, Source, SupportResult, SupportStatement, TimedEvent } from "@/lib/types";
 import { briefStatus } from "./brief-status";
 import { centralityRating, influenceFor, influenceScore } from "./influence";
 import { dataConfidence, entryReadiness, oppositionIndex, stakeholderConfidence, windowToAct, type Scored } from "./metrics";
 import { contactFirst, quadrant, resistant } from "./ranking";
 import { recencyFactor, sourceWeight } from "./source-weight";
 import { debriefRating, supportFor } from "./support";
+import { entryVerdict } from "./verdict";
+import { firstBuyer } from "./first-buyer";
+import { briefMetrics } from "./index";
+import { sampleDossier } from "@/fixtures/sample-dossier";
 
 const NOW = new Date("2026-11-01T00:00:00Z");
 const T0 = "2026-10-01T00:00:00Z";
@@ -271,7 +275,7 @@ describe("§7 brief Out of date", () => {
     id: "b1", dossierId: "d", version: 1,
     metrics: { entryReadiness: null, opposition: null, window: { found: false, text: "No sourced deadline found" }, dataConfidence: { level: "Low", sourceCount: 0, qualifying: 0, of: 0 } },
     rationale: [{ text: "t", sourceIds: ["S1"] }], judgments: [], path: [], reduceOpposition: [],
-    plan: { prep: [], contact: [], event: [], followUp: [] }, summary: [], risks: [], meet: [], needs: [], changesNote: [],
+    plan: { prep: [], contact: [], event: [], followUp: [] }, summary: [], risks: [], requirements: [], routes: [], meet: [], needs: [], changesNote: [],
     inputsAt: "2026-10-20T00:00:00Z", createdAt: "2026-10-20T00:00:00Z",
   };
   const base = { debriefs: [], stakeholders: [], facts: [], statements: [], sources: [source("S1", { verifiedAt: "2026-10-15" })] };
@@ -284,5 +288,68 @@ describe("§7 brief Out of date", () => {
     expect(briefStatus(brief, { ...base, facts: [fact("s", "authority", 2, { createdAt: "2026-10-25T00:00:00Z" })] }, NOW).outOfDate).toBe(true);
     const old = briefStatus(brief, { ...base, sources: [source("S1", { verifiedAt: "2026-07-01" })] }, NOW);
     expect(old.reasons).toEqual(["1 cited source was verified more than 90 days ago."]);
+  });
+});
+
+// docs/scoring.md §8: one case per verdict, and the sample's own result.
+describe("entry verdict", () => {
+  const check = (rating: 0 | 1 | 2 | 3) => ({ rating, quote: "q", sourceIds: ["s1"], status: "sourced" as const });
+  const metrics = (money: 0 | 1 | 2 | 3, licence: 0 | 1 | 2 | 3, level: "High" | "Medium" | "Low", opp: "High" | "Medium" | "Low", conf: "High" | "Medium" | "Low" = "Medium"): BriefMetrics => ({
+    entryReadiness: { score: 0, level, checks: { money, licence, support: 3 }, basedOn: { rated: 3, of: 3 } },
+    opposition: { value: 0.1, low: 0.1, high: 0.1, level: opp, basedOn: { known: 1, of: 1 } },
+    window: { found: false, text: "No sourced deadline found" },
+    dataConfidence: { level: conf, sourceCount: 1, qualifying: 1, of: 1 },
+  });
+  const checks = { money: check(3), licence: check(3) };
+
+  it("has no verdict when readiness or opposition can't be computed", () => {
+    expect(entryVerdict({ ...metrics(3, 3, "High", "Low"), opposition: null }, checks, 3).kind).toBe("none");
+  });
+  it("is No-go when foreign firms are barred, or opposition is High", () => {
+    expect(entryVerdict(metrics(3, 0, "Medium", "Low"), checks, 3).kind).toBe("no_go");
+    const v = entryVerdict(metrics(3, 3, "High", "High"), checks, 3);
+    expect(v.kind).toBe("no_go");
+    expect(v.reasons.map((r) => r.key)).toEqual(["opposition"]);
+  });
+  it("is Go only with every check at 3, low opposition, a contact and usable data", () => {
+    expect(entryVerdict(metrics(3, 3, "High", "Low"), checks, 1)).toEqual({ kind: "go", label: "Go", reasons: [] });
+    expect(entryVerdict(metrics(3, 3, "High", "Low"), checks, 0).kind).toBe("conditional");
+    expect(entryVerdict(metrics(3, 3, "High", "Low", "Low"), checks, 1).kind).toBe("conditional");
+  });
+  it("is Conditional go with sourced reasons for the checks below 3", () => {
+    const v = entryVerdict(metrics(2, 2, "High", "Low"), checks, 3);
+    expect(v.kind).toBe("conditional");
+    expect(v.reasons.map((r) => [r.key, r.sourceIds])).toEqual([["licence", ["s1"]], ["money", ["s1"]]]);
+  });
+  it("gives the sample Conditional go", () => {
+    const m = briefMetrics(sampleDossier, NOW);
+    expect(entryVerdict(m, sampleDossier.marketChecks, 3).kind).toBe("conditional");
+  });
+});
+
+// docs/scoring.md §9: the most likely first buyer, one case per ranking step.
+describe("first buyer (scoring §9)", () => {
+  const route = (over: Partial<ProcurementRoute>): ProcurementRoute => ({
+    route: "fms", text: "x", sourceIds: ["s1"], buyerId: "a", access: "direct", money: null, ...over,
+  });
+  const money = (status: MoneyStatus, asOf: string | null = "2026-07-01") => ({ amount: "1", asOf, status, sourceIds: ["s1"] });
+  const base = { govOnMap: new Set(["a", "b"]), influence: new Map([["a", 50], ["b", 80]]), events: [] as TimedEvent[], now: NOW };
+
+  it("ranks by money status, and an undated amount counts as none", () => {
+    const r = firstBuyer({ ...base, routes: [route({ buyerId: "b", money: money("proposed") }), route({ route: "dcs", buyerId: "a", money: money("open_tender") })] });
+    expect(r?.buyerId).toBe("a");
+    const u = firstBuyer({ ...base, routes: [route({ buyerId: "b", money: money("proposed") }), route({ route: "dcs", buyerId: "a", money: money("open_tender", null) })] });
+    expect(u?.buyerId).toBe("b");
+  });
+
+  it("then access, then the nearest deadline, then influence", () => {
+    expect(firstBuyer({ ...base, routes: [route({ buyerId: "b", access: "unclear" }), route({ route: "dcs", buyerId: "a", access: "via_local_partner" })] })?.buyerId).toBe("a");
+    const ev = { id: "e", dossierId: "d", title: "Vote", kind: "budget_vote", date: "2026-12-01", stakeholderIds: ["a"], sourceIds: ["s1"], status: "sourced", relevantToGoal: true, createdAt: "" } as TimedEvent;
+    expect(firstBuyer({ ...base, events: [ev], routes: [route({ buyerId: "b" }), route({ route: "dcs", buyerId: "a" })] })?.buyerId).toBe("a");
+    expect(firstBuyer({ ...base, routes: [route({ buyerId: "a" }), route({ route: "dcs", buyerId: "b" })] })?.buyerId).toBe("b");
+  });
+
+  it("skips closed routes and buyers not on the map", () => {
+    expect(firstBuyer({ ...base, routes: [route({ access: "no" }), route({ buyerId: "zzz" })] })).toBeNull();
   });
 });

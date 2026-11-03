@@ -6,13 +6,25 @@
 import { buildBriefModel, fmtDay, type BriefVM, type Cited, type MetricVM } from "@/components/brief/model";
 import { buildMapModel, byInfluence, MAP_LIMIT, NO_ROUTE, type Mark } from "@/components/map/model";
 import { influenceText, sourceRef, type SourceRef } from "@/components/score/explain";
+import { buildPartners } from "@/components/partners/model";
+import { buildVerdict, type VerdictVM } from "@/components/score/verdict";
 import { isEligible, sourcesFor } from "@/lib/scoring";
 import type { Brief, Category, Dossier, IcdTerm, Confidence } from "@/lib/types";
 
 export const TOP_N = 5;
 export const RISKS_N = 2;
+/** REP-9: entry requirements shown on the A4 (option B, replaces Key risks). */
+export const REQUIREMENTS_N = 4;
+/** REP-12: past this many characters the last requirement is dropped so the page still fits. */
+export const REQUIREMENTS_CHARS = 380;
 export const MEET_N = 3;
+/** REP-14 (option A, Joey 2026-11-02): top partner candidates, in place of Where to meet them. */
+export const PARTNERS_N = 3;
 export const ROW_SOURCES_N = 2;
+/** REP-13: the "Not verified" line is cut to this many characters so the page still fits. */
+export const GAPS_CHARS = 105;
+/** REP-12/13: the foot lists this many of the table's sources so the "Not verified" line fits. */
+export const SOURCES_N = 6;
 
 export interface ExhibitNode {
   id: string;
@@ -28,9 +40,13 @@ export interface ExhibitNode {
 export interface ReportVM {
   isSample: boolean;
   name: string;
+  /** I18N-9: checked 繁中 for this version's sentences and the stakeholders' sourced names. */
+  zh: BriefVM["zh"];
   /** "Prepared for …" pieces; null hides the whole line (never a placeholder). */
   preparedFor: { company: string; product: string; date: string } | null;
   confidence: MetricVM;
+  /** REP-2: the entry verdict (scoring §8), shown in the right header box. */
+  verdict: VerdictVM;
   stakeholderCount: number;
   summary: Cited[];
   judgment: { text: string; icd: IcdTerm; confidence: Confidence; refs: SourceRef[] } | null;
@@ -40,7 +56,18 @@ export interface ReportVM {
   path: BriefVM["path"];
   plan: { days: string; text: string; refs: SourceRef[] }[];
   meet: { title: string; date: string; mapped: number }[];
+  /** REP-15 (option A, Joey 2026-11-02): code's first-buyer pick, in place of the entry path. */
+  firstBuyer: BriefVM["firstBuyer"];
+  /** True when the brief has routes, so the A4 shows the first-buyer block (or its "none" line). */
+  hasRoutes: boolean;
+  /** REP-14: one line per top partner candidate (NET-7), with the sources of its first two evidence items. */
+  partners: { id: string; short: string; sources: number; buyers: number; flags: string[]; refs: SourceRef[] }[];
   risks: Cited[];
+  /** REP-9: up to 4 sourced entry requirements; when empty, Key risks shows instead. */
+  requirements: BriefVM["requirements"];
+  exportCheck: boolean;
+  /** REP-13: short gap items that fit on one line, and how many more are only in the brief. */
+  gaps: { items: string[]; more: number };
   /** The numbered list at the foot: the sources cited in the table. */
   sources: SourceRef[];
   /** Every source the report cites; /s/[shareId]/sources lists exactly these. */
@@ -99,26 +126,45 @@ export function buildReportModel(d: Dossier, brief: Brief, now: Date): ReportVM 
     return a ? { days: box.days, text: `${a.text} (${a.who})`, refs: a.refs } : { days: box.days, text: box.empty, refs: [] };
   });
 
-  const risks = b.risks.slice(0, RISKS_N);
+  // REP-9 (option B): entry requirements take the Key risks spot; older briefs keep the risks.
+  const requirements = b.requirements.slice(0, REQUIREMENTS_N);
+  while (requirements.length > 1 && requirements.reduce((n, x) => n + x.label.length + x.text.length, 0) > REQUIREMENTS_CHARS) requirements.pop();
+  const risks = requirements.length > 0 ? [] : b.risks.slice(0, RISKS_N);
   const summary = b.summary;
   const judgment = b.judgments[0] ?? null;
-  const sources = dedupe(top.flatMap((t) => t.refs));
+  const verdict = buildVerdict(d, now, map.contactFirst.length);
+  const tableSources = dedupe(top.flatMap((t) => t.refs));
+  const partners = buildPartners(d, now)
+    .slice(0, PARTNERS_N)
+    .map((p) => ({
+      id: p.id,
+      short: p.short,
+      sources: p.sourceCount,
+      buyers: p.buyers.length,
+      flags: p.flags.map((f) => f.label.toLowerCase()),
+      refs: dedupe(p.evidence.slice(0, 2).flatMap((e) => e.refs)),
+    }));
   const citedIds = dedupe([
     ...summary.flatMap((s) => s.refs),
     ...(judgment?.refs ?? []),
-    ...sources,
-    ...b.path.flatMap((p) => p.why.refs),
+    ...tableSources,
+    ...(b.routes.length > 0 ? (b.firstBuyer?.refs ?? []) : b.path.flatMap((p) => p.why.refs)),
     ...plan.flatMap((p) => p.refs),
     ...risks.flatMap((r) => r.refs),
+    ...requirements.flatMap((r) => r.refs),
+    ...verdict.reasons.flatMap((r) => r.refs),
+    ...partners.flatMap((p) => p.refs),
   ]).map((r) => r.id);
 
   const confidence = b.metrics.find((m) => m.key === "confidence")!;
   return {
     isSample: d.isSample,
     name: d.name,
+    zh: b.zh,
     preparedFor:
       d.company.trim() && d.product.trim() ? { company: d.company.trim(), product: d.product.trim(), date: fmtDay(brief.createdAt) } : null,
     confidence,
+    verdict,
     stakeholderCount: eligible.size,
     summary,
     judgment,
@@ -128,10 +174,29 @@ export function buildReportModel(d: Dossier, brief: Brief, now: Date): ReportVM 
     path: b.path,
     plan,
     meet,
+    firstBuyer: b.firstBuyer,
+    hasRoutes: b.routes.length > 0,
+    partners,
     risks,
-    sources,
+    requirements,
+    exportCheck: requirements.length > 0 && b.exportCheck,
+    // The export-control line already shows under Entry requirements; don't repeat it.
+    gaps: gapLine(b.gaps.filter((g) => !(g.key === "export" && requirements.length > 0)).map((g) => g.short)),
+    sources: tableSources.slice(0, SOURCES_N),
     citedIds,
   };
+}
+
+/** REP-13: keep whole items while they fit in GAPS_CHARS; the rest are counted. */
+export function gapLine(shorts: string[]): ReportVM["gaps"] {
+  const items: string[] = [];
+  let n = 0;
+  for (const s of shorts) {
+    n += s.length + 3;
+    if (n > GAPS_CHARS && items.length > 0) break;
+    items.push(s);
+  }
+  return { items, more: shorts.length - items.length };
 }
 
 function dedupe(refs: SourceRef[]): SourceRef[] {

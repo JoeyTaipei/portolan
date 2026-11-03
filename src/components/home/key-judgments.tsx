@@ -1,11 +1,13 @@
 import { IcdScale, icdText } from "@/components/score/icd-scale";
 import { Paras } from "@/components/score/paras";
 import { SourceChips } from "@/components/score/source-chip";
+import { getT } from "@/lib/i18n/server";
 import type { HomeModel } from "./model";
 
 // Side column key judgments: the sourced judgments after the bottom line, each with an ICD term +
 // range and confidence stated separately. Hidden when the bottom line is the only one.
-export function KeyJudgments({ m }: { m: HomeModel }) {
+export async function KeyJudgments({ m }: { m: HomeModel }) {
+  const t = await getT();
   const rest = m.judgments.slice(1);
   if (m.judgments.length > 0 && rest.length === 0) return null;
   return (
@@ -14,25 +16,25 @@ export function KeyJudgments({ m }: { m: HomeModel }) {
       className="flex flex-col gap-2"
     >
       <h2 id="kj-h" className="m-0 border-b border-rule-strong pb-2 text-[16px] font-bold">
-        Key judgments
+        {t("Key judgments")}
       </h2>
       {rest.length === 0 ? (
         <p className="m-0 text-[14px] leading-normal text-ink2">
-          None yet. Key judgments come from the strategy brief, and only sourced ones are shown.
+          {t("None yet. Key judgments come from the strategy brief, and only sourced ones are shown.")}
         </p>
       ) : (
         <Paras
-          label="Key judgments"
+          label={t("Key judgments")}
           items={rest.map((j, i) => ({
             key: String(i + 1),
             body: (
               <>
                 <p className="m-0 text-[15px] leading-[1.45]">
-                  {j.text} <b>{icdText(j.icd)}</b>.
+                  <span data-testid="conclusion">{t.r(j.text, m.zh)}</span> <b>{t.k(icdText(j.icd))}</b>{t(".")}
                 </p>
                 <IcdScale term={j.icd} />
                 <p className="m-0 text-[12.5px] text-ink2">
-                  {j.confidence} confidence. <SourceChips dossierId={m.id} sources={j.sources} />
+                  {t("{level|t} confidence.", { level: t.k(j.confidence) })} <SourceChips dossierId={m.id} sources={j.sources} />
                 </p>
               </>
             ),

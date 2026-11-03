@@ -7,6 +7,7 @@ import type {
   ContactOrigin,
   Credibility,
   Debrief,
+  DebriefMemo,
   DebriefOverall,
   DocumentRequest,
   DocumentStatus,
@@ -31,6 +32,8 @@ import type {
   Reliability,
   ReviewerKind,
   Sentence,
+  EntryRequirement,
+  ProcurementRoute,
   SevenDayPlan,
   Source,
   SourceOrigin,
@@ -176,21 +179,24 @@ async function readBy(column: "id" | "share_id", value: string): Promise<Dossier
     return x.is_china ? { ...base, isChina: true as const, isPerson: false as const } : { ...base, isChina: false as const, isPerson: Boolean(x.is_person) };
   });
 
-  const facts: Fact[] = latestPerStakeholder(
-    factRows.map((x) => ({
-      id: x.id as string,
-      stakeholderId: x.stakeholder_id as string,
-      runId: s(x.run_id),
-      field: x.field as FactField,
-      value: x.value as Json,
-      rating: (x.rating as Rating03) ?? null,
-      quote: s(x.quote),
-      sourceIds: arr(x.source_ids),
-      status: x.status as FactStatus,
-      model: s(x.model),
-      createdAt: x.created_at as string,
-    })),
-  );
+  const allFacts: Fact[] = factRows.map((x) => ({
+    id: x.id as string,
+    stakeholderId: x.stakeholder_id as string,
+    runId: s(x.run_id),
+    field: x.field as FactField,
+    value: x.value as Json,
+    rating: (x.rating as Rating03) ?? null,
+    quote: s(x.quote),
+    sourceIds: arr(x.source_ids),
+    status: x.status as FactStatus,
+    model: s(x.model),
+    debriefId: s(x.debrief_id),
+    createdAt: x.created_at as string,
+  }));
+  // Research facts: each stakeholder's latest run. Meeting memo facts (TRK-10): all of them,
+  // kept out of the "latest run" pick so a run-less memo fact never hides research.
+  const researchFacts = latestPerStakeholder(allFacts.filter((f) => !f.debriefId));
+  const facts: Fact[] = [...researchFacts, ...allFacts.filter((f) => f.debriefId)];
 
   const allStatements: SupportStatement[] = statementRows.map((x) => ({
     id: x.id as string,
@@ -206,7 +212,7 @@ async function readBy(column: "id" | "share_id", value: string): Promise<Dossier
   }));
   // Research statements: the latest run that rated each stakeholder. Debrief statements: all.
   const lastRated = new Map<string, string | null>();
-  for (const f of facts) lastRated.set(f.stakeholderId, f.runId);
+  for (const f of researchFacts) lastRated.set(f.stakeholderId, f.runId);
   const statements = allStatements.filter((x) => x.debriefId !== null || !lastRated.has(x.stakeholderId) || lastRated.get(x.stakeholderId) === x.runId);
 
   // A refresh can find the same tie or event again: show each once.
@@ -219,6 +225,7 @@ async function readBy(column: "id" | "share_id", value: string): Promise<Dossier
       relation: x.relation as string,
       sourceIds: arr(x.source_ids),
       status: x.status as FactStatus,
+      debriefId: s(x.debrief_id),
       createdAt: x.created_at as string,
     })),
     (e) => [e.aId, e.bId].sort().join("|") + "|" + e.relation.toLowerCase(),
@@ -252,9 +259,12 @@ async function readBy(column: "id" | "share_id", value: string): Promise<Dossier
     plan: json<SevenDayPlan>(x.plan, { prep: [], contact: [], event: [], followUp: [] }),
     summary: json<Sentence[]>(x.summary, []),
     risks: json<Sentence[]>(x.risks, []),
+    requirements: json<EntryRequirement[]>(x.requirements, []),
+    routes: json<ProcurementRoute[]>(x.routes, []),
     meet: json(x.meet, []),
     needs: json<string[]>(x.needs, []),
     changesNote: json<string[]>(x.changes_note, []),
+    zh: json<Record<string, string> | null>(x.zh, null),
     inputsAt: x.inputs_at as string,
     createdAt: x.created_at as string,
   }));
@@ -305,6 +315,7 @@ async function readBy(column: "id" | "share_id", value: string): Promise<Dossier
     stageAfter: x.stage_after as TrackerStage,
     addedNextStep: s(x.added_next_step),
     playbookOutcomeId: s(x.playbook_outcome_id),
+    memo: (x.memo as DebriefMemo | null) ?? null,
     createdAt: x.created_at as string,
   }));
 

@@ -8,7 +8,7 @@ export const STALE_SOURCE_DAYS = 90;
 export function citedSourceIds(brief: Brief): Set<string> {
   const ids = new Set<string>();
   const add = (xs: string[]) => xs.forEach((i) => ids.add(i));
-  [...brief.rationale, ...brief.summary, ...brief.risks].forEach((s) => add(s.sourceIds));
+  [...brief.rationale, ...brief.summary, ...brief.risks, ...(brief.requirements ?? []), ...(brief.routes ?? []), ...(brief.routes ?? []).flatMap((r) => (r.money ? [r.money] : []))].forEach((s) => add(s.sourceIds));
   brief.judgments.forEach((j) => add(j.sourceIds));
   brief.path.forEach((p) => add(p.why.sourceIds));
   brief.reduceOpposition.forEach((r) => add(r.step.sourceIds));
@@ -27,8 +27,10 @@ export function briefStatus(
 
   if (d.debriefs.some((x) => after(x.createdAt))) reasons.push("A debrief was saved after this brief was written.");
 
+  // Memo facts belong to a debrief (scoring §3.2): the debrief reason above already covers them.
   const researchStatements = d.statements.filter((s) => s.debriefId === null);
-  if (d.stakeholders.some((s) => after(s.createdAt)) || d.facts.some((f) => after(f.createdAt)) || researchStatements.some((s) => after(s.createdAt))) {
+  const researchFacts = d.facts.filter((f) => !f.debriefId);
+  if (d.stakeholders.some((s) => after(s.createdAt)) || researchFacts.some((f) => after(f.createdAt)) || researchStatements.some((s) => after(s.createdAt))) {
     reasons.push("Stakeholders changed after this brief was written.");
   }
 

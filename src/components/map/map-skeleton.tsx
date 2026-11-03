@@ -1,10 +1,11 @@
 import { LoadingState } from "@/components/shell/nis";
+import { Both } from "@/lib/i18n/client";
 
 // Map loading: same three-column frame as the map page, so nothing jumps when it arrives.
 export function MapSkeleton() {
   return (
     <LoadingState
-      label="Placing stakeholders…"
+      label={<Both k="Placing stakeholders…" />}
       skeleton={
         <div
           aria-hidden="true"

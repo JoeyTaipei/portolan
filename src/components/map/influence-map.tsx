@@ -2,13 +2,14 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTeam } from "@/components/team/team-context";
+import { useT } from "@/lib/i18n/client";
 import { TeamLayer } from "@/components/team/team-layer";
 import { TeamPanel } from "@/components/team/team-panel";
 import type { Category } from "@/lib/types";
 import { LABEL_THRESHOLD } from "@/lib/scoring/influence";
 import type { NodeVM } from "./model";
 import { NodeShape } from "./node-mark";
-import { depthBand, FLOOR_Y, nodeRadius, project } from "./project";
+import { FLOOR_Y, nodeRadius, project } from "./project";
 import { useSize } from "./use-size";
 import { s } from "./marks";
 
@@ -61,6 +62,7 @@ export function InfluenceMap({
   const [hover, setHover] = useState(false);
   const drag = useRef<{ x: number; y: number; lx: number; id: string | null; member: string | null; moved: boolean } | null>(null);
   const team = useTeam();
+  const t = useT();
 
   // Reduced motion: paused by default (MAP-3).
   useEffect(() => {
@@ -110,9 +112,7 @@ export function InfluenceMap({
   const byId = new Map(nodes.map((n) => [n.id, n]));
   const order = [...nodes].sort((a, b) => pts.get(b.id)!.z - pts.get(a.id)!.z);
 
-  // Backdrop: sea floor, compass rose lines, soundings under each node.
-  const origin = project({ x: 0, y: FLOOR_Y, z: 0 }, ang, W, H);
-  const north = project({ x: 0, y: FLOOR_Y, z: -1.02 }, ang, W, H);
+  // Backdrop: one fine ellipse with ticks on paper (direction.md: no sea, land or depth).
   const routePts = route.map((id) => pts.get(id)).filter((p): p is NonNullable<typeof p> => !!p);
 
   function onPointerDown(e: React.PointerEvent<SVGSVGElement>) {
@@ -157,52 +157,19 @@ export function InfluenceMap({
           className={s.svg}
           viewBox={`0 0 ${W} ${H}`}
           role="img"
-          aria-label="Stakeholder map. Drag or use the left and right arrow keys to rotate, click a stakeholder for details. The full list is beside the map."
+          aria-label={t("Stakeholder map. Drag or use the left and right arrow keys to rotate, click a stakeholder for details. The full list is beside the map.")}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
           onPointerCancel={() => (drag.current = null)}
         >
           <g aria-hidden="true">
-            <path className={s.f1} d={floorEllipse(1.15, ang, W, H)} />
-            <path className={s.f2} d={floorEllipse(0.6, ang, W, H)} />
-            <path className={s.ring} d={floorEllipse(0.9, ang, W, H)} />
-            {Array.from({ length: 32 }, (_, i) => {
-              const a = (i / 32) * Math.PI * 2;
-              const L = i % 4 === 0 ? 0.9 : 1.9;
-              const p = project({ x: Math.cos(a) * L, y: FLOOR_Y, z: Math.sin(a) * L }, ang, W, H);
-              return (
-                <line
-                  key={i}
-                  className={s.rhumb}
-                  x1={origin.x}
-                  y1={origin.y}
-                  x2={p.x}
-                  y2={p.y}
-                  opacity={i % 4 === 0 ? 0.9 : 0.4}
-                />
-              );
-            })}
-            <text className={s.roseN} x={north.x} y={north.y} textAnchor="middle">
-              N
-            </text>
-            {nodes.map((n) => {
-              const band = depthBand(n.influence?.level ?? null);
-              if (!band || !inF(n)) return null;
-              const t = pts.get(n.id)!;
-              const b = project({ x: n.x, y: FLOOR_Y, z: n.z }, ang, W, H);
-              return (
-                <g key={n.id} opacity={selected && selected !== n.id && !linked.has(n.id) ? 0.2 : 1}>
-                  <line className={s.stem} x1={t.x} y1={t.y} x2={b.x} y2={b.y} />
-                  <ellipse
-                    className={`${s.dot} ${band === 3 ? s.d3 : band === 2 ? s.d2 : s.d1}`}
-                    cx={b.x}
-                    cy={b.y}
-                    rx={3 + band * 1.6}
-                    ry={1.4 + band * 0.7}
-                  />
-                </g>
-              );
+            <path className={s.gEll} d={floorEllipse(1, ang, W, H)} />
+            {Array.from({ length: 24 }, (_, i) => {
+              const a = (i / 24) * Math.PI * 2;
+              const p1 = project({ x: Math.cos(a), y: FLOOR_Y, z: Math.sin(a) }, ang, W, H);
+              const p2 = project({ x: Math.cos(a) * 1.06, y: FLOOR_Y, z: Math.sin(a) * 1.06 }, ang, W, H);
+              return <line key={i} className={s.gTk} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} />;
             })}
             {!selected && routePts.length > 1 && (
               <path
@@ -256,14 +223,12 @@ export function InfluenceMap({
                 >
                   <title>{n.short}</title>
                   <g className={s.shape} transform={`scale(${p.f.toFixed(3)})`}>
+                    {(rank >= 0 || isSel) && <circle className={s.hl} r={r + 7} />}
                     <NodeShape mark={n.mark} r={r} dashed={dashed} />
-                    {rank >= 0 && !selected && (
-                      <>
-                        <circle className={s.recRing} r={r + 5} />
-                        <text className={s.recN} x={-r - 5} y={-r - 3} textAnchor="end">
-                          {rank + 1}
-                        </text>
-                      </>
+                    {rank >= 0 && (
+                      <text className={s.recN} x={-r - 6} y={-r - 3} textAnchor="end">
+                        {rank + 1}
+                      </text>
                     )}
                     {/* larger invisible hit target */}
                     <circle r={Math.max(r + 4, 10)} fill="transparent" />
@@ -293,18 +258,16 @@ export function InfluenceMap({
               team.setOn(!team.on);
               team.setMemberId(null);
             }}
-            className="absolute top-2.5 right-2.5 flex min-h-11 cursor-pointer items-center gap-2 rounded-[var(--r-m)] border border-rule-strong bg-panel px-3 text-[13.5px] font-semibold text-ink"
+            className="absolute top-2.5 right-2.5 flex min-h-11 cursor-pointer items-center gap-2 rounded-[var(--r-m)] border-2 border-ink bg-panel px-3 text-[13.5px] font-semibold text-ink"
           >
-            <span aria-hidden="true" className={`relative h-[18px] w-8 rounded-full border border-rule-strong ${team.on ? "bg-[var(--act)]" : "bg-panel2"}`}>
+            <span aria-hidden="true" className={`relative h-[18px] w-8 rounded-full border border-rule-strong ${team.on ? "bg-[var(--hi)]" : "bg-panel2"}`}>
               <span className={`absolute top-[1px] size-[14px] rounded-full bg-panel ring-1 ring-[var(--rule-strong)] transition-[left] ${team.on ? "left-[15px]" : "left-[1px]"}`} />
             </span>
-            Your team
+            {t("Your team")}
           </button>
         )}
         <span className={s.hint}>
-          {selected
-            ? "Press Esc or click it again to show all."
-            : "Deeper blue under a stakeholder = more influence. Drag to rotate."}
+          {selected ? t("Press Esc or click it again to show all.") : t("Drag to rotate, click a stakeholder.")}
         </span>
       </div>
       <TeamPanel selected={selected} />

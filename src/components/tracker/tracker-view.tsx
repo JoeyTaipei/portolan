@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { editTrackerItem, removeTrackerItem, saveDebrief, undoDebrief as undoDebriefAction } from "@/app/d/[id]/tracker/actions";
 import { track } from "@/lib/analytics";
 import { OVERLAY_EVENT, readOverlay, writeOverlay } from "@/lib/sample/overlay";
+import { ALSO_AGREE_MAX } from "@/lib/tracker/memo";
 import {
   applyDebrief,
   dueDebriefs,
@@ -18,6 +19,7 @@ import {
   type TrackerState,
 } from "@/lib/tracker/flow";
 import type { ActionResult, SampleOverlay, TrackerStage } from "@/lib/types";
+import { useT } from "@/lib/i18n/client";
 import { DebriefDue } from "./debrief-due";
 import { DebriefResult } from "./debrief-result";
 import { buildRows } from "./model";
@@ -37,6 +39,8 @@ function withOverlay(base: TrackerState, o: SampleOverlay): TrackerState {
     debriefs: o.debriefs ?? base.debriefs,
     statements: o.statements ?? base.statements,
     sources: o.sources ?? base.sources,
+    facts: o.facts ?? base.facts,
+    edges: o.edges ?? base.edges,
     playbook: o.playbook ?? base.playbook,
   };
 }
@@ -48,6 +52,8 @@ function persist(s: TrackerState): boolean {
     writeOverlay("debriefs", s.debriefs) &&
     writeOverlay("statements", s.statements) &&
     writeOverlay("sources", s.sources) &&
+    writeOverlay("facts", s.facts) &&
+    writeOverlay("edges", s.edges) &&
     writeOverlay("playbook", s.playbook)
   );
 }
@@ -60,6 +66,7 @@ export function TrackerView({ initial, isSample, name, nowIso }: { initial: Trac
   const [filter, setFilter] = useState<TrackerStage | null>(null);
   const [receipt, setReceipt] = useState<DebriefReceipt | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const t = useT();
 
   useEffect(() => {
     // After hydration: the browser's clock and, on the sample, this browser's changes.
@@ -93,7 +100,14 @@ export function TrackerView({ initial, isSample, name, nowIso }: { initial: Trac
   async function debrief(input: DebriefInput): Promise<string | null> {
     let r: ActionResult<DebriefReceipt>;
     if (isSample) {
-      const ids = { debrief: newId("db"), source: newId("src-db"), statement: newId("st-db"), playbook: newId("pb") };
+      const ids = {
+        debrief: newId("db"),
+        source: newId("src-db"),
+        statement: newId("st-db"),
+        playbook: newId("pb"),
+        facts: Array.from({ length: 4 }, () => newId("fact-db")),
+        edges: Array.from({ length: ALSO_AGREE_MAX }, () => newId("edge-db")),
+      };
       const out = applyDebrief(state, input, ids, new Date());
       r = persist(out.state) ? { ok: true, data: out.receipt } : { ok: false, error: NO_STORAGE };
     } else {
@@ -102,7 +116,7 @@ export function TrackerView({ initial, isSample, name, nowIso }: { initial: Trac
     if (!r.ok) return r.error;
     setNotice(null);
     setReceipt(r.data);
-    track("debrief_saved", { overall: input.overall, next_step_agreed: input.nextStepAgreed, playbook: input.addToPlaybook, sample: isSample });
+    track("debrief_saved", { overall: input.overall, next_step_agreed: input.nextStepAgreed, playbook: input.addToPlaybook, memo: Boolean(input.memo), sample: isSample });
     return null;
   }
 
@@ -115,18 +129,18 @@ export function TrackerView({ initial, isSample, name, nowIso }: { initial: Trac
       if (!r.ok) return r.error;
     }
     setReceipt(null);
-    setNotice("Debrief removed. Support, stage and next step are back as they were.");
+    setNotice(t("Debrief removed. Support, influence, stage and next step are back as they were."));
     return null;
   }
 
-  const byId = new Map(state.tracker.map((t) => [t.id, t]));
+  const byId = new Map(state.tracker.map((x) => [x.id, x]));
 
   return (
     <div className="mx-auto flex w-full max-w-[1360px] flex-col gap-6 px-4 pt-[18px] pb-10 lg:grid lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-x-12 lg:gap-y-8 lg:px-10 lg:pt-8 lg:pb-14 min-[1600px]:grid-cols-[minmax(0,1fr)_440px]">
       <div className="contents lg:flex lg:flex-col lg:gap-8">
         <header className="order-1">
           <p className="m-0 text-[14px] text-ink2">{name}</p>
-          <h1 className="mt-1 mb-0 text-[32px] font-bold leading-[1.05] lg:text-[40px]">From first contact to first deal</h1>
+          <h1 className="mt-1 mb-0 text-[32px] font-bold leading-[1.05] lg:text-[40px]">{t("From first contact to first deal")}</h1>
         </header>
         <div className="order-2">
           <StageCounts counts={counts} filter={filter} onFilter={setFilter} />
@@ -144,7 +158,7 @@ export function TrackerView({ initial, isSample, name, nowIso }: { initial: Trac
         </div>
       </div>
       <aside
-        aria-label="Debrief"
+        aria-label={t("Debrief")}
         className="order-3 flex flex-col gap-3 lg:sticky lg:top-4 lg:mt-[92px]"
       >
         {notice && (
@@ -160,6 +174,12 @@ export function TrackerView({ initial, isSample, name, nowIso }: { initial: Trac
             now={now}
             name={(d) => itemName(state, byId.get(d.item.id) ?? d.item)}
             onSave={debrief}
+            memoFor={(d) => {
+              const self = state.stakeholders.find((x) => x.id === d.item.stakeholderId);
+              if (!self) return null;
+              const others = state.stakeholders.filter((x) => x.id !== self.id && x.category !== "evt").map((x) => ({ id: x.id, name: x.short ?? x.name }));
+              return { others: others.sort((a, b) => a.name.localeCompare(b.name)), isChina: self.isChina };
+            }}
           />
         )}
       </aside>

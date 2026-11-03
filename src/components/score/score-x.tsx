@@ -2,16 +2,17 @@
 
 import Link from "next/link";
 import { useId, useRef, type ReactNode } from "react";
+import type { T } from "@/lib/i18n";
+import { useT } from "@/lib/i18n/client";
 import type { Explanation } from "./explain";
 import { Stamp } from "./stamp";
 
 // SCORE-X (spec §12): every score opens the same panel. A native <dialog> gives Esc-to-close
 // and focus return; the trigger is a <button>, so Enter and Space open it.
 
-function fmtDate(iso: string | null): string {
-  if (!iso) return "date unverified";
-  const d = new Date(iso);
-  return `checked ${d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" })}`;
+function fmtDate(t: T, iso: string | null): string {
+  if (!iso) return t("date unverified");
+  return t("checked {date}", { date: t.date(iso, { utc: true }) });
 }
 
 export function ScoreX({
@@ -30,6 +31,7 @@ export function ScoreX({
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const titleId = useId();
+  const t = useT();
   return (
     <>
       <button
@@ -52,27 +54,27 @@ export function ScoreX({
         <div className="flex flex-col gap-3 p-5">
           <div className="flex items-start justify-between gap-3">
             <h2 id={titleId} className="m-0 text-[17px] font-bold leading-tight">
-              {x.title}
+              {t.x(x.title)}
             </h2>
             <button
               type="button"
               className="btn btn-ghost btn-s"
               onClick={() => ref.current?.close()}
             >
-              Close
+              {t("Close")}
             </button>
           </div>
-          <p className="m-0 text-[22px] font-semibold leading-tight">{x.result}</p>
-          {x.basedOn && <p className="m-0 text-[13.5px] text-ink2">{x.basedOn}</p>}
+          <p className="m-0 text-[22px] font-semibold leading-tight">{t.x(x.result)}</p>
+          {x.basedOn && <p className="m-0 text-[13.5px] text-ink2">{t.x(x.basedOn)}</p>}
           {x.factors.length > 0 && (
             <ul className="m-0 flex list-none flex-col gap-0 border-t border-rule-strong p-0">
               {x.factors.map((f) => (
                 <li key={f.label} className="flex flex-col gap-1 border-b border-rule py-2.5 text-[14px]">
                   <div className="flex items-baseline justify-between gap-3">
-                    <span className="font-semibold">{f.label}</span>
+                    <span className="font-semibold">{t.k(f.label)}</span>
                     <span className="shrink-0 text-ink2">
-                      {f.rating}
-                      {f.weight && <> · weight <span className="num">{f.weight}</span></>}
+                      {t.x(f.rating)}
+                      {f.weight && <> · {t("weight")} <span className="num">{f.weight}</span></>}
                     </span>
                   </div>
                   {f.sources.length > 0 ? (
@@ -83,18 +85,18 @@ export function ScoreX({
                             {s.label} {s.title}
                           </Link>
                           <Stamp reliability={s.reliability} credibility={s.credibility} />
-                          <span className="text-ink2">{fmtDate(s.verifiedAt)}</span>
+                          <span className="text-ink2">{fmtDate(t, s.verifiedAt)}</span>
                         </li>
                       ))}
                     </ul>
                   ) : (
-                    <span className="text-[13px] text-ink2">No cited source, so this isn&apos;t counted.</span>
+                    <span className="text-[13px] text-ink2">{t("No cited source, so this isn't counted.")}</span>
                   )}
                 </li>
               ))}
             </ul>
           )}
-          <p className="m-0 max-w-[68ch] text-[13.5px] leading-normal text-ink2">{x.summary}</p>
+          <p className="m-0 max-w-[68ch] text-[13.5px] leading-normal text-ink2">{t.x(x.summary)}</p>
         </div>
       </dialog>
     </>

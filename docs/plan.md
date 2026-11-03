@@ -578,7 +578,228 @@ Joey picked option C "Briefing room" and the word "Markets" on 2026-11-02 (spec 
 
 **Tests added**: none.
 
+### S11 Entry requirements on the brief and A4 (added 2026-11-02, Joey)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| ui + engine (one session) | `feature/entry-requirements` | S10 | 3 h | P4 | none |
+
+Why: three AI-written entry reports (Gemini, ChatGPT-style) all lead with "what you must meet to bid"; ours had it only scattered in Key risks. Joey picked "Claude writes it into the brief" and layout B (replaces Key risks on the A4).
+
+**Risky changes — list before code** (sources and Unverified marks; types + migration, approved by Joey 2026-11-02):
+- *An unsourced rule shown as fact* (e.g. "foreign firms can't bid" when a source doesn't say so) could make a user give up on a market. Verify: requirements go through the same pre-display check as every brief sentence (`brief.test.ts` asserts an uncited requirement is removed); the sample fixture test checks every requirement's sources.
+- *The export-control check line read as advice.* It is fixed code text, grey, dashed mark, "Needs a specialist check (no source found)"; it is never written by Claude. Verify: unit test that it appears only when no sourced export-control item exists.
+- *A4 runs past one page.* Verify: the e2e one-page check; the A4 shows at most 4 items.
+- *Migration not applied before deploy* → inserting a brief fails in production. Verify: Joey runs `npx supabase@2 db push` before merging; reading old rows without the column falls back to `[]`.
+- No paid API call is needed to build or test this (mock brief uses the sample).
+
+**Files**: `supabase/migrations/20261102120000_brief_requirements.sql`, `src/lib/types.ts` (Brief.requirements), `src/lib/db/{briefs,read}.ts`, `src/lib/claude/brief.ts`, `src/lib/scoring/brief-status.ts` (cited ids), `src/fixtures/sample-dossier.ts` (+ test), `src/components/brief/{model.ts,requirements.tsx}`, `src/app/d/[id]/brief/page.tsx`, `src/components/report/{model.ts,a4-report.tsx,report.css}`, `src/lib/claude/brief.test.ts`, `src/lib/scoring/scoring.test.ts` (Brief literal), `design/entry-requirements-options/index.html`, `docs/spec.md`, `docs/plan.md`.
+
+**Tests added**: `brief.test.ts` — an uncited requirement is removed; the export-control line appears only without a sourced export-control item. Fixture test covers requirements.
+
+### S12 Entry verdict on the A4 and home (added 2026-11-02, Joey)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| ui (one session) | `feature/entry-verdict` | S11 | 2 h | P4 | none |
+
+Why: research (`reports/顧問級進場報告改進建議.md`) found consulting entry reports lead with a Go / Conditional-Go / No-Go call and its conditions. Joey chose a fixed code rule (not Claude) and layout A.
+
+**Risky changes — list before code** (a new scored output; `docs/scoring.md` §8 thresholds approved by Joey when picking option A):
+- *A verdict that overstates the evidence* (Go on thin data) could push a user into a market. Verify: Go needs every check at 3, opposition Low, a contact-first pick and data confidence not Low; unit tests cover each branch.
+- *Reasons without sources read as facts.* Money and licence reasons cite their check's sources; the others are computed from scores and say so in their wording. No Claude text, no new prompt, no paid call.
+- *A4 runs past one page.* Verify: e2e one-page check.
+- No migration and no `src/lib/types.ts` change: the verdict is computed on each read like the metrics.
+
+**Files**: `src/lib/scoring/{verdict.ts,index.ts,scoring.test.ts}`, `src/components/report/{model.ts,a4-report.tsx,report.css}`, `src/components/home/{model.ts,market-header.tsx}`, `src/components/score/verdict.ts`, `src/app/globals.css` (stamp), `design/verdict-options/index.html`, `docs/{scoring,spec,plan}.md`.
+
+**Tests added**: `scoring.test.ts` — one case per verdict (none, no-go by licence 0, no-go by opposition High, go, conditional with reasons) and the sample gives Conditional go.
+
+### S13 Waitlist page (added 2026-11-02, Joey)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| ui + engine (one session) | `feature/waitlist` | S11 merged | 3 h | P4 | none |
+
+Why: after a pitch, interested people leave company, email and phone so the team can follow up. Not in intent.md §5; Joey asked for it on 2026-11-02. Every decision is in spec §12 "09 Waitlist" (settled with Joey one question at a time): own page `/waitlist`, Supabase table as the CRM, Slack webhook notification (optional), all three fields required, required consent checkbox, honeypot + per-IP and site-wide daily limits, removal by replying to us, PostHog `waitlist_joined`.
+
+**Risky changes — list before code** (personal data of people outside any dossier; a new migration, allowed by this plan):
+- *Contact details readable by anyone.* The table has RLS on, no policies, and `revoke all … from anon, authenticated`; only the server (secret key) writes. There is no read path in the app. Verify: migration review; `grep` shows `waitlist` is read nowhere in `src/`.
+- *Personal data leaking to analytics or logs.* The PostHog event carries only `from`; server logs never print the email or phone. Verify: unit test on the event props; code review of `console.*` lines.
+- *Slack webhook URL exposed.* Server-only env var, read only in `src/lib/waitlist/notify.ts` (imports `server-only`). Verify: the acceptance `grep` for `NEXT_PUBLIC_.*SLACK` prints nothing; build passes with `server-only`.
+- *Spam fills the table or floods Slack.* Honeypot + 5/IP/day + 200/day before any write or post. Verify: unit tests (6th call refused; honeypot stores and counts nothing).
+- *The raw IP stored.* Only `sha256(ip + EMAIL_HASH_SALT)` appears, inside the `usage_counters` scope. Verify: unit test.
+- *Migration not applied before deploy* → every submission fails with the friendly error. Verify: Joey runs `npx supabase@2 db push` before merging.
+- No paid API is called.
+
+**Files**: `supabase/migrations/20261102180000_waitlist.sql`, `src/lib/waitlist/{join.ts,join.test.ts,shared.ts,notify.ts}`, `src/lib/db/waitlist.ts`, `src/app/waitlist/{page.tsx,actions.ts,loading.tsx,error.tsx}`, `src/components/waitlist/**`, `src/app/privacy/page.tsx`, `src/lib/analytics.tsx` (event name), `src/app/d/[id]/docs/page.tsx` + `src/components/docs/docs-view.tsx` (a `footer` slot at the foot of the right column) and `src/app/s/[shareId]/page.tsx` (one link each), `.env.example`, `docs/metrics.md`, `design/waitlist-options/index.html`, `docs/spec.md`, `docs/plan.md`. `src/lib/types.ts` is not changed (the waitlist types live in `src/lib/waitlist/join.ts`).
+
+**Tests added**: `join.test.ts` — validation (each field, phone rule, consent required, `from` falls back to direct); honeypot stores and counts nothing; IP limit checked before the site limit and a refusal writes nothing; the stored scope holds a hash, not the IP; analytics props contain only `from`.
+
+**Acceptance**: the shared block (§4) with route `/waitlist` (plus `/privacy`, `/d/sample/docs`, `/s/<sample share id>` for the links) at 1440 and 390; `grep -rn 'NEXT_PUBLIC_[A-Z_]*SLACK' .` prints nothing.
+
+### S14 No spec-in rule + "What we could not verify" (added 2026-11-02, slices A + B of the consulting-report handover)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| ui + engine (one session) | `feature/spec-in-rule-and-unverified-box` | S12 | 3 h | P4 | none |
+
+Why: the research report (`reports/顧問級進場報告改進建議.md`) found one of three AI entry reports advised "spec-in", which can break Government Procurement Act Art. 26 and Art. 88. Its other finding: listing what we could not verify turns the Unverified rule into a selling point. Spec BRIEF-10, BRIEF-11, REP-13.
+
+**Risky changes: list before code** (sources and Unverified marks; prompts of paid calls, but no paid call is made):
+- *A: the check removes a lawful sentence* (a sourced fact about Art. 26, or the lawful alternative) and a section goes thin. Verify: `checks.test.ts` keeps an Art. 26 fact and the lawful alternative; it also runs every sample brief sentence and next step through the check and expects no match.
+- *A: Claude words spec-in in a way the phrase list misses.* The prompt rule is the main guard and the list is a backstop; removals are logged in `brief_check_log`, so new wordings can be added. Verify: test covers English and Chinese wordings (spec-in, 綁標, tailor the tender, help the buyer write the specification, lock out rivals, name your brand in the tender).
+- *A: a blocked next step.* It becomes Unverified ("Find a sourced contact route first"); this adds an Unverified mark and never hides one.
+- *A: changed prompts change live output.* Nothing is run now; the next real brief costs about US$0.30 as before. Mock briefs are not affected.
+- *B: the box says something is unverified when it is sourced, or the reverse.* It counts from the same data and filters as the marks on the map and metrics (`citable`, `scoreStakeholders`, `briefMetrics`). Verify: a unit test checks the sample's counts against those functions and that the box drops a line when that gap is filled.
+- *B: the box hides an existing Unverified mark.* It only adds; the export-control line, Unknown support and Unverified next steps stay where they are. Verify: existing tests unchanged; screenshots.
+- *B: the box reads as a finding or advice.* Fixed code sentences, grey dashed style like the export-control line, no Claude text, no names (counts and topic names only; the A4 is shared by link).
+- *B: the A4 runs past one page.* The A4 line is cut by characters with "and N more in the strategy brief". Verify: e2e one-page check.
+- No migration and no `src/lib/types.ts` change: the box is computed on read, like the metrics.
+
+**Files**: A: `src/lib/claude/{prompts.ts,brief.ts,briefing-note.ts,rate.ts}`, `src/lib/checks/{pre-display.ts,checks.test.ts}`, `src/components/brief/model.ts` and `src/components/map/model.ts` (display filters). B: `src/components/brief/{model.ts,unverified.tsx}`, `src/app/d/[id]/brief/page.tsx`, `src/components/report/{model.ts,a4-report.tsx,report.css}`, `src/lib/claude/brief.test.ts`, `design/unverified-options/index.html`. Both: `docs/spec.md`, `docs/plan.md`.
+
+**Tests added**: `checks.test.ts`: spec-in sentences removed with the reason; lawful sentences kept; no sample sentence matches. `brief.test.ts`: the box's lines and counts on the sample, and a line goes away when its gap is sourced.
+
+**Acceptance**: the shared block (§4) with routes `/d/sample/brief` and `/d/sample/report`; `PORT=3001 npx playwright test e2e/demo-path.spec.ts` (A4 stays one page).
+
+### S15 Partner candidates (added 2026-11-02, slice C of the consulting-report handover)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| ui (one session) | `feature/partner-cards` (stacked on S14) | S14 | 3 h | P4 | none |
+
+Why: the founder approved slices A, B, C, D and F on 2026-11-02 (not E, G, H). The research report ranks named local partners as the strongest upgrade: a paid report with no named partners repeats the free trade.gov guide. Joey chose "existing data only" (no Claude classification, no Parallel enrich). Spec NET-7, REP-14.
+
+**Risky changes: list before code** (sources and Unverified marks; China rule):
+- *A card read as an endorsement.* "Candidate" label, fixed line "Ranked by public evidence, not endorsed", human intro as the route.
+- *Evidence overstated* (an MOU shown as a contract). Each item is its own sourced text; code adds no kind label.
+- *A wrong flag.* Flags come from verbatim quotes and show that quote. Verify: tests for both flags and for non-matches.
+- *China rule.* An Industry stakeholder in China never gets a card. Verify: unit test.
+- *Unsourced items on a card.* Only accepted sources with a verified date; a next step with none shows Unverified. Verify: test that every evidence item has refs.
+- *A4 past one page.* Verify: e2e one-page check.
+- No migration, no `src/lib/types.ts` change, no paid call.
+
+**Files**: `src/components/partners/{model.ts,partners.test.ts,partner-card.tsx}`, `src/components/network/{model.ts,tabs.tsx,network-view.tsx}`, `src/app/d/[id]/network/page.tsx`, `src/components/report/{model.ts,a4-report.tsx,report.css}`, `design/partner-options/index.html`, `docs/spec.md`, `docs/plan.md`.
+
+**Tests added**: `partners.test.ts`: sample cards, order and counts; exclusive flag on MiTAC and JC Tech only; contract trouble on Tron Future only; China excluded; every evidence item cited.
+
+**Acceptance**: the shared block (§4) with routes `/d/sample/network?tab=partners` and `/d/sample/report`; `PORT=3001 npx playwright test e2e/demo-path.spec.ts`.
+
+### S16 Procurement routes and the first buyer (added 2026-11-02, slice D of the consulting-report handover)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| ui + engine (one session) | `feature/procurement-routes` (stacked on S15) | S15 | 4 h | P4 | none |
+
+Why: a consultant says who pays first, through which channel, and whether the money is there. The research report found the 2026 budget changed sharply, so every amount carries a date and a status. Joey chose a code rule for the first buyer (`docs/scoring.md` §9). Spec BRIEF-12, REP-15.
+
+**Risky changes: list before code** (sources and Unverified marks; brief prompt of a paid call; `types.ts` + migration, approved with this plan by Joey 2026-11-02):
+- *An out-of-date amount read as current.* No amount without `as_of` and `status`; the status is printed next to it. Verify: unit test.
+- *A route said to be open to foreign firms when it is not.* The access value is part of a cited row; an uncited row is removed. Verify: test.
+- *First buyer overstated.* Code rule with its explanation, worded "most likely". Verify: one test per ranking step.
+- *Spec-in.* Route sentences go through BRIEF-10.
+- *Migration not applied before deploy.* `briefs.routes jsonb default '[]'`; old rows read `[]` and the section hides. Verify: Joey runs `npx supabase@2 db push` before merging.
+- *Paid call.* None in this slice; the next user-triggered brief (~US$0.30, cost shown first) writes routes.
+- *A4 past one page.* Verify: e2e one-page check.
+
+**Files**: `supabase/migrations/20261102200000_brief_routes.sql`, `src/lib/types.ts`, `src/lib/db/{briefs,read}.ts`, `src/lib/claude/brief.ts`, `src/lib/scoring/{first-buyer.ts,index.ts,brief-status.ts,scoring.test.ts}`, `src/fixtures/sample-dossier.ts`, `src/components/brief/{model.ts,routes.tsx}`, `src/app/d/[id]/brief/page.tsx`, `src/components/report/{model.ts,a4-report.tsx,report.css}`, `src/lib/claude/brief.test.ts`, `design/route-options/index.html`, `docs/{spec,scoring,plan}.md`.
+
+**Tests added**: `scoring.test.ts`: first-buyer ranking steps and the none case. `brief.test.ts`: sample routes in order; an uncited route is removed; an undated amount is hidden; a missing route shows in What we could not verify.
+
+**Acceptance**: the shared block (§4) with routes `/d/sample/brief` and `/d/sample/report`; `PORT=3001 npx playwright test e2e/demo-path.spec.ts`.
+
+### S18 Meeting memo → influence score (added 2026-11-02, Erin)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| ui + engine (one session) | `feature/meeting-memo` | S16 | 5 h | P4 | none |
+
+Why: a meeting tells the team who really decides, who holds the money and what's moving now, but the debrief only changed support. Erin chose "memo wins" (a first-hand answer replaces the research rating for that factor), quick questions plus optional detail, and the sample showing the loop everywhere. Spec TRK-9…12, `docs/scoring.md` §3.2.
+
+**Risky changes: list before code** (scores and sources; `types.ts` + migration, approved with this plan by Erin 2026-11-02):
+- *A team's impression overriding sourced research.* The factor is labelled "From your meeting, {date}" wherever it's explained; Undo restores the research rating; "Not sure" writes nothing. Verify: unit tests for override, Not sure and Undo.
+- *China rule.* "Who we met" for a China stakeholder is role only; a value that looks like a personal name is refused by the client and the zod check. Verify: test.
+- *Memo text steering Claude.* Memo free text is bounded (zod) and goes into its own fenced `<debrief>` block; notes are never sent. Verify: `brief.test.ts` fence test.
+- *Privacy.* The memo is excluded from the share link, A4 and playbook. Verify: e2e share-link HTML has no memo text; playbook test unchanged.
+- *Migration not applied before deploy.* `debriefs.memo jsonb` (nullable), `facts.debrief_id` and `edges.debrief_id` (nullable, cascade). Old rows read null. Verify: the merger runs `npx supabase@2 db push` before merging.
+- *Research statements hidden by a run-less fact.* `read.ts` ignores debrief facts when picking a stakeholder's latest run. Verify: test.
+- *Paid call.* None.
+
+**Files**: `supabase/migrations/20261102220000_debrief_memo.sql`, `src/lib/types.ts`, `src/lib/tracker/{memo.ts,flow.ts,flow.test.ts}`, `src/lib/scoring/{influence.ts,brief-status.ts,scoring.test.ts}`, `src/lib/db/{tracker.ts,read.ts}`, `src/app/d/[id]/tracker/actions.ts`, `src/components/tracker/{debrief-form.tsx,memo-detail.tsx,debrief-result.tsx,tracker-view.tsx}`, `src/components/score/explain.ts`, `src/components/map/{model.ts,sample-map.tsx}`, `src/app/d/[id]/map/page.tsx`, `src/components/brief/{model.ts,sample-live.tsx}`, `src/app/d/[id]/brief/page.tsx`, `src/lib/sample/{overlay.ts,use-sample-dossier.ts}`, `src/lib/claude/{brief.ts,briefing-note.ts,prompts.ts,brief.test.ts}`, `e2e/demo-path.spec.ts`, `design/memo-options/index.html`, `docs/{spec,scoring,plan}.md`.
+
+**Tests added**: `flow.test.ts`: a "Decides" answer → authority 3 replacing research; Not sure adds nothing; Undo restores influence exactly; stance override; memo edge raises centrality; China name refused. `scoring.test.ts`: debrief-first rule; brief status gives the debrief reason only. e2e: sample memo → map details shows "From your meeting" and the new influence, brief shows Out of date, Undo restores; share link has no memo text.
+
+**Acceptance**: the shared block (§4) with routes `/d/sample/tracker`, `/d/sample/map`, `/d/sample/brief`; `npx playwright test e2e/demo-path.spec.ts`.
+
 ---
+
+### S17 Traditional Chinese (繁中) version (added 2026-11-02, Erin)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| ui (one side session) | `claude/zh-tw-68e50f` | S16 merged | 5 h | P4 | none |
+
+Why: Erin asked for a Chinese version of the app beside the English one, with a visible switch. Spec SHELL-4 (I18N-1…7). Runs beside `feature/meeting-memo`, which touches `src/components/{tracker,score}/*`, `src/components/map/details-panel.tsx`, `src/lib/{tracker,scoring}/*` and `src/lib/types.ts`: in those files strings are only wrapped in `t(…)`, nothing is restructured.
+
+**Approach** (Next.js 16 i18n guide read; no package): the guide's `app/[lang]` routing would move every route and change every dossier and share URL, so the locale is a cookie instead. A typed dictionary keyed by the English text (`src/lib/i18n/zh-TW.ts`); `t("Add to tracker")` only compiles when the key exists, and English is the fallback. Server components call `await getT()` (reads the cookie inside the existing `<Suspense>` boundaries; `cacheComponents` stays on); client components call `useT()` from a provider in the root layout. Code-written sentences built in model files are translated where they are shown with `tx()`, which matches dictionary patterns such as `Based on {n} of {m} factors` and keeps the `{…}` values verbatim, so model files do not change.
+
+**Risky changes — list before code** (sources and Unverified marks; share links):
+- *A source excerpt, title, quote or name gets translated or changed.* `tx()` is only applied to code-written strings; placeholder values are copied as they are. Verify: unit test that `tx` leaves a sample excerpt and an organisation name unchanged and that every `{…}` value survives; e2e checks a sample excerpt is identical in both languages.
+- *An "Unverified" mark or "Sample data" stamp disappears in Chinese.* They become 未驗證 / 範例資料 with the English word kept in `data-*`/`title`. Verify: e2e checks 範例資料 on the Chinese A4; screenshots.
+- *The Chinese A4 runs past one page.* Verify: e2e prints the Chinese A4 and expects one page.
+- *Share or dossier URLs change.* The locale never enters a URL. Verify: e2e share link text is the same in both languages.
+- *Static shell shows the wrong language.* Locale-dependent text renders inside `<Suspense>`; the static shell only holds skeletons. Verify: build passes with `cacheComponents`; screenshots in Chinese with a cold load.
+- *Research text mistranslated by a paid call.* No paid call is made; research text stays in its language.
+- No migration, no `src/lib/types.ts` change.
+
+**Files**: new `src/lib/i18n/{index.ts,server.ts,client.tsx,zh-TW.ts,i18n.test.ts}`, `src/components/shell/lang-switch.tsx`, `src/components/brief/evidence-card.tsx` (the evidence card moved out of `evidence.tsx` so the sources page, a client component, can still use it); string wrapping in `src/app/**/*.tsx` (pages, layouts, loading, error, not-found), `src/components/**/*.tsx`, `src/components/report/report.css` and `src/app/globals.css` (CJK font stack, A4 fit), `src/app/layout.tsx` (Noto Sans TC, provider), `e2e/demo-path.spec.ts` (Chinese check), `design/language-options/index.html`, `docs/spec.md`, `docs/plan.md`. Model `.ts` files and `src/lib/**` (other than `src/lib/i18n/`) are not changed, except the date formatter calls listed in their components.
+
+**Tests added**: `i18n.test.ts`: `tx` exact and pattern matches, values kept verbatim, English fallback, Chinese dates. `demo-path.spec.ts`: switch to 繁中 on `/d/sample`, tabs read 市場/地圖, the A4 prints on one page with 範例資料, switch back to English.
+
+**Acceptance**: the shared block (§4) with routes `/`, `/d/sample`, `/d/sample/{map,brief,report,tracker,network,docs,sources}`, `/s/<sample share id>`, `/privacy`, `/waitlist`, in both languages; `PORT=3001 npx playwright test e2e/demo-path.spec.ts`.
+
+### S18 Market conclusions, brief and A4 in 繁中 (added 2026-11-02, Erin; brief and A4 added the same day)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| ui (one side session) | `feature/zh-sample-conclusions` | S17 merged | 1.5 h | P4 | none |
+
+Why: spec I18N-8. Sample only; real dossiers need a paid step, so the options and costs go to Erin in the PR (not built).
+
+**Risky changes — list before code** (sources and Unverified marks; sample data):
+- *A translation changes a fact* (a number, a date, who decides). Verify: unit test that every number in each Chinese sentence matches the English (NT$210 billion → 2,100 億, 27 August 2026 → 2026年8月27日); organisation names are the stakeholders' sourced `nameZh`.
+- *A translation stands in for a real dossier's sentence.* `t.r` is an exact-match lookup on the sample's sentences only. Verify: unit test that an unknown sentence comes back unchanged.
+- *A home conclusion is missed.* Verify: unit test that every bottom line, key judgment and next step on `/d/sample` has an entry; e2e that no conclusion on `/d/sample` in 繁中 has a run of English words.
+- No paid call, no migration, no `src/lib/types.ts` change; tracker and memo files untouched.
+
+**Files**: `src/fixtures/sample-dossier.zh.ts` (new), `src/lib/i18n/{index.ts,zh-TW.ts,i18n.test.ts}`, `src/components/home/{model.ts,market-header.tsx,key-judgments.tsx,next-moves.tsx,dossier-select.tsx}`, `src/components/brief/{rationale,exec-path,seven-day,requirements,routes}.tsx`, `src/app/d/[id]/brief/page.tsx`, `src/components/report/a4-report.tsx`, `e2e/demo-path.spec.ts`, `docs/spec.md`, `docs/plan.md`.
+
+**Acceptance**: `npm test`, `npm run build`, `npx playwright test e2e/demo-path.spec.ts` (no English sentence on the sample's home, brief and A4 in 繁中; the A4 prints on one page); screenshots of `/d/sample`, `/d/sample/brief`, `/d/sample/report` in 繁中 at 1440 and 390.
+
+### S19 繁中 for real dossiers: translation pass after the brief (option B, Erin 2026-11-03)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| engine + ui (one side session) | `feature/zh-real-dossiers` (stacked on S18's `feature/zh-sample-conclusions`) | S18 | 4 h | P4 | none |
+
+Why: spec I18N-9. Erin picked option B from PR #28 and approved the migration and `src/lib/types.ts` change. (S18 here is the 繁中 sample slice; PR #26's meeting memo also says S18, so this is S19.)
+
+**Risky changes — list before code** (a paid API call; sources and Unverified marks; a migration):
+- *A translation changes a fact* (number, date, amount). Code compares the numbers in each pair; a mismatch falls back to English. Verify: unit tests for a changed number, a dropped number, and billion/億 and date conversions passing.
+- *A translation cites differently or invents a name.* The output carries the item's source ids, which must equal the English ones; names travel as tokens that must all come back, and the raw output may not contain any stakeholder's Chinese name outside a token. A translated abbreviation (e.g. 警政署 for "NPA") can't be caught by code; the prompt says names that aren't tokens stay in their original letters. Verify: unit tests for a missing token, an extra source id and a raw Chinese name.
+- *An unchecked sentence gets translated.* Input is built only from the stored brief (already through the pre-display check) and sourced action facts. Verify: unit test that a removed sentence isn't sent.
+- *Prompt injection from data.* Each sentence is fenced as data; no excerpt, title or URL is sent. Verify: prompt test.
+- *China organisation-level rule.* Person stakeholders in China are never tokenised with a name (their token stays the English organisation-level label) and the sentences come from text that already passed the check. Verify: unit test.
+- *Cost.* One Sonnet call per brief version: input ≈ 4–10k tokens, output ≈ 3–7k → ≈ US$0.05–0.10, worst case (max_tokens 12,000) ≈ US$0.14. Estimate written to `cost_ledger` before the call (purpose `brief_zh`); inside a run it is capped like the brief (the brief reserve is free once the brief is written); RE-BRIEF is limited by the daily AI counter, and its shown estimate rises to US$0.40. No live call is made in this slice; tests use mock mode.
+- *Translation failure breaks the brief.* It runs after the brief row is inserted, inside try/catch; failure only logs. Verify: unit test with a failing call.
+- *Migration not applied before deploy* → inserts/updates fail. `briefs.zh jsonb null`; the update is skipped on error and logged. Verify: Joey runs `npx supabase@2 db push` before merging.
+
+**Files**: `supabase/migrations/20261103090000_brief_zh.sql`, `src/lib/types.ts` (`Brief.zh`), `src/lib/db/{briefs,read}.ts`, `src/lib/claude/{translate.ts,translate.test.ts,brief.ts}`, `src/lib/limits/ledger.ts` (`brief_zh` uses the brief's cap), `src/lib/research/steps.ts`, `src/app/actions/research.ts`, `src/lib/i18n/{index.ts,zh-TW.ts}`, `src/components/home/*`, `src/components/brief/*`, `src/components/report/{model.ts,a4-report.tsx}`, `src/app/d/[id]/brief/page.tsx`, `docs/spec.md`, `docs/plan.md`. Tracker and memo files untouched.
+
+**Tests added**: `translate.test.ts` — the checks (numbers, ids, tokens, raw names, Chinese present), mock output on the sample, failure leaves `zh` null, fenced prompt with no excerpts.
+
+**Acceptance**: `npm test`, `npm run build`, `npx playwright test e2e/demo-path.spec.ts` (mock mode). No paid call.
 
 ## 6. Risks
 
@@ -653,7 +874,7 @@ Joey picked option C "Briefing room" and the word "Markets" on 2026-11-02 (spec 
 | 05 | Top 5 stakeholders table | REP-6 | S2 | S2-T4 | P1 |
 | 05 | Recommended entry path, 7-day plan | REP-7 | S2 | S2-T4 | P1 |
 | 05 | Where to meet them | REP-8 | S2 | S2-T4 | P1 |
-| 05 | Key risks | REP-9 | S2 | S2-T4 | P1 |
+| 05 | Entry requirements (Key risks when none) | REP-9, BRIEF-9 | S2, S11 | S2-T4, S11 | P1 |
 | 05 | Source list and full-list link | REP-10 | S2 | S2-T4, S2-T5 | P1 |
 | 05 | Share link, Sample data line | REP-11, §9 | S2 | S2-T4, S2-T5 | P1 |
 | 05 | A4 print styles | REP-12 | S2 | S2-T4 | P1 |

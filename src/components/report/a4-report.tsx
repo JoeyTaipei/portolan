@@ -1,8 +1,13 @@
-import { fmtDay } from "@/components/brief/model";
+import {
+  EXPORT_CHECK,
+  NO_FIRST_BUYER,
+  REQUIREMENT_LABEL,
+} from "@/components/brief/model";
 import { MarkIcon } from "@/components/map/node-mark";
 import { STANCE_LABEL, type SourceRef } from "@/components/score/explain";
-import { IcdScale, icdText } from "@/components/score/icd-scale";
+import { icdText } from "@/components/score/icd-scale";
 import { Stamp } from "@/components/score/stamp";
+import { getT } from "@/lib/i18n/server";
 import { MapExhibit } from "./map-exhibit";
 import type { ReportVM } from "./model";
 import "./report.css";
@@ -16,37 +21,52 @@ function dedupeRefs(refs: SourceRef[]): SourceRef[] {
 
 function Cite({ refs }: { refs: SourceRef[] }) {
   if (refs.length === 0) return null;
-  return <span className="rp-cite"> [{refs.map((r) => r.label).join(", ")}]</span>;
+  return (
+    <span className="rp-cite"> [{refs.map((r) => r.label).join(", ")}]</span>
+  );
 }
 
-export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
+export async function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
+  const t = await getT();
   const route = r.exhibit.route
     .map((id) => r.exhibit.nodes.find((n) => n.id === id)?.short)
     .filter((n): n is string => !!n);
+  const names = t.locale === "zh-TW" ? route.map((x) => t.n(x, r.zh)).join("、") : route.length === 1 ? route[0] : `${route.slice(0, -1).join(", ")} and ${route.at(-1)}`;
   const takeaway =
-    route.length > 0 ? `Contact ${route.length === 1 ? route[0] : `${route.slice(0, -1).join(", ")} and ${route.at(-1)}`} first.` : "No stakeholder is ready to contact first yet.";
+    route.length > 0 ? t("Contact {name} first.", { name: names }) : t("No stakeholder is ready to contact first yet.");
 
   return (
-    <article className="rp-sheet" aria-label="One-page market entry brief" data-testid="a4-sheet">
+    <article
+      className="rp-sheet"
+      aria-label={t("One-page market entry brief")}
+      data-testid="a4-sheet"
+    >
       <header className="rp-head">
         <div className="rp-cart">
           <div className="k">
-            <span>Market entry brief · Confidential</span>
-            {r.isSample && <span className="sample">Sample data</span>}
+            <span>{t("Market entry brief · Confidential")}</span>
+            {r.isSample && <span className="sample">{t("Sample data")}</span>}
           </div>
-          <h1>{r.name}</h1>
+          <h1>{t.r(r.name, r.zh)}</h1>
           {r.preparedFor && (
             <p>
-              Prepared for <b>{r.preparedFor.company}</b>, {r.preparedFor.product}, {r.preparedFor.date}
+              {t("Prepared for")} <b>{t.r(r.preparedFor.company, r.zh)}</b>,{" "}
+              {t.r(r.preparedFor.product, r.zh)}, {t.dt(r.preparedFor.date)}
             </p>
           )}
         </div>
         <div className="rp-brand">
           <span className="wm">Portolan</span>
           <div>
-            <b>{r.confidence.value}</b>
+            <span className="vk">{t("Entry verdict")}</span>
+            <b
+              className={`rp-verdict ${r.verdict.kind}`}
+              data-testid="a4-verdict"
+            >
+              {t.k(r.verdict.label)}
+            </b>
             <span>
-              Data confidence. {r.stakeholderCount} stakeholders mapped; {r.confidence.note}.
+              {t("Data confidence {value}; {note|t}.", { value: t.x(r.confidence.value ?? ""), note: t.x(r.confidence.note) })}
             </span>
           </div>
         </div>
@@ -55,21 +75,36 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
       <div className="rp-row">
         <section>
           {r.judgment && (
-            <section className="rp-bottom" aria-label="Bottom line">
+            <section className="rp-bottom" aria-label={t("Bottom line")}>
               <p>
-                <b>Bottom line:</b> {r.judgment.text} <span className="t">{icdText(r.judgment.icd)}, {r.judgment.confidence.toLowerCase()} confidence.</span>
+                <b>{t("Bottom line:")}</b> <span data-testid="conclusion">{t.r(r.judgment.text, r.zh)}</span>{" "}
+                <span className="t">
+                  {t("{icd|t}, {level|t} confidence.", { icd: t.k(icdText(r.judgment.icd)), level: t.locale === "zh-TW" ? t.k(r.judgment.confidence) : r.judgment.confidence.toLowerCase() })}
+                </span>
                 <Cite refs={r.judgment.refs} />
               </p>
-              <IcdScale term={r.judgment.icd} />
+              {r.verdict.lead && (
+                <>
+                  <p className="rp-vlead">{t.k(r.verdict.lead)}</p>
+                  <ul className="rp-vreasons">
+                    {r.verdict.reasons.map((x) => (
+                      <li key={x.text}>
+                        {t.k(x.text)}
+                        <Cite refs={x.refs} />
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
             </section>
           )}
-          <p className="rp-lab">Executive summary</p>
+          <p className="rp-lab">{t("Executive summary")}</p>
           <p className="rp-summary">
             {r.summary.length === 0
-              ? "Not enough sourced facts for this section."
+              ? t("Not enough sourced facts for this section.")
               : r.summary.map((s, i) => (
                   <span key={i}>
-                    {s.text}
+                    <span data-testid="conclusion">{t.r(s.text, r.zh)}</span>
                     <Cite refs={s.refs} />{" "}
                   </span>
                 ))}
@@ -77,10 +112,14 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
           <div className="rp-kj">
             {r.metrics.map((m) => (
               <div key={m.key} className={m.key === "window" ? "w" : undefined}>
-                {m.value ? <b>{m.value}</b> : <b className="none">{m.note}</b>}
+                {m.value ? <b>{t.x(m.value)}</b> : <b className="none">{t.x(m.note)}</b>}
                 <span>
-                  {m.label}
-                  {m.value ? `, ${m.note.charAt(0).toLowerCase()}${m.note.slice(1)}` : ""}
+                  {t.k(m.label)}
+                  {m.value
+                    ? t.locale === "zh-TW"
+                      ? `，${t.x(m.note)}`
+                      : `, ${m.note.charAt(0).toLowerCase()}${m.note.slice(1)}`
+                    : ""}
                 </span>
               </div>
             ))}
@@ -90,33 +129,48 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
       </div>
 
       <section>
-        <p className="rp-lab">Top {r.top.length} stakeholders by influence</p>
+        <p className="rp-lab">{t("Top {n} stakeholders by influence", { n: r.top.length })}</p>
         <table className="rp-table">
           <thead>
             <tr>
-              <th>Stakeholder</th>
-              <th>Stance</th>
-              <th>Influence</th>
-              <th className="nx">Next move</th>
-              <th>Sources</th>
+              <th>{t("Stakeholder")}</th>
+              <th>{t("Stance")}</th>
+              <th>{t("Influence")}</th>
+              <th className="nx">{t("Next move")}</th>
+              <th>{t("Sources")}</th>
             </tr>
           </thead>
           <tbody>
-            {r.top.map((t) => (
-              <tr key={t.id}>
+            {r.top.map((row) => (
+              <tr key={row.id}>
                 <td className="nm">
-                  {t.first && <span className="k" aria-label={`Contact ${t.first}${t.first === 1 ? "st" : t.first === 2 ? "nd" : "rd"}`}>{t.first}</span>}
-                  {t.name}
+                  {row.first && (
+                    <span
+                      className="k"
+                      aria-label={
+                        t.locale === "zh-TW"
+                          ? t("Contact {n}", { n: row.first })
+                          : `Contact ${row.first}${row.first === 1 ? "st" : row.first === 2 ? "nd" : "rd"}`
+                      }
+                    >
+                      {row.first}
+                    </span>
+                  )}
+                  {t.n(row.name, r.zh)}
                 </td>
                 <td className="st">
-                  <MarkIcon mark={t.mark} />
-                  {STANCE_LABEL[t.mark]}
+                  <MarkIcon mark={row.mark} />
+                  {t.k(STANCE_LABEL[row.mark])}
                 </td>
-                <td className="in">{t.influence}</td>
-                <td className={t.nextVerified ? undefined : "un"}>{t.next}</td>
+                <td className="in">{t.x(row.influence)}</td>
+                <td className={row.nextVerified ? undefined : "un"} data-testid="conclusion">{t.r(row.next, r.zh)}</td>
                 <td className="src">
-                  {t.refs.map((s) => (
-                    <span key={s.id} className="mr-1 inline-block" title={s.title}>
+                  {row.refs.map((s) => (
+                    <span
+                      key={s.id}
+                      className="mr-1 inline-block"
+                      title={s.title}
+                    >
                       {s.label}
                     </span>
                   ))}
@@ -129,28 +183,49 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
 
       <div className="rp-cols">
         <section>
-          <p className="rp-lab">Recommended entry path</p>
-          {r.path.length === 0 ? (
-            <p className="rp-path">Not enough sourced facts for this section.</p>
+          {r.hasRoutes ? (
+            <>
+              <p className="rp-lab">{t("Most likely first buyer")}</p>
+              {r.firstBuyer ? (
+                <p className="rp-path" data-testid="a4-first-buyer">
+                  <b>{t.n(r.firstBuyer.who, r.zh)}</b>{t.locale === "zh-TW" ? "，" : ", "}{t.k(r.firstBuyer.how)}{t(".")} {t("Why:")}{" "}
+                  {t.x(r.firstBuyer.why)}{t(".")}
+                  <Cite refs={r.firstBuyer.refs} />
+                </p>
+              ) : (
+                <p className="rp-path">{t.k(NO_FIRST_BUYER)}.</p>
+              )}
+            </>
           ) : (
-            <p className="rp-path">
-              {r.path.map((p, i) => (
-                <span key={p.stakeholderId}>
-                  {i > 0 && " → "}
-                  <b>{p.who}</b>
-                </span>
-              ))}
-              <Cite refs={dedupeRefs(r.path.flatMap((p) => p.why.refs))} />
-              <span className="sub">In this order; the reasons for each step are in the strategy brief.</span>
-            </p>
+            <>
+              <p className="rp-lab">{t("Recommended entry path")}</p>
+              {r.path.length === 0 ? (
+                <p className="rp-path">
+                  {t("Not enough sourced facts for this section.")}
+                </p>
+              ) : (
+                <p className="rp-path">
+                  {r.path.map((p, i) => (
+                    <span key={p.stakeholderId}>
+                      {i > 0 && " → "}
+                      <b>{t.n(p.who, r.zh)}</b>
+                    </span>
+                  ))}
+                  <Cite refs={dedupeRefs(r.path.flatMap((p) => p.why.refs))} />
+                  <span className="sub">
+                    {t("In this order; the reasons for each step are in the strategy brief.")}
+                  </span>
+                </p>
+              )}
+            </>
           )}
-          <p className="rp-lab">7-day plan</p>
+          <p className="rp-lab">{t("7-day plan")}</p>
           <ol className="rp-wps">
             {r.plan.map((p, i) => (
               <li key={p.days}>
                 <span className="wp">{i + 1}</span>
                 <span>
-                  <b>{p.days}.</b> {p.text}
+                  <b>{t.k(p.days)}{t(".")}</b> <span data-testid="conclusion">{t.r(p.text, r.zh)}</span>
                   <Cite refs={p.refs} />
                 </span>
               </li>
@@ -158,51 +233,102 @@ export function A4Report({ r, shareUrl }: { r: ReportVM; shareUrl: string }) {
           </ol>
         </section>
         <section>
-          <p className="rp-lab">Where to meet them</p>
-          {r.meet.length === 0 ? (
-            <p className="rp-list">No sourced event with a date yet.</p>
+          <p className="rp-lab">{t("Partner candidates")}</p>
+          {r.partners.length === 0 ? (
+            <p className="rp-list">
+              {t("No Taiwanese firm with sourced evidence yet.")}
+            </p>
           ) : (
-            <ul className="rp-list">
-              {r.meet.map((m) => (
-                <li key={m.title}>
-                  <b>{m.title}</b>, {fmtDay(m.date)}.
-                  {m.mapped > 0 && ` ${m.mapped} mapped stakeholder${m.mapped === 1 ? "" : "s"} expected.`}
+            <ul
+              className="rp-list"
+              aria-label={t("Partner candidates")}
+              data-testid="a4-partners"
+            >
+              {r.partners.map((p, i) => (
+                <li key={p.id}>
+                  <b>
+                    {i + 1}. {t.n(p.short, r.zh)}
+                  </b>
+                  {t(p.sources === 1 ? ", {n} source" : ", {n} sources", { n: p.sources })}
+                  {p.buyers > 0 && t(p.buyers === 1 ? ", tied to {n} buyer" : ", tied to {n} buyers", { n: p.buyers })}
+                  {p.flags.length > 0 && (t.locale === "zh-TW" ? `；${p.flags.map(t.k).join("、")}` : `; ${p.flags.join(", ")}`)}
+                  <Cite refs={p.refs} />
                 </li>
               ))}
             </ul>
           )}
-          <p className="rp-lab" style={{ marginTop: 11 }}>
-            Key risks
-          </p>
-          {r.risks.length === 0 ? (
-            <p className="rp-list">Not enough sourced facts for this section.</p>
+          {r.requirements.length > 0 ? (
+            <>
+              <p className="rp-lab" style={{ marginTop: 11 }}>
+                {t("Entry requirements")}
+              </p>
+              <ul className="rp-list rp-req" aria-label={t("Entry requirements")}>
+                {r.requirements.map((x) => (
+                  <li key={x.topic}>
+                    <b>{t.k(x.label)}{t(".")}</b> <span data-testid="conclusion">{t.r(x.text, r.zh)}</span>
+                    <Cite refs={x.refs} />
+                  </li>
+                ))}
+                {r.exportCheck && (
+                  <li className="chk">
+                    <b>{t.k(REQUIREMENT_LABEL.export_control)}.</b>{" "}
+                    <i>{t.k(EXPORT_CHECK)}</i>
+                  </li>
+                )}
+              </ul>
+            </>
           ) : (
-            <ul className="rp-list rp-haz">
-              {r.risks.map((s, i) => (
-                <li key={i}>
-                  {s.text}
-                  <Cite refs={s.refs} />
-                </li>
-              ))}
-            </ul>
+            <>
+              <p className="rp-lab" style={{ marginTop: 11 }}>
+                {t("Key risks")}
+              </p>
+              {r.risks.length === 0 ? (
+                <p className="rp-list">
+                  {t("Not enough sourced facts for this section.")}
+                </p>
+              ) : (
+                <ul className="rp-list rp-haz">
+                  {r.risks.map((s, i) => (
+                    <li key={i}>
+                      <span data-testid="conclusion">{t.r(s.text, r.zh)}</span>
+                      <Cite refs={s.refs} />
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </>
           )}
         </section>
       </div>
 
+      <p className="rp-gaps" data-testid="a4-gaps">
+        <b>{t("Not verified:")}</b>{" "}
+        {r.gaps.items.length === 0
+          ? t("every item on this page has a source.")
+          : `${r.gaps.items.map(t.x).join(" · ")}${r.gaps.more ? t(", and {n} more in the strategy brief", { n: r.gaps.more }) : ""}${t(".")}`}
+      </p>
+
       <footer className="rp-srcs">
-        <ol aria-label="Sources in the table">
+        <ol aria-label={t("Sources in the table")}>
           {r.sources.map((s) => (
             <li key={s.id} title={s.title}>
-              [{s.label}] <Stamp reliability={s.reliability} credibility={s.credibility} />
-              {s.verifiedAt ? `checked ${fmtDay(s.verifiedAt)}` : "date unverified"} · {s.title}
+              <span className="type">[{s.label}]</span>{" "}
+              <Stamp reliability={s.reliability} credibility={s.credibility} />
+              {s.verifiedAt
+                ? t("checked {date}", { date: t.date(s.verifiedAt, { utc: true }) })
+                : t("date unverified")}{" "}
+              · {s.title}
             </li>
           ))}
         </ol>
         <div className="rp-foot">
           <span>
-            Full list of {r.citedIds.length} cited sources: <b>{shareUrl}/sources</b>
+            {t("Full list of {n} cited sources:", { n: r.citedIds.length })}{" "}
+            <b>{shareUrl}/sources</b>
           </span>
-          {r.isSample && <span>Sample data · every claim links to a cited source</span>}
+          {r.isSample && (
+            <span>{t("Sample data · every claim links to a cited source")}</span>
+          )}
         </div>
       </footer>
     </article>

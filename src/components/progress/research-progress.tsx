@@ -1,3 +1,4 @@
+import { getT } from "@/lib/i18n/server";
 import "server-only";
 import { aliasRows, refreshStakeholders } from "@/lib/db/dossiers";
 import { getDb } from "@/lib/db/client";
@@ -34,14 +35,16 @@ export async function MatchCheckList({ dossierId }: { dossierId: string }) {
     return null;
   }
   if (!items.length) return null;
+  const t = await getT();
   return (
     <section aria-labelledby="match-h" className="flex flex-col gap-2 rounded-[var(--r-m)] border border-[var(--notice)] bg-panel p-3.5">
       <h2 id="match-h" className="m-0 text-[15px] font-bold">
-        Needs your check
+        {t("Needs your check")}
       </h2>
       <p className="m-0 text-[13px] text-ink2">
-        The latest research found {items.length === 1 ? "a name" : `${items.length} names`} close to stakeholders already on your map. Until you
-        decide, they show as Pending check and are left out of the scores.
+        {items.length === 1
+          ? t("The latest research found a name close to stakeholders already on your map. Until you decide, they show as Pending check and are left out of the scores.")
+          : t("The latest research found {n} names close to stakeholders already on your map. Until you decide, they show as Pending check and are left out of the scores.", { n: items.length })}
       </p>
       <ul className="m-0 list-none p-0">
         {items.map((it) => (

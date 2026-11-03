@@ -1238,6 +1238,41 @@ const brief: Brief = {
     s("A domestic counter-drone contract failed acceptance tests, so new systems face strict testing.", "taipeitimes-2003860773"),
     s("RF devices need NCC approval before import, which can delay a demo.", "ncc-keyword"),
   ],
+  // BRIEF-9: each line restates its source; export control has none, so the screens add the check line.
+  requirements: [
+    { topic: "who_can_bid", ...s("Only domestic firms can bid on the police counter-drone tender; foreign firms cannot.", "upmedia-263412") },
+    { topic: "local_content", ...s("Drone module parts must be made in Taiwan with no Chinese parts; foreign technology may fill gaps.", "taiwannews-6253686") },
+    { topic: "screening", ...s("Police tender bidders pass a security review, then NCSIST tests.", "upmedia-272263") },
+    { topic: "import_permit", ...s("Controlled RF devices need NCC approval before import.", "ncc-keyword") },
+    { topic: "procurement_route", ...s("US firms can sell through Foreign Military Sales or direct commercial sales to Taiwanese buyers.", "trade-systems") },
+  ],
+  // BRIEF-12: one row per route, each restating its source. The NT$210bn has no date in its
+  // source, so the screens show "Amount not dated"; the NCSIST award date is 1150721 (ROC calendar).
+  routes: [
+    {
+      route: "domestic_tender",
+      ...s("The Armaments Bureau buys drones built in Taiwan; foreign technology may fill gaps.", "trade-systems", "taiwannews-6253686"),
+      buyerId: "ab",
+      access: "via_local_partner",
+      money: { amount: "NT$210 billion", asOf: null, status: "proposed", sourceIds: [sid("mnd-87537")] },
+    },
+    {
+      route: "police_ci",
+      ...s("The police tender is open to domestic firms only; foreign firms cannot bid.", "upmedia-263412"),
+      buyerId: "npa",
+      access: "via_local_partner",
+      money: { amount: "36億7000 萬元", asOf: "2026-07-11", status: "open_tender", sourceIds: [sid("upmedia-263412")] },
+    },
+    {
+      route: "ncsist",
+      ...s("The Coast Guard awarded NCSIST a counter-drone jamming equipment contract.", "zhupiter-99"),
+      buyerId: "ncsist",
+      access: "unclear",
+      money: { amount: "142200000", asOf: "2026-07-21", status: "awarded", sourceIds: [sid("zhupiter-99")] },
+    },
+    { route: "fms", ...s("US firms can sell through Foreign Military Sales, handled by the US Department of Defense.", "trade-systems"), buyerId: "mnd", access: "direct", money: null },
+    { route: "dcs", ...s("Direct commercial sales go straight to Taiwanese entities.", "trade-systems"), buyerId: "mnd", access: "direct", money: null },
+  ],
   meet: events
     .filter((e) => e.kind === "event" && e.date)
     .map((e) => ({ eventId: e.id, title: e.title, date: e.date!, mappedStakeholders: 0, sourceIds: e.sourceIds })),

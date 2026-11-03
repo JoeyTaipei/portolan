@@ -1,6 +1,7 @@
 // Builds what the map and home screens draw from a Dossier. Runs on the server with an explicit
 // `now`; every score comes from src/lib/scoring. Sourcing rule: only accepted sources are cited,
 // and a fact without one is shown as Unverified (never as a sourced value).
+import { suggestsSpecIn } from "@/lib/checks/pre-display";
 import { contactFirst, influenceBreakdown, scoreStakeholders, sourcesFor } from "@/lib/scoring";
 import type { Banded, Category, Dossier, Fact, Level, Stance, StakeholderStatus, SupportResult } from "@/lib/types";
 import {
@@ -45,6 +46,8 @@ export interface MapModel {
   dossierId: string;
   isSample: boolean;
   name: string;
+  /** Accepted sources behind this map (Exhibit source line). */
+  sourceCount: number;
   nodes: NodeVM[];
   /** Sourced ties only. */
   edges: { a: string; b: string }[];
@@ -86,7 +89,8 @@ export function buildMapModel(d: Dossier, now: Date): MapModel {
     const role = newest(d.facts, s.id, "role");
     const action = newest(d.facts, s.id, "action");
     const actionSources = action.sourced ? refsFor(action.sourced.sourceIds, byId) : [];
-    const actionText = action.sourced && actionSources.length > 0 ? text(action.sourced.value) : null;
+    // BRIEF-10: a saved next step that suggests spec-in is not shown (it reads as Unverified).
+    const actionText = action.sourced && actionSources.length > 0 && !suggestsSpecIn(text(action.sourced.value) ?? "") ? text(action.sourced.value) : null;
     const roleSourced = role.sourced && refsFor(role.sourced.sourceIds, byId).length > 0 ? text(role.sourced.value) : null;
     const pos = s.x !== null && s.y !== null && s.z !== null ? { x: s.x, y: s.y, z: s.z } : fallbackPos(i, d.stakeholders.length);
     const label = s.short ?? s.name;
@@ -138,6 +142,7 @@ export function buildMapModel(d: Dossier, now: Date): MapModel {
     dossierId: d.id,
     isSample: d.isSample,
     name: d.name,
+    sourceCount: accepted.length,
     nodes,
     edges: d.edges
       .filter((e) => e.status === "sourced" && e.sourceIds.some((id) => byId.has(id)))
