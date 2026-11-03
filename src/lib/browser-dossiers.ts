@@ -2,7 +2,7 @@
 // dossier, so anyone using this browser can read this list. Only the id, the name and when it was
 // last opened are stored (never an email), and the list is never sent anywhere as a whole.
 // The sample is never stored: it is always listed. Every storage access is wrapped.
-import { SAMPLE_DOSSIER_ID } from "@/lib/ids";
+import { isSampleId } from "@/lib/ids";
 
 const KEY = "portolan.dossiers";
 const MAX = 20;
@@ -54,7 +54,7 @@ function save(list: RememberedDossier[]): void {
 }
 
 export function rememberDossier(id: string, name: string): void {
-  if (id === SAMPLE_DOSSIER_ID) return;
+  if (isSampleId(id)) return;
   const rest = listDossiers().filter((d) => d.id !== id);
   save([{ id, name, openedAt: new Date().toISOString() }, ...rest]);
 }

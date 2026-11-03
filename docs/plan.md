@@ -824,6 +824,30 @@ Why: spec MKT-1. Joey wants to show a South-East Asian travel-agency startup how
 
 **Acceptance**: `npm test`, `npm run build`, `PORT=3001 npx playwright test e2e/demo-path.spec.ts` (mock mode). No paid call.
 
+### S21 Vietnam sample, hand-curated (added 2026-11-03, Joey)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| ui + fixture (this session) | `feature/sample-vietnam` (stacked on S20's `feature/market-choice`) | S20 | 4 h | P4 | none |
+
+Why: spec MKT-2. Joey wants a demo for a Taiwanese travel-agency startup going to Vietnam, in 繁中, with no paid research.
+
+**Risky changes — list before code** (sources and Unverified marks; sample ids and share links):
+- *A made-up fact in a defence-grade product.* Every fact cites a fetched page with a verbatim excerpt; the same source-check loop as the Taiwan sample runs on it (quote in excerpt, numbers in excerpt). Verify: `sample-vietnam.test.ts`.
+- *A hand translation changes a fact.* Translations keep the same numbers and dates. Verify: unit test that each 繁中 sentence has the same digits as its English.
+- *A second sample id opens writes or the database.* Every place that refuses writes for `sample` also refuses `sample-vn` (one `isSampleId` helper). Verify: unit test on the helper; e2e opens `/d/sample-vn` with no non-GET requests.
+- *Share link guessable.* `sample-vn` is a fixed public id like `sample`; it shows only Sample data. Real ids stay 128-bit.
+- *Named people.* None, except a sourced public official in a head fact.
+- *Cost.* No Parallel or Claude call; research is done by hand in this session.
+
+**Files**: `src/fixtures/sample-vietnam.ts` (繁中 in its brief's `zh`), `src/lib/ids.ts` (`SAMPLE_VN_ID`, `isSampleId`), `src/lib/sample/reader.ts`, `src/lib/db/load-dossier.ts`, `src/app/d/[id]/layout.tsx`, the server actions that refuse sample writes (`src/app/actions/drafts.ts`, `src/app/d/[id]/{docs,network,tracker}/actions.ts`), `src/lib/browser-dossiers.ts`, `src/lib/sample/*`, `src/lib/sample/overlay.ts` (a separate local-changes key for `/d/sample-vn`), `docs/spec.md`, `docs/plan.md`.
+
+**Tests added**: none (Joey 2026-11-03: 「no need to run tests. just build」). The source-check loop was run once by hand on the fixture before commit and passed; the contact order is computed by the scoring code inside the fixture.
+
+**Not changed (Joey: 「i don't want this to cover my original website」)**: `/`, `/d/sample` and the "Your markets" list. The Vietnam sample is reached only by its own link.
+
+**Acceptance**: `npm run build`. No paid call.
+
 ## 6. Risks
 
 | Risk | Impact | Mitigation |

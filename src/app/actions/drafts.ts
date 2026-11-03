@@ -7,10 +7,10 @@ import { liveNote, mockNote, NOTE_PAGES, noteIsLive, type NoteResult, type NoteT
 import { getDb } from "@/lib/db/client";
 import { loadDossier } from "@/lib/db/load-dossier";
 import { bumpUsage, ledgerStore } from "@/lib/db/research";
-import { isDossierId, SAMPLE_DOSSIER_ID } from "@/lib/ids";
+import { isDossierId, isSampleId } from "@/lib/ids";
 import { useDossierAi as countDossierAi } from "@/lib/limits/counters";
 import { SAMPLE_NOTE } from "@/fixtures/sample-dossier";
-import { sampleDossier } from "@/lib/sample/reader";
+import { sampleDossier, sampleVietnam } from "@/lib/sample/reader";
 import type { ActionResult, BriefingNoteContent, Dossier, IntroDraft, Tie } from "@/lib/types";
 
 // Briefing note drafts (spec §11.2, §11.3; risky change: paid API). Order for a real dossier:
@@ -40,10 +40,12 @@ function resolveTarget(d: Dossier, input: { trackerItemId: string | null; stakeh
 export async function sampleBriefingNote(input: { trackerItemId: string | null; stakeholderId: string | null }): Promise<ActionResult<BriefingNoteContent>> {
   const parsed = DraftInput.safeParse({ ...input, expertReview: false });
   if (!parsed.success) return { ok: false, error: "Pick a tracker item first." };
-  const target = resolveTarget(sampleDossier, parsed.data);
+  // MKT-2: the Vietnam sample's ids all start with "vn-"/"tw-", so whichever sample holds the target is the one.
+  const sample = resolveTarget(sampleDossier, parsed.data) ? sampleDossier : sampleVietnam;
+  const target = resolveTarget(sample, parsed.data);
   if (!target) return { ok: false, error: "That stakeholder isn't in the sample's tracker." };
   if (target.stakeholder.id === SAMPLE_NOTE.stakeholderId) return { ok: true, data: { ...SAMPLE_NOTE, meeting: { ...SAMPLE_NOTE.meeting, at: target.item?.meetingAt ?? null } } };
-  return { ok: true, data: mockNote(sampleDossier, target, new Date()).content };
+  return { ok: true, data: mockNote(sample, target, new Date()).content };
 }
 
 /** DOC-7: start the AI draft of a briefing note for one tracker item or stakeholder. */
@@ -51,7 +53,7 @@ export async function startBriefingDraft(
   dossierId: string,
   input: { trackerItemId: string | null; stakeholderId: string | null; expertReview: boolean },
 ): Promise<ActionResult<{ documentId: string }>> {
-  if (dossierId === SAMPLE_DOSSIER_ID) return { ok: false, error: SAMPLE };
+  if (isSampleId(dossierId)) return { ok: false, error: SAMPLE };
   const parsed = DraftInput.safeParse(input);
   if (!isDossierId(dossierId) || !parsed.success) return { ok: false, error: "Pick who the meeting is with, then request again." };
   try {
@@ -94,7 +96,7 @@ export async function startBriefingDraft(
 
 /** drafting → failed → (Try again) → drafting. Counts against the same daily limit. */
 export async function retryBriefingDraft(dossierId: string, documentId: string): Promise<ActionResult<null>> {
-  if (dossierId === SAMPLE_DOSSIER_ID) return { ok: false, error: SAMPLE };
+  if (isSampleId(dossierId)) return { ok: false, error: SAMPLE };
   const id = z.string().uuid().safeParse(documentId);
   if (!isDossierId(dossierId) || !id.success) return { ok: false, error: "That document couldn't be found." };
   try {
