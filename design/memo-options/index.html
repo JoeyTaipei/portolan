@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Meeting memo options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FCFDFB;--panel:#fff;--panel2:#EEF5FA;--field:#fff;--field-line:#B4C6D6;--ink:#14233A;--ink2:#53627A;--ink3:#8996A8;--rule:#D3E0EA;--act:#C2187A;--act-text:#A8136A;--sup:#0F6E5A;--res:#B23B2E;--stamp:#1D4E89;--r-m:6px;--r-l:8px}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.45 "IBM Plex Sans Condensed",system-ui,sans-serif;padding:28px 16px 60px}
+h1{font-size:30px;line-height:1.1}
+.lede{color:var(--ink2);max-width:760px;margin:8px 0 26px}
+.grid{display:grid;gap:28px;grid-template-columns:repeat(auto-fit,minmax(min(360px,100%),1fr));align-items:start;max-width:1500px}
+.opt>h2{font-size:19px}
+.opt>p.why{color:var(--ink2);font-size:14px;margin:4px 0 12px;min-height:60px}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:var(--r-l);padding:16px;display:flex;flex-direction:column;gap:14px}
+.badge{display:inline-block;background:var(--act);color:#fff;font-weight:700;font-size:12px;letter-spacing:.06em;padding:3px 8px;border-radius:4px}
+.q{font-size:20px;font-weight:700;line-height:1.2}
+.lbl{font-size:13.5px;font-weight:700;margin-bottom:6px}
+.lbl span{font-weight:400;color:var(--ink2)}
+.pills{display:grid;gap:6px}
+.p3{grid-template-columns:repeat(3,1fr)}.p2{grid-template-columns:repeat(2,1fr)}.p4{grid-template-columns:repeat(2,1fr)}.p5{grid-template-columns:repeat(5,1fr)}
+.pill{min-height:40px;border:1px solid var(--field-line);border-radius:var(--r-m);background:var(--panel);font:inherit;font-size:13.5px;font-weight:600;color:var(--ink);padding:4px 6px}
+.pill.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.pill.ns{color:var(--ink2);border-style:dashed}
+textarea,input[type=text]{width:100%;border:1px solid var(--field-line);border-radius:var(--r-m);font:inherit;padding:8px;background:var(--field)}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{border:1px solid var(--field-line);border-radius:999px;padding:3px 10px;font-size:13px;background:var(--panel)}
+.tag.on{background:var(--panel2);border-color:var(--stamp);color:var(--stamp);font-weight:600}
+.save{min-height:46px;border:0;border-radius:var(--r-m);background:var(--act);color:#fff;font:inherit;font-weight:700;font-size:16px}
+.ghost{min-height:44px;border:1px solid var(--ink);border-radius:var(--r-m);background:var(--panel);font:inherit;font-weight:600}
+.sec{border-top:1px solid var(--rule);padding-top:12px;display:flex;flex-direction:column;gap:12px}
+.sec h3{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2)}
+.feeds{font-size:12px;color:var(--stamp);font-weight:600}
+details>summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;min-height:44px;border:1px dashed var(--ink);border-radius:var(--r-m);padding:0 12px;font-weight:700}
+details>summary::after{content:"+";font-size:20px}
+details[open]>summary::after{content:"–"}
+details[open]>summary{margin-bottom:12px}
+.steps{display:flex;gap:6px;font-size:12.5px;color:var(--ink2)}
+.steps b{color:var(--ink)}
+.bar{height:4px;background:var(--rule);border-radius:2px}.bar i{display:block;height:100%;width:50%;background:var(--act);border-radius:2px}
+.saved{background:var(--panel2);border-radius:var(--r-m);padding:10px 12px;font-size:14px}
+.split{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:900px){.wide{grid-column:1/-1}.split{grid-template-columns:minmax(0,1fr) minmax(0,1.15fr)}}
+.side{background:var(--panel2);border:1px solid var(--rule);border-radius:var(--r-l);padding:14px;display:flex;flex-direction:column;gap:12px}
+.preview{border-left:4px solid var(--stamp);background:var(--panel);padding:8px 10px;font-size:13px}
+.preview b{font-size:14px}
+.note{font-size:12.5px;color:var(--ink2)}
+.pick{margin-top:12px;font-size:14px;font-weight:700;color:var(--act-text)}
+</style>
+</head>
+<body>
+<h1>Meeting memo: where the extra questions go</h1>
+<p class="lede">Each option keeps the 30-second debrief exactly as today. They differ in where the optional detail opens: the influence answers (which feed the score), attitude and priorities, and what to expect. Every detail question has a dashed <b>Not sure</b> choice that records nothing. Example: a meeting with the drone industry alliance, sample data.</p>
+
+<div class="grid">
+
+<!-- A -->
+<section class="opt">
+<h2>A · Fold-out under the quick questions</h2>
+<p class="why">One card, one Save. "Add detail (optional)" opens in place under the notes. Least clicks, but the card gets long when it's open.</p>
+<div class="card">
+  <span><span class="badge">DEBRIEF DUE</span></span>
+  <div class="q">How did your meeting with the drone industry alliance go?</div>
+  <div><div class="lbl">Overall <span>(required)</span></div><div class="pills p3"><button class="pill on">Positive</button><button class="pill">Neutral</button><button class="pill">Negative</button></div></div>
+  <div><div class="lbl">Did they agree to a next step?</div><div class="pills p2"><button class="pill on">Yes</button><button class="pill">Not yet</button></div></div>
+  <div><div class="lbl">What did they say? <span>(private to your team)</span></div><textarea rows="2">Open to associate membership; asked for our export-licence status.</textarea></div>
+  <details open>
+    <summary>Add detail (optional) · updates the influence score</summary>
+    <div class="sec" style="border:0;padding:0">
+      <h3>Their influence</h3>
+      <div><div class="lbl">Can they approve or decide this? <span class="feeds">→ Authority</span></div><div class="pills p4"><button class="pill">Decides</button><button class="pill on">Recommends</button><button class="pill">Input only</button><button class="pill">No role</button></div><button class="pill ns" style="margin-top:6px;width:100%">Not sure</button></div>
+      <div><div class="lbl">Do they control the money? <span class="feeds">→ Budget</span></div><div class="pills p4"><button class="pill">Holds it</button><button class="pill">Shapes it</button><button class="pill">Indirect</button><button class="pill">None</button></div><button class="pill ns on" style="margin-top:6px;width:100%">Not sure</button></div>
+      <div><div class="lbl">Who else must agree? <span class="feeds">→ Network</span></div><div class="tags"><span class="tag on">AIDC ✕</span><span class="tag on">Armaments Bureau ✕</span><span class="tag">+ Pick from map</span></div></div>
+    </div>
+    <div class="sec">
+      <h3>Attitude and priorities</h3>
+      <div><div class="lbl">Their stance on working with us</div><div class="pills p5"><button class="pill">−2</button><button class="pill">−1</button><button class="pill">0</button><button class="pill on">+1</button><button class="pill">+2</button></div></div>
+      <div><div class="lbl">What they care about</div><div class="tags"><span class="tag on">Local production</span><span class="tag on">No PRC parts</span><span class="tag">Test data</span><span class="tag">Price</span><span class="tag">Timeline</span><span class="tag on">Export-control status</span></div></div>
+    </div>
+    <div class="sec">
+      <h3>What to expect</h3>
+      <div><div class="lbl">Decision timeline</div><div class="pills p4"><button class="pill">This quarter</button><button class="pill on">This year</button><button class="pill">Next budget</button><button class="pill">Unknown</button></div></div>
+    </div>
+  </details>
+  <button class="save">Save debrief</button>
+</div>
+</section>
+
+<!-- B -->
+<section class="opt">
+<h2>B · Second step after Save</h2>
+<p class="why">Save the quick debrief first, exactly as today. The result card then asks "Add detail?" as step 2, one section per screen. The quick save never waits on the long form.</p>
+<div class="card">
+  <div class="steps"><b>Step 2 of 2</b> · Detail (optional)</div>
+  <div class="bar"><i></i></div>
+  <div class="saved">✓ Debrief saved. Support 50 → 88 · stage Met.</div>
+  <div class="q" style="font-size:18px">What did you learn about their influence?</div>
+  <div><div class="lbl">Can they approve or decide this? <span class="feeds">→ Authority</span></div><div class="pills p4"><button class="pill">Decides</button><button class="pill on">Recommends</button><button class="pill">Input only</button><button class="pill">No role</button></div><button class="pill ns" style="margin-top:6px;width:100%">Not sure</button></div>
+  <div><div class="lbl">Do they control the money? <span class="feeds">→ Budget</span></div><div class="pills p4"><button class="pill">Holds it</button><button class="pill">Shapes it</button><button class="pill">Indirect</button><button class="pill">None</button></div><button class="pill ns on" style="margin-top:6px;width:100%">Not sure</button></div>
+  <div><div class="lbl">How close to the final decision-maker? <span class="feeds">→ Access</span></div><div class="pills p4"><button class="pill">Is them</button><button class="pill on">Reports directly</button><button class="pill">2+ levels</button><button class="pill">No line</button></div></div>
+  <div class="note">Next: Attitude and priorities → What to expect</div>
+  <div class="pills p2"><button class="ghost">Skip</button><button class="save" style="font-size:15px">Next</button></div>
+</div>
+</section>
+
+<!-- C -->
+<section class="opt wide">
+<h2>C · Side panel with a live score preview</h2>
+<p class="why">On a laptop the quick debrief stays on the left and the detail opens beside it. Each answer shows the new influence score before you save. On a phone the panel stacks underneath, the same as A.</p>
+<div class="split">
+  <div class="card">
+    <span><span class="badge">DEBRIEF DUE</span></span>
+    <div class="q">How did your meeting with the drone industry alliance go?</div>
+    <div><div class="lbl">Overall <span>(required)</span></div><div class="pills p3"><button class="pill on">Positive</button><button class="pill">Neutral</button><button class="pill">Negative</button></div></div>
+    <div><div class="lbl">Did they agree to a next step?</div><div class="pills p2"><button class="pill on">Yes</button><button class="pill">Not yet</button></div></div>
+    <div><div class="lbl">What did they say? <span>(private to your team)</span></div><textarea rows="3">Open to associate membership; asked for our export-licence status.</textarea></div>
+    <button class="save">Save debrief</button>
+  </div>
+  <div class="side">
+    <div class="preview"><b>Influence 52 → 61 · Medium</b><br>Authority 2 · from your meeting (was 1, research) · Budget unchanged (Not sure)</div>
+    <div><div class="lbl">Can they approve or decide this? <span class="feeds">→ Authority</span></div><div class="pills p4"><button class="pill">Decides</button><button class="pill on">Recommends</button><button class="pill">Input only</button><button class="pill">No role</button></div></div>
+    <div><div class="lbl">Do they control the money? <span class="feeds">→ Budget</span></div><div class="pills p4"><button class="pill">Holds it</button><button class="pill">Shapes it</button><button class="pill">Indirect</button><button class="pill">None</button></div><button class="pill ns on" style="margin-top:6px;width:100%">Not sure</button></div>
+    <div><div class="lbl">What they care about</div><div class="tags"><span class="tag on">Local production</span><span class="tag on">No PRC parts</span><span class="tag">Test data</span><span class="tag on">Export-control status</span></div></div>
+    <div><div class="lbl">Decision timeline</div><div class="pills p4"><button class="pill">This quarter</button><button class="pill on">This year</button><button class="pill">Next budget</button><button class="pill">Unknown</button></div></div>
+    <p class="note">More: access, recent action, who else must agree, concerns, budget status, what they asked for.</p>
+  </div>
+</div>
+</section>
+
+</div>
+</body>
+</html>

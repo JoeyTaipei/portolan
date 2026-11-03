@@ -27,8 +27,10 @@ export function briefStatus(
 
   if (d.debriefs.some((x) => after(x.createdAt))) reasons.push("A debrief was saved after this brief was written.");
 
+  // Memo facts belong to a debrief (scoring §3.2): the debrief reason above already covers them.
   const researchStatements = d.statements.filter((s) => s.debriefId === null);
-  if (d.stakeholders.some((s) => after(s.createdAt)) || d.facts.some((f) => after(f.createdAt)) || researchStatements.some((s) => after(s.createdAt))) {
+  const researchFacts = d.facts.filter((f) => !f.debriefId);
+  if (d.stakeholders.some((s) => after(s.createdAt)) || researchFacts.some((f) => after(f.createdAt)) || researchStatements.some((s) => after(s.createdAt))) {
     reasons.push("Stakeholders changed after this brief was written.");
   }
 

@@ -20,6 +20,8 @@ export interface SourceRef {
   reliability: Source["reliability"];
   credibility: Source["credibility"];
   verifiedAt: string | null;
+  /** For a debrief: the meeting date (TRK-11). */
+  publishedAt: string | null;
   url: string | null;
   /** "mnd.gov.tw"; null without a URL. */
   host: string | null;
@@ -51,6 +53,7 @@ export function sourceRef(s: Source): SourceRef {
     reliability: s.reliability,
     credibility: s.credibility,
     verifiedAt: s.verifiedAt,
+    publishedAt: s.publishedAt,
     url: s.url,
     host: hostOf(s.url),
     type: SOURCE_TYPE_LABEL[s.sourceType],
@@ -79,6 +82,17 @@ const FACTOR_LABEL: Record<InfluenceFactor, string> = {
 const pct = (w: number) => `${Math.round(w * 100)}%`;
 const rating = (r: Rating03 | null) => (r === null ? "No sourced rating" : `${r} of 3`);
 
+/** "1 Nov", fixed to UTC so the server and the browser print the same day. */
+const shortDay = (iso: string) => new Date(`${iso.slice(0, 10)}T00:00:00Z`).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
+
+/** TRK-11: "From your meeting, 1 Nov" when a meeting memo set this factor; null otherwise. */
+export function fromMeetingText(f: FactorBreakdown, refs: SourceRef[]): string | null {
+  if (!f.fromMeeting) return null;
+  const days = refs.filter((r) => r.type === SOURCE_TYPE_LABEL.debrief && r.publishedAt).map((r) => r.publishedAt as string).sort();
+  const last = days.at(-1);
+  return last ? `From your meeting, ${shortDay(last)}` : "From your meeting";
+}
+
 export function influenceText(b: Banded | null): string {
   return b ? `${b.level} · ${b.low}–${b.high}` : "Unverified";
 }
@@ -93,14 +107,13 @@ export function influenceExplanation(
     title: `Influence: ${name}`,
     result: b ? `${b.level} · ${b.low}–${b.high}` : "Unverified: no sourced factor yet",
     basedOn: b ? `Based on ${b.basedOn.rated} of ${b.basedOn.of} factors` : "Based on 0 of 5 factors",
-    factors: breakdown.map((f) => ({
-      label: FACTOR_LABEL[f.factor],
-      weight: pct(f.weight),
-      rating: rating(f.rating),
-      sources: refsFor(f.sourceIds, byId),
-    })),
+    factors: breakdown.map((f) => {
+      const sources = refsFor(f.sourceIds, byId);
+      const meeting = fromMeetingText(f, sources);
+      return { label: FACTOR_LABEL[f.factor], weight: pct(f.weight), rating: meeting ? `${rating(f.rating)} · ${meeting}` : rating(f.rating), sources };
+    }),
     summary:
-      "Influence is power over your goal, from 0 to 100. Four factors are rated 0–3 from cited sources; network centrality counts sourced ties. Factors with no source are left out rather than counted as 0, and each missing factor widens the range by 5.",
+      "Influence is power over your goal, from 0 to 100. Four factors are rated 0–3 from cited sources; network centrality counts sourced ties. Factors with no source are left out rather than counted as 0, and each missing factor widens the range by 5. Your team's meeting answers replace the research rating for a factor.",
   };
 }
 

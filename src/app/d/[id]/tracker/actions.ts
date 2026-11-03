@@ -6,6 +6,7 @@ import { loadDossier } from "@/lib/db/load-dossier";
 import { deleteDebrief, deleteItem, findItem, insertDebrief, insertItem, ownsTarget, updateItem } from "@/lib/db/tracker";
 import { isDossierId } from "@/lib/ids";
 import { applyDebrief, NOTES_MAX, trackerState, type DebriefReceipt } from "@/lib/tracker/flow";
+import { ALSO_AGREE_MAX, MEMO_NOTE_MAX, MET_ROLE_MAX } from "@/lib/tracker/memo";
 import type { ActionResult, Debrief, TrackerItem } from "@/lib/types";
 
 // Tracker writes for real dossiers (spec §15): zod → dossier id check → work → ActionResult.
@@ -84,6 +85,31 @@ export async function removeTrackerItem(dossierId: string, itemId: string): Prom
   });
 }
 
+// TRK-9 memo: every field bounded; null / [] = "Not sure". cleanMemo (flow) also drops a China
+// stakeholder's "who we met" and any "also agree" id not on this map.
+const rating = z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3)]).nullable();
+const topic = z.enum(["local_production", "non_red", "test_data", "price", "timeline", "budget", "export_control", "cyber", "interop"]);
+const note = z.string().max(MEMO_NOTE_MAX).nullable();
+const Memo = z.object({
+  format: z.enum(["in_person", "video", "event"]).nullable(),
+  metRole: z.string().max(MET_ROLE_MAX).nullable(),
+  initiatedBy: z.enum(["us", "them", "intro"]).nullable(),
+  authority: rating,
+  budget: rating,
+  access: rating,
+  recent: rating,
+  alsoAgree: z.array(id).max(ALSO_AGREE_MAX),
+  stance: z.union([z.literal(-2), z.literal(-1), z.literal(0), z.literal(1), z.literal(2)]).nullable(),
+  priorities: z.array(topic).max(9),
+  prioritiesNote: note,
+  concerns: z.array(topic).max(9),
+  concernsNote: note,
+  timeline: z.enum(["quarter", "year", "next_budget", "unknown"]).nullable(),
+  budgetStatus: z.enum(["funded", "requested", "not_yet", "unknown"]).nullable(),
+  asks: z.array(z.enum(["demo", "test_data", "export_class", "partner", "pricing", "documents"])).max(6),
+  asksNote: note,
+});
+
 const DebriefInput = z.object({
   trackerItemId: id,
   overall: z.enum(["positive", "neutral", "negative"]),
@@ -91,17 +117,25 @@ const DebriefInput = z.object({
   notes: z.string().max(NOTES_MAX).nullable(),
   addToPlaybook: z.boolean(),
   nextStep: z.object({ text: z.string().trim().min(1).max(300), dueDate: day }).nullable(),
+  memo: Memo.nullable().optional(),
 });
 
 export async function saveDebrief(dossierId: string, input: z.input<typeof DebriefInput>): Promise<ActionResult<DebriefReceipt>> {
   if (dossierId === "sample") return { ok: false, error: SAMPLE };
   const did = checkDossier(dossierId);
   const parsed = DebriefInput.safeParse(input);
-  if (!did || !parsed.success) return { ok: false, error: "Pick an overall result, keep notes under 1000 characters, then save." };
+  if (!did || !parsed.success) return { ok: false, error: "Pick an overall result, keep notes under 1000 characters and memo notes under 300, then save." };
   return run("save debrief", async () => {
     const d = await loadDossier(did);
     if (!d || !(await findItem(did, parsed.data.trackerItemId))) return { ok: false, error: "That item is no longer in the tracker." };
-    const ids = { debrief: crypto.randomUUID(), source: crypto.randomUUID(), statement: crypto.randomUUID(), playbook: crypto.randomUUID() };
+    const ids = {
+      debrief: crypto.randomUUID(),
+      source: crypto.randomUUID(),
+      statement: crypto.randomUUID(),
+      playbook: crypto.randomUUID(),
+      facts: Array.from({ length: 4 }, () => crypto.randomUUID()),
+      edges: Array.from({ length: ALSO_AGREE_MAX }, () => crypto.randomUUID()),
+    };
     const { state, receipt } = applyDebrief(trackerState(d), parsed.data, ids, new Date());
     await insertDebrief({
       dossierId: did,
@@ -110,6 +144,8 @@ export async function saveDebrief(dossierId: string, input: z.input<typeof Debri
       source: state.sources.find((s) => s.id === ids.source) ?? null,
       statement: state.statements.find((s) => s.id === ids.statement) ?? null,
       playbook: state.playbook.find((p) => p.id === ids.playbook) ?? null,
+      facts: state.facts.filter((f) => f.debriefId === ids.debrief),
+      edges: state.edges.filter((e) => e.debriefId === ids.debrief),
     });
     refresh();
     return { ok: true, data: receipt };

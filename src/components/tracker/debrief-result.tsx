@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { supportText } from "@/components/score/explain";
+import { influenceText, supportText } from "@/components/score/explain";
 import { STAGE_LABEL, type DebriefReceipt } from "@/lib/tracker/flow";
 import type { T } from "@/lib/i18n";
 import { useT } from "@/lib/i18n/client";
-import type { SupportResult } from "@/lib/types";
+import type { InfluenceFactor, SupportResult } from "@/lib/types";
 import { fmtDate } from "./model";
 
 // TRK-4 "Debrief saved — here's what changed": support old → new with the reason, the stage
@@ -20,6 +20,14 @@ function supportReason(t: T, before: SupportResult, after: SupportResult): strin
     before.kind === "unknown" ? t(" (there was no sourced statement before)") : ""
   }${t(".")}`;
 }
+
+const FACTOR_WORD: Record<InfluenceFactor, string> = {
+  authority: "authority",
+  budget: "budget",
+  access: "access",
+  centrality: "network",
+  recent: "recent action",
+};
 
 export function DebriefResult({
   receipt,
@@ -64,6 +72,19 @@ export function DebriefResult({
           </b>
           <span className="block text-[13px] text-ink2">{supportReason(t, r.supportBefore, r.supportAfter)}</span>
         </li>
+        {r.memoFactors.length > 0 && (
+          <li data-testid="influence-change">
+            {t("Influence:")}{" "}
+            <b className="num">
+              {t.x(influenceText(r.influenceBefore))} → {t.x(influenceText(r.influenceAfter))}
+            </b>
+            <span className="block text-[13px] text-ink2">
+              {t("Your meeting answers updated {list}. A meeting answer replaces the research rating for its factor; Undo puts it back.", {
+                list: r.memoFactors.map((f) => t.k(FACTOR_WORD[f])).join(t.locale === "zh-TW" ? "、" : ", "),
+              })}
+            </span>
+          </li>
+        )}
         <li>
           {t("Stage:")}{" "}
           {r.stageBefore === r.stageAfter ? (

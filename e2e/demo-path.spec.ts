@@ -290,3 +290,77 @@ test("繁中: the switch changes the app, the A4 still prints on one page and so
 
   expect(errors).toEqual([]);
 });
+
+test("meeting memo → influence on the map and Out of date on the brief; Undo restores it (S18)", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("console", (m) => {
+    if (m.type() === "error") errors.push(m.text());
+  });
+  page.on("pageerror", (e) => errors.push(e.message));
+  const sent: string[] = [];
+  page.on("request", (r) => {
+    if (r.method() !== "GET") sent.push(`${r.method()} ${r.url()}`);
+  });
+
+  // The first tracked item is the Ministry of National Defense (id "mnd").
+  await page.goto("/d/sample/map?s=mnd");
+  const details = page.getByTestId("details");
+  const influenceBefore = (await details.getByRole("button", { name: /^Influence / }).getAttribute("aria-label")) ?? "";
+
+  await page.goto("/d/sample/tracker");
+  const row = page.getByTestId("tracker-row").first();
+  await expect(row).toContainText("Ministry of National Defense");
+  await row.getByRole("button", { name: "Set meeting date" }).click();
+  const yesterday = await page.evaluate(() => {
+    const d = new Date();
+    d.setDate(d.getDate() - 1);
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  });
+  await row.getByLabel("Meeting date").fill(yesterday);
+  await row.getByRole("button", { name: "Save", exact: true }).click();
+
+  const fill = async () => {
+    const due = page.getByTestId("debrief-due");
+    await due.getByRole("button", { name: "Positive" }).click();
+    await due.getByTestId("memo").locator("summary").click();
+    const memo = due.getByTestId("memo-detail");
+    await memo.getByRole("group", { name: /approve or decide/ }).getByRole("button", { name: "Input only" }).click();
+    await memo.getByRole("group", { name: /control the money/ }).getByRole("button", { name: "Indirect" }).click();
+    await memo.getByRole("button", { name: "No PRC parts" }).first().click();
+    await memo.getByLabel(/Concerns, in their words/).fill("PRIVATE-CONCERN-TEXT");
+    await due.getByRole("button", { name: "Save debrief" }).click();
+  };
+
+  // TRK-10: influence old → new on the result card; Undo puts it back.
+  await fill();
+  const result = page.getByTestId("debrief-result");
+  await expect(result.getByTestId("influence-change")).toContainText("authority, budget");
+  const change = (await result.getByTestId("influence-change").locator("b").textContent()) ?? "";
+  const [from, to] = change.split("→").map((s) => s.trim());
+  expect(to).not.toBe(from);
+  await result.getByRole("button", { name: "Undo" }).click();
+  await expect(page.getByTestId("debrief-result")).toHaveCount(0);
+  expect(await page.evaluate(() => localStorage.getItem("portolan.sample.facts"))).not.toContain("debriefId\":\"db-");
+
+  // Save it again and follow it to the map and the brief (TRK-11).
+  await fill();
+  await expect(page.getByTestId("debrief-result")).toBeVisible();
+
+  await page.goto("/d/sample/map?s=mnd");
+  const infl = page.getByTestId("details").getByRole("button", { name: /^Influence / });
+  await expect(infl).not.toHaveAttribute("aria-label", influenceBefore);
+  await infl.click();
+  await expect(page.getByText(/From your meeting, \d+ \w+/).first()).toBeVisible();
+  await expectNoSideScroll(page);
+
+  await page.goto("/d/sample/brief");
+  await expect(page.getByTestId("out-of-date-reasons")).toContainText("A debrief was saved after this brief was written.");
+  await expect(page.getByTestId("out-of-date-reasons")).not.toContainText("Stakeholders changed");
+
+  // The memo never reaches the share link (TRK-12).
+  await page.goto(`/s/${SAMPLE_SHARE_ID}`);
+  expect(await page.content()).not.toContain("PRIVATE-CONCERN-TEXT");
+
+  expect(sent).toEqual([]);
+  expect(errors).toEqual([]);
+});

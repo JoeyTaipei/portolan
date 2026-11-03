@@ -709,6 +709,29 @@ Why: a consultant says who pays first, through which channel, and whether the mo
 
 **Acceptance**: the shared block (§4) with routes `/d/sample/brief` and `/d/sample/report`; `PORT=3001 npx playwright test e2e/demo-path.spec.ts`.
 
+### S18 Meeting memo → influence score (added 2026-11-02, Erin)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| ui + engine (one session) | `feature/meeting-memo` | S16 | 5 h | P4 | none |
+
+Why: a meeting tells the team who really decides, who holds the money and what's moving now, but the debrief only changed support. Erin chose "memo wins" (a first-hand answer replaces the research rating for that factor), quick questions plus optional detail, and the sample showing the loop everywhere. Spec TRK-9…12, `docs/scoring.md` §3.2.
+
+**Risky changes: list before code** (scores and sources; `types.ts` + migration, approved with this plan by Erin 2026-11-02):
+- *A team's impression overriding sourced research.* The factor is labelled "From your meeting, {date}" wherever it's explained; Undo restores the research rating; "Not sure" writes nothing. Verify: unit tests for override, Not sure and Undo.
+- *China rule.* "Who we met" for a China stakeholder is role only; a value that looks like a personal name is refused by the client and the zod check. Verify: test.
+- *Memo text steering Claude.* Memo free text is bounded (zod) and goes into its own fenced `<debrief>` block; notes are never sent. Verify: `brief.test.ts` fence test.
+- *Privacy.* The memo is excluded from the share link, A4 and playbook. Verify: e2e share-link HTML has no memo text; playbook test unchanged.
+- *Migration not applied before deploy.* `debriefs.memo jsonb` (nullable), `facts.debrief_id` and `edges.debrief_id` (nullable, cascade). Old rows read null. Verify: the merger runs `npx supabase@2 db push` before merging.
+- *Research statements hidden by a run-less fact.* `read.ts` ignores debrief facts when picking a stakeholder's latest run. Verify: test.
+- *Paid call.* None.
+
+**Files**: `supabase/migrations/20261102220000_debrief_memo.sql`, `src/lib/types.ts`, `src/lib/tracker/{memo.ts,flow.ts,flow.test.ts}`, `src/lib/scoring/{influence.ts,brief-status.ts,scoring.test.ts}`, `src/lib/db/{tracker.ts,read.ts}`, `src/app/d/[id]/tracker/actions.ts`, `src/components/tracker/{debrief-form.tsx,memo-detail.tsx,debrief-result.tsx,tracker-view.tsx}`, `src/components/score/explain.ts`, `src/components/map/{model.ts,sample-map.tsx}`, `src/app/d/[id]/map/page.tsx`, `src/components/brief/{model.ts,sample-live.tsx}`, `src/app/d/[id]/brief/page.tsx`, `src/lib/sample/{overlay.ts,use-sample-dossier.ts}`, `src/lib/claude/{brief.ts,briefing-note.ts,prompts.ts,brief.test.ts}`, `e2e/demo-path.spec.ts`, `design/memo-options/index.html`, `docs/{spec,scoring,plan}.md`.
+
+**Tests added**: `flow.test.ts`: a "Decides" answer → authority 3 replacing research; Not sure adds nothing; Undo restores influence exactly; stance override; memo edge raises centrality; China name refused. `scoring.test.ts`: debrief-first rule; brief status gives the debrief reason only. e2e: sample memo → map details shows "From your meeting" and the new influence, brief shows Out of date, Undo restores; share link has no memo text.
+
+**Acceptance**: the shared block (§4) with routes `/d/sample/tracker`, `/d/sample/map`, `/d/sample/brief`; `npx playwright test e2e/demo-path.spec.ts`.
+
 ---
 
 ### S17 Traditional Chinese (繁中) version (added 2026-11-02, Erin)

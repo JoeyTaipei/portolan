@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import { buildMapModel } from "@/components/map/model";
 import { MapView } from "@/components/map/map-view";
 import { MapSkeleton } from "@/components/map/map-skeleton";
+import { SampleMap } from "@/components/map/sample-map";
 import { Nis } from "@/components/shell/nis";
 import { TeamProvider, type TeamData } from "@/components/team/team-context";
 import { loadDossier } from "@/lib/db/load-dossier";
@@ -41,7 +42,7 @@ async function MapContent({ params }: Pick<PageProps<"/d/[id]/map">, "params">) 
   const model = buildMapModel(d, new Date());
   return (
     <TeamProvider data={teamData(d)}>
-      <MapView model={model} tracker={d.tracker} />
+      {d.isSample ? <SampleMap dossier={d} model={model} tracker={d.tracker} /> : <MapView model={model} tracker={d.tracker} />}
     </TeamProvider>
   );
 }

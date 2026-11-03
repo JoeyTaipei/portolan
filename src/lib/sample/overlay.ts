@@ -11,6 +11,8 @@ export const OVERLAY_KEYS: readonly SampleOverlayKey[] = [
   "debriefs",
   "statements",
   "sources",
+  "facts",
+  "edges",
   "leads",
   "documentRequests",
   "documents",
