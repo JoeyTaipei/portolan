@@ -4,3 +4,6 @@ import type { Dossier } from "@/lib/types";
 import { sampleDossier as curated } from "@/fixtures/sample-dossier";
 
 export const sampleDossier: Dossier = curated;
+
+/** MKT-2: the Vietnam sample behind /d/sample-vn. */
+export { sampleVietnam } from "@/fixtures/sample-vietnam";

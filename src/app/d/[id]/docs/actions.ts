@@ -4,7 +4,7 @@ import { refresh } from "next/cache";
 import { z } from "zod";
 import { retryBriefingDraft, startBriefingDraft } from "@/app/actions/drafts";
 import { requestManual } from "@/lib/db/documents";
-import { isDossierId, SAMPLE_DOSSIER_ID } from "@/lib/ids";
+import { isDossierId, isSampleId } from "@/lib/ids";
 import type { ActionResult, DocumentType } from "@/lib/types";
 
 // Document requests for real dossiers (spec §11.3, §15): zod → dossier id check → work →
@@ -24,7 +24,7 @@ export async function requestDocument(
   dossierId: string,
   input: z.input<typeof RequestInput>,
 ): Promise<ActionResult<{ documentId: string; type: DocumentType }>> {
-  if (dossierId === SAMPLE_DOSSIER_ID) return { ok: false, error: SAMPLE };
+  if (isSampleId(dossierId)) return { ok: false, error: SAMPLE };
   const parsed = RequestInput.safeParse(input);
   if (!isDossierId(dossierId) || !parsed.success) return { ok: false, error: "Pick a document type and, for a briefing note, the meeting." };
   const v = parsed.data;

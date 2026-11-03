@@ -4,7 +4,7 @@ import { refresh } from "next/cache";
 import { z } from "zod";
 import { PURPOSE_MAX } from "@/components/network/model";
 import { requestIntro as insertIntro, saveLead as insertLead } from "@/lib/db/network";
-import { isDossierId, SAMPLE_DOSSIER_ID } from "@/lib/ids";
+import { isDossierId, isSampleId } from "@/lib/ids";
 import type { ActionResult, IntroRequest, TrackerItem } from "@/lib/types";
 
 // Network writes for real dossiers (spec §15): zod → dossier id check → work → ActionResult.
@@ -31,7 +31,7 @@ async function run<T>(what: string, work: () => Promise<ActionResult<T>>): Promi
 
 /** NET-4: "Save lead" / "Add to plan" → a tracker item in Found. */
 export async function saveLead(dossierId: string, leadId: string): Promise<ActionResult<TrackerItem>> {
-  if (dossierId === SAMPLE_DOSSIER_ID) return { ok: false, error: SAMPLE };
+  if (isSampleId(dossierId)) return { ok: false, error: SAMPLE };
   const did = checkDossier(dossierId);
   const lid = id.safeParse(leadId);
   if (!did || !lid.success) return { ok: false, error: "That lead couldn't be saved. Reload the page and try again." };
@@ -47,7 +47,7 @@ const IntroInput = z.object({ stakeholderId: id, purpose: z.string().trim().min(
 
 /** NET-6: a Portolan intro request; the team updates it with the ops script (spec §11.4). */
 export async function requestIntro(dossierId: string, input: z.input<typeof IntroInput>): Promise<ActionResult<IntroRequest>> {
-  if (dossierId === SAMPLE_DOSSIER_ID) return { ok: false, error: SAMPLE };
+  if (isSampleId(dossierId)) return { ok: false, error: SAMPLE };
   const did = checkDossier(dossierId);
   const parsed = IntroInput.safeParse(input);
   if (!did || !parsed.success) return { ok: false, error: `Write one line on the purpose (up to ${PURPOSE_MAX} characters), then send.` };

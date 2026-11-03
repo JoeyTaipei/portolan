@@ -31,6 +31,15 @@ const ALL_KEYS: readonly OverlayKey[] = [...OVERLAY_KEYS, "playbook"];
 /** Fired on window after any write or reset, so open components can re-read. */
 export const OVERLAY_EVENT = "portolan:sample-overlay";
 
+/** MKT-2: the Vietnam sample keeps its own changes, so the two samples never mix. */
+function prefix(): string {
+  try {
+    return typeof window !== "undefined" && window.location.pathname.startsWith("/d/sample-vn") ? "portolan.sample-vn." : OVERLAY_PREFIX;
+  } catch {
+    return OVERLAY_PREFIX;
+  }
+}
+
 function storage(): Storage | null {
   try {
     return typeof window === "undefined" ? null : window.localStorage;
@@ -53,7 +62,7 @@ export function readOverlay(): SampleOverlay {
   if (!ls) return out;
   for (const key of ALL_KEYS) {
     try {
-      const raw = ls.getItem(OVERLAY_PREFIX + key);
+      const raw = ls.getItem(prefix() + key);
       if (raw === null) continue;
       const parsed: unknown = JSON.parse(raw);
       if (Array.isArray(parsed)) (out as Record<string, unknown>)[key] = parsed;
@@ -69,7 +78,7 @@ export function writeOverlay<K extends OverlayKey>(key: K, value: OverlayValue<K
   const ls = storage();
   if (!ls) return false;
   try {
-    ls.setItem(OVERLAY_PREFIX + key, JSON.stringify(value));
+    ls.setItem(prefix() + key, JSON.stringify(value));
     notify();
     return true;
   } catch {
@@ -83,7 +92,7 @@ export function resetOverlay(): void {
   if (!ls) return;
   for (const key of ALL_KEYS) {
     try {
-      ls.removeItem(OVERLAY_PREFIX + key);
+      ls.removeItem(prefix() + key);
     } catch {
       // ignore
     }
