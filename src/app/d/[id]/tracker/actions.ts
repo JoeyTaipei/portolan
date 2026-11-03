@@ -4,7 +4,7 @@ import { refresh } from "next/cache";
 import { z } from "zod";
 import { loadDossier } from "@/lib/db/load-dossier";
 import { deleteDebrief, deleteItem, findItem, insertDebrief, insertItem, ownsTarget, updateItem } from "@/lib/db/tracker";
-import { isDossierId } from "@/lib/ids";
+import { isDossierId, isSampleId } from "@/lib/ids";
 import { applyDebrief, NOTES_MAX, trackerState, type DebriefReceipt } from "@/lib/tracker/flow";
 import { ALSO_AGREE_MAX, MEMO_NOTE_MAX, MET_ROLE_MAX } from "@/lib/tracker/memo";
 import type { ActionResult, Debrief, TrackerItem } from "@/lib/types";
@@ -38,7 +38,7 @@ const AddInput = z
   .refine((v) => (v.stakeholderId === null) !== (v.leadId === null));
 
 export async function addToTracker(dossierId: string, input: z.input<typeof AddInput>): Promise<ActionResult<TrackerItem>> {
-  if (dossierId === "sample") return { ok: false, error: SAMPLE };
+  if (isSampleId(dossierId)) return { ok: false, error: SAMPLE };
   const did = checkDossier(dossierId);
   const parsed = AddInput.safeParse(input);
   if (!did || !parsed.success) return { ok: false, error: "That stakeholder couldn't be added. Reload the page and try again." };
@@ -59,7 +59,7 @@ const EditInput = z.object({
 });
 
 export async function editTrackerItem(dossierId: string, itemId: string, edit: z.input<typeof EditInput>): Promise<ActionResult<TrackerItem>> {
-  if (dossierId === "sample") return { ok: false, error: SAMPLE };
+  if (isSampleId(dossierId)) return { ok: false, error: SAMPLE };
   const did = checkDossier(dossierId);
   const iid = id.safeParse(itemId);
   const parsed = EditInput.safeParse(edit);
@@ -74,7 +74,7 @@ export async function editTrackerItem(dossierId: string, itemId: string, edit: z
 }
 
 export async function removeTrackerItem(dossierId: string, itemId: string): Promise<ActionResult<null>> {
-  if (dossierId === "sample") return { ok: false, error: SAMPLE };
+  if (isSampleId(dossierId)) return { ok: false, error: SAMPLE };
   const did = checkDossier(dossierId);
   const iid = id.safeParse(itemId);
   if (!did || !iid.success) return { ok: false, error: "That item couldn't be removed. Reload the page and try again." };
@@ -121,7 +121,7 @@ const DebriefInput = z.object({
 });
 
 export async function saveDebrief(dossierId: string, input: z.input<typeof DebriefInput>): Promise<ActionResult<DebriefReceipt>> {
-  if (dossierId === "sample") return { ok: false, error: SAMPLE };
+  if (isSampleId(dossierId)) return { ok: false, error: SAMPLE };
   const did = checkDossier(dossierId);
   const parsed = DebriefInput.safeParse(input);
   if (!did || !parsed.success) return { ok: false, error: "Pick an overall result, keep notes under 1000 characters and memo notes under 300, then save." };
@@ -155,7 +155,7 @@ export async function saveDebrief(dossierId: string, input: z.input<typeof Debri
 const UndoInput = z.object({ nextStep: z.string().max(300).nullable(), dueDate: day.nullable() });
 
 export async function undoDebrief(dossierId: string, debriefId: string, restore: z.input<typeof UndoInput>): Promise<ActionResult<null>> {
-  if (dossierId === "sample") return { ok: false, error: SAMPLE };
+  if (isSampleId(dossierId)) return { ok: false, error: SAMPLE };
   const did = checkDossier(dossierId);
   const deb = id.safeParse(debriefId);
   const parsed = UndoInput.safeParse(restore);
