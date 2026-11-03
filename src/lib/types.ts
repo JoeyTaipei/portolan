@@ -233,6 +233,8 @@ export interface Fact {
   sourceIds: string[];
   status: FactStatus;
   model: string | null;
+  /** Set when the fact came from a meeting memo (TRK-10); it then wins over research (scoring §3.2). */
+  debriefId?: string | null;
   createdAt: Iso;
 }
 
@@ -259,6 +261,8 @@ export interface Edge {
   relation: string;
   sourceIds: string[];
   status: FactStatus;
+  /** Set when the tie came from a meeting memo's "who else must agree" (TRK-10). */
+  debriefId?: string | null;
   createdAt: Iso;
 }
 
@@ -467,6 +471,46 @@ export interface TrackerItem {
 
 export type DebriefOverall = "positive" | "neutral" | "negative";
 
+export type MemoFormat = "in_person" | "video" | "event";
+export type MemoInitiator = "us" | "them" | "intro";
+export type MemoTopic =
+  | "local_production"
+  | "non_red"
+  | "test_data"
+  | "price"
+  | "timeline"
+  | "budget"
+  | "export_control"
+  | "cyber"
+  | "interop";
+export type MemoTimeline = "quarter" | "year" | "next_budget" | "unknown";
+export type MemoBudget = "funded" | "requested" | "not_yet" | "unknown";
+export type MemoAsk = "demo" | "test_data" | "export_class" | "partner" | "pricing" | "documents";
+
+/** TRK-9 meeting memo. Null / empty = "Not sure" or not answered: it records nothing. */
+export interface DebriefMemo {
+  format: MemoFormat | null;
+  /** Role or seniority, never a name; always null for a China stakeholder. */
+  metRole: string | null;
+  initiatedBy: MemoInitiator | null;
+  /** 0–3 per scoring §3.2. */
+  authority: Rating03 | null;
+  budget: Rating03 | null;
+  access: Rating03 | null;
+  recent: Rating03 | null;
+  /** Stakeholder ids on the map who must also agree (≤ 5). */
+  alsoAgree: string[];
+  stance: StatementRating | null;
+  priorities: MemoTopic[];
+  prioritiesNote: string | null;
+  concerns: MemoTopic[];
+  concernsNote: string | null;
+  timeline: MemoTimeline | null;
+  budgetStatus: MemoBudget | null;
+  asks: MemoAsk[];
+  asksNote: string | null;
+}
+
 export interface Debrief {
   id: string;
   trackerItemId: string;
@@ -483,6 +527,8 @@ export interface Debrief {
   stageAfter: TrackerStage;
   addedNextStep: string | null;
   playbookOutcomeId: string | null;
+  /** TRK-9; private to the team like the notes (never on the share link, A4 or playbook). */
+  memo?: DebriefMemo | null;
   createdAt: Iso;
 }
 
@@ -688,6 +734,8 @@ export type SampleOverlayKey =
   | "debriefs"
   | "statements"
   | "sources"
+  | "facts"
+  | "edges"
   | "leads"
   | "documentRequests"
   | "documents"
@@ -730,6 +778,8 @@ export interface FactorBreakdown {
   weight: number;
   rating: Rating03 | null;
   sourceIds: string[];
+  /** The rating came from a meeting memo (TRK-11): "From your meeting, {date}". */
+  fromMeeting?: boolean;
 }
 
 export type SupportResult =

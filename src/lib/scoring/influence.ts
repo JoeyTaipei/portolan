@@ -60,8 +60,11 @@ export function centralityRating(stakeholderId: string, edges: Edge[]): Rating03
   return n === 0 ? 0 : n <= 2 ? 1 : n <= 5 ? 2 : 3;
 }
 
-/** The newest sourced, rated fact for each Claude-rated factor. Unverified facts never count. */
-function ratedFacts(stakeholderId: string, facts: Fact[]): Partial<Record<RatedFactor, Fact>> {
+/**
+ * The sourced, rated fact used for each Claude-rated factor. Unverified facts never count.
+ * §3.2 "memo wins": a fact from a meeting memo beats research; among the same kind, the newest.
+ */
+export function ratedFacts(stakeholderId: string, facts: Fact[]): Partial<Record<RatedFactor, Fact>> {
   const out: Partial<Record<RatedFactor, Fact>> = {};
   for (const f of facts) {
     if (f.stakeholderId !== stakeholderId) continue;
@@ -69,7 +72,9 @@ function ratedFacts(stakeholderId: string, facts: Fact[]): Partial<Record<RatedF
     const field = f.field as RatedFactor;
     if (!RATED.includes(field)) continue;
     const prev = out[field];
-    if (!prev || f.createdAt > prev.createdAt) out[field] = f;
+    const memo = Boolean(f.debriefId);
+    const prevMemo = Boolean(prev?.debriefId);
+    if (!prev || (memo && !prevMemo) || (memo === prevMemo && f.createdAt > prev.createdAt)) out[field] = f;
   }
   return out;
 }
@@ -127,18 +132,16 @@ export function influenceBreakdown(
   const ratings = influenceRatings(stakeholderId, facts, edges, category);
   return FACTORS.map((factor) => {
     let sourceIds: string[] = [];
+    let fromMeeting = false;
     if (factor === "centrality") {
-      sourceIds = [
-        ...new Set(
-          edges
-            .filter((e) => e.status === "sourced" && (e.aId === stakeholderId || e.bId === stakeholderId))
-            .flatMap((e) => e.sourceIds),
-        ),
-      ];
+      const mine = edges.filter((e) => e.status === "sourced" && (e.aId === stakeholderId || e.bId === stakeholderId));
+      sourceIds = [...new Set(mine.flatMap((e) => e.sourceIds))];
+      fromMeeting = mine.some((e) => e.debriefId);
     } else {
       sourceIds = rf[factor]?.sourceIds ?? [];
+      fromMeeting = Boolean(rf[factor]?.debriefId);
     }
-    return { factor, weight: INFLUENCE_WEIGHTS[factor], rating: ratings[factor], sourceIds };
+    return { factor, weight: INFLUENCE_WEIGHTS[factor], rating: ratings[factor], sourceIds, ...(fromMeeting ? { fromMeeting } : {}) };
   });
 }
 
