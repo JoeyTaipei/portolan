@@ -1,0 +1,32 @@
+{
+  "id": "tw-cuas",
+  "goal": "US counter-UAS sensor kit: first Taiwan government pilot within 12 months",
+  "dossier": "sample",
+  "asOf": "2026-11-01",
+  "status": "draft",
+  "rankingSource": "Founder ranking 2026-11-01 (docs/research/influence-test-2026-11-01.md); the duplicate 6th entry dropped",
+  "mustInclude": [
+    { "label": "國防部", "names": ["Ministry of National Defense", "國防部"] },
+    { "label": "陸軍", "names": ["Republic of China Army", "ROC Army", "中華民國陸軍"] },
+    { "label": "海軍", "names": ["Republic of China Navy", "ROC Navy", "中華民國海軍"] },
+    { "label": "空軍", "names": ["Republic of China Air Force", "ROC Air Force", "中華民國空軍"] },
+    { "label": "軍備局", "names": ["Armaments Bureau, Ministry of National Defense", "MND Armaments Bureau", "國防部軍備局"] },
+    { "label": "中科院", "names": ["National Chung-Shan Institute of Science and Technology", "NCSIST", "國家中山科學研究院"] },
+    { "label": "海巡署", "names": ["Coast Guard Administration, Ocean Affairs Council", "Coast Guard", "海洋委員會海巡署"] },
+    { "label": "警政署", "names": ["National Police Agency, Ministry of the Interior", "National Police Agency", "內政部警政署"] },
+    { "label": "立法院外交及國防委員會", "names": ["Foreign Affairs and National Defense Committee, Legislative Yuan", "Defense Committee", "立法院外交及國防委員會"] },
+    { "label": "漢翔", "names": ["Aerospace Industrial Development Corporation", "AIDC", "漢翔航空工業股份有限公司"] }
+  ],
+  "expertRanking": [
+    { "label": "立法院外交及國防委員會", "names": ["Foreign Affairs and National Defense Committee, Legislative Yuan", "Defense Committee", "立法院外交及國防委員會"] },
+    { "label": "中科院", "names": ["National Chung-Shan Institute of Science and Technology", "NCSIST", "國家中山科學研究院"] },
+    { "label": "漢翔", "names": ["Aerospace Industrial Development Corporation", "AIDC", "漢翔航空工業股份有限公司"] },
+    { "label": "軍備局", "names": ["Armaments Bureau, Ministry of National Defense", "MND Armaments Bureau", "國防部軍備局"] },
+    { "label": "工研院", "names": ["Industrial Technology Research Institute", "ITRI", "工業技術研究院"] },
+    { "label": "海巡署", "names": ["Coast Guard Administration, Ocean Affairs Council", "Coast Guard", "海洋委員會海巡署"] },
+    { "label": "創未來科技", "names": ["Tron Future Tech", "Tron Future", "創未來科技"] },
+    { "label": "台杉投資", "names": ["Taiwania Capital", "台杉投資"] },
+    { "label": "理律法律事務所", "names": ["Lee and Li, Attorneys-at-Law", "Lee and Li", "理律法律事務所"] }
+  ],
+  "labeledClaims": []
+}

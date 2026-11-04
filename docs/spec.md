@@ -685,6 +685,15 @@ export function influenceScore(r: InfluenceRatings): Banded | null {
 - Bug fixes: write a failing test first. Add a dedicated test only when the same kind of bug happens a second time.
 - Definition of done (each slice): `npm test` and `npm run build` pass, `/verify-ui` is run, and the browser console has no errors.
 
+### 17.1 Report evaluation (`npm run eval`, added 2026-11-04, S22)
+Unit tests check that the code works; this checks that **reports are right**. It reads stored research results (no Parallel or Claude call) and scores every case in `evals/cases/*.json`. A score below `evals/baseline.json` fails the run, so a prompt or scoring change that makes reports worse is not merged. After a deliberate improvement, `EVAL_UPDATE=1 npm run eval` writes the new baseline.
+- **Case file**: goal, which dossier (`"sample"` or a path to an exported Dossier JSON), a fixed scoring date, `draft`/`confirmed`, the organisations that must be on the map, the expert's ranking, and founder-labelled claims. Organisations are matched by English, 中文 or short name after the §7.6 normalising (exact, so a ministry never counts as its bureau).
+- **Layer 1 Coverage**: share of must-include organisations on the map, and which are missing. Target ≥ 90%.
+- **Layer 2 Ranking**: Spearman between the expert's order and our influence scores (over those on the map; no score counts as lowest), and how many of the expert's top 3 are in our top 5.
+- **Layer 3 Claim support**: the founder labels 20 claims supports / partial / not; a Sonnet judge labels the same 20; agreement ≥ 80% before the judge may score other reports. The judge call is a later slice (paid; estimate first).
+- **Layer 4 Client outcomes** (later slice; needs debrief fields and a migration): per met stakeholder, met / useful 1–5 / led to a next meeting; metric = how many of our top 5 led to a next step. These outcomes become new case labels.
+- Cases: `tw-cuas` (the sample, founder ranking of 2026-11-01). Still needed from the founder: must-include lists and rankings for Taiwan ISR drone, Taiwanese drone maker → US (Blue UAS), US counter-UAS → Taiwan, and one from the reference deliverables.
+
 ---
 
 ## 18. Boundaries

@@ -848,6 +848,24 @@ Why: spec MKT-2. Joey wants a demo for a Taiwanese travel-agency startup going t
 
 **Acceptance**: `npm run build`. No paid call.
 
+### S22 Report evaluation harness (added 2026-11-04, Joey)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| engine (this session) | `feature/eval-harness` | — | 2 h | P2 | none |
+
+Why: spec §17.1. The founder ranking check (docs/research/influence-test-2026-11-01.md) was one-off; this makes coverage and ranking repeatable after every prompt or scoring change.
+
+**Risky changes**: none. Reads the sample fixture only; no source or Unverified logic changes; no paid call.
+
+**Files**: `src/lib/eval/metrics.ts` and its test, `evals/cases/tw-cuas.json`, `evals/run.eval.ts`, `evals/baseline.json`, `vitest.eval.config.ts`, `package.json` (`eval` script), `docs/spec.md`, `docs/plan.md`, `docs/metrics.md`.
+
+**Tests added**: `metrics.test.ts` (Spearman incl. ties, coverage drops when the armed services are missing, ranking top-3, judge agreement).
+
+**Not in this slice**: the Sonnet claim judge (paid) and debrief outcome fields (migration).
+
+**Acceptance**: `npm test`, `npm run build`, `npm run eval` pass.
+
 ## 6. Risks
 
 | Risk | Impact | Mitigation |

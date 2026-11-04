@@ -1,0 +1,8 @@
+{
+  "tw-cuas": {
+    "coverage": 1,
+    "spearman": 0.552,
+    "top3In5": 0,
+    "claimAgreement": null
+  }
+}
