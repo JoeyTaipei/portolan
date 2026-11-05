@@ -20,7 +20,8 @@ export type Level = "High" | "Medium" | "Low";
 export type FactStatus = "sourced" | "unverified";
 export type Rating03 = 0 | 1 | 2 | 3;
 export type StatementRating = -2 | -1 | 0 | 1 | 2;
-export type Market = "TW" | "VN" | "TH";
+/** US/JP/PL/PH: fixture-only samples for now (MKT-3); the form and the database stay TW/VN/TH. */
+export type Market = "TW" | "VN" | "TH" | "US" | "JP" | "PL" | "PH";
 export type Category = "gov" | "ind" | "cap" | "leg" | "evt";
 export type Stance = "supportive" | "neutral" | "resistant" | "unknown";
 
