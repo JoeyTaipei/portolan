@@ -30,7 +30,7 @@ export const SHARED: Record<string, RawSource> = {
     credibilityReason: MANY,
     verifiedAt: CHECKED,
     excerpt:
-      "陳文宏透露，近半年已有多組海外客戶前來參訪，並開始小量試製合作，客源來自日本、印度、東南亞等，單一國家的潛在訂單量都上看千台。 … 「島嶼國家的物流、離島補給、海巡監控，其實都很需要無人載具」，陳文宏說，印尼、菲律賓等市場，未來都可能成為無人艇的重要應用場域，也會是繼天空之外，下一個藍海市場。 … 不過，軍工產業不同於消費電子，從接觸、飛測、修改到量產，週期通常長達半年到一年，陳文宏推估，「明年會是營收大爆發的一年，碳基營運將重新起飛。」 … 目前碳基主力外銷產品，包括導控距離超過90公里的三角翼無人機，以及彈射式小型攻擊型無人機。 … 目前碳基台中廠約700坪至800坪，以現有配置，一架消耗型無人機從製造到完成約需3天，陳文宏坦言，現有產能已難以應付未來需求。 … 「現在很多客戶第一件事，就是先問能不能做到非紅供應鏈、供應自主比例多少」 … 她透露，3年前，台灣自製無人機成本比中國貴上5倍，這幾年已努力縮小至1.5倍到2倍之間。 … 更別說取得美國Green UAS與NDAA認證，可能就要花費數百萬元。 … 這種策略也延伸到無人艇，碳基開發的Marlin J6、Marlin S6則與傑海達機器人及美國廠商共同合製。",
+      "陳文宏透露，近半年已有多組海外客戶前來參訪，並開始小量試製合作，客源來自日本、印度、東南亞等，單一國家的潛在訂單量都上看千台。 … 「島嶼國家的物流、離島補給、海巡監控，其實都很需要無人載具」，陳文宏說，印尼、菲律賓等市場，未來都可能成為無人艇的重要應用場域，也會是繼天空之外，下一個藍海市場。 … 不過，軍工產業不同於消費電子，從接觸、飛測、修改到量產，週期通常長達半年到一年，陳文宏推估，「明年會是營收大爆發的一年，碳基營運將重新起飛。」 … 目前碳基主力外銷產品，包括導控距離超過90公里的三角翼無人機，以及彈射式小型攻擊型無人機。 … 目前碳基台中廠約700坪至800坪，以現有配置，一架消耗型無人機從製造到完成約需3天，陳文宏坦言，現有產能已難以應付未來需求。 … 「現在很多客戶第一件事，就是先問能不能做到非紅供應鏈、供應自主比例多少」 … 她透露，3年前，台灣自製無人機成本比中國貴上5倍，這幾年已努力縮小至1.5倍到2倍之間。 … 更別說取得美國Green UAS與NDAA認證，可能就要花費數百萬元。 … 新樂飛是目前中大型多軸無人機銷售最好的廠商，碳基都與其密切合作，共同開發一起銷售，這種策略也延伸到無人艇，碳基開發的Marlin J6、Marlin S6則與傑海達機器人及美國廠商共同合製。",
   },
   "cbt-cna-hub": {
     key: "cbt-cna-hub",
@@ -199,6 +199,20 @@ export const SHARED: Record<string, RawSource> = {
     verifiedAt: CHECKED,
     excerpt:
       "Given the apparent urgency to develop the sector, Taiwan has been encouraging drone manufacturers to obtain U.S.-administered cybersecurity certifications. Earlier this month, the Ministry of Economic Affairs' Industrial Development Administration led 12 manufacturers to Washington, D.C., to learn about the Blue UAS certification criteria established by the U.S. Defense Innovation Unit and market demand. … Meanwhile, technological partnerships and original equipment manufacturing (OEM) arrangements have emerged as forms of international cooperation in drone production, Hsiao said. … Of the total, 75.6 percent by value was shipped to the Czech Republic (US$137.17 million) and Poland (US$45.31 million), and the drones were likely eventually destined for Ukraine, according to defense analysts.",
+  },
+  "asia-udn-reuters": {
+    key: "asia-udn-reuters",
+    url: "https://udn.com/news/story/10930/9578489",
+    title: "路透：台海緊張效應 亞洲無人載具需求爆發 | 軍事 | 要聞 | 聯合新聞網",
+    publisher: "United Daily News (聯合新聞網), citing Reuters",
+    sourceType: "news",
+    excerptLang: "zh-TW",
+    reliability: "B",
+    credibility: 2,
+    credibilityReason: MANY,
+    verifiedAt: CHECKED,
+    excerpt:
+      "路透報導，台海緊張與來自中國大陸的軍事壓力升高，帶動亞洲對無人機的需求。烏克蘭無人機公司正尋求和日本、台灣及菲律賓合作，將烏克蘭在黑海對俄軍作戰累積的無人機經驗，轉化為印太國家的防衛能力。 … 日本防衛省發言人不願對日本官員與烏克蘭無人機廠商接洽置評，僅強調會檢視一切可能選項，以確保日本能取得包含無人機及人工智慧（AI）的「新型作戰方式」所需裝備。",
   },
 };
 
