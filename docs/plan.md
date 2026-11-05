@@ -886,9 +886,11 @@ Why: spec NET-8. The Partners cards ask every candidate the same seven questions
 - *China.* Candidates with `isChina` are never sent; organisation level only.
 - *Cost.* One Opus call, ~8k tokens in, max 8k out: about US$0.10 typical, US$0.19 worst case. Needs Joey's confirmation in chat before any live run.
 
-**Files** (new unless noted): `src/lib/claude/partner-questions.ts`, `src/lib/claude/schemas.ts` (add output schema), `src/lib/claude/prompts.ts` (add prompt), `src/lib/claude/mock.ts` (bank), `src/components/partners/model.ts` (remove fixed list, read stored set), `src/components/partners/partner-card.tsx`, `src/app/actions/partner-questions.ts`, `src/lib/i18n/zh-TW.ts`, `docs/spec.md`, `docs/plan.md`. Migration: one table `partner_questions` (dossier_id, version, content jsonb) with RLS and no anon policy, only if Joey confirms storing it (else regenerate per visit, not stored).
+**Files** (new unless noted): `supabase/migrations/20261105170000_partner_questions.sql` (table `partner_question_sets`, RLS on, no anon policy; Joey chose to store, 2026-11-05), `src/lib/types.ts` (`PartnerQuestionSet` and an optional `Dossier.partnerQuestions`), `src/lib/partner-bank.ts` (starter questions and relationship guess, no Claude), `src/lib/claude/partner-questions.ts` (prompt, schema, checks, one Opus call), `src/lib/db/partner-questions.ts`, `src/lib/db/read.ts` (read the newest set; a missing table never blocks a dossier), `src/app/actions/partner-questions.ts` (estimate, then confirmed write), `src/components/partners/{model.ts,partner-card.tsx,questions-control.tsx}`, `src/components/network/network-view.tsx` (the button), `src/lib/i18n/zh-TW.ts`, `src/lib/markets.test.ts` and `src/components/partners/partners.test.ts` (fixed list removed), `docs/spec.md`, `docs/plan.md`.
 
-**Tests added**: `src/lib/claude/partner-questions.test.ts` (peer vendor never gets delivery/acceptance questions; unknown source id dropped; no sourced fact → bank + Unverified; China candidate not sent).
+**Tests added**: `src/lib/claude/partner-questions.test.ts` (peer vendor never gets delivery/acceptance questions; unknown source id and repeats dropped; fewer than 2 questions → not stored; stored set shows on the card with sources; China candidate not sent).
+
+**Not in this slice**: Chinese text for Claude-written questions (I18N-4 keeps research text verbatim); starter questions are translated.
 
 **Acceptance**: `npm test`, `npm run build`; `/d/sample/partners` and a mock dossier at 1440 show different questions per candidate; no paid call until Joey confirms.
 

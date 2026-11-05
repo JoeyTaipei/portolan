@@ -7,7 +7,8 @@ import { buildMapModel, NO_ROUTE } from "@/components/map/model";
 import { sourceRef, type SourceRef } from "@/components/score/explain";
 import { isEligible } from "@/lib/scoring";
 import { marketInfo } from "@/lib/markets";
-import type { Dossier, Market, Source } from "@/lib/types";
+import { bankQuestions, classifyRelationship } from "@/lib/partner-bank";
+import type { Dossier, Market, PartnerQuestionEntry, PartnerRelationship, QuestionPurpose, Source } from "@/lib/types";
 
 /** NET-7: the fixed line under the cards (shown as the Partners tab note). */
 export const PARTNER_NOTE =
@@ -27,13 +28,6 @@ export function partnersEmpty(market: Market): string {
 export function partnersEmptyA4(market: Market): string {
   return `No ${marketInfo(market).adjective} firm with sourced evidence yet.`;
 }
-
-/** Questions that only make sense in Taiwan (MND list, made-in-Taiwan rules, NCC). */
-const TAIWAN_ONLY = new Set([
-  "Are you on the MND list of qualified military suppliers?",
-  "Can you assemble or integrate in Taiwan to meet made-in-Taiwan rules?",
-  "Have you handled NCC approval and import of RF equipment?",
-]);
 
 export interface PartnerEvidence {
   text: string;
@@ -73,26 +67,12 @@ export interface PartnerVM {
   sourceCount: number;
   flags: PartnerFlag[];
   next: { text: string; verified: boolean; refs: SourceRef[] };
-  questions: string[];
-}
-
-/** trade.gov "Choosing a foreign representative", as questions; a flag swaps its question. */
-export function partnerQuestions(flags: FlagKind[], market: Market = "TW"): string[] {
-  const has = (k: FlagKind) => flags.includes(k);
-  const all = [
-    "How many sales and engineering staff work on government or defence projects?",
-    has("contract")
-      ? "What happened with the contract the source describes, and is it resolved?"
-      : "Which government contracts have you delivered, and can we see the acceptance results?",
-    "Which competing products do you already carry?",
-    has("exclusive")
-      ? "Does your existing exclusive deal cover our product's category?"
-      : "Would you work with us without an exclusive deal on either side?",
-    "Are you on the MND list of qualified military suppliers?",
-    "Can you assemble or integrate in Taiwan to meet made-in-Taiwan rules?",
-    "Have you handled NCC approval and import of RF equipment?",
-  ];
-  return market === "TW" ? all : all.filter((q) => !TAIWAN_ONLY.has(q));
+  /** NET-8: written for this client and this candidate. `tailored` false = starter questions from code. */
+  questions: { text: string; purpose: QuestionPurpose; refs: SourceRef[] }[];
+  tailored: boolean;
+  relationship: PartnerRelationship;
+  /** Why the relationship was chosen (tailored only). */
+  basis: PartnerEvidence | null;
 }
 
 const text = (v: unknown) => (typeof v === "string" ? v.trim() : "");
@@ -146,6 +126,21 @@ export function buildPartners(d: Dossier, now: Date): PartnerVM[] {
       const ids = new Set([...(role?.refs ?? []), ...evidence.flatMap((x) => x.refs), ...ties.flatMap((x) => x.refs)].map((x) => x.id));
       const node = nodes.get(s.id);
       const verified = !!node?.action.verified;
+      const stored = d.partnerQuestions?.entries.find((e) => e.stakeholderId === s.id);
+      const tailored = storedQuestions(stored, refs);
+      const relationship = tailored ? stored!.relationship : classifyRelationship([role?.text ?? "", ...evidence.map((x) => x.text)].join(" "));
+      const starter = tailored
+        ? []
+        : bankQuestions({
+            client: d.company,
+            partner: s.short ?? s.name,
+            relationship,
+            market: d.market,
+            flags: flags.map((f) => ({ kind: f.kind, sourceIds: f.refs.map((r) => r.id) })),
+          }).flatMap((q) => {
+            const r = q.sourceIds.length ? refs(q.sourceIds) : [];
+            return r ? [{ text: q.text, purpose: q.purpose, refs: r }] : [];
+          });
       return {
         id: s.id,
         name: s.name,
@@ -157,7 +152,10 @@ export function buildPartners(d: Dossier, now: Date): PartnerVM[] {
         sourceCount: ids.size,
         flags,
         next: { text: verified ? node!.action.text : NO_ROUTE, verified, refs: verified ? node!.action.sources : [] },
-        questions: partnerQuestions(flags.map((f) => f.kind), d.market),
+        questions: tailored ?? starter,
+        tailored: !!tailored,
+        relationship,
+        basis: tailored && stored?.basis ? { text: stored.basis.text, refs: refs(stored.basis.sourceIds) ?? [] } : null,
         influence: node?.influence?.score ?? -1,
       };
     })
@@ -174,6 +172,16 @@ export function buildPartners(d: Dossier, now: Date): PartnerVM[] {
       a.name.localeCompare(b.name),
   );
   return cards.map(({ influence: _, ...c }) => c);
+}
+
+/** A stored set's questions for one candidate, kept only while every cited source is still citable. */
+function storedQuestions(entry: PartnerQuestionEntry | undefined, refs: (ids: string[]) => SourceRef[] | null): PartnerVM["questions"] | null {
+  if (!entry) return null;
+  const qs = entry.questions.flatMap((q) => {
+    const r = refs(q.sourceIds);
+    return r ? [{ text: q.text, purpose: q.purpose, refs: r }] : [];
+  });
+  return qs.length >= 2 ? qs : null;
 }
 
 /** Ties to buyers first; an item citing exactly the same sources as an earlier one is dropped. */
