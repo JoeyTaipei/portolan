@@ -9,15 +9,16 @@ import { checkDossiers, type DossierCheck } from "./check-dossiers";
 import { NewDossierForm } from "./new-dossier-form";
 
 // HOME-7: the sample plus the dossiers this browser remembers, each with its confidence level.
+// MKT-3: a 碳基 market lists its sibling markets as the samples.
 // Simpler version: dossiers the server can't open are hidden. HOME-8 form opens from here.
 
 export function DossierSelect({
   selectedId,
-  sample,
+  samples,
   startOpen = false,
 }: {
   selectedId: string;
-  sample: { id: string; name: string; level: Level; sources: number };
+  samples: { id: string; name: string; level: Level; sources: number }[];
   startOpen?: boolean;
 }) {
   const [mine, setMine] = useState<DossierCheck[]>([]);
@@ -42,7 +43,7 @@ export function DossierSelect({
     };
   }, []);
 
-  const rows = [...mine, { ...sample, sample: true }];
+  const rows = [...mine, ...samples.map((x) => ({ ...x, sample: true }))];
   return (
     <section aria-labelledby="sel-h" className="flex flex-col gap-0.5">
       <div className="mb-1 flex items-center justify-between gap-2.5 border-b border-rule-strong pb-2">

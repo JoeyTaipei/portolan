@@ -4,7 +4,9 @@ import { describe, expect, it } from "vitest";
 import { claimProblems, indexSources, numberProblems } from "@/lib/checks/source-check";
 import { ALL_SAMPLES } from "@/lib/sample/reader";
 import type { Brief, Dossier, Sentence } from "@/lib/types";
+import type { MarketSpec } from "./build";
 import { CBT_SAMPLES } from "./index";
+import { CBT_REPORT, CLIENT_SUMMARY, type Cited } from "./report";
 
 function briefSentences(b: Brief): [string, Sentence][] {
   return [
@@ -71,3 +73,41 @@ describe("碳基 sample markets", () => {
     }
   });
 });
+
+describe("碳基 report", () => {
+  const MONTH = /\d{1,2}\s*月/g; // 「6 月」: month numbers are written in words in the English sources
+  const check = (spec: MarketSpec, where: string, x: Cited): string[] => {
+    const d = buildIndex(spec);
+    const missing = x.keys.filter((k) => !d.handles.has(k)).map((k) => `${where}: unknown handle ${k}`);
+    if (missing.length) return missing;
+    const ids = x.keys.map((k) => d.handles.get(k)!);
+    return [...claimProblems(where, ids, null, d.index), ...numberProblems(where, x.text.replace(MONTH, ""), ids, d.index)];
+  };
+
+  it.each(CBT_REPORT.map((m) => [m.spec.id, m] as const))("%s: every report line cites real sources with the same numbers", (_id, m) => {
+    const lines: [string, Cited][] = [
+      ["first door", m.firstDoor],
+      ["barrier", m.barrier],
+      ...m.opportunity.map((x, i): [string, Cited] => [`opportunity ${i}`, x]),
+      ...m.access.map((x, i): [string, Cited] => [`access ${i}`, x]),
+      ...m.procurement.map((x, i): [string, Cited] => [`procurement ${i}`, x]),
+      ...[...m.plan.d30, ...m.plan.d60, ...m.plan.d90].map((x, i): [string, Cited] => [`plan ${i}`, x]),
+      ...m.budget.filter((b) => b.amount).map((b, i): [string, Cited] => [`budget ${i}`, { text: b.amount!, keys: b.keys }]),
+    ];
+    expect(lines.flatMap(([where, x]) => (x.keys.length ? check(m.spec, `${m.spec.id} ${where}`, x) : [`${m.spec.id} ${where}: no source`]))).toEqual([]);
+    expect(m.budget.filter((b) => !b.amount && b.keys.length)).toEqual([]);
+    const ids = new Set(m.spec.orgs.map((o) => o.id));
+    expect([...m.plan.d30, ...m.plan.d60, ...m.plan.d90].filter((p) => !ids.has(p.stakeholderId))).toEqual([]);
+  });
+
+  it("client summary cites the US market's sources", () => {
+    const us = CBT_REPORT[0].spec;
+    expect(CLIENT_SUMMARY.flatMap((x, i) => check(us, `client ${i}`, x))).toEqual([]);
+  });
+});
+
+function buildIndex(spec: MarketSpec) {
+  const d = CBT_SAMPLES.find((x) => x.id === spec.id)!;
+  const handles = new Map(spec.sources.map((r, i) => [r.key, d.sources[i].id]));
+  return { handles, index: indexSources(d.sources) };
+}

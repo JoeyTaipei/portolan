@@ -848,6 +848,28 @@ Why: spec MKT-2. Joey wants a demo for a Taiwanese travel-agency startup going t
 
 **Acceptance**: `npm run build`. No paid call.
 
+### S22 碳基 demo: four sample markets and a six-dimension report (added 2026-11-05, Joey)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| ui + fixtures (this session) | `claude/great-maxwell-byyhj5` | main @ 1685c4f | 1 day | P4 | none |
+
+Why: spec MKT-3. A demo for 碳基科技 the next day. Joey picked the US first, then four markets (US, Japan, Europe, Southeast Asia) with anchor countries Poland and the Philippines, and a report in the six dimensions of `portolan_report_v3.html` without the evaluation part.
+
+**Risky changes — list before code** (sources and Unverified marks; sample ids and share links; a type change):
+- *A made-up fact about a real, named company.* Every excerpt was fetched and checked as a substring of the page; `cbt.test.ts` runs the source-check loop on all four markets and the report (quotes in excerpts, numbers in cited excerpts, 繁中 keeps every number). Self-claims (NDAA compliance, the APOZ plant, the 2023 Vesper trial build) are labelled as such.
+- *An invented budget.* Only sourced amounts (MLIT fees, the CNA "數百萬元" certification estimate, a Polish market reference); the rest is 「未驗證／需客戶提供」, no total.
+- *A sample id opens writes or the database.* One `SAMPLE_IDS` registry feeds `isSampleId`, load, share and static params; each new sample has a random 22-character share id.
+- *Local changes leak between samples.* The overlay key comes from the sample id in the path; `/d/sample` and `/d/sample-vn` keep their old keys.
+- *`Market` change without a migration.* US/JP/PL/PH are fixture-only; the form, zod enum and database stay TW/VN/TH.
+- *Cost.* No Parallel or Claude call. Page fetches needed a personal "portolan" environment allowing 20 named hosts.
+
+**Files**: `src/lib/types.ts` (`Market`), `src/lib/markets.ts`, `src/lib/i18n/zh-TW.ts`, `src/lib/ids.ts`, `src/lib/sample/{reader,overlay}.ts`, `src/lib/db/load-dossier.ts`, `src/app/d/[id]/{layout,page}.tsx`, `src/app/actions/drafts.ts`, `src/components/home/{home-view,dossier-select}.tsx`, `src/app/page.tsx`, `src/fixtures/cbt/*` (new), `src/components/cbt/*` (new), `src/app/cbt/{page,report/page}.tsx` (new), `next.config.ts` (noindex headers for `/cbt`), `docs/spec.md`, `docs/plan.md`.
+
+**Tests added**: `src/fixtures/cbt/cbt.test.ts`.
+
+**Acceptance**: `npm test`, `npm run build`; screenshots of `/cbt`, `/cbt/report` and the four markets at 1440 and 390 with no console errors; each market's A4 fits one page in English and 繁中. No paid call.
+
 ## 6. Risks
 
 | Risk | Impact | Mitigation |

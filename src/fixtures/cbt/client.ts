@@ -3,8 +3,8 @@
 // verbatim from the page on 2026-11-05 (non-adjacent paragraphs joined with " … ").
 import type { RawSource } from "./build";
 
-export const CBT_COMPANY = "碳基科技 Carbon-Based Technology (UAVER), Taichung";
-export const CBT_PRODUCT = "Carbon-fibre fixed-wing and delta-wing drones, drone airframes and uncrewed surface vessels";
+export const CBT_COMPANY = "碳基科技 Carbon-Based Technology (UAVER)";
+export const CBT_PRODUCT = "Carbon-fibre drones, airframes and uncrewed surface vessels";
 export const CHECKED = "2026-11-05";
 export const AT = "2026-11-05T02:00:00Z";
 
@@ -12,8 +12,8 @@ const ONE = "No other independent source in this sample covers this yet.";
 const MANY = "Other independent sources in this sample also cover this topic.";
 
 export const CLIENT_ZH: Record<string, string> = {
-  [CBT_COMPANY]: "碳基科技（UAVER），台中",
-  [CBT_PRODUCT]: "碳纖維定翼與三角翼無人機、無人機機體及無人艇",
+  [CBT_COMPANY]: "碳基科技（UAVER）",
+  [CBT_PRODUCT]: "碳纖維無人機、無人機機體及無人艇",
 };
 
 /** Shared sources, by handle. Each market lists the ones it cites. */

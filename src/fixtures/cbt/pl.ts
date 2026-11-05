@@ -25,7 +25,7 @@ export const PL_SPEC: MarketSpec = {
   shareId: SAMPLE_CBT_PL_SHARE_ID,
   market: "PL",
   prefix: "pl",
-  name: "碳基 · Europe entry (Poland)",
+  name: "碳基 · Poland entry",
   company: CBT_COMPANY,
   product: CBT_PRODUCT,
   goal: "Become a supplier to a Polish drone prime or sign a first Polish order within 12 months",
@@ -314,7 +314,7 @@ export const PL_SPEC: MarketSpec = {
   needs: ["Needs from you: your price range", "Needs from you: any existing Poland partners", "Needs from you: your own deadline, if you have one"],
   zh: {
     ...CLIENT_ZH,
-    "碳基 · Europe entry (Poland)": "碳基 · 歐洲市場（波蘭）",
+    "碳基 · Poland entry": "碳基 · 歐洲市場（波蘭）",
     "Become a supplier to a Polish drone prime or sign a first Polish order within 12 months": "12 個月內成為波蘭無人機主承包商的供應商，或拿到第一張波蘭訂單",
     "A first Polish deal will likely come as a supplier to a Polish prime such as WB Group.": "第一筆波蘭生意很可能是當 WB 集團等波蘭主承包商的供應商。",
     "Poland will likely keep buying drones at scale, as procurement focuses on drones and counter-drone systems.": "波蘭採購聚焦無人機與反無人機系統，很可能持續大量採購無人機。",

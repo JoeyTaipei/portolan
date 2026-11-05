@@ -21,14 +21,13 @@ const DRILL_Q = "菲律賓與美國部隊今天在年度「肩並肩」（Balika
 const ADAS_DND_Q = "with the support of the Department of National Defense and other government agencies";
 const ADAS_MATCH_Q = "business matching aimed at the Armed Forces of the Philippines, the Philippine National Police and security agencies";
 const ADAS_Q = "The 2027 edition takes place from 28 to 30 June 2027 at SMXCITE in Pasay City, Metro Manila.";
-const ISLAND_Q = "印尼、菲律賓等市場，未來都可能成為無人艇的重要應用場域";
 
 export const PH_SPEC: MarketSpec = {
   id: SAMPLE_CBT_PH_ID,
   shareId: SAMPLE_CBT_PH_SHARE_ID,
   market: "PH",
   prefix: "ph",
-  name: "碳基 · Southeast Asia entry (Philippines)",
+  name: "碳基 · Philippines entry",
   company: CBT_COMPANY,
   product: CBT_PRODUCT,
   goal: "Win a first Philippine order or demonstration for maritime drones or uncrewed vessels within 12 months",
@@ -268,7 +267,7 @@ export const PH_SPEC: MarketSpec = {
     ["Ukrainian drone firms are also seeking cooperation with the Philippines, Japan and Taiwan.", "asia-udn-reuters"],
   ],
   judgments: [
-    ["A first Philippine deal will likely be uncrewed vessels or long-endurance drones for maritime monitoring, where the Navy and Coast Guard are adding capacity.", "likely", "Moderate", "ph-baird-navy", "ph-baird-pcg"],
+    ["A first Philippine deal will likely be uncrewed vessels or long-endurance drones for maritime monitoring.", "likely", "Moderate", "ph-baird-navy", "ph-baird-pcg"],
     ["US- and Australian-funded systems will likely compete with 碳基 for the same maritime roles.", "likely", "Moderate", "ph-baird-navy", "ph-baird-pcg"],
     ["A sale through ADAS business matching within a year is roughly even.", "roughly_even", "Low", "ph-fe-adas27"],
   ],
@@ -291,13 +290,13 @@ export const PH_SPEC: MarketSpec = {
     ["Ukrainian drone firms are courting the Philippines too.", "asia-udn-reuters"],
     ["碳基 says military projects take six months to a year from first contact to production.", "cbt-cna-profile"],
   ],
-  requirements: [["procurement_route", "ADAS business matching is aimed at the Armed Forces of the Philippines, the Philippine National Police and security agencies.", "ph-fe-adas27"]],
+  requirements: [["procurement_route", "ADAS business matching targets the armed forces, national police and security agencies.", "ph-fe-adas27"]],
   needs: ["Needs from you: your price range", "Needs from you: any existing Philippine partners", "Needs from you: your own deadline, if you have one"],
   zh: {
     ...CLIENT_ZH,
-    "碳基 · Southeast Asia entry (Philippines)": "碳基 · 東南亞市場（菲律賓）",
+    "碳基 · Philippines entry": "碳基 · 東南亞市場（菲律賓）",
     "Win a first Philippine order or demonstration for maritime drones or uncrewed vessels within 12 months": "12 個月內拿到菲律賓第一張海事無人機或無人艇訂單或展示機會",
-    "A first Philippine deal will likely be uncrewed vessels or long-endurance drones for maritime monitoring, where the Navy and Coast Guard are adding capacity.": "第一筆菲律賓生意很可能是海域監控用的無人艇或長航時無人機，海軍和海岸防衛隊正在擴充這方面能量。",
+    "A first Philippine deal will likely be uncrewed vessels or long-endurance drones for maritime monitoring.": "第一筆菲律賓生意很可能是海域監控用的無人艇或長航時無人機。",
     "US- and Australian-funded systems will likely compete with 碳基 for the same maritime roles.": "美國和澳洲出資的系統很可能和碳基搶同樣的海事任務。",
     "A sale through ADAS business matching within a year is roughly even.": "一年內透過 ADAS 商機媒合成交的機會大約一半一半。",
     "碳基's chairman names Indonesia and the Philippines as future markets for uncrewed surface vessels.": "碳基董事長點名印尼、菲律賓是未來無人艇的重要市場。",
@@ -321,7 +320,7 @@ export const PH_SPEC: MarketSpec = {
     "The US and Australia are already supplying uncrewed systems to Philippine forces.": "美國和澳洲已在提供菲律賓部隊無人系統。",
     "Ukrainian drone firms are courting the Philippines too.": "烏克蘭無人機公司也在爭取菲律賓。",
     "碳基 says military projects take six months to a year from first contact to production.": "碳基表示軍工案從接觸到量產通常要半年到一年。",
-    "ADAS business matching is aimed at the Armed Forces of the Philippines, the Philippine National Police and security agencies.": "ADAS 商機媒合的對象是菲律賓武裝部隊、菲律賓國家警察和安全機關。",
+    "ADAS business matching targets the armed forces, national police and security agencies.": "ADAS 商機媒合的對象是菲律賓武裝部隊、國家警察和安全機關。",
     "Needs from you: any existing Philippine partners": "需要你提供：你在菲律賓已有的夥伴",
     "Offer the Navy a demonstration of 碳基's Marlin uncrewed surface vessels for maritime monitoring": "向海軍展示碳基 Marlin 無人艇的海域監控能力",
     "Show 碳基's drones and uncrewed vessels to the AFP through ADAS business matching": "透過 ADAS 商機媒合向菲律賓軍方展示碳基無人機與無人艇",

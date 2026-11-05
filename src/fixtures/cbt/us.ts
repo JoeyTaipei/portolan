@@ -23,7 +23,7 @@ export const US_SPEC: MarketSpec = {
   goal: "Win a first US order or assembly contract for UAVER drones within 12 months",
   at: AT,
   sources: [
-    ...pick("cbt-cna-profile", "cbt-cna-hub", "cbt-ctee-partners", "cbt-mirror-vantage", "cbt-apoz", "tw-cna-mofa", "tw-cna-moea", "tw-cna-itri", "tw-cna-tediboa-tti", "tw-ft-exports", "tw-ft-hsiao"),
+    ...pick("cbt-cna-profile", "cbt-cna-hub", "cbt-ctee-partners", "cbt-ctee-revenue", "cbt-uaver", "cbt-mirror-vantage", "cbt-apoz", "tw-cna-mofa", "tw-cna-moea", "tw-cna-itri", "tw-cna-tediboa-tti", "tw-ft-exports", "tw-ft-hsiao"),
     {
       key: "us-hk-fcc",
       url: "https://www.hklaw.com/en/insights/publications/2025/12/fcc-adds-all-foreign-made-drones",
@@ -66,7 +66,7 @@ export const US_SPEC: MarketSpec = {
       authority: [3, "New foreign-made drones cannot get the FCC authorisation needed to be imported or sold", "us-hk-fcc", FCC_BAN_Q],
       recent: [3, "Added all foreign-made drones and critical components to the Covered List on 22 Dec 2025", "us-hk-fcc", FCC_Q],
       said: [[-2, "Treats every foreign-made drone as a national security risk unless the DOW or DHS clears it", "us-hk-fcc", "finding that all UAS and UAS critical components produced in a foreign country pose any national security risk"]],
-      action: ["Ask US counsel how the Covered List treats UAVER aircraft before any US sale or Texas assembly", "us-hk-fcc", FCC_BAN_Q],
+      action: ["Ask US counsel how the Covered List treats UAVER aircraft", "us-hk-fcc", FCC_BAN_Q],
     },
     {
       id: "us-blue",
@@ -253,7 +253,7 @@ export const US_SPEC: MarketSpec = {
     ["Green UAS assessments can now be done in Taiwan through ITRI.", "tw-cna-itri", "cbt-cna-hub"],
   ],
   judgments: [
-    ["A direct export of UAVER aircraft to US buyers is unlikely while the FCC Covered List bars new foreign-made drones.", "unlikely", "Moderate", "us-hk-fcc"],
+    ["Direct US export of UAVER aircraft is unlikely while the FCC bars new foreign-made drones.", "unlikely", "Moderate", "us-hk-fcc"],
     ["A first US deal will likely come through a US partner or US assembly, such as the Vantage Robotics trial build or the Texas plant.", "likely", "Low", "cbt-mirror-vantage", "cbt-apoz"],
     ["Green UAS certification through ITRI is likely the fastest credential 碳基 can earn for US buyers.", "likely", "Moderate", "tw-cna-itri", "tw-cna-moea"],
   ],
@@ -271,8 +271,8 @@ export const US_SPEC: MarketSpec = {
   },
   summary: [
     ["The FCC's 22 Dec 2025 rule bars new foreign-made drones from US import or sale.", "us-hk-fcc"],
-    ["Enter through US assembly or a US partner: 碳基 already has a Texas plant agreement and a Vesper trial build.", "cbt-apoz", "cbt-mirror-vantage"],
-    ["Earn Green UAS through ITRI in Taiwan first, then work toward Blue UAS for defence buyers.", "tw-cna-itri", "cbt-cna-hub"],
+    ["Enter through US assembly or a US partner, such as the Texas plant or the Vesper trial build.", "cbt-apoz", "cbt-mirror-vantage"],
+    ["Earn Green UAS through ITRI first, then work toward Blue UAS.", "tw-cna-itri", "cbt-cna-hub"],
   ],
   risks: [
     ["Any change to a foreign-made drone may need a new FCC authorisation, which the Covered List blocks.", "us-hk-fcc"],
@@ -283,7 +283,7 @@ export const US_SPEC: MarketSpec = {
     ["import_permit", "New foreign-made drones cannot get FCC authorisation, so they cannot be imported for sale.", "us-hk-fcc"],
     ["cybersecurity", "Green UAS assessments check that funding is non-red and that cybersecurity is controlled.", "tw-cna-itri"],
     ["procurement_route", "Drones on the Blue UAS list get priority in US government purchasing.", "cbt-cna-hub"],
-    ["screening", "The FCC treats every foreign-made drone as a national security risk unless the DOW or DHS clears it.", "us-hk-fcc"],
+    ["screening", "The FCC treats foreign-made drones as a security risk unless the DOW or DHS clears them.", "us-hk-fcc"],
   ],
   needs: ["Needs from you: your price range", "Needs from you: any existing United States partners", "Needs from you: your own deadline, if you have one"],
   zh: {
@@ -291,7 +291,7 @@ export const US_SPEC: MarketSpec = {
     "碳基 · United States entry": "碳基 · 美國市場",
     "Win a first US order or assembly contract for UAVER drones within 12 months": "12 個月內拿到 UAVER 無人機第一張美國訂單或組裝合約",
     // judgments
-    "A direct export of UAVER aircraft to US buyers is unlikely while the FCC Covered List bars new foreign-made drones.": "只要 FCC 的受管制清單仍禁止新的外國製無人機，UAVER 機型直接外銷美國買方不太可能成功。",
+    "Direct US export of UAVER aircraft is unlikely while the FCC bars new foreign-made drones.": "只要 FCC 仍禁止新的外國製無人機，UAVER 機型直接外銷美國不太可能成功。",
     "A first US deal will likely come through a US partner or US assembly, such as the Vantage Robotics trial build or the Texas plant.": "第一筆美國生意很可能透過美國夥伴或在美組裝取得，例如 Vantage Robotics 試製案或德州組裝廠。",
     "Green UAS certification through ITRI is likely the fastest credential 碳基 can earn for US buyers.": "透過工研院取得 Green UAS 認證，很可能是碳基面對美國買方最快能拿到的資格。",
     // rationale
@@ -321,8 +321,8 @@ export const US_SPEC: MarketSpec = {
     "Ask Vantage Robotics whether the Vesper trial build can become a supply contract": "詢問 Vantage Robotics，Vesper 試製能否轉成供應合約",
     // summary and risks
     "The FCC's 22 Dec 2025 rule bars new foreign-made drones from US import or sale.": "FCC 2025 年 12 月 22 日的規定禁止新的外國製無人機進口或在美銷售。",
-    "Enter through US assembly or a US partner: 碳基 already has a Texas plant agreement and a Vesper trial build.": "透過在美組裝或美國夥伴進入：碳基已有德州組裝廠協議和 Vesper 試製案。",
-    "Earn Green UAS through ITRI in Taiwan first, then work toward Blue UAS for defence buyers.": "先在台灣透過工研院取得 Green UAS，再為國防買方爭取 Blue UAS。",
+    "Enter through US assembly or a US partner, such as the Texas plant or the Vesper trial build.": "透過在美組裝或美國夥伴進入，例如德州組裝廠或 Vesper 試製案。",
+    "Earn Green UAS through ITRI first, then work toward Blue UAS.": "先透過工研院取得 Green UAS，再爭取 Blue UAS。",
     "Any change to a foreign-made drone may need a new FCC authorisation, which the Covered List blocks.": "外國製無人機只要有變更，就可能需要新的 FCC 授權，而受管制清單會擋下。",
     "The Vantage Robotics trial build was reported in October 2023 and no later update was found.": "Vantage Robotics 試製案是 2023 年 10 月的報導，之後沒有找到更新消息。",
     "碳基's NDAA compliance is the company's own claim in a press release.": "碳基符合 NDAA 的說法來自新聞稿中的公司自述。",
@@ -330,11 +330,11 @@ export const US_SPEC: MarketSpec = {
     "New foreign-made drones cannot get FCC authorisation, so they cannot be imported for sale.": "新的外國製無人機拿不到 FCC 授權，因此不能進口銷售。",
     "Green UAS assessments check that funding is non-red and that cybersecurity is controlled.": "Green UAS 評鑑會檢視資金來源是否非紅，以及資安是否控管良好。",
     "Drones on the Blue UAS list get priority in US government purchasing.": "列入 Blue UAS 清單的無人機享有美國政府採購優先權。",
-    "The FCC treats every foreign-made drone as a national security risk unless the DOW or DHS clears it.": "除非美國戰爭部或國土安全部認定沒有風險，FCC 把所有外國製無人機視為國安風險。",
+    "The FCC treats foreign-made drones as a security risk unless the DOW or DHS clears them.": "除非美國戰爭部或國土安全部認定沒有風險，FCC 把所有外國製無人機視為國安風險。",
     // needs
     "Needs from you: any existing United States partners": "需要你提供：你在美國已有的夥伴",
     // next steps
-    "Ask US counsel how the Covered List treats UAVER aircraft before any US sale or Texas assembly": "在美國銷售或德州組裝前，請美國律師確認受管制清單如何適用 UAVER 機型",
+    "Ask US counsel how the Covered List treats UAVER aircraft": "請美國律師確認受管制清單如何適用 UAVER 機型",
     "Check which UAVER models could meet the Blue UAS criteria with the IDA's Washington briefings": "利用產業發展署的華府說明會，檢視哪些 UAVER 機型可能符合 Blue UAS 標準",
     "Book a Green UAS assessment through ITRI in Taiwan": "在台灣透過工研院預約 Green UAS 評鑑",
     "Ask ITRI for a Green UAS cybersecurity pre-assessment of UAVER's fixed-wing models": "請工研院為 UAVER 定翼機型做 Green UAS 資安預評鑑",
