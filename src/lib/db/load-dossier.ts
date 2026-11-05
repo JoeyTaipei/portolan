@@ -1,8 +1,8 @@
 import "server-only";
 import { connection } from "next/server";
 import { cache } from "react";
-import { isDossierId, isShareId, SAMPLE_DOSSIER_ID, SAMPLE_SHARE_ID, SAMPLE_VN_ID, SAMPLE_VN_SHARE_ID } from "@/lib/ids";
-import { sampleDossier, sampleVietnam } from "@/lib/sample/reader";
+import { isDossierId, isShareId } from "@/lib/ids";
+import { sampleById, sampleByShareId } from "@/lib/sample/reader";
 import type { Dossier } from "@/lib/types";
 import { getDb } from "./client";
 import { readByShareId, readDossier } from "./read";
@@ -13,8 +13,8 @@ import { readByShareId, readDossier } from "./read";
 // shows the same 404 whether or not a dossier ever existed.
 
 export const loadDossier = cache(async (id: string): Promise<Dossier | null> => {
-  if (id === SAMPLE_DOSSIER_ID) return sampleDossier;
-  if (id === SAMPLE_VN_ID) return sampleVietnam;
+  const sample = sampleById(id);
+  if (sample) return sample;
   if (!isDossierId(id)) return null;
   if (!getDb()) return null;
   // Per-request data: keep it out of prerendering (cacheComponents) instead of an aborted fetch.
@@ -22,10 +22,10 @@ export const loadDossier = cache(async (id: string): Promise<Dossier | null> => 
   return readDossier(id);
 });
 
-/** /s/[shareId]: the sample's share id opens the sample; others are read by share id only. */
+/** /s/[shareId]: a sample's share id opens that sample; others are read by share id only. */
 export const loadByShareId = cache(async (shareId: string): Promise<Dossier | null> => {
-  if (shareId === SAMPLE_SHARE_ID) return sampleDossier;
-  if (shareId === SAMPLE_VN_SHARE_ID) return sampleVietnam;
+  const sample = sampleByShareId(shareId);
+  if (sample) return sample;
   if (!isShareId(shareId)) return null;
   if (!getDb()) return null;
   await connection();

@@ -10,7 +10,7 @@ import { bumpUsage, ledgerStore } from "@/lib/db/research";
 import { isDossierId, isSampleId } from "@/lib/ids";
 import { useDossierAi as countDossierAi } from "@/lib/limits/counters";
 import { SAMPLE_NOTE } from "@/fixtures/sample-dossier";
-import { sampleDossier, sampleVietnam } from "@/lib/sample/reader";
+import { ALL_SAMPLES } from "@/lib/sample/reader";
 import type { ActionResult, BriefingNoteContent, Dossier, IntroDraft, Tie } from "@/lib/types";
 
 // Briefing note drafts (spec §11.2, §11.3; risky change: paid API). Order for a real dossier:
@@ -40,10 +40,10 @@ function resolveTarget(d: Dossier, input: { trackerItemId: string | null; stakeh
 export async function sampleBriefingNote(input: { trackerItemId: string | null; stakeholderId: string | null }): Promise<ActionResult<BriefingNoteContent>> {
   const parsed = DraftInput.safeParse({ ...input, expertReview: false });
   if (!parsed.success) return { ok: false, error: "Pick a tracker item first." };
-  // MKT-2: the Vietnam sample's ids all start with "vn-"/"tw-", so whichever sample holds the target is the one.
-  const sample = resolveTarget(sampleDossier, parsed.data) ? sampleDossier : sampleVietnam;
-  const target = resolveTarget(sample, parsed.data);
-  if (!target) return { ok: false, error: "That stakeholder isn't in the sample's tracker." };
+  // MKT-2/MKT-3: stakeholder and tracker ids are unique across samples, so whichever sample holds the target is the one.
+  const sample = ALL_SAMPLES.find((d) => resolveTarget(d, parsed.data));
+  const target = sample ? resolveTarget(sample, parsed.data) : null;
+  if (!sample || !target) return { ok: false, error: "That stakeholder isn't in the sample's tracker." };
   if (target.stakeholder.id === SAMPLE_NOTE.stakeholderId) return { ok: true, data: { ...SAMPLE_NOTE, meeting: { ...SAMPLE_NOTE.meeting, at: target.item?.meetingAt ?? null } } };
   return { ok: true, data: mockNote(sample, target, new Date()).content };
 }

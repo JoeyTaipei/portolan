@@ -9,9 +9,29 @@ export const SAMPLE_SHARE_ID = "jebqgYb3j4SoWrUgtDELdQ";
 export const SAMPLE_VN_ID = "sample-vn";
 export const SAMPLE_VN_SHARE_ID = "1tNseuddMPlCOM2XRWIOAA";
 
-/** Either sample: writes stay in this browser and never reach the server. */
+/** MKT-3: the 碳基 (Carbon-Based Technology) demo, one hand-curated sample per target market. */
+export const SAMPLE_CBT_US_ID = "sample-cbt-us";
+export const SAMPLE_CBT_JP_ID = "sample-cbt-jp";
+export const SAMPLE_CBT_PL_ID = "sample-cbt-pl";
+export const SAMPLE_CBT_PH_ID = "sample-cbt-ph";
+export const SAMPLE_CBT_US_SHARE_ID = "FQt9eSVD1zJtAReetQCVMg";
+export const SAMPLE_CBT_JP_SHARE_ID = "gHpOgu2z8qNmHqlMBeMfXA";
+export const SAMPLE_CBT_PL_SHARE_ID = "XKWxOeVbyWbIddi7W4IaxA";
+export const SAMPLE_CBT_PH_SHARE_ID = "ThDKUbZlPJhqoYfapKJwKg";
+
+/** Every sample: fixed public id → random share id. Samples never touch the database. */
+export const SAMPLE_IDS: readonly { id: string; shareId: string }[] = [
+  { id: SAMPLE_DOSSIER_ID, shareId: SAMPLE_SHARE_ID },
+  { id: SAMPLE_VN_ID, shareId: SAMPLE_VN_SHARE_ID },
+  { id: SAMPLE_CBT_US_ID, shareId: SAMPLE_CBT_US_SHARE_ID },
+  { id: SAMPLE_CBT_JP_ID, shareId: SAMPLE_CBT_JP_SHARE_ID },
+  { id: SAMPLE_CBT_PL_ID, shareId: SAMPLE_CBT_PL_SHARE_ID },
+  { id: SAMPLE_CBT_PH_ID, shareId: SAMPLE_CBT_PH_SHARE_ID },
+];
+
+/** Any sample: writes stay in this browser and never reach the server. */
 export function isSampleId(id: string): boolean {
-  return id === SAMPLE_DOSSIER_ID || id === SAMPLE_VN_ID;
+  return SAMPLE_IDS.some((s) => s.id === id);
 }
 
 const ID_PATTERN = /^[A-Za-z0-9_-]{22}$/;

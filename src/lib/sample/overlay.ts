@@ -2,6 +2,7 @@
 // Never sent to the server, never calls a paid API. Each changed collection is stored whole,
 // so adds, edits and removals (Undo, withdrawal) all work by replacing the array.
 // Every storage access is wrapped: private windows and blocked storage just mean "no overlay".
+import { isSampleId } from "@/lib/ids";
 import type { Dossier, PlaybookOutcome, SampleOverlay, SampleOverlayKey } from "@/lib/types";
 
 export const OVERLAY_PREFIX = "portolan.sample.";
@@ -31,10 +32,12 @@ const ALL_KEYS: readonly OverlayKey[] = [...OVERLAY_KEYS, "playbook"];
 /** Fired on window after any write or reset, so open components can re-read. */
 export const OVERLAY_EVENT = "portolan:sample-overlay";
 
-/** MKT-2: the Vietnam sample keeps its own changes, so the two samples never mix. */
+/** MKT-2/MKT-3: every sample other than /d/sample keeps its own changes, so samples never mix. */
 function prefix(): string {
   try {
-    return typeof window !== "undefined" && window.location.pathname.startsWith("/d/sample-vn") ? "portolan.sample-vn." : OVERLAY_PREFIX;
+    if (typeof window === "undefined") return OVERLAY_PREFIX;
+    const id = /^\/d\/(sample-[a-z0-9-]+)/.exec(window.location.pathname)?.[1];
+    return id && isSampleId(id) ? `portolan.${id}.` : OVERLAY_PREFIX;
   } catch {
     return OVERLAY_PREFIX;
   }

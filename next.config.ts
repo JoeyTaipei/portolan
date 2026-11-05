@@ -39,6 +39,9 @@ const nextConfig: NextConfig = {
     return [
       { source: "/d/:path*", headers: privateHeaders },
       { source: "/s/:path*", headers: privateHeaders },
+      // MKT-3: the 碳基 demo pages stay out of search engines like the samples they link to.
+      { source: "/cbt", headers: privateHeaders },
+      { source: "/cbt/:path*", headers: privateHeaders },
     ];
   },
 };
