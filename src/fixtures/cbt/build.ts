@@ -92,7 +92,8 @@ export interface MarketSpec {
   events: { id: string; title: string; date: string; stakeholderId: string; keys: string[] }[];
   leads: { stakeholderId: string; kind: string; why: Said2; eventDate: string }[];
   tracker: string[];
-  marketChecks: { money: [Rating03, string, string]; licence: [Rating03, string, string] };
+  /** null = no sourced rating (shown as Unverified). */
+  marketChecks: { money: [Rating03, string, string] | null; licence: [Rating03, string, string] | null };
   why: Record<string, Said2>;
   rationale: Said2[];
   judgments: [text: string, icd: IcdTerm, confidence: Confidence, ...keys: string[]][];
@@ -270,7 +271,8 @@ export function buildSample(m: MarketSpec): Dossier {
     createdAt: AT,
   }));
 
-  const check = ([rating, quote, key]: [Rating03, string, string]) => ({ rating, quote, sourceIds: [sid(key)], status: "sourced" as const });
+  const check = (c: [Rating03, string, string] | null) =>
+    c ? { rating: c[0], quote: c[1], sourceIds: [sid(c[2])], status: "sourced" as const } : { rating: null, quote: null, sourceIds: [], status: "unverified" as const };
 
   const base: Dossier = {
     id: D,

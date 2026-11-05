@@ -34,7 +34,7 @@ function problems(d: Dossier): string[] {
     errs.push(...claim(`lead ${l.id}`, l.sourceIds, null));
     if (l.why) errs.push(...numberProblems(`${d.id} lead ${l.id}`, l.why.text, l.why.sourceIds, index));
   }
-  for (const c of [d.marketChecks.money, d.marketChecks.licence]) if (c) errs.push(...claim("market check", c.sourceIds, c.quote));
+  for (const c of [d.marketChecks.money, d.marketChecks.licence]) if (c?.status === "sourced") errs.push(...claim("market check", c.sourceIds, c.quote));
   for (const b of d.briefs)
     for (const [where, x] of briefSentences(b)) errs.push(...claim(where, x.sourceIds, null), ...numberProblems(`${d.id} ${where}`, x.text, x.sourceIds, index));
   return errs;
