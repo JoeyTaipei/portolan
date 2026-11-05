@@ -870,6 +870,30 @@ Why: spec MKT-3. A demo for 碳基科技 the next day. Joey picked the US first,
 
 **Acceptance**: `npm test`, `npm run build`; screenshots of `/cbt`, `/cbt/report` and the four markets at 1440 and 390 with no console errors; each market's A4 fits one page in English and 繁中. No paid call.
 
+### S23 Tailored partner questions (added 2026-11-05, Joey)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| engine + ui | `claude/partner-questions` | main @ 7b4252d | 1 day | P3 | none |
+
+Why: spec NET-8. The Partners cards ask every candidate the same seven questions, including "show us your acceptance results" to firms that are vendors like the client. Questions must come from the pair (client, candidate) and aim at a strategic partnership.
+
+**Risky changes — list before code** (paid Claude call; sources and Unverified marks; China org-level):
+- *A paid call runs unasked.* Button only, estimate shown first, `callStructured` reserves against the ledger (purpose `partner_questions`); nothing runs in mock mode or on samples.
+- *A question implies a fact we have no source for.* Claude sees only accepted sourced facts; each question cites ids; code drops unknown ids and runs the pre-display check; no sourced fact → code bank + "Unverified" line.
+- *A wrong relationship makes a wrong question.* The relationship and the facts it came from are shown on the card; `unclear` falls back to the bank; user can rerun.
+- *Prompt injection from fetched text.* Excerpts go in as data blocks (existing `sourceBlocks`).
+- *China.* Candidates with `isChina` are never sent; organisation level only.
+- *Cost.* One Opus call, ~8k tokens in, max 8k out: about US$0.10 typical, US$0.19 worst case. Needs Joey's confirmation in chat before any live run.
+
+**Files** (new unless noted): `supabase/migrations/20261105170000_partner_questions.sql` (table `partner_question_sets`, RLS on, no anon policy; Joey chose to store, 2026-11-05), `src/lib/types.ts` (`PartnerQuestionSet` and an optional `Dossier.partnerQuestions`), `src/lib/partner-bank.ts` (starter questions and relationship guess, no Claude), `src/lib/claude/partner-questions.ts` (prompt, schema, checks, one Opus call), `src/lib/db/partner-questions.ts`, `src/lib/db/read.ts` (read the newest set; a missing table never blocks a dossier), `src/app/actions/partner-questions.ts` (estimate, then confirmed write), `src/components/partners/{model.ts,partner-card.tsx,questions-control.tsx}`, `src/components/network/network-view.tsx` (the button), `src/lib/i18n/zh-TW.ts`, `src/lib/markets.test.ts` and `src/components/partners/partners.test.ts` (fixed list removed), `docs/spec.md`, `docs/plan.md`.
+
+**Tests added**: `src/lib/claude/partner-questions.test.ts` (peer vendor never gets delivery/acceptance questions; unknown source id and repeats dropped; fewer than 2 questions → not stored; stored set shows on the card with sources; China candidate not sent).
+
+**Not in this slice**: Chinese text for Claude-written questions (I18N-4 keeps research text verbatim); starter questions are translated.
+
+**Acceptance**: `npm test`, `npm run build`; `/d/sample/partners` and a mock dossier at 1440 show different questions per candidate; no paid call until Joey confirms.
+
 ## 6. Risks
 
 | Risk | Impact | Mitigation |

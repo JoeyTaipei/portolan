@@ -27,6 +27,7 @@ import type {
   MarketChecks,
   MemberStatus,
   OrgAlias,
+  PartnerQuestionSet,
   PortolanDocument,
   Rating03,
   Reliability,
@@ -434,6 +435,7 @@ async function readBy(column: "id" | "share_id", value: string): Promise<Dossier
     // Real intro drafts aren't stored (spec §10.6): they're written on request.
     introDrafts: [],
     aliases,
+    partnerQuestions: await readPartnerQuestions(client, id),
   };
 }
 
@@ -445,4 +447,17 @@ export function readDossier(id: string): Promise<Dossier | null> {
 /** A real dossier by its share id (already format-checked by the caller), or null. */
 export function readByShareId(shareId: string): Promise<Dossier | null> {
   return readBy("share_id", shareId);
+}
+
+/** NET-8: the newest tailored partner questions. A missing table or bad row never blocks the dossier (starter questions show). */
+async function readPartnerQuestions(client: ReturnType<typeof db>, dossierId: string): Promise<PartnerQuestionSet | null> {
+  try {
+    const r = await client.from("partner_question_sets").select().eq("dossier_id", dossierId).order("created_at", { ascending: false }).limit(1);
+    const row = r.error ? null : (r.data?.[0] as Row | undefined);
+    const entries = (row?.content as { entries?: PartnerQuestionSet["entries"] } | null)?.entries;
+    if (!row || !Array.isArray(entries)) return null;
+    return { id: row.id as string, createdAt: row.created_at as string, model: (row.model as string | null) ?? null, entries };
+  } catch {
+    return null;
+  }
 }
