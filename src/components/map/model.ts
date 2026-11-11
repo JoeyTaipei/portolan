@@ -141,7 +141,7 @@ export function buildMapModel(d: Dossier, now: Date): MapModel {
     dossierId: d.id,
     isSample: d.isSample,
     name: d.name,
-    sourceCount: cite.count,
+    sourceCount: d.sources.filter((s) => s.accepted).length,
     nodes,
     edges: d.edges
       .filter((e) => e.status === "sourced" && e.sourceIds.some((id) => cite.has(id)))

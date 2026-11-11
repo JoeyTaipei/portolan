@@ -929,6 +929,7 @@ Why: "can this claim be shown, and with which sources?" was decided three ways (
 - *A claim with an unverified source is shown.* Sentences still pass only when every cited source is accepted with a verified date, with no placeholder or spec-in. Home judgments move to this rule (the fix). Verify: failing-then-passing test that home and brief show the same judgments when one cites a rejected source.
 - *Evidence lists lose a source that used to show.* Evidence lists now use the same citable set (accepted and verified date). Every accepted source in research, the tracker and the fixtures has a verified date, so nothing visible changes. Verify: existing partners, scoring and i18n tests, plus `/d/sample` and `/d/sample-vn` home, map, brief and A4 checked in the browser.
 - *A rejected source appears as a ref.* Unknown and rejected ids are still dropped. Verify: unit test on the module.
+- *Brief notes hidden that used to show.* `needs` and `changesNote` now drop blank text and spec-in wording as well as placeholders (BRIEF-10 applied everywhere). Verify: sample brief text unchanged.
 - *Write-time check weakened.* `preDisplay` is unchanged except that the placeholder pattern now has one definition. Verify: `checks.test.ts`.
 - Map next steps, network leads and verdict reasons keep their current rule (shown with at least one citable source); tightening them to "every source" is a product call left for later.
 
