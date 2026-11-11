@@ -894,6 +894,29 @@ Why: spec NET-8. The Partners cards ask every candidate the same seven questions
 
 **Acceptance**: `npm test`, `npm run build`; `/d/sample/partners` and a mock dossier at 1440 show different questions per candidate; no paid call until Joey confirms.
 
+### S24 Brief writing eval: style block A/B, free tic checks, blind grader (added 2026-11-11, Joey)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| engine (this session) | `claude/great-maxwell-byyhj5` (restarted from main @ b902f32) | main | 4 h | P4 | none |
+
+Why: spec EVAL-1–4. Joey wants to know whether a style block makes the A4 read like a sharp analyst without costing accuracy. Joey picked: free checks on the six samples now; the paid A/B on 10–20 real dossiers later, on Joey's machine.
+
+**Risky changes — list before code** (paid API calls; the source check):
+- *Spending without a yes.* The runner never calls Claude unless `EVAL_PAID=yes`, `RESEARCH_MODE=live` and `EVAL_CONFIRM` equal the estimate it printed; every call goes through `callStructured` and an in-memory ledger capped at `EVAL_MAX_USD`. Verify: run without the flags here (no key) and see only free checks run.
+- *Production prompt changes by accident.* `briefSystem` defaults to A and the research flow never passes `style`. Verify: unit test that A's system prompt equals the old one and B is A plus the block.
+- *Style beats sources.* The block ends with "sources come before style", and the summary reports sentences the pre-display check removed per variant; B ships only if it removes no more. Verify by reading the summary after the paid run.
+- *Grader follows text inside a report.* Sources and reports are fenced and the system prompt says they are data. Verify: unit test that a report containing "</report>" is escaped.
+- *Real dossier content leaves the machine.* Real dossiers are read only on Joey's machine and sent only to Anthropic (already a processor, `/privacy`); outputs stay in the git-ignored `evals/out/`.
+
+**Files**: `src/lib/claude/brief.ts` (`BRIEF_STYLE_BLOCK`, `style` on `briefSystem`/`writeBrief`), `src/lib/eval/{tics,grader}.ts` and tests, `evals/brief-style.eval.ts`, `vitest.eval.config.ts`, `package.json` (`eval:brief` script), `.gitignore` (`/evals/out/`), `docs/spec.md`, `docs/plan.md`.
+
+**Tests added**: `src/lib/eval/tics.test.ts` (each check on a hit and a miss; the sample briefs have no banned words or em dashes), `src/lib/eval/grader.test.ts` (A/B prompt equality, fencing, order-swap verdict rule).
+
+**Not in this slice**: storing founders' hand rewrites as (draft, edit) gold pairs; that needs an edit feature and a table (ask first).
+
+**Acceptance**: `npm test`, `npm run build`, `npm run eval:brief` on the samples writes a summary. No paid call in this session.
+
 ## 6. Risks
 
 | Risk | Impact | Mitigation |
