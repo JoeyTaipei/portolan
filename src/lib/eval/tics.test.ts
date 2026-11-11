@@ -1,7 +1,7 @@
 // EVAL-2: the free writing checks (plan S24).
 import { describe, expect, it } from "vitest";
 import { ALL_SAMPLES } from "@/lib/sample/reader";
-import { briefSentences, sharedTrigramRate, ticReport } from "./tics";
+import { briefSentences, sharedTrigramRate, splitSentences, ticReport } from "./tics";
 
 const one = (s: string) => ticReport([s]).counts;
 
@@ -21,9 +21,17 @@ describe("tic checks", () => {
     expect(ticReport(["The ministry buys drones.", "Overall, the market is open."]).counts.summaryClosers).toBe(1);
     expect(one("This may potentially affect the bid.").stackedHedges).toBe(1);
     expect(one("This may affect the bid.").stackedHedges).toBe(0);
+    expect(one("By May 2026 the ministry could sign.").stackedHedges).toBe(0);
+    expect(ticReport(["Overall budget is NT$210bn."]).counts.summaryClosers).toBe(0);
+    expect(one("It’s important to note the date.").banned).toBe(1);
     expect(one("The budget grew — fast.").emDashes).toBe(1);
     expect(one("Significant funding and very large demand.").intensifiers).toBe(2);
     expect(one("NT$210bn for 2026.").intensifiers).toBe(0);
+  });
+
+  it("doesn't split sentences after abbreviations", () => {
+    expect(splitSentences("The U.S. Army and Dr. Lin met Acme Inc. Taiwan staff.")).toHaveLength(1);
+    expect(briefSentences({ summary: [{ text: "The U.S. Army buys drones. Taiwan sells them.", sourceIds: [] }], risks: [], requirements: [], routes: [], plan: { prep: [], contact: [], event: [], followUp: [] } })).toHaveLength(2);
   });
 
   it("measures sentence length and sameness across summaries", () => {

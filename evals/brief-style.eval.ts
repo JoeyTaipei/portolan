@@ -21,7 +21,9 @@ import { ALL_SAMPLES, sampleById } from "@/lib/sample/reader";
 import type { Dossier } from "@/lib/types";
 
 const GRADER_USD = 0.05; // per call, Sonnet 5.5 (estimate; the ledger records the actual)
-const MAX_USD = Number(process.env.EVAL_MAX_USD ?? 20);
+const maxEnv = Number(process.env.EVAL_MAX_USD ?? 20);
+/** A typo (EVAL_MAX_USD=abc) must not turn the cap off: fall back to US$20. */
+const MAX_USD = Number.isFinite(maxEnv) && maxEnv > 0 ? maxEnv : 20;
 
 async function loadDossiers(): Promise<Dossier[]> {
   const ids = (process.env.EVAL_DOSSIERS ?? "").split(",").map((s) => s.trim()).filter(Boolean);

@@ -6,13 +6,13 @@ export type BriefText = Pick<Brief, "summary" | "risks" | "requirements" | "rout
 
 /** Words from the style block's "never write" list (EVAL-1). */
 export const BANNED =
-  /\b(delv(e|es|ed|ing)|landscapes?|navigat(e|es|ed|ing)|leverag(e|es|ed|ing)|robust|seamless(ly)?|pivotal|crucial(ly)?|dynamic|evolving|ecosystems?|tapestry|realms?|foster(s|ed|ing)?|unlock(s|ed|ing)?|game-changer|in today's|it is worth noting|it's important to note|it is important to note)\b/gi;
+  /\b(delv(e|es|ed|ing)|landscapes?|navigat(e|es|ed|ing)|leverag(e|es|ed|ing)|robust|seamless(ly)?|pivotal|crucial(ly)?|dynamic|evolving|ecosystems?|tapestry|realms?|foster(s|ed|ing)?|unlock(s|ed|ing)?|game-changer|in today's|it is worth noting|it['’]s important to note|it is important to note)\b/gi;
 /** "It's not X, it's Y" and "not just X, but Y". */
 export const NOT_X_BUT_Y = /\b(it'?s|it is|this is) not\b[^.;]{1,80}?,\s*(it'?s|it is|but)\b|\bnot (just|only|merely|simply)\b[^.;]{1,80}?\bbut( also)?\b/gi;
 /** A sentence that opens by summing up. Matched per sentence. */
-export const SUMMARY_CLOSER = /^(overall|in summary|in short|ultimately|in conclusion|to sum up|all in all|taken together)\b/i;
-/** Hedge words; a sentence with two or more is a stacked hedge. */
-export const HEDGE = /\b(may|might|could|potentially|possibly|perhaps|likely to|appears? to|seems? to|somewhat|relatively)\b/gi;
+export const SUMMARY_CLOSER = /^(overall,|in summary|in short,|ultimately,|in conclusion|to sum up|all in all|taken together)/i;
+/** Hedge words; a sentence with two or more is a stacked hedge. "may" is lower-case only, so the month doesn't count. */
+export const HEDGE = /\bmay\b|\b(?:[Mm]ight|[Cc]ould|[Pp]otentially|[Pp]ossibly|[Pp]erhaps|[Ll]ikely to|[Aa]ppears? to|[Ss]eems? to|[Ss]omewhat|[Rr]elatively)\b/g;
 export const EM_DASH = /—/g;
 /** Adjectives standing in for a number. */
 export const INTENSIFIER = /\b(significant(ly)?|substantial(ly)?|considerabl[ey]|remarkabl[ey]|tremendous(ly)?|massive(ly)?|huge|vast(ly)?|extremely|incredibly|highly|very)\b/gi;
@@ -44,7 +44,8 @@ export function briefSentences(b: BriefText): string[] {
 
 export function splitSentences(text: string): string[] {
   return text
-    .split(/(?<=[.!?])\s+(?=[A-Z"“(0-9])/)
+    // Not after abbreviations such as U.S., Dr., Inc., No.
+    .split(/(?<!\b(?:[A-Z]\.[A-Z]|Dr|Mr|Ms|Mrs|Prof|Inc|Ltd|Co|Corp|No|St|Jr|Sr|Gen|Lt|Col|vs|e\.g|i\.e|etc)\.)(?<=[.!?])\s+(?=[A-Z"“(0-9])/)
     .map((s) => s.trim())
     .filter(Boolean);
 }
