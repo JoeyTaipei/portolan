@@ -1,7 +1,8 @@
 // View model for 07 Documents and 08 Briefing note (spec §11.3, §12). Labels follow §11.3:
 // approved by an expert → Expert approved; by the founder → "Reviewed by <name>" (never
 // "expert"); in review → expected finish; AI drafts say they are not reviewed.
-import { sourceRef, type SourceRef } from "@/components/score/explain";
+import type { SourceRef } from "@/components/score/explain";
+import { citations } from "@/lib/citation";
 import type { Dossier, DocumentStatus, DocumentType, PortolanDocument, TrackerItem } from "@/lib/types";
 
 export const TYPE_INFO: Record<DocumentType, { label: string; pages: string; desc: string }> = {
@@ -153,13 +154,13 @@ export function meetingOptions(d: Targets, tracker: TrackerItem[]): MeetingOptio
 
 /** DOC-13: future events research found, next 180 days first; undated ones say so. */
 export function watchItems(d: Dossier, now: Date): WatchItem[] {
-  const byId = new Map(d.sources.filter((s) => s.accepted).map((s) => [s.id, sourceRef(s)]));
+  const cite = citations(d);
   const today = now.toISOString().slice(0, 10);
   const horizon = new Date(now.getTime() + 180 * 86_400_000).toISOString().slice(0, 10);
   return d.events
     .filter((e) => e.status === "sourced" && (e.date === null || (e.date >= today && e.date <= horizon)))
     .sort((a, b) => (a.date ?? "9999").localeCompare(b.date ?? "9999"))
-    .map((e) => ({ id: e.id, title: e.title, date: e.date, refs: e.sourceIds.flatMap((x) => byId.get(x) ?? []) }));
+    .map((e) => ({ id: e.id, title: e.title, date: e.date, refs: cite.anyOf(e.sourceIds) }));
 }
 
 export function buildDocsModel(d: Dossier, etaText: string, now: Date): DocsVM {

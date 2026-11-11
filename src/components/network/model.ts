@@ -1,7 +1,8 @@
 // View model for 04 Network (spec §12). Built on the server from the dossier; the browser only
 // gets what the cards show. No score is computed here: investor and lawyer matches are the
 // sourced checks research stored (spec §16 Q4, simpler version: "3 of 4 checks", no level word).
-import { refsFor, sourceRef, type SourceRef } from "@/components/score/explain";
+import type { SourceRef } from "@/components/score/explain";
+import { citations, type Citations } from "@/lib/citation";
 import { buildPartners, PARTNER_NOTE, partnerNote, type PartnerVM } from "@/components/partners/model";
 import type { Dossier, IntroRequest, Lead, LeadType, TrackerItem } from "@/lib/types";
 
@@ -71,10 +72,10 @@ export interface NetworkVM {
   intros: IntroRequest[];
 }
 
-function leadVM(l: Lead, d: Dossier, byId: ReadonlyMap<string, SourceRef>): LeadVM {
-  const refs = refsFor(l.sourceIds, byId);
+function leadVM(l: Lead, d: Dossier, cite: Citations): LeadVM {
+  const refs = cite.anyOf(l.sourceIds);
   const checks: CheckVM[] =
-    l.match.type === "checks" ? l.match.checks.map((c) => ({ label: c.label, passed: c.passed && refsFor(c.sourceIds, byId).length > 0, refs: refsFor(c.sourceIds, byId) })) : [];
+    l.match.type === "checks" ? l.match.checks.map((c) => ({ label: c.label, passed: c.passed && cite.anyOf(c.sourceIds).length > 0, refs: cite.anyOf(c.sourceIds) })) : [];
   // Only sourced expected attendees who are on this map count (spec §12, NET-3).
   const attendees = l.match.type === "attendees" ? l.match.stakeholderIds.filter((id) => d.stakeholders.some((s) => s.id === id)).length : 0;
   const passed = checks.filter((c) => c.passed).length;
@@ -94,7 +95,7 @@ function leadVM(l: Lead, d: Dossier, byId: ReadonlyMap<string, SourceRef>): Lead
     match,
     checks,
     meta: l.meta,
-    why: l.why ? { text: l.why.text, refs: refsFor(l.why.sourceIds, byId) } : null,
+    why: l.why ? { text: l.why.text, refs: cite.anyOf(l.why.sourceIds) } : null,
     route: l.route,
     eventDate: l.eventDate,
     refs,
@@ -115,8 +116,8 @@ function order(a: LeadVM, b: LeadVM, d: Dossier): number {
 }
 
 export function buildNetworkModel(d: Dossier, now: Date): NetworkVM {
-  const byId = new Map(d.sources.filter((s) => s.accepted).map((s) => [s.id, sourceRef(s)]));
-  const leads = d.leads.map((l) => leadVM(l, d, byId)).sort((a, b) => order(a, b, d));
+  const cite = citations(d);
+  const leads = d.leads.map((l) => leadVM(l, d, cite)).sort((a, b) => order(a, b, d));
   return { dossierId: d.id, isSample: d.isSample, name: d.name, market: d.market, leads, partners: buildPartners(d, now), tracker: d.tracker, intros: d.intros };
 }
 

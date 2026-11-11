@@ -2,12 +2,12 @@
 // `now`; every score comes from src/lib/scoring. Sourcing rule: only accepted sources are cited,
 // and a fact without one is shown as Unverified (never as a sourced value).
 import { suggestsSpecIn } from "@/lib/checks/pre-display";
+import { citations } from "@/lib/citation";
 import { contactFirst, influenceBreakdown, scoreStakeholders, sourcesFor } from "@/lib/scoring";
 import type { Banded, Category, Dossier, Fact, Level, Stance, StakeholderStatus, SupportResult } from "@/lib/types";
 import {
   confidenceExplanation,
   influenceExplanation,
-  refsFor,
   sourceRef,
   supportExplanation,
   type Explanation,
@@ -79,8 +79,7 @@ function fallbackPos(i: number, n: number) {
 }
 
 export function buildMapModel(d: Dossier, now: Date): MapModel {
-  const accepted = d.sources.filter((s) => s.accepted);
-  const byId = new Map(accepted.map((s) => [s.id, sourceRef(s)]));
+  const cite = citations(d);
   const scored = scoreStakeholders(d, now);
   const scoreOf = new Map(scored.map((s) => [s.id, s]));
 
@@ -88,10 +87,10 @@ export function buildMapModel(d: Dossier, now: Date): MapModel {
     const sc = scoreOf.get(s.id)!;
     const role = newest(d.facts, s.id, "role");
     const action = newest(d.facts, s.id, "action");
-    const actionSources = action.sourced ? refsFor(action.sourced.sourceIds, byId) : [];
+    const actionSources = action.sourced ? cite.anyOf(action.sourced.sourceIds) : [];
     // BRIEF-10: a saved next step that suggests spec-in is not shown (it reads as Unverified).
     const actionText = action.sourced && actionSources.length > 0 && !suggestsSpecIn(text(action.sourced.value) ?? "") ? text(action.sourced.value) : null;
-    const roleSourced = role.sourced && refsFor(role.sourced.sourceIds, byId).length > 0 ? text(role.sourced.value) : null;
+    const roleSourced = role.sourced && cite.anyOf(role.sourced.sourceIds).length > 0 ? text(role.sourced.value) : null;
     const pos = s.x !== null && s.y !== null && s.z !== null ? { x: s.x, y: s.y, z: s.z } : fallbackPos(i, d.stakeholders.length);
     const label = s.short ?? s.name;
     const mark: Mark = s.category === "evt" ? "event" : sc.support.kind === "unknown" ? "unknown" : sc.support.stance;
@@ -120,12 +119,12 @@ export function buildMapModel(d: Dossier, now: Date): MapModel {
         ? { text: actionText, verified: true, sources: actionSources }
         : { text: NO_ROUTE, verified: false, sources: [] },
       explain: {
-        influence: influenceExplanation(label, sc.influence, influenceBreakdown(s.id, d.facts, d.edges), byId),
+        influence: influenceExplanation(label, sc.influence, influenceBreakdown(s.id, d.facts, d.edges), cite),
         support: supportExplanation(
           label,
           sc.support,
           d.statements.filter((st) => st.stakeholderId === s.id),
-          byId,
+          cite,
         ),
         confidence: confidenceExplanation(label, sc.confidence, srcs, sc.influence),
       },
@@ -142,10 +141,10 @@ export function buildMapModel(d: Dossier, now: Date): MapModel {
     dossierId: d.id,
     isSample: d.isSample,
     name: d.name,
-    sourceCount: accepted.length,
+    sourceCount: d.sources.filter((s) => s.accepted).length,
     nodes,
     edges: d.edges
-      .filter((e) => e.status === "sourced" && e.sourceIds.some((id) => byId.has(id)))
+      .filter((e) => e.status === "sourced" && e.sourceIds.some((id) => cite.has(id)))
       .map((e) => ({ a: e.aId, b: e.bId })),
     contactFirst: picks.map((p) => p.stakeholderId),
   };

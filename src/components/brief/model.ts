@@ -1,19 +1,15 @@
 // What the strategy brief (03), the A4 report (05) and the sources page show. Server-side, with
 // an explicit `now`. Scores come only from src/lib/scoring; this file only picks and labels.
 //
-// Sourcing rule: a sentence is shown only when every source it cites is an accepted source of
-// this dossier with a verified date, and it has no placeholder (BRIEF-6 pre-display check).
-// Failing sentences are dropped, never shown with a warning.
+// Sourcing rule: src/lib/citation (BRIEF-6). Failing sentences are dropped, never shown with a warning.
 import { zhMap, type ZhMap } from "@/lib/i18n/dossier";
 import {
   dataConfidenceExplanation,
   dataConfidenceText,
-  refsFor,
-  sourceRef,
   type Explanation,
   type SourceRef,
 } from "@/components/score/explain";
-import { suggestsSpecIn } from "@/lib/checks/pre-display";
+import { citations, showableText, type Cited, type Citations } from "@/lib/citation";
 import { buildMapModel } from "@/components/map/model";
 import {
   briefMetrics,
@@ -32,10 +28,7 @@ import { marketInfo } from "@/lib/markets";
 import { REQUIREMENT_TOPICS, ROUTE_KINDS } from "@/lib/types";
 import type { Brief, BriefMetrics, BriefStatus, Dossier, EntryRequirement, ForeignAccess, MoneyStatus, ProcurementRoute, RouteKind, IcdTerm, Confidence, RequirementTopic, Sentence, Source } from "@/lib/types";
 
-export interface Cited {
-  text: string;
-  refs: SourceRef[];
-}
+export type { Cited };
 
 /** BRIEF-9 topic names, shown before each requirement. */
 export const REQUIREMENT_LABEL: Record<RequirementTopic, string> = {
@@ -189,31 +182,16 @@ export interface BriefVM {
 import { SOURCE_TYPE_LABEL } from "@/components/score/grade";
 export { SOURCE_TYPE_LABEL };
 
-// Spec §11.1 placeholder check. Letters in [] so the repo's placeholder grep stays clean.
-const PLACEHOLDER = /\[[A-Z _-]+\]|\bT[B]D\b|l[o]rem/i;
-
-/** Accepted sources of this dossier that have a verified date: the only ones a claim may cite. */
-export function citable(d: Pick<Dossier, "sources">): Map<string, Source> {
-  return new Map(d.sources.filter((s) => s.accepted && s.verifiedAt).map((s) => [s.id, s]));
-}
-
-/** BRIEF-6 in code: null when the sentence must not be shown. */
-export function checkSentence(s: Sentence, ok: ReadonlyMap<string, Source>): Cited | null {
-  if (!s.text.trim() || PLACEHOLDER.test(s.text) || suggestsSpecIn(s.text)) return null;
-  if (s.sourceIds.length === 0 || !s.sourceIds.every((id) => ok.has(id))) return null;
-  return { text: s.text, refs: s.sourceIds.map((id) => sourceRef(ok.get(id)!)) };
-}
-
-function requirementsVM(xs: EntryRequirement[], ok: ReadonlyMap<string, Source>): Pick<BriefVM, "requirements" | "exportCheck"> {
+function requirementsVM(xs: EntryRequirement[], ok: Citations): Pick<BriefVM, "requirements" | "exportCheck"> {
   const requirements = xs.flatMap((x) => {
-    const c = checkSentence(x, ok);
+    const c = ok.sentence(x);
     return c ? [{ ...c, topic: x.topic, label: REQUIREMENT_LABEL[x.topic] }] : [];
   });
   return { requirements, exportCheck: requirements.length > 0 && !requirements.some((x) => x.topic === "export_control") };
 }
 
-function checkAll(xs: Sentence[], ok: ReadonlyMap<string, Source>): Cited[] {
-  return xs.map((s) => checkSentence(s, ok)).filter((c): c is Cited => c !== null);
+function checkAll(xs: Sentence[], ok: Citations): Cited[] {
+  return xs.map((s) => ok.sentence(s)).filter((c): c is Cited => c !== null);
 }
 
 export function fmtDay(iso: string): string {
@@ -265,7 +243,7 @@ const pct = (f: number) => Math.round(f * 100);
 export function metricVMs(
   m: BriefMetrics,
   d: Pick<Dossier, "events" | "marketChecks" | "statements">,
-  ok: ReadonlyMap<string, Source>,
+  ok: Citations,
 ): MetricVM[] {
   const events = d.events;
   const r = m.entryReadiness;
@@ -274,12 +252,11 @@ export function metricVMs(
   const c = m.dataConfidence;
   const check = (v: number | null) => (v === null ? "No sourced rating" : `${v} of 3`);
   const ev = w.found ? events.find((e) => e.id === w.eventId) : undefined;
-  const refMap = new Map([...ok].map(([k, v]) => [k, sourceRef(v)]));
   // Each readiness check lists the sources it was rated from; support is worked out from the
   // stakeholders' sourced statements.
   const checkRefs = (c: Dossier["marketChecks"]["money"], rating: number | null) =>
-    rating === null || !c ? [] : refsFor(c.sourceIds, refMap);
-  const supportRefs = refsFor(d.statements.map((st) => st.sourceId), refMap);
+    rating === null || !c ? [] : ok.anyOf(c.sourceIds);
+  const supportRefs = ok.anyOf(d.statements.map((st) => st.sourceId));
   return [
     {
       key: "readiness",
@@ -325,7 +302,7 @@ export function metricVMs(
         result: w.found ? `${w.days} days until ${w.title}` : "No sourced deadline found",
         basedOn: null,
         factors: ev
-          ? [{ label: ev.title, weight: null, rating: w.found ? fmtDay(w.date) : "", sources: refsFor(ev.sourceIds, refMap) }]
+          ? [{ label: ev.title, weight: null, rating: w.found ? fmtDay(w.date) : "", sources: ok.anyOf(ev.sourceIds) }]
           : [],
         summary:
           "Days until the next sourced deadline related to your goal: a budget vote, a tender closing or a committee review. With no sourced deadline there is no number.",
@@ -442,10 +419,10 @@ export function couldNotVerify(
 
 // ─── Procurement routes and the first buyer (BRIEF-12, scoring §9) ──────────
 
-function routeVMs(xs: ProcurementRoute[], ok: ReadonlyMap<string, Source>, nameOf: ReadonlyMap<string, string>, market: Dossier["market"]): RouteVM[] {
+function routeVMs(xs: ProcurementRoute[], ok: Citations, nameOf: ReadonlyMap<string, string>, market: Dossier["market"]): RouteVM[] {
   return ROUTE_KINDS.flatMap((kind) => {
     const x = xs.find((r) => r.route === kind);
-    const c = x ? checkSentence(x, ok) : null;
+    const c = x ? ok.sentence(x) : null;
     if (!x || !c) return [];
     const dm = datedMoney(x);
     const moneyOk = dm && dm.sourceIds.every((id) => ok.has(id));
@@ -457,7 +434,7 @@ function routeVMs(xs: ProcurementRoute[], ok: ReadonlyMap<string, Source>, nameO
         buyer: x.buyerId ? (nameOf.get(x.buyerId) ?? null) : null,
         access: x.access,
         accessLabel: accessLabel(x.access, market),
-        money: moneyOk ? { amount: dm.amount, asOf: dm.asOf, status: MONEY_STATUS_LABEL[dm.status], refs: dm.sourceIds.map((id) => sourceRef(ok.get(id)!)) } : null,
+        money: moneyOk ? { amount: dm.amount, asOf: dm.asOf, status: MONEY_STATUS_LABEL[dm.status], refs: ok.anyOf(dm.sourceIds) } : null,
         undated: !!x.money && !moneyOk,
       },
     ];
@@ -467,7 +444,7 @@ function routeVMs(xs: ProcurementRoute[], ok: ReadonlyMap<string, Source>, nameO
 const FIRST_BUYER_RULE =
   "Code picks it, not Claude. Only routes a foreign firm can use, with a Government buyer on the map. Ranked by money status (open tender or awarded, then passed, in committee, proposed; an amount counts only with a date and status), then access (direct before through a partner before unclear), then the buyer's nearest sourced deadline, then the buyer's influence. Most likely, not certain.";
 
-function firstBuyerVM(d: Dossier, brief: Brief, routes: RouteVM[], ok: ReadonlyMap<string, Source>, nameOf: ReadonlyMap<string, string>, now: Date): FirstBuyerVM | null {
+function firstBuyerVM(d: Dossier, brief: Brief, routes: RouteVM[], ok: Citations, nameOf: ReadonlyMap<string, string>, now: Date): FirstBuyerVM | null {
   const shown = new Set(routes.map((r) => r.route));
   const scored = scoreStakeholders(d, now);
   const pick = firstBuyer({
@@ -521,7 +498,7 @@ export function pickBrief(d: Pick<Dossier, "briefs">, v: string | null): Brief |
 }
 
 export function buildBriefModel(d: Dossier, brief: Brief, now: Date): BriefVM {
-  const ok = citable(d);
+  const ok = citations(d);
   const nameOf = new Map(d.stakeholders.map((s) => [s.id, s.short ?? s.name]));
   const onMap = (id: string) => nameOf.has(id);
   const latest = d.briefs.at(-1)!;
@@ -534,14 +511,14 @@ export function buildBriefModel(d: Dossier, brief: Brief, now: Date): BriefVM {
     ...box,
     actions: brief.plan[box.key]
       .filter((a) => onMap(a.stakeholderId))
-      .map((a) => ({ c: checkSentence({ text: a.text, sourceIds: a.sourceIds }, ok), who: nameOf.get(a.stakeholderId)! }))
+      .map((a) => ({ c: ok.sentence({ text: a.text, sourceIds: a.sourceIds }), who: nameOf.get(a.stakeholderId)! }))
       .filter((a): a is { c: Cited; who: string } => a.c !== null)
       .map((a) => ({ text: a.c.text, who: a.who, refs: a.c.refs })),
   }));
 
   // Evidence = every accepted source this brief cites, in the order it is first cited.
   const cited = [...citedSourceIds(brief)].filter((id) => ok.has(id));
-  const evidence = cited.map((id) => evidenceItem(ok.get(id)!, d, now));
+  const evidence = cited.map((id) => evidenceItem(ok.source(id)!, d, now));
 
   return {
     dossierId: d.id,
@@ -560,15 +537,17 @@ export function buildBriefModel(d: Dossier, brief: Brief, now: Date): BriefVM {
     metrics: metricVMs(metrics, d, ok),
     rationale: checkAll(brief.rationale, ok),
     judgments: brief.judgments
-      .filter((j) => !PLACEHOLDER.test(j.text) && !suggestsSpecIn(j.text) && j.sourceIds.length > 0 && j.sourceIds.every((id) => ok.has(id)))
-      .map((j) => ({ text: j.text, icd: j.icd, confidence: j.confidence, refs: j.sourceIds.map((id) => sourceRef(ok.get(id)!)) })),
+      .flatMap((j) => {
+        const c = ok.sentence(j);
+        return c ? [{ text: c.text, icd: j.icd, confidence: j.confidence, refs: c.refs }] : [];
+      }),
     path: brief.path
       .filter((p) => onMap(p.stakeholderId))
-      .map((p) => ({ who: nameOf.get(p.stakeholderId)!, stakeholderId: p.stakeholderId, why: checkSentence(p.why, ok) }))
+      .map((p) => ({ who: nameOf.get(p.stakeholderId)!, stakeholderId: p.stakeholderId, why: ok.sentence(p.why) }))
       .filter((p): p is BriefVM["path"][number] => p.why !== null),
     reduce: brief.reduceOpposition
       .filter((r) => onMap(r.stakeholderId))
-      .map((r) => ({ who: nameOf.get(r.stakeholderId)!, stakeholderId: r.stakeholderId, step: checkSentence(r.step, ok) }))
+      .map((r) => ({ who: nameOf.get(r.stakeholderId)!, stakeholderId: r.stakeholderId, step: ok.sentence(r.step) }))
       .filter((r): r is BriefVM["reduce"][number] => r.step !== null),
     plan,
     summary: checkAll(brief.summary, ok),
@@ -577,10 +556,12 @@ export function buildBriefModel(d: Dossier, brief: Brief, now: Date): BriefVM {
     routes,
     firstBuyer: routes.length ? firstBuyerVM(d, brief, routes, ok, govName, now) : null,
     meet: brief.meet
-      .filter((m) => m.sourceIds.length > 0 && m.sourceIds.every((id) => ok.has(id)))
-      .map((m) => ({ eventId: m.eventId, title: m.title, date: m.date, mapped: m.mappedStakeholders, refs: m.sourceIds.map((id) => sourceRef(ok.get(id)!)) })),
-    needs: brief.needs.filter((n) => !PLACEHOLDER.test(n)),
-    changesNote: brief.changesNote.filter((n) => !PLACEHOLDER.test(n)),
+      .flatMap((m) => {
+        const refs = ok.allOf(m.sourceIds);
+        return refs ? [{ eventId: m.eventId, title: m.title, date: m.date, mapped: m.mappedStakeholders, refs }] : [];
+      }),
+    needs: brief.needs.filter(showableText),
+    changesNote: brief.changesNote.filter(showableText),
     gaps: couldNotVerify(d, now, { ...reqs, metrics, routes }),
     evidence,
     acceptedCount: d.sources.filter((s) => s.accepted).length,

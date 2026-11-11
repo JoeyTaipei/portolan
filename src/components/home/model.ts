@@ -2,7 +2,8 @@
 // Scores come only from src/lib/scoring; judgments and alerts are shown only with accepted sources.
 import { zhMap, type ZhMap } from "@/lib/i18n/dossier";
 import { buildMapModel, byInfluence, type Mark } from "@/components/map/model";
-import { dataConfidenceExplanation, refsFor, sourceRef, type Explanation, type SourceRef } from "@/components/score/explain";
+import { dataConfidenceExplanation, type Explanation, type SourceRef } from "@/components/score/explain";
+import { citations } from "@/lib/citation";
 import { buildVerdict, type VerdictVM } from "@/components/score/verdict";
 import { marketInfo } from "@/lib/markets";
 import { briefMetrics, taipeiDay } from "@/lib/scoring";
@@ -45,11 +46,11 @@ export interface HomeModel {
 
 export function buildHomeModel(d: Dossier, now: Date): HomeModel {
   const accepted = d.sources.filter((s) => s.accepted);
-  const byId = new Map(accepted.map((s) => [s.id, sourceRef(s)]));
+  const cite = citations(d);
   const metrics = briefMetrics(d, now);
   const map = buildMapModel(d, now);
   const today = taipeiDay(now);
-  const sourced = (ids: string[]) => refsFor(ids, byId);
+  const sourced = cite.anyOf;
 
   // Simpler version of HOME-3 alerts: future timed events that have a source.
   const future = d.events.filter((e) => e.date !== null && e.date.slice(0, 10) >= today && sourced(e.sourceIds).length > 0);
@@ -65,9 +66,12 @@ export function buildHomeModel(d: Dossier, now: Date): HomeModel {
   }
 
   const brief = d.briefs.at(-1) ?? null;
+  // Same rule as the brief and A4: every cited source must be citable (plan S22).
   const judgments = (brief?.judgments ?? [])
-    .map((j) => ({ text: j.text, icd: j.icd, confidence: j.confidence, sources: sourced(j.sourceIds) }))
-    .filter((j) => j.sources.length > 0)
+    .flatMap((j) => {
+      const c = cite.sentence(j);
+      return c ? [{ text: c.text, icd: j.icd, confidence: j.confidence, sources: c.refs }] : [];
+    })
     .slice(0, 3);
 
   const placed = map.nodes
@@ -103,7 +107,7 @@ export function buildHomeModel(d: Dossier, now: Date): HomeModel {
     },
     confidence: metrics.dataConfidence,
     confidenceX: dataConfidenceExplanation(metrics.dataConfidence),
-    verdict: buildVerdict(d, now, map.contactFirst.length),
+    verdict: buildVerdict(d, now, map.contactFirst.length, cite),
     judgments,
     alert,
     moves,

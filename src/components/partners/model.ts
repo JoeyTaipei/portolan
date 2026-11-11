@@ -2,13 +2,13 @@
 // Industry stakeholders on the map, their sourced facts, statements and ties to Government
 // buyers. No Claude text and no new research. Flags are read from verbatim quotes and show the
 // quote that triggered them. A card is a candidate ranked by public evidence, never an endorsement.
-import { citable } from "@/components/brief/model";
+import { citations } from "@/lib/citation";
 import { buildMapModel, NO_ROUTE } from "@/components/map/model";
-import { sourceRef, type SourceRef } from "@/components/score/explain";
+import type { SourceRef } from "@/components/score/explain";
 import { isEligible } from "@/lib/scoring";
 import { marketInfo } from "@/lib/markets";
 import { bankQuestions, classifyRelationship } from "@/lib/partner-bank";
-import type { Dossier, Market, PartnerQuestionEntry, PartnerRelationship, QuestionPurpose, Source } from "@/lib/types";
+import type { Dossier, Market, PartnerQuestionEntry, PartnerRelationship, QuestionPurpose } from "@/lib/types";
 
 /** NET-7: the fixed line under the cards (shown as the Partners tab note). */
 export const PARTNER_NOTE =
@@ -78,8 +78,7 @@ export interface PartnerVM {
 const text = (v: unknown) => (typeof v === "string" ? v.trim() : "");
 
 export function buildPartners(d: Dossier, now: Date): PartnerVM[] {
-  const ok = citable(d);
-  const refs = (ids: string[]) => (ids.length > 0 && ids.every((id) => ok.has(id)) ? ids.map((id) => sourceRef(ok.get(id) as Source)) : null);
+  const refs = citations(d).allOf;
   const byId = new Map(d.stakeholders.map((s) => [s.id, s]));
   const nodes = new Map(buildMapModel(d, now).nodes.map((n) => [n.id, n]));
 
