@@ -848,6 +848,27 @@ Why: spec MKT-2. Joey wants a demo for a Taiwanese travel-agency startup going t
 
 **Acceptance**: `npm run build`. No paid call.
 
+### S22 One citation policy module (added 2026-11-11, Erin; from the architecture review)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| refactor (this session) | `refactor/citation-policy` | none | 2 h | P1 | none |
+
+Why: "can this claim be shown, and with which sources?" was decided three ways (strict `citable`/`checkSentence` in brief and partners, a loose accepted-only `refsFor` map rebuilt in home, map, verdict, network, docs and score explanations, and `preDisplay` at write time). The home bottom line kept a judgment with one good source that the brief and A4 drop, so the two screens could disagree. One module now builds the citable-source index once per dossier and owns both rules.
+
+**Risky changes — list before code** (sources and Unverified marks):
+- *A claim with an unverified source is shown.* Sentences still pass only when every cited source is accepted with a verified date, with no placeholder or spec-in. Home judgments move to this rule (the fix). Verify: failing-then-passing test that home and brief show the same judgments when one cites a rejected source.
+- *Evidence lists lose a source that used to show.* Evidence lists now use the same citable set (accepted and verified date). Every accepted source in research, the tracker and the fixtures has a verified date, so nothing visible changes. Verify: existing partners, scoring and i18n tests, plus `/d/sample` and `/d/sample-vn` home, map, brief and A4 checked in the browser.
+- *A rejected source appears as a ref.* Unknown and rejected ids are still dropped. Verify: unit test on the module.
+- *Write-time check weakened.* `preDisplay` is unchanged except that the placeholder pattern now has one definition. Verify: `checks.test.ts`.
+- Map next steps, network leads and verdict reasons keep their current rule (shown with at least one citable source); tightening them to "every source" is a product call left for later.
+
+**Files**: `src/lib/citation/index.ts` (new), `src/lib/citation/citation.test.ts` (new), `src/components/brief/model.ts`, `src/components/partners/model.ts`, `src/components/home/model.ts`, `src/components/score/{verdict,explain}.ts`, `src/components/map/model.ts`, `src/components/network/model.ts`, `src/components/docs/model.ts`, `docs/plan.md`.
+
+**Tests added**: the bug repro (home vs brief judgments) and module tests for the two rules.
+
+**Acceptance**: `npm test`, `npm run build`, sample pages unchanged in the browser except the fixed home bottom line. No paid call.
+
 ## 6. Risks
 
 | Risk | Impact | Mitigation |

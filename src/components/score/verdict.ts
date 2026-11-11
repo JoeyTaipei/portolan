@@ -2,7 +2,8 @@
 // licence reasons citing their check's accepted sources.
 import { briefMetrics, entryVerdict, type VerdictKind } from "@/lib/scoring";
 import type { Dossier } from "@/lib/types";
-import { refsFor, sourceRef, type SourceRef } from "./explain";
+import { citations, type Citations } from "@/lib/citation";
+import type { SourceRef } from "./explain";
 
 export interface VerdictVM {
   kind: VerdictKind;
@@ -12,9 +13,8 @@ export interface VerdictVM {
   reasons: { text: string; refs: SourceRef[] }[];
 }
 
-export function buildVerdict(d: Dossier, now: Date, contactFirstCount: number): VerdictVM {
+export function buildVerdict(d: Dossier, now: Date, contactFirstCount: number, cite: Citations = citations(d)): VerdictVM {
   const v = entryVerdict(briefMetrics(d, now), d.marketChecks, contactFirstCount);
-  const byId = new Map(d.sources.filter((s) => s.accepted).map((s) => [s.id, sourceRef(s)]));
   const lead = v.reasons.length === 0 ? null : v.kind === "no_go" ? "Blocked by:" : "To move to Go:";
-  return { kind: v.kind, label: v.label, lead, reasons: v.reasons.map((r) => ({ text: r.text, refs: refsFor(r.sourceIds, byId) })) };
+  return { kind: v.kind, label: v.label, lead, reasons: v.reasons.map((r) => ({ text: r.text, refs: cite.anyOf(r.sourceIds) })) };
 }

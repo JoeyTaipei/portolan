@@ -11,6 +11,7 @@ import type {
   SupportResult,
   SupportStatement,
 } from "@/lib/types";
+import type { Citations } from "@/lib/citation";
 import { hostOf, SOURCE_TYPE_LABEL } from "./grade";
 
 export interface SourceRef {
@@ -61,16 +62,6 @@ export function sourceRef(s: Source): SourceRef {
   };
 }
 
-/** Accepted sources only: rejected or missing ids never appear as evidence. */
-export function refsFor(ids: string[], byId: ReadonlyMap<string, SourceRef>): SourceRef[] {
-  const out: SourceRef[] = [];
-  for (const id of new Set(ids)) {
-    const r = byId.get(id);
-    if (r) out.push(r);
-  }
-  return out;
-}
-
 const FACTOR_LABEL: Record<InfluenceFactor, string> = {
   authority: "Formal authority",
   budget: "Budget control",
@@ -101,14 +92,14 @@ export function influenceExplanation(
   name: string,
   b: Banded | null,
   breakdown: FactorBreakdown[],
-  byId: ReadonlyMap<string, SourceRef>,
+  cite: Pick<Citations, "anyOf">,
 ): Explanation {
   return {
     title: `Influence: ${name}`,
     result: b ? `${b.level} · ${b.low}–${b.high}` : "Unverified: no sourced factor yet",
     basedOn: b ? `Based on ${b.basedOn.rated} of ${b.basedOn.of} factors` : "Based on 0 of 5 factors",
     factors: breakdown.map((f) => {
-      const sources = refsFor(f.sourceIds, byId);
+      const sources = cite.anyOf(f.sourceIds);
       const meeting = fromMeetingText(f, sources);
       return { label: FACTOR_LABEL[f.factor], weight: pct(f.weight), rating: meeting ? `${rating(f.rating)} · ${meeting}` : rating(f.rating), sources };
     }),
@@ -135,9 +126,9 @@ export function supportExplanation(
   name: string,
   s: SupportResult,
   statements: SupportStatement[],
-  byId: ReadonlyMap<string, SourceRef>,
+  cite: Pick<Citations, "anyOf" | "has">,
 ): Explanation {
-  const counted = statements.filter((st) => byId.has(st.sourceId));
+  const counted = statements.filter((st) => cite.has(st.sourceId));
   return {
     title: `Support: ${name}`,
     result:
@@ -149,7 +140,7 @@ export function supportExplanation(
       label: st.summary,
       weight: null,
       rating: `${st.rating > 0 ? "+" : st.rating < 0 ? "−" : "±"}${Math.abs(st.rating)} of ±2`,
-      sources: refsFor([st.sourceId], byId),
+      sources: cite.anyOf([st.sourceId]),
     })),
     summary:
       "Support is what this stakeholder said or did about foreign firms like yours. Each statement is rated −2 to +2 and weighted by its source's Admiralty grade and age. +20 or more is supportive, −20 or less is resistant. With no statement it stays Unknown, never 0.",
