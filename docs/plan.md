@@ -848,7 +848,76 @@ Why: spec MKT-2. Joey wants a demo for a Taiwanese travel-agency startup going t
 
 **Acceptance**: `npm run build`. No paid call.
 
-### S22 One citation policy module (added 2026-11-11, Erin; from the architecture review)
+### S22 碳基 demo: four sample markets and a six-dimension report (added 2026-11-05, Joey)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| ui + fixtures (this session) | `claude/great-maxwell-byyhj5` | main @ 1685c4f | 1 day | P4 | none |
+
+Why: spec MKT-3. A demo for 碳基科技 the next day. Joey picked the US first, then four markets (US, Japan, Europe, Southeast Asia) with anchor countries Poland and the Philippines, and a report in the six dimensions of `portolan_report_v3.html` without the evaluation part.
+
+**Risky changes — list before code** (sources and Unverified marks; sample ids and share links; a type change):
+- *A made-up fact about a real, named company.* Every excerpt was fetched and checked as a substring of the page; `cbt.test.ts` runs the source-check loop on all four markets and the report (quotes in excerpts, numbers in cited excerpts, 繁中 keeps every number). Self-claims (NDAA compliance, the APOZ plant, the 2023 Vesper trial build) are labelled as such.
+- *An invented budget.* Only sourced amounts (MLIT fees, the CNA "數百萬元" certification estimate, a Polish market reference); the rest is 「未驗證／需客戶提供」, no total.
+- *A sample id opens writes or the database.* One `SAMPLE_IDS` registry feeds `isSampleId`, load, share and static params; each new sample has a random 22-character share id.
+- *Local changes leak between samples.* The overlay key comes from the sample id in the path; `/d/sample` and `/d/sample-vn` keep their old keys.
+- *`Market` change without a migration.* US/JP/PL/PH are fixture-only; the form, zod enum and database stay TW/VN/TH.
+- *Cost.* No Parallel or Claude call. Page fetches needed a personal "portolan" environment allowing 20 named hosts.
+
+**Files**: `src/lib/types.ts` (`Market`), `src/lib/markets.ts`, `src/lib/i18n/zh-TW.ts`, `src/lib/ids.ts`, `src/lib/sample/{reader,overlay}.ts`, `src/lib/db/load-dossier.ts`, `src/app/d/[id]/{layout,page}.tsx`, `src/app/actions/drafts.ts`, `src/components/home/{home-view,dossier-select}.tsx`, `src/app/page.tsx`, `src/fixtures/cbt/*` (new), `src/components/cbt/*` (new), `src/app/cbt/{page,report/page}.tsx` (new), `next.config.ts` (noindex headers for `/cbt`), `docs/spec.md`, `docs/plan.md`.
+
+**Tests added**: `src/fixtures/cbt/cbt.test.ts`.
+
+**Acceptance**: `npm test`, `npm run build`; screenshots of `/cbt`, `/cbt/report` and the four markets at 1440 and 390 with no console errors; each market's A4 fits one page in English and 繁中. No paid call.
+
+### S23 Tailored partner questions (added 2026-11-05, Joey)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| engine + ui | `claude/partner-questions` | main @ 7b4252d | 1 day | P3 | none |
+
+Why: spec NET-8. The Partners cards ask every candidate the same seven questions, including "show us your acceptance results" to firms that are vendors like the client. Questions must come from the pair (client, candidate) and aim at a strategic partnership.
+
+**Risky changes — list before code** (paid Claude call; sources and Unverified marks; China org-level):
+- *A paid call runs unasked.* Button only, estimate shown first, `callStructured` reserves against the ledger (purpose `partner_questions`); nothing runs in mock mode or on samples.
+- *A question implies a fact we have no source for.* Claude sees only accepted sourced facts; each question cites ids; code drops unknown ids and runs the pre-display check; no sourced fact → code bank + "Unverified" line.
+- *A wrong relationship makes a wrong question.* The relationship and the facts it came from are shown on the card; `unclear` falls back to the bank; user can rerun.
+- *Prompt injection from fetched text.* Excerpts go in as data blocks (existing `sourceBlocks`).
+- *China.* Candidates with `isChina` are never sent; organisation level only.
+- *Cost.* One Opus call, ~8k tokens in, max 8k out: about US$0.10 typical, US$0.19 worst case. Needs Joey's confirmation in chat before any live run.
+
+**Files** (new unless noted): `supabase/migrations/20261105170000_partner_questions.sql` (table `partner_question_sets`, RLS on, no anon policy; Joey chose to store, 2026-11-05), `src/lib/types.ts` (`PartnerQuestionSet` and an optional `Dossier.partnerQuestions`), `src/lib/partner-bank.ts` (starter questions and relationship guess, no Claude), `src/lib/claude/partner-questions.ts` (prompt, schema, checks, one Opus call), `src/lib/db/partner-questions.ts`, `src/lib/db/read.ts` (read the newest set; a missing table never blocks a dossier), `src/app/actions/partner-questions.ts` (estimate, then confirmed write), `src/components/partners/{model.ts,partner-card.tsx,questions-control.tsx}`, `src/components/network/network-view.tsx` (the button), `src/lib/i18n/zh-TW.ts`, `src/lib/markets.test.ts` and `src/components/partners/partners.test.ts` (fixed list removed), `docs/spec.md`, `docs/plan.md`.
+
+**Tests added**: `src/lib/claude/partner-questions.test.ts` (peer vendor never gets delivery/acceptance questions; unknown source id and repeats dropped; fewer than 2 questions → not stored; stored set shows on the card with sources; China candidate not sent).
+
+**Not in this slice**: Chinese text for Claude-written questions (I18N-4 keeps research text verbatim); starter questions are translated.
+
+**Acceptance**: `npm test`, `npm run build`; `/d/sample/partners` and a mock dossier at 1440 show different questions per candidate; no paid call until Joey confirms.
+
+### S24 Brief writing eval: style block A/B, free tic checks, blind grader (added 2026-11-11, Joey)
+
+| Lane | Branch | Depends on | Estimate | Priority | Packages |
+|---|---|---|---|---|---|
+| engine (this session) | `claude/great-maxwell-byyhj5` (restarted from main @ b902f32) | main | 4 h | P4 | none |
+
+Why: spec EVAL-1–4. Joey wants to know whether a style block makes the A4 read like a sharp analyst without costing accuracy. Joey picked: free checks on the six samples now; the paid A/B on 10–20 real dossiers later, on Joey's machine.
+
+**Risky changes — list before code** (paid API calls; the source check):
+- *Spending without a yes.* The runner never calls Claude unless `EVAL_PAID=yes`, `RESEARCH_MODE=live` and `EVAL_CONFIRM` equal the estimate it printed; every call goes through `callStructured` and an in-memory ledger capped at `EVAL_MAX_USD`. Verify: run without the flags here (no key) and see only free checks run.
+- *Production prompt changes by accident.* `briefSystem` defaults to A and the research flow never passes `style`. Verify: unit test that A's system prompt equals the old one and B is A plus the block.
+- *Style beats sources.* The block ends with "sources come before style", and the summary reports sentences the pre-display check removed per variant; B ships only if it removes no more. Verify by reading the summary after the paid run.
+- *Grader follows text inside a report.* Sources and reports are fenced and the system prompt says they are data. Verify: unit test that a report containing "</report>" is escaped.
+- *Real dossier content leaves the machine.* Real dossiers are read only on Joey's machine and sent only to Anthropic (already a processor, `/privacy`); outputs stay in the git-ignored `evals/out/`.
+
+**Files**: `src/lib/claude/brief.ts` (`BRIEF_STYLE_BLOCK`, `style` on `briefSystem`/`writeBrief`), `src/lib/eval/{tics,grader}.ts` and tests, `evals/brief-style.eval.ts`, `vitest.eval.config.ts`, `package.json` (`eval:brief` script), `.gitignore` (`/evals/out/`), `docs/spec.md`, `docs/plan.md`.
+
+**Tests added**: `src/lib/eval/tics.test.ts` (each check on a hit and a miss; the sample briefs have no banned words or em dashes), `src/lib/eval/grader.test.ts` (A/B prompt equality, fencing, order-swap verdict rule).
+
+**Not in this slice**: storing founders' hand rewrites as (draft, edit) gold pairs; that needs an edit feature and a table (ask first).
+
+**Acceptance**: `npm test`, `npm run build`, `npm run eval:brief` on the samples writes a summary. No paid call in this session.
+
+### S25 One citation policy module (added 2026-11-11, Erin; from the architecture review)
 
 | Lane | Branch | Depends on | Estimate | Priority | Packages |
 |---|---|---|---|---|---|

@@ -13,6 +13,7 @@ import type {
   TrackerItem,
 } from "@/lib/types";
 import { PartnerCard } from "@/components/partners/partner-card";
+import { QuestionsControl } from "@/components/partners/questions-control";
 import type { Key } from "@/lib/i18n";
 import { LeadCard } from "./lead-card";
 import {
@@ -149,9 +150,16 @@ export function NetworkView({ vm, tab }: { vm: NetworkVM; tab: NetworkTab }) {
           <h1 className="mt-0.5 mb-0 text-[28px] font-extrabold leading-[1.02] min-[1600px]:text-[31px]">
             {t("Who to meet, and where")}
           </h1>
-          <p className="m-0 mt-1 text-[14px] text-ink2">{t("Matched to {name}", { name: vm.name })}</p>
+          <p className="m-0 mt-1 text-[14px] text-ink2">
+            {t("Matched to {name}", { name: vm.name })}
+          </p>
         </header>
-        <NetworkTabs dossierId={dossierId} tab={tab} counts={counts} market={vm.market} />
+        <NetworkTabs
+          dossierId={dossierId}
+          tab={tab}
+          counts={counts}
+          market={vm.market}
+        />
       </div>
 
       <section
@@ -163,23 +171,36 @@ export function NetworkView({ vm, tab }: { vm: NetworkVM; tab: NetworkTab }) {
             kind="empty"
             inline
             title={t(EMPTY[tab].title)}
-            desc={tab === "partners" ? t.x(partnersEmpty(vm.market)) : t(EMPTY[tab].desc)}
-            actions={[{ label: t("Open the map"), href: `/d/${dossierId}/map` }]}
+            desc={
+              tab === "partners"
+                ? t.x(partnersEmpty(vm.market))
+                : t(EMPTY[tab].desc)
+            }
+            actions={[
+              { label: t("Open the map"), href: `/d/${dossierId}/map` },
+            ]}
           />
         ) : tab === "partners" ? (
-          <div
-            className="grid grid-cols-1 gap-3 min-[1360px]:grid-cols-2 min-[1800px]:grid-cols-3"
-            data-testid="partner-grid"
-          >
-            {vm.partners.map((p, i) => (
-              <PartnerCard
-                key={p.id}
-                p={p}
-                rank={i + 1}
-                dossierId={dossierId}
-              />
-            ))}
-          </div>
+          <>
+            <QuestionsControl
+              dossierId={dossierId}
+              isSample={isSample}
+              hasTailored={vm.partners.some((x) => x.tailored)}
+            />
+            <div
+              className="grid grid-cols-1 gap-3 min-[1360px]:grid-cols-2 min-[1800px]:grid-cols-3"
+              data-testid="partner-grid"
+            >
+              {vm.partners.map((p, i) => (
+                <PartnerCard
+                  key={p.id}
+                  p={p}
+                  rank={i + 1}
+                  dossierId={dossierId}
+                />
+              ))}
+            </div>
+          </>
         ) : (
           <div
             className="grid grid-cols-1 gap-3 min-[1360px]:grid-cols-2 min-[1800px]:grid-cols-3"
@@ -210,7 +231,9 @@ export function NetworkView({ vm, tab }: { vm: NetworkVM; tab: NetworkTab }) {
         </h2>
         {saved.length === 0 ? (
           <p className="m-0 text-[13.5px] leading-[1.45] text-ink2">
-            {t("Save a lead or add an event to your plan; it goes into your tracker as Found.")}
+            {t(
+              "Save a lead or add an event to your plan; it goes into your tracker as Found.",
+            )}
           </p>
         ) : (
           <ul className="m-0 flex list-none flex-col p-0">

@@ -17,13 +17,18 @@ import { QuickNav } from "./quick-nav";
 // evidence, then next moves + side column. Phone order: header → evidence → next moves → key
 // judgments → alert → chart inset → workspace → your markets.
 
-export async function HomeView({ m, sample, atHome = false }: { m: HomeModel; atHome?: boolean; sample: { id: string; name: string; level: HomeModel["confidence"]["level"]; sources: number } }) {
+export async function HomeView({ m, samples, hub, atHome = false }: { m: HomeModel; atHome?: boolean; hub?: { href: string; label: string }; samples: { id: string; name: string; level: HomeModel["confidence"]["level"]; sources: number }[] }) {
   const t = await getT();
   return (
     <div className="mx-auto flex w-full max-w-[1360px] flex-col gap-7 px-[18px] pt-[22px] pb-10 lg:gap-9 lg:px-10 lg:pt-9 lg:pb-14">
       <Suspense fallback={null}>
         <PickFirstNotice />
       </Suspense>
+      {hub && (
+        <Link href={hub.href} className="btn btn-ghost btn-s self-start">
+          {hub.label}
+        </Link>
+      )}
       {atHome && m.isSample && (
         <Link href="/d/sample" className="btn btn-ghost btn-s self-start">
           {t("Open the sample market")}
@@ -44,7 +49,7 @@ export async function HomeView({ m, sample, atHome = false }: { m: HomeModel; at
           {m.market === "TW" && <ChartInset m={m} />}
           <QuickNav m={m} />
           <div className="flex flex-col gap-2">
-            <DossierSelect selectedId={m.id} sample={sample} />
+            <DossierSelect selectedId={m.id} samples={samples} />
             <p className="m-0 text-[13.5px] leading-[1.45] text-ink2">{t(TAGLINE)}</p>
           </div>
         </div>

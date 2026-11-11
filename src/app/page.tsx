@@ -26,7 +26,7 @@ async function HomeContent() {
   return (
     <>
       <OpenLastDossier />
-      <HomeView atHome m={m} sample={{ id: m.id, name: m.name, level: m.confidence.level, sources: m.counts.sources }} />
+      <HomeView atHome m={m} samples={[{ id: m.id, name: m.name, level: m.confidence.level, sources: m.counts.sources }]} />
     </>
   );
 }

@@ -1,0 +1,416 @@
+/* 碳基 hub and expansion report (MKT-3). Estimate look (design/direction.md): white paper on a grey
+   desk, ink rules, one yellow highlighter. Global stylesheet with a cbt- prefix, like report.css.
+   Colours are tokens from globals.css only. */
+
+.cbt-desk {
+  background: var(--desk);
+  min-height: 100dvh;
+  color: var(--ink);
+}
+
+.cbt-bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  padding: 10px 16px;
+  background: var(--paper);
+  border-bottom: 1.5px solid var(--ink);
+}
+.cbt-brand {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+}
+.cbt-crumb {
+  font-size: 14px;
+  color: var(--ink2);
+}
+.cbt-bar .acts {
+  margin-left: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cbt-sheet {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  margin: 20px auto 40px;
+  width: min(1280px, calc(100vw - 32px));
+  padding: 28px 18px 40px;
+}
+@media (min-width: 1024px) {
+  .cbt-bar {
+    padding: 0 28px;
+    height: 58px;
+    flex-wrap: nowrap;
+  }
+  .cbt-sheet {
+    padding: 48px 56px 64px;
+  }
+}
+
+.cbt-kicker {
+  font: 700 12.5px var(--font-type);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink2);
+  margin: 0 0 8px;
+}
+.cbt-h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+@media (min-width: 1440px) {
+  .cbt-h1 {
+    font-size: 40px;
+  }
+}
+.cbt-lede {
+  margin: 12px 0 0;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink2);
+  max-width: 76ch;
+}
+.cbt-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-top: 16px;
+  font-size: 13.5px;
+  color: var(--ink2);
+}
+
+/* section heading: § number in type, title, then a thin rule */
+.cbt-sec {
+  margin-top: 44px;
+}
+.cbt-sec-h {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 8px;
+  margin: 0 0 18px;
+}
+.cbt-sec-h .no {
+  font: 700 14px var(--font-type);
+  background: var(--hi);
+  padding: 1px 6px;
+  border: 1px solid var(--ink);
+}
+.cbt-sec-h h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+}
+.cbt-sec-h .en {
+  margin-left: auto;
+  font: 400 12.5px var(--font-type);
+  color: var(--ink2);
+}
+.cbt-sec-intro {
+  margin: -6px 0 18px;
+  font-size: 14.5px;
+  color: var(--ink2);
+  max-width: 90ch;
+}
+
+/* four markets side by side (2 × 2 from 1024px) */
+.cbt-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+}
+@media (min-width: 1024px) {
+  .cbt-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 28px;
+  }
+}
+.cbt-mkt {
+  border-top: 1.5px solid var(--ink);
+  padding-top: 10px;
+  break-inside: avoid;
+}
+.cbt-mkt-h {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 0 8px;
+}
+.cbt-mkt-h h3 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 800;
+}
+.cbt-mkt-h a {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--ink2);
+}
+
+.cbt-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cbt-list li {
+  font-size: 15px;
+  line-height: 1.55;
+  padding-left: 14px;
+  position: relative;
+}
+.cbt-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 6px;
+  height: 1.5px;
+  background: var(--ink);
+}
+.cbt-tag {
+  display: inline-block;
+  font: 700 12px var(--font-type);
+  border: 1px solid var(--ink);
+  padding: 0 5px;
+  margin-right: 6px;
+  white-space: nowrap;
+}
+
+/* citations: boxed source numbers, like the grade stamp */
+.cbt-cites {
+  white-space: nowrap;
+  margin-left: 4px;
+}
+.cbt-cite {
+  display: inline-block;
+  font: 700 11.5px var(--font-type);
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  padding: 0 3px;
+  margin-left: 3px;
+  line-height: 1.35;
+  text-decoration: none;
+  vertical-align: 1px;
+}
+.cbt-cite:hover,
+.cbt-cite:focus-visible {
+  background: var(--hi);
+}
+.cbt-unv {
+  display: inline-block;
+  font: 700 11.5px var(--font-type);
+  color: var(--ink2);
+  border: 1px dashed var(--ink2);
+  padding: 0 4px;
+  margin-left: 4px;
+  white-space: nowrap;
+}
+
+/* tables */
+.cbt-tablewrap {
+  overflow-x: auto;
+}
+.cbt-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14.5px;
+}
+.cbt-table th {
+  text-align: left;
+  font: 700 12.5px var(--font-type);
+  color: var(--ink2);
+  border-bottom: 1.5px solid var(--ink);
+  padding: 6px 10px 6px 0;
+  white-space: nowrap;
+}
+.cbt-table td {
+  border-bottom: 1px solid var(--rule);
+  padding: 10px 10px 10px 0;
+  vertical-align: top;
+  line-height: 1.5;
+}
+.cbt-table td.num {
+  font: 700 14px var(--font-type);
+  white-space: nowrap;
+}
+.cbt-hl {
+  background: var(--hi2);
+  box-shadow: 0 0 0 2px var(--hi2);
+}
+
+/* verdict stamp */
+.cbt-verdict {
+  display: inline-block;
+  font: 700 13px var(--font-sans);
+  border: 2px solid var(--ink);
+  padding: 1px 8px;
+  white-space: nowrap;
+}
+.cbt-verdict[data-kind="go"] {
+  background: var(--hi);
+}
+.cbt-verdict[data-kind="no_go"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* 30 / 60 / 90 plan columns */
+.cbt-plan {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+}
+@media (min-width: 640px) {
+  .cbt-plan {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.cbt-plan > div {
+  border: 1px solid var(--rule);
+  padding: 8px 10px;
+}
+.cbt-plan .day {
+  font: 700 12.5px var(--font-type);
+  border-bottom: 1px solid var(--ink);
+  margin-bottom: 6px;
+  padding-bottom: 3px;
+}
+.cbt-plan p {
+  margin: 0 0 6px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* hub: market docket rows */
+.cbt-docket {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+.cbt-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px 24px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--rule);
+}
+@media (min-width: 1024px) {
+  .cbt-row {
+    grid-template-columns: 220px minmax(0, 1fr) 280px;
+    align-items: start;
+  }
+}
+.cbt-row h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+}
+.cbt-row .sub {
+  font-size: 13px;
+  color: var(--ink2);
+  margin-top: 2px;
+}
+.cbt-row .acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.cbt-kv {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 4px 12px;
+  font-size: 14px;
+  margin: 0;
+}
+.cbt-kv dt {
+  font: 700 12.5px var(--font-type);
+  color: var(--ink2);
+  padding-top: 2px;
+}
+.cbt-kv dd {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.cbt-note {
+  margin-top: 28px;
+  border-top: 1px solid var(--rule);
+  padding-top: 10px;
+  font-size: 13px;
+  color: var(--ink2);
+  line-height: 1.55;
+}
+.cbt-sources {
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.cbt-sources li {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 8px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--faint);
+}
+.cbt-sources .lab {
+  font: 700 12px var(--font-type);
+}
+.cbt-sources a {
+  word-break: break-all;
+  color: var(--ink2);
+}
+
+@page {
+  size: A4;
+  margin: 14mm 12mm;
+}
+@media print {
+  .cbt-desk {
+    background: var(--paper);
+  }
+  .cbt-bar,
+  .cbt-noprint {
+    display: none !important;
+  }
+  .cbt-sheet {
+    border: 0;
+    margin: 0;
+    width: auto;
+    padding: 0;
+  }
+  .cbt-sec.page {
+    break-before: page;
+  }
+  .cbt-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 20px;
+  }
+  .cbt-list li,
+  .cbt-table {
+    font-size: 11.5px;
+  }
+  .cbt-plan {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .cbt-cite {
+    font-size: 9.5px;
+  }
+}

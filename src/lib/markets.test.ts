@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { partnerNote, partnerQuestions, partnersEmptyA4 } from "@/components/partners/model";
+import { partnerNote, partnersEmptyA4 } from "@/components/partners/model";
+import { bankQuestions } from "@/lib/partner-bank";
 import { accessLabel } from "@/components/brief/model";
 import { briefPrompt, briefSystem } from "@/lib/claude/brief";
 import { noteSystem } from "@/lib/claude/briefing-note";
@@ -57,9 +58,10 @@ describe("MKT-1 markets", () => {
   });
 
   it("partner text and questions drop Taiwan-only parts outside Taiwan", () => {
-    const vn = partnerQuestions([], "VN");
-    expect(vn.join(" ")).not.toMatch(/taiwan|MND|NCC/);
-    expect(partnerQuestions([]).length).toBe(vn.length + 3);
+    const ask = (market: "TW" | "VN") => bankQuestions({ client: "Acme", partner: "Beta", relationship: "channel", market, flags: [] });
+    const vn = ask("VN");
+    expect(vn.map((q) => q.text).join(" ")).not.toMatch(/taiwan|MND|NCC/);
+    expect(ask("TW").length).toBe(vn.length + 3);
     expect(partnerNote("TH")).not.toMatch(/MND|TEDIBOA/);
     expect(partnersEmptyA4("VN")).toBe("No Vietnamese firm with sourced evidence yet.");
     expect(accessLabel("via_local_partner", "TH")).toBe("Through a Thai partner");

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { sampleDossier } from "@/lib/sample/reader";
 import { buildReportModel } from "@/components/report/model";
-import { buildPartners, partnerQuestions } from "./model";
+import { buildPartners } from "./model";
 
 // Plan S15 (NET-7): partner candidates are picked, flagged and ordered by code from sourced data.
 describe("partner candidates", () => {
@@ -19,7 +19,8 @@ describe("partner candidates", () => {
     expect(flagged("exclusive").sort()).toEqual(["jctech", "mitac"]);
     expect(flagged("contract")).toEqual(["tron"]);
     for (const c of cards) for (const f of c.flags) expect(f.refs.length).toBeGreaterThan(0);
-    expect(partnerQuestions(["exclusive"])).toContain("Does your existing exclusive deal cover our product's category?");
+    const mitac = cards.find((c) => c.id === "mitac")!;
+    expect(mitac.questions.some((q) => /exclusive deal/.test(q.text) && q.refs.length > 0)).toBe(true);
   });
 
   it("does not flag a non-exclusive deal as exclusive", () => {

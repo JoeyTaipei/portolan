@@ -2,10 +2,11 @@ import Link from "next/link";
 import { Stamp } from "@/components/score/stamp";
 import type { SourceRef } from "@/components/score/explain";
 import { useT } from "@/lib/i18n/client";
+import { PURPOSE_LABEL, RELATIONSHIP_LABEL } from "@/lib/partner-bank";
 import type { PartnerVM } from "./model";
 
 // NET-7 partner candidate card. Every line is sourced text from the dossier; the flags show the
-// quote that raised them; the questions are a fixed list. Saving and intros happen on the map.
+// quote that raised them; the questions are written for this client and this candidate (NET-8), or starter questions from code. Saving and intros happen on the map.
 
 function Cite({ dossierId, refs }: { dossierId: string; refs: SourceRef[] }) {
   return (
@@ -85,9 +86,24 @@ export function PartnerCard({ p, rank, dossierId }: { p: PartnerVM; rank: number
           <span className="group-open:hidden">{t("Questions to ask them ({n})", { n: p.questions.length })}</span>
           <span className="hidden group-open:inline">{t("Hide the questions")}</span>
         </summary>
-        <ol className="m-0 mt-1.5 flex flex-col gap-1 pl-5 leading-[1.4]">
+        <p className="m-0 mt-1.5 text-[12.5px] text-ink2" data-testid="partner-relationship">
+          <b className="text-ink">{t.k(RELATIONSHIP_LABEL[p.relationship])}.</b>
+          {p.basis && (
+            <>
+              {" "}
+              {t("Why: {text}", { text: p.basis.text })}
+              <Cite dossierId={dossierId} refs={p.basis.refs} />
+            </>
+          )}
+        </p>
+        {!p.tailored && <p className="m-0 mt-1 text-[12.5px] text-ink2">{t("Starter questions, not tailored yet. Write tailored ones from the sources.")}</p>}
+        <ol className="m-0 mt-1.5 flex flex-col gap-1.5 pl-5 leading-[1.4]">
           {p.questions.map((q) => (
-            <li key={q}>{t.k(q)}</li>
+            <li key={q.text}>
+              <span className="mr-1.5 rounded-[var(--r-s)] border border-rule-strong px-1 text-[11.5px] font-semibold text-ink2">{t.k(PURPOSE_LABEL[q.purpose])}</span>
+              {t.x(q.text)}
+              {q.refs.length > 0 && <Cite dossierId={dossierId} refs={q.refs} />}
+            </li>
           ))}
         </ol>
       </details>

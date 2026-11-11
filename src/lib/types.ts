@@ -20,7 +20,8 @@ export type Level = "High" | "Medium" | "Low";
 export type FactStatus = "sourced" | "unverified";
 export type Rating03 = 0 | 1 | 2 | 3;
 export type StatementRating = -2 | -1 | 0 | 1 | 2;
-export type Market = "TW" | "VN" | "TH";
+/** US/JP/PL/PH: fixture-only samples for now (MKT-3); the form and the database stay TW/VN/TH. */
+export type Market = "TW" | "VN" | "TH" | "US" | "JP" | "PL" | "PH";
 export type Category = "gov" | "ind" | "cap" | "leg" | "evt";
 export type Stance = "supportive" | "neutral" | "resistant" | "unknown";
 
@@ -726,6 +727,35 @@ export interface Dossier extends DossierMeta {
   ties: Tie[];
   introDrafts: IntroDraft[];
   aliases: OrgAlias[];
+  /** NET-8: the newest tailored partner questions; absent or null = starter questions in code. */
+  partnerQuestions?: PartnerQuestionSet | null;
+}
+
+// ─── Tailored partner questions (NET-8) ──────────────────────────────────────
+
+export type PartnerRelationship = "peer_vendor" | "complement" | "channel" | "adjacent" | "unclear";
+export type QuestionPurpose = "find fit" | "joint bid" | "pilot" | "channel" | "terms";
+
+export interface PartnerQuestion {
+  text: string;
+  purpose: QuestionPurpose;
+  /** Ids of accepted, verified sources this candidate has. Never empty in a stored set. */
+  sourceIds: string[];
+}
+
+export interface PartnerQuestionEntry {
+  stakeholderId: string;
+  relationship: PartnerRelationship;
+  /** Why Claude chose the relationship: one sentence citing sources; null when `unclear`. */
+  basis: Sentence | null;
+  questions: PartnerQuestion[];
+}
+
+export interface PartnerQuestionSet {
+  id: string;
+  createdAt: Iso;
+  model: string | null;
+  entries: PartnerQuestionEntry[];
 }
 
 // ─── Sample overlay (SHELL-3: writes on the sample stay in this browser) ─────
